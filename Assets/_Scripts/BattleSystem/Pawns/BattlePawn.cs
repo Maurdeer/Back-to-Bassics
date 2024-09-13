@@ -69,22 +69,11 @@ public class BattlePawn : Conductable
     {
         StartCoroutine(StaggerSelf());
     }
-    // TODO: Implement Status Ailment Applier Method
-    // This should just be in the form of a GameObject Component
-    public virtual void ApplyStatusAilments(StatusAilment[] ailments)
+    public virtual void ApplyStatusAilment<SA>() 
+        where SA : StatusAilment
     {
-        // (For Future Programmer) Code template when I actually implement everything
-        //foreach (StatusAilment ailment in ailments)
-        //{
-        //    var ailmentComponent = GetComponent<ailment.type>();
-        //    if (ailmentComponent == null)
-        //    {
-        //        ailmentComponent = gameObject.AddComponent<ailment.type>();
-        //    }
-        //    ailmentComponent.BuildUp(ailment.strength);
-        //}
+        gameObject.AddComponent<SA>();
     }
-
     #endregion
     public virtual void EnterBattle()
     {

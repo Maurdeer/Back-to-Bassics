@@ -7,12 +7,11 @@ using UnityEngine;
 /// </summary>
 public abstract class StatusAilment : Conductable
 {
-    protected AilmentType type;
     protected BattlePawn _pawn;
     protected float _maxBuildUp;
     protected float _currBuildUp;
     protected float _recoveryTime;
-    public bool Inflicted {  get; private set; }
+    //public bool Inflicted {  get; private set; }
     protected virtual void Awake()
     {
         _pawn = GetComponent<BattlePawn>();
@@ -22,28 +21,32 @@ public abstract class StatusAilment : Conductable
     protected virtual void Start()
     {
         Enable();
+        _currBuildUp = _maxBuildUp;
     }
     /// <summary>
     /// Build when inflicted, don't build up when already inflicted
     /// </summary>
     /// <param name="amount"></param>
-    public virtual void BuildUp(int amount)
-    {
-        if (Inflicted) return;
-        //_currBuildUp += amount * (1 - _pawn.Data.resistence[A]);
-        if (_currBuildUp >= _maxBuildUp)
-        {
-            _currBuildUp = _maxBuildUp;
-            Inflicted = true;
-        }
-    }
+    //public virtual void BuildUp(int amount)
+    //{
+    //    if (Inflicted) return;
+    //    //_currBuildUp += amount * (1 - _pawn.Data.resistence[A]);
+    //    if (_currBuildUp >= _maxBuildUp)
+    //    {
+    //        _currBuildUp = _maxBuildUp;
+    //        Inflicted = true;
+    //    }
+    //}
     protected override void OnFullBeat()
     {
-        //_currBuildUp -= _pawn.Data.resistence[A] * 10;
+        //if (!Inflicted) return;
+        _currBuildUp -= _recoveryTime;
+        if (_currBuildUp <= 0 )
+        {
+            _currBuildUp = 0;
+            // Inflicted = false;
+            Disable();
+            Destroy(this);
+        }
     }
-}
-public enum AilmentType
-{
-    None = 0,
-
 }

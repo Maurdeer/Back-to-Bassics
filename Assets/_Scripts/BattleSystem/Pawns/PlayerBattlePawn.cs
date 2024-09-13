@@ -227,8 +227,6 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
         {
             BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
-            // Uncomment below when Status Ailments have been defined
-            // BattleManager.Instance.Enemy.ApplyStatusAilments(_weaponData.ailments);
 
             updateCombo(true);
 
