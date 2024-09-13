@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using FMOD;
 using FMOD.Studio;
 using UnityEngine;
@@ -24,14 +25,25 @@ public class Conductor : Singleton<Conductor>
     
     private ConductorContext _ctx = null;
 
+    private GCHandle ctxHandle;
     private ConductorContext ctx
     {
         get => _ctx;
         set
         {
-            value?.Stop();
+            if (_ctx != null)
+            {
+                _ctx.Stop();
+                ctxHandle.Free();
+            }
+            
             _ctx = value;
-            value?.Start();
+            
+            if (_ctx != null)
+            {
+                ctxHandle = GCHandle.Alloc(_ctx);
+                _ctx.SetCallback(ctxHandle);
+            }
         }
     }
     
@@ -129,6 +141,11 @@ public class Conductor : Singleton<Conductor>
     // instead of in-between regular updates
     public void LateUpdate()
     {
+        if (ctx == null)
+        {
+            return;
+        }
+        
         if (ctx.fmodInstance.getPlaybackState(out var state) == RESULT.OK)
         {
             if (state is PLAYBACK_STATE.STOPPED or PLAYBACK_STATE.STOPPING)
@@ -137,7 +154,7 @@ public class Conductor : Singleton<Conductor>
                 return;
             }
         }
-
+        
         // timeline position is in miliseconds
         if (ctx.fmodInstance.getTimelinePosition(out int positionMs) == RESULT.OK)
         {
@@ -175,17 +192,30 @@ public class Conductor : Singleton<Conductor>
     }
     
     
+    
     private class ConductorContext
     {
         public EnemyBattlePawn pawn;
         public EventInstance fmodInstance;
         public SerializedTempoMarker[] markers;
-
+        public FMOD.Studio.TIMELINE_BEAT_PROPERTIES lastBeatProperties;
+        public FMOD.Studio.EVENT_CALLBACK beatCallback;
+        
         public ConductorContext(EnemyBattlePawn pawn)
         {
             this.pawn = pawn;
             fmodInstance = FMODUnity.RuntimeManager.CreateInstance(pawn.EnemyData.fmodEvent);
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(fmodInstance, pawn.transform);
+            
             markers = parsedEvents[pawn.EnemyData.fmodEvent.Path];
+            
+            lastBeatProperties.beat = 0;
+            lastBeatProperties.bar = 0;
+            lastBeatProperties.position = 0;
+            var marker = FindRelevantMarker(0);
+            lastBeatProperties.tempo = marker.tempoBpm;
+            lastBeatProperties.timesignaturelower = marker.timeSignatureDenominator;
+            lastBeatProperties.timesignatureupper = marker.timeSignatureNumerator;
         }
 
         public void Start()
@@ -242,6 +272,51 @@ public class Conductor : Singleton<Conductor>
             }
 
             throw new Exception("funny haha error, I can't write binary search :*(");
+        }
+
+        public void SetCallback(GCHandle handle)
+        {
+            fmodInstance.setUserData(GCHandle.ToIntPtr(handle));
+            beatCallback = new EVENT_CALLBACK(BeatEventCallback);
+            fmodInstance.setCallback(beatCallback, EVENT_CALLBACK_TYPE.TIMELINE_BEAT);
+        }
+        
+        [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
+        static FMOD.RESULT BeatEventCallback(FMOD.Studio.EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)
+        {
+            FMOD.Studio.EventInstance instance = new FMOD.Studio.EventInstance(instancePtr);
+
+            // Retrieve the user data
+            IntPtr timelineInfoPtr;
+            FMOD.RESULT result = instance.getUserData(out timelineInfoPtr);
+            if (result != FMOD.RESULT.OK)
+            {
+                Debug.LogError("Timeline Callback error: " + result);
+            }
+            else if (timelineInfoPtr != IntPtr.Zero)
+            {
+                // Get the object to store beat and marker details
+                GCHandle ctxHandle = GCHandle.FromIntPtr(timelineInfoPtr);
+                ConductorContext ctxObj = (ConductorContext)ctxHandle.Target;
+
+                switch (type)
+                {
+                    case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
+                    {
+                        var parameter = (FMOD.Studio.TIMELINE_BEAT_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_BEAT_PROPERTIES));
+                        ctxObj.lastBeatProperties = parameter;
+                        Debug.Log(ctxObj.lastBeatProperties.beat);
+                        break;
+                    }
+                    case FMOD.Studio.EVENT_CALLBACK_TYPE.DESTROYED:
+                    {
+                        // Now the event has been destroyed, unpin the timeline memory so it can be garbage collected
+                        ctxHandle.Free();
+                        break;
+                    }
+                }
+            }
+            return FMOD.RESULT.OK;
         }
     }
 }
