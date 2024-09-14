@@ -46,6 +46,11 @@ public class Conductor : Singleton<Conductor>
             }
         }
     }
+
+    /// <summary>
+    /// Don't edit this! will be set automatically... currently public just for viewing in inspector...
+    /// </summary>
+    public float NextBeatMs = -1;
     
     private bool isConducting => ctx != null;
     
@@ -154,12 +159,9 @@ public class Conductor : Singleton<Conductor>
                 return;
             }
         }
-        
-        // timeline position is in miliseconds
-        if (ctx.fmodInstance.getTimelinePosition(out int positionMs) == RESULT.OK)
-        {
-            
-        }
+
+        // playback speed is set via pitch
+        // ctx.fmodInstance.setPitch(2.0f);
     }
 
     private IEnumerator Conduct()
@@ -212,7 +214,7 @@ public class Conductor : Singleton<Conductor>
             lastBeatProperties.beat = 0;
             lastBeatProperties.bar = 0;
             lastBeatProperties.position = 0;
-            var marker = FindRelevantMarker(0);
+            var marker = FindPrevNextMarkers(0).Item1;
             lastBeatProperties.tempo = marker.tempoBpm;
             lastBeatProperties.timesignaturelower = marker.timeSignatureDenominator;
             lastBeatProperties.timesignatureupper = marker.timeSignatureNumerator;
@@ -228,7 +230,16 @@ public class Conductor : Singleton<Conductor>
             fmodInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
 
-        public SerializedTempoMarker FindRelevantMarker(int timelinePositionMs)
+        /// <summary>
+        /// Note that for timeline positions before the first marker, both prev and next will be set to the first marker
+        /// ... for timeline positions after the last marker, both prev and next will be set to the last marker
+        /// ... for anything else, prev and next will be different markers, as long as there are >2 markers!
+        /// </summary>
+        /// <param name="timelinePositionMs"></param>
+        /// <returns></returns>
+        /// <exception cref="IndexOutOfRangeException"></exception>
+        /// <exception cref="Exception"></exception>
+        public (SerializedTempoMarker, SerializedTempoMarker) FindPrevNextMarkers(int timelinePositionMs)
         {
             // we don't really care about the case where no markers are present, that shouldn't happen anyway
             if (markers.Length == 0)
@@ -239,12 +250,12 @@ public class Conductor : Singleton<Conductor>
             // base cases for first and last markers
             if (markers[0].positionMs >= timelinePositionMs)
             {
-                return markers[0];
+                return (markers[0], markers[0]);
             }
 
             if (markers[^1].positionMs <= timelinePositionMs)
             {
-                return markers[^1];
+                return (markers[^1], markers[^1]);
             }
             
             // search sorted markers array where t in inbetween consecutive markers, return the earlier of those markers
@@ -258,7 +269,7 @@ public class Conductor : Singleton<Conductor>
 
                 if (markers[m].positionMs >= timelinePositionMs && markers[m - 1].positionMs <= timelinePositionMs)
                 {
-                    return markers[m-1];
+                    return (markers[m-1], markers[m]);
                 }
 
                 if (markers[m].positionMs < timelinePositionMs)
@@ -305,7 +316,10 @@ public class Conductor : Singleton<Conductor>
                     {
                         var parameter = (FMOD.Studio.TIMELINE_BEAT_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_BEAT_PROPERTIES));
                         ctxObj.lastBeatProperties = parameter;
-                        Debug.Log(ctxObj.lastBeatProperties.beat);
+
+                        var (prevMarker, nextMarker) = ctxObj.FindPrevNextMarkers(parameter.position);
+                        Debug.Log($"{parameter.position}: prev={prevMarker.tempoBpm}bpm@{prevMarker.positionMs}ms; next={nextMarker.tempoBpm}bpm@{nextMarker.positionMs}ms");
+                        
                         break;
                     }
                     case FMOD.Studio.EVENT_CALLBACK_TYPE.DESTROYED:

@@ -568,6 +568,7 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{7ef9e1b3-b5cd-48d2-b172-117440bd9573}">
 		<relationship name="effects">
+			<destination>{69ee1c16-f570-4548-81b6-2dba55761439}</destination>
 			<destination>{a6fe5951-635a-41f8-8342-a2c9358c205c}</destination>
 			<destination>{c4321d19-2874-4b1f-ac53-5da93e15a55e}</destination>
 		</relationship>
@@ -581,6 +582,11 @@
 	</object>
 	<object class="MixerBusPanner" id="{ebf807f9-b293-413c-af22-658dc412e32c}" />
 	<object class="EventCondition" id="{5d509f69-bdcf-4dd4-a696-ab9dba7650f0}" />
+	<object class="ThreeEQEffect" id="{69ee1c16-f570-4548-81b6-2dba55761439}">
+		<property name="highGain">
+			<value>-80</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{a6fe5951-635a-41f8-8342-a2c9358c205c}" />
 	<object class="SpatialiserEffect" id="{c4321d19-2874-4b1f-ac53-5da93e15a55e}">
 		<property name="bypass">
