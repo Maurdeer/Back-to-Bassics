@@ -18,7 +18,7 @@ public class BassicsAI : Conductable
     [SerializeField] private EnemyStageData[] _enemyStages;
     private int _lastAction; // prevents using same attack twice in a row
     private int _currentStage;
-    public static event System.Action OnEnemyStageTransition;
+    public event System.Action OnEnemyStageTransition;
 
     
     // references
@@ -29,7 +29,7 @@ public class BassicsAI : Conductable
     {
         _bassics = GetComponent<EnemyBattlePawn>();
         _director = GetComponent<PlayableDirector>();
-        EnemyBattlePawn.OnEnemyStaggerEvent += _director.Stop;
+        _bassics.OnEnemyStaggerEvent += _director.Stop;
         
         if (_director == null)
         {

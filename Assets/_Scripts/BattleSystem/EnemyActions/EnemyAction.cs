@@ -21,7 +21,7 @@ public abstract class EnemyAction : Conductable
             return;
         }
         parentPawn.AddEnemyAction(this);
-        EnemyBattlePawn.OnEnemyStaggerEvent += StopAction;
+        parentPawn.OnEnemyStaggerEvent += StopAction;
         //Debug.Log($"Enemy Action \"{gameObject.name}\" is type: {GetType()}");
     }
     public void StartAction()

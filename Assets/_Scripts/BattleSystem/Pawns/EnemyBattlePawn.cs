@@ -21,7 +21,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //reference to director for stagger implementation
     public EnemyBattlePawnData EnemyData => (EnemyBattlePawnData)Data;
     private Dictionary<Type, EnemyAction> _enemyActions = new Dictionary<Type, EnemyAction>();
-    public static event Action OnEnemyStaggerEvent;
+    public event Action OnEnemyStaggerEvent;
     public int CurrentStagger { get; set; }
     // Events
     //public event Action OnEnemyActionComplete; --> Hiding for now
