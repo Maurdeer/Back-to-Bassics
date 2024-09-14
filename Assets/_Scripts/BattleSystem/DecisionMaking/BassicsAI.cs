@@ -39,6 +39,7 @@ public class BassicsAI : Conductable
 
         _lastAction = -1;
         _currentStage = 0;
+        _beatsPerDecision =  _enemyStages[_currentStage].BeatsPerDecision;
     }
     private void Start()
     {
@@ -51,7 +52,7 @@ public class BassicsAI : Conductable
         _bassics.OnExitBattle += Disable;
         _bassics.OnDamage += delegate
         { 
-            if (_bassics.esm.IsOnState<Idle>() && _bassics.psm.IsOnState<Center>())
+            if (_bassics.esm.IsOnState<Idle>() && _bassics.psm.IsOnState<Center>() && _currentStage > 0)
             {
                 _bassics.psm.Transition<Distant>();
             }
@@ -68,6 +69,8 @@ public class BassicsAI : Conductable
         if (_currentStage+1 < _enemyStages.Length && 
             _enemyStages[_currentStage+1].HealthThreshold > (float)_bassics.HP/_bassics.MaxHP) {
                 _currentStage++;
+                _beatsPerDecision = _enemyStages[_currentStage].BeatsPerDecision;
+                _bassics.psm.Transition<Distant>();
                 OnEnemyStageTransition?.Invoke();
             }
             
