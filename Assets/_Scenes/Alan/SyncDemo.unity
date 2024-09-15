@@ -169,6 +169,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   demoEnemy: {fileID: 1149359150}
   tempoText: {fileID: 1243008390}
+  lerpCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &615661557
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,13 +261,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 615661557}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17812908, y: -0.3159604, z: 0.06287004, w: 0.9297776}
-  m_LocalPosition: {x: 11.1, y: 9.2, z: -15.9}
+  m_LocalRotation: {x: 0.1885904, y: -0.04456537, z: 0.010783011, w: 0.98098487}
+  m_LocalPosition: {x: -0.5, y: 7.35, z: -21.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 21.775, y: -37.486, z: 0.268}
+  m_LocalEulerAnglesHint: {x: 21.775, y: -5.151, z: 0.268}
 --- !u!114 &615661561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -464,7 +470,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fdc51c3693f34a745851118ca03aa5f8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -775,6 +781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EventMarkerMap: {fileID: 4900000, guid: 94f85078f18166b4d892fb4f64add558, type: 3}
+  nextBeatMs: -1
 --- !u!4 &966847257
 Transform:
   m_ObjectHideFlags: 0

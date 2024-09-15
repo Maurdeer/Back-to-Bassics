@@ -9,11 +9,9 @@ function exportMarkers(success) {
     
     // See a list of events
     for(var i = 0; i < events.length; i++) {
-        var eventPath = events[i].getPath();
         eventData = {};
-        eventData["eventPath"] = eventPath;
-
-        studio.system.warn(eventPath);
+        eventData["id"] = events[i].id;
+        studio.system.warn(events[i].getPath() + " -> " + events[i].id);
 
         var markers = []
 
