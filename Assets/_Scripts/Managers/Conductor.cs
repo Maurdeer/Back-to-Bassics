@@ -4,14 +4,22 @@ using System.Runtime.InteropServices;
 using FMOD;
 using FMOD.Studio;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
+
+// AT: FMOD bs portion mainly implemented off of official timeline callback example,
+//     as FMOD's internal update loop is 20ms (and seems unadjustable despite docs
+//     saying the contrary) other timing methods should be preferred.
+//     Other interesting references:
+//     - https://drive.google.com/file/d/1r8ROjgsMh-mwKqGTZT7IWMCsJcs3GuU9/view (https://qa.fmod.com/t/perfect-beat-tracking-in-unity/18788/6)
 
 public class Conductor : Singleton<Conductor>
 {
-    public float Beat { get; private set; }
+    public float Beat => (ctx?.elapsedTotal ?? throw new ArgumentException("don't poll beat without music playing :)"));
     
     public float time => Beat * spb;
-    public float spb {  get; private set; }
+
+    public float spb => (ctx?.lastMarker.msPerBeat ?? throw new ArgumentException("don't poll spb without music playing :)")) / 1000;
 
     /// <summary>
     /// A json file containing mapping from each event path to an array of tempo markers, containing the following info:
@@ -46,39 +54,38 @@ public class Conductor : Singleton<Conductor>
             }
         }
     }
-
-    /// <summary>
-    /// Don't edit this! will be set automatically... currently public just for viewing in inspector...
-    /// </summary>
-    public float nextBeatMs = -1;
     
     private bool isConducting => ctx != null;
     //
     // public event Action OnQuarterBeat;
     // public event Action OnHalfBeat;
     // public event Action OnFullBeat;
-    public event Action OnFullBeat;
+    public event Action OnFullBeat = delegate { };
     // public event Action OnFirstBeat;
     // public event Action OnLastBeat;
 
-    public event Action<SerializedTempoMarker> OnTempoChange;
+    public event Action<SerializedTempoMarker> OnTempoChange = delegate { };
 
-    protected static Dictionary<string, SerializedTempoMarker[]> parsedEvents;
+    private Dictionary<string, SerializedTempoMarker[]> _parsedEvents;
     
     public void Awake()
     {
         InitializeSingleton();
 
         var everything = JsonUtility.FromJson<SerializedEventCollection>(EventMarkerMap.text);
-        parsedEvents = new();
+        _parsedEvents = new();
         foreach (var e in everything.events)
         {
-            parsedEvents.Add(e.id, e.markers);
+            _parsedEvents.Add(e.id, e.markers);
         }
     }
 
+    private ChannelGroup masterChannelGroup;
+
     public void BeginConducting(EnemyBattlePawn pawn)
     {
+        FMODUnity.RuntimeManager.CoreSystem.getMasterChannelGroup(out masterChannelGroup);
+        
         if (isConducting) 
         {
             Debug.LogWarning("Conductor was issued to conduct when it already is conducting");
@@ -90,8 +97,6 @@ public class Conductor : Singleton<Conductor>
             pawn = pawn,
             fmodInstance = FMODUnity.RuntimeManager.CreateInstance(pawn.EnemyData.fmodEvent)
         };
-
-        Beat = 0;
         ctx.Start();
         // this.spb = Data.SPB;
         // OnFirstBeat?.Invoke();
@@ -164,6 +169,7 @@ public class Conductor : Singleton<Conductor>
     {
         public int numerator;
         public int denominator;
+        // public float Eval() => ((float)numerator) / denominator;
         public float Eval() => ((float)numerator) / denominator;
         
         public static readonly BeatFraction fullQuadruple = new BeatFraction() { numerator = 4, denominator = 1 };
@@ -193,13 +199,30 @@ public class Conductor : Singleton<Conductor>
 
     public class ConductorSchedulableState
     {
+        /// <summary>
+        /// The correct beat the action should have started, if not for player delays
+        /// </summary>
         public float _snappedToStartBeat;
+        /// <summary>
+        /// The actual beat the schedulable was added to the system
+        /// </summary>
         public float _actualStartBeat;
+        /// <summary>
+        /// "_scheduledDuration" beats after _snappedToStartBeat. the system guarantees the schedulable will be complete on this beat
+        /// </summary>
         public float _evaluatedEndBeat;
+        /// <summary>
+        /// The number of beats passed in when this schedulable is scheduled
+        /// </summary>
         public float _scheduledDuration;
+        /// <summary>
+        /// The actual duration the schedulable will remain in the system until complete is called (_evaluatedEndBeat - _actualStartBeat)
+        /// </summary>
         public float _actualDuration => _evaluatedEndBeat - _actualStartBeat;
+        /// <summary>
+        /// Percentage (0.0 ~ 1.0) version of _actualDuration. May have errors due to floating point math! Please prefer other measures instead
+        /// </summary>
         public float _elapsedProgressCount;
-        public float _elapsedBeat;
 
         internal ConductorSchedulableState(float elapsedTotal, float duration, float snappedStart)
         {
@@ -207,8 +230,6 @@ public class Conductor : Singleton<Conductor>
             _snappedToStartBeat = snappedStart;
             _scheduledDuration = duration;
             _evaluatedEndBeat = _snappedToStartBeat + _scheduledDuration;
-            
-            _elapsedBeat = 0.0f;
             _elapsedProgressCount = 0.0f;
         }
     }
@@ -253,10 +274,11 @@ public class Conductor : Singleton<Conductor>
         public SerializedTempoMarker lastMarker;
         public SerializedTempoMarker nextMarker;
         public FMOD.Studio.EVENT_CALLBACK beatCallback;
-        public int lastMarkerEncounteredAt = 0;
-        public int elapsedWholeBeatsSinceMarker = 0;
-        public float elapsedBeatSinceLastWholeBeat = 0.0f;
+        public int elapsedWholeBeats = 0;
+        // public ulong lastBeatDsp = 0;
         public float elapsedTotal = 0.0f;
+        public float elapsedSinceLastBeat = 0.0f;
+        // public int samplerRate;
 
         internal PriorityQueue<ConductorSchedulable, float> scheduled = new();
         
@@ -267,15 +289,21 @@ public class Conductor : Singleton<Conductor>
             fmodInstance = FMODUnity.RuntimeManager.CreateInstance(pawn.EnemyData.fmodEvent);
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(fmodInstance, pawn.transform);
             
-            markers = parsedEvents[pawn.EnemyData.fmodEvent.Guid.ToString()];
+            markers = parent._parsedEvents[pawn.EnemyData.fmodEvent.Guid.ToString()];
             
             lastBeatProperties.beat = 0;
             lastBeatProperties.bar = 0;
             lastBeatProperties.position = 0;
-            var marker = FindPrevNextMarkers(0).Item1;
-            lastBeatProperties.tempo = marker.tempoBpm;
-            lastBeatProperties.timesignaturelower = marker.timeSignatureDenominator;
-            lastBeatProperties.timesignatureupper = marker.timeSignatureNumerator;
+            var (lastMarker, nextMarker) = FindPrevNextMarkers(0);
+            lastBeatProperties.tempo = (float) lastMarker.tempoBpm;
+            lastBeatProperties.timesignaturelower = lastMarker.timeSignatureDenominator;
+            lastBeatProperties.timesignatureupper = lastMarker.timeSignatureNumerator;
+
+            this.lastMarker = lastMarker;
+            this.nextMarker = nextMarker;
+            
+            // FMODUnity.RuntimeManager.CoreSystem.getSoftwareFormat(out var samplerRate, out var _, out var __);
+            // this.samplerRate = samplerRate;
         }
 
         internal void Start()
@@ -286,46 +314,51 @@ public class Conductor : Singleton<Conductor>
 
         internal void Tick()
         {
-            var elapsedSinceLastMarker = ElapsedFractionalSinceLastMarker();
-            elapsedTotal = lastMarkerEncounteredAt + elapsedSinceLastMarker;
+            // TODO: look into duplicate entries issue...
+            elapsedTotal = elapsedWholeBeats + ElapsedBeatSinceLastBeat();
+            // Debug.Log(elapsedTotal);
 
             // dequeue schedulables until the next upcoming one is not actually completed
             while (scheduled.TryPeek(out var scheduledItem, out var finishTime) && finishTime < elapsedTotal)
             {
                 scheduledItem.OnCompleted(scheduledItem._state);
-                
+                // Debug.Log($"{scheduledItem.GetHashCode()} finished, removing from queue...");
                 scheduled.Dequeue();
             }
 
             // iterate through schedulables in unsorted manner calling their update methods
             foreach (var (scheduledItem, finishTime) in scheduled.UnorderedItems)
             {
-                
                 scheduledItem._state._elapsedProgressCount =
                     (elapsedTotal - scheduledItem._state._actualStartBeat) / (scheduledItem._state._actualDuration);
+                // Debug.Log($"{scheduledItem.GetHashCode()}: ({elapsedTotal} - {scheduledItem._state._actualStartBeat}) / {scheduledItem._state._actualDuration} = {scheduledItem._state._elapsedProgressCount}");
                 scheduledItem.OnUpdate(scheduledItem._state);
             }
         }
 
         internal float SnapToCurrent(BeatFraction granularity)
         {
-            var elapsedSinceLastMarker = ElapsedFractionalSinceLastMarker();
-            var elapsedScaled = elapsedSinceLastMarker % granularity.Eval();
-            var snapUnitsSinceLastMarker = Mathf.RoundToInt(elapsedScaled);
-            var snapBeatsSinceLastMarker = snapUnitsSinceLastMarker * granularity.Eval();
-            return lastMarkerEncounteredAt + snapBeatsSinceLastMarker;
+            var elapsedScaled = elapsedTotal / granularity.Eval();
+            var snapUnitTime = Mathf.RoundToInt((float)elapsedScaled);
+            var snapBeatTime = snapUnitTime * granularity.Eval();
+            return snapBeatTime;
         }
 
-        private float ElapsedFractionalSinceLastMarker()
+        private float ElapsedBeatSinceLastBeat()
         {
-            // using timeline to determine playback rather than accumulating errors via floating point accumulation
-            fmodInstance.getTimelinePosition(out var positionMs);
-            var timelineMsDiff = positionMs - lastMarker.positionMs;
+            fmodInstance.getPitch(out var pitch);
+            elapsedSinceLastBeat += Time.deltaTime * pitch;
             
-            // (min/# beats) * ms/min = ms / beat
-            var msPerBeat = 60e3f / lastMarker.tempoBpm;
+            var beat = elapsedSinceLastBeat * 1000 / lastMarker.msPerBeat;
             
-            return (timelineMsDiff % msPerBeat) / msPerBeat;
+            if (beat >= 1)
+            {
+                return 1 - 1e-6f; // never cross beat boundary without an actual beat callback
+            }
+            else
+            {
+                return beat;
+            }
         }
 
         internal void Stop()
@@ -350,7 +383,7 @@ public class Conductor : Singleton<Conductor>
         /// <returns></returns>
         /// <exception cref="IndexOutOfRangeException"></exception>
         /// <exception cref="Exception"></exception>
-        public (SerializedTempoMarker, SerializedTempoMarker) FindPrevNextMarkers(int timelinePositionMs)
+        private (SerializedTempoMarker, SerializedTempoMarker) FindPrevNextMarkers(int timelinePositionMs)
         {
             // we don't really care about the case where no markers are present, that shouldn't happen anyway
             if (markers.Length == 0)
@@ -361,25 +394,23 @@ public class Conductor : Singleton<Conductor>
             // base cases for first and last markers
             if (markers[0].positionMs > timelinePositionMs)
             {
-                return (new SerializedTempoMarker
-                {
-                    id = null,
+                return (new SerializedTempoMarker{
+                    id=null,
                     positionMs = 0,
-                    tempoBpm = markers[0].timeSignatureNumerator,
-                    timeSignatureDenominator = markers[0].timeSignatureDenominator,
-                    timeSignatureNumerator = markers[0].timeSignatureNumerator
+                    tempoBpm = markers[0].tempoBpm,
+                    timeSignatureNumerator = markers[0].timeSignatureNumerator,
+                    timeSignatureDenominator = markers[0].timeSignatureDenominator
                 }, markers[0]);
             }
 
             if (markers[^1].positionMs < timelinePositionMs)
             {
-                return (markers[^1], new SerializedTempoMarker
-                {
+                return (markers[^1], new SerializedTempoMarker{
                     id = null,
                     positionMs = int.MaxValue,
-                    tempoBpm = markers[^1].timeSignatureNumerator,
-                    timeSignatureDenominator = markers[^1].timeSignatureNumerator,
+                    tempoBpm = markers[^1].tempoBpm,
                     timeSignatureNumerator = markers[^1].timeSignatureNumerator,
+                    timeSignatureDenominator = markers[^1].timeSignatureDenominator
                 });
             }
             
@@ -419,12 +450,12 @@ public class Conductor : Singleton<Conductor>
 
         private void OnBeat()
         {
-            parent.OnFullBeat.Invoke();
+            parent.OnFullBeat?.Invoke();
         }
 
         private void OnTempoChange()
         {
-            parent.OnTempoChange.Invoke(lastMarker);
+            parent.OnTempoChange?.Invoke(lastMarker);
         }
         
         [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
@@ -462,14 +493,13 @@ public class Conductor : Singleton<Conductor>
 
                         if (shouldInvokeOnTempoChange)
                         {
-                            ctxObj.lastMarkerEncounteredAt += ctxObj.elapsedWholeBeatsSinceMarker + 1;
-                            ctxObj.elapsedWholeBeatsSinceMarker = 0;
                             ctxObj.OnTempoChange();
                         }
-                        else
-                        {
-                            ctxObj.elapsedWholeBeatsSinceMarker += 1;
-                        }
+
+                        ctxObj.elapsedWholeBeats += 1;
+                        // ctxObj.parent.masterChannelGroup.getDSPClock(out var dspClock, out var parentDSP);
+                        // ctxObj.lastBeatDsp = dspClock;
+                        ctxObj.elapsedSinceLastBeat = 0.0f;
                         
                         ctxObj.OnBeat();
                         
@@ -488,15 +518,16 @@ public class Conductor : Singleton<Conductor>
     }
     
     
-    [System.Serializable]
+    [Serializable]
     public struct SerializedTempoMarker: IEquatable<SerializedTempoMarker>
     {
         public string id;
         public float positionMs;
         public float tempoBpm;
+        public float msPerBeat => 60e3f/tempoBpm;
         public int timeSignatureNumerator;
         public int timeSignatureDenominator;
-        
+
         public static bool operator ==(SerializedTempoMarker obj1, SerializedTempoMarker obj2)
         {
             return obj1.positionMs == obj2.positionMs;
