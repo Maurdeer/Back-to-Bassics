@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class DummyEnemyBattle : EnemyBattlePawn
 {
+    private ComboManager _playerComboManager;
     private void Start()
     {
-        BattleManager.Instance.Player.ComboMeterCurr = BattleManager.Instance.Player.ComboMeterMax;
+        _playerComboManager = BattleManager.Instance.Player.GetComponent<ComboManager>();
+        _playerComboManager.CurrComboMeterAmount = _playerComboManager.MaxComboMeterAmount;
     }
     public override bool ReceiveAttackRequest(IAttackRequester requester)
     {
         PlayerBattlePawn player = requester as PlayerBattlePawn;
         if (player != null)
         {
-            player.ComboMeterCurr = player.ComboMeterMax;
+            _playerComboManager.CurrComboMeterAmount = _playerComboManager.MaxComboMeterAmount;
         }
         return true;
     }

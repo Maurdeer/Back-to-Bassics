@@ -11,10 +11,10 @@ public class BattlePawnData : ScriptableObject
     [SerializeField] private float staggerDuration = 4f;
     [SerializeField, TextArea] private string _lore;
 
-    [Header("Resistances")]
-    [SerializeField] private float _blockingReduction;
-    [SerializeField] private float _confuseResistance;
-    [SerializeField] private float _poisonResistance;
+    //[Header("Resistances")]
+    //[SerializeField] private float _blockingReduction;
+    //[SerializeField] private float _confuseResistance;
+    //[SerializeField] private float _poisonResistance;
 
     // Data Properties
     public string Name => _name;
@@ -23,7 +23,7 @@ public class BattlePawnData : ScriptableObject
     public string Lore => _lore;
 
     // Resistances
-    public float BlockingReduction => _blockingReduction;
-    public float ConfuseResistance => _confuseResistance;
-    public float PoisonResistance => _poisonResistance;
+    //public float BlockingReduction => _blockingReduction;
+    //public float ConfuseResistance => _confuseResistance;
+    //public float PoisonResistance => _poisonResistance;
 }

@@ -13,6 +13,6 @@ public class GreatSlash : Combo
     }
     public override void InTraversal()
     {
-        throw new System.NotImplementedException();
+        // Nothing Yet
     }
 }

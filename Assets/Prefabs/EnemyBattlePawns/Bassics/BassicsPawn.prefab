@@ -451,8 +451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1be2721dfd1b374484d3c108adbbfc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentPawn: {fileID: 5642884798581242194}
-  parentPawnSprite: {fileID: 0}
   projectilePoolAmount: 20
   animationName: music
   firePattern: 1
@@ -555,7 +553,7 @@ PlayableDirector:
   m_GameObject: {fileID: 4221122890883084785}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 0995f9fefe54b534f85a121bc1bde168, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 11d4efc082ecd284fb4f1b6d30b1b11e, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -568,6 +566,10 @@ PlayableDirector:
   - key: {fileID: -2718098813053094131, guid: 0995f9fefe54b534f85a121bc1bde168, type: 2}
     value: {fileID: 1961778708237596147}
   - key: {fileID: 1456448326656696158, guid: 0995f9fefe54b534f85a121bc1bde168, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: 8067884480808116438, guid: 1e54ae3e0b94e6f41990f7ed2546bc55, type: 2}
+    value: {fileID: 1961778708237596147}
+  - key: {fileID: 7993128218519378286, guid: 1e54ae3e0b94e6f41990f7ed2546bc55, type: 2}
     value: {fileID: 7789150339329146010}
   m_ExposedReferences:
     m_References: []
@@ -586,6 +588,7 @@ MonoBehaviour:
   _beatsPerDecision: 2
   _enemyActionSequences:
   - {fileID: 11400000, guid: 0995f9fefe54b534f85a121bc1bde168, type: 2}
+  - {fileID: 11400000, guid: 1e54ae3e0b94e6f41990f7ed2546bc55, type: 2}
 --- !u!210 &8694757469888071649
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -878,8 +881,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc54e90959d96154aab26c1f86371b61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentPawn: {fileID: 5642884798581242194}
-  parentPawnSprite: {fileID: 0}
   slashAnimationName: slash
   broadcastClip: {fileID: 7400000, guid: 8ba2ca4d74de4d34c959b793bfa87b6e, type: 2}
   preHitClip: {fileID: 7400000, guid: 3f315a64912e07645a97916c5d7603dc, type: 2}

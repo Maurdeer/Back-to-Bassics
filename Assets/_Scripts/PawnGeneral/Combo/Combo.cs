@@ -12,15 +12,23 @@ public abstract class Combo : ScriptableObject
     public string StrId => strId;
     public abstract void InBattle();
     public abstract void InTraversal();
-    public void StartComboAttack()
+    /// <summary>
+    /// Starts combo attack if enough Combo Points
+    /// </summary>
+    /// <param name="cost"></param>
+    /// <returns></returns>
+    public bool StartComboAttack(ComboManager manager)
     {
         if (GameManager.Instance.GSM.IsOnState<Battle>())
         {
+            if (manager.CurrComboMeterAmount < cost) return false;
             InBattle();
+            manager.CurrComboMeterAmount -= cost;
         }
         else if (GameManager.Instance.GSM.IsOnState<WorldTraversal>())
         {
             InTraversal();
         }
+        return true;
     }
 }

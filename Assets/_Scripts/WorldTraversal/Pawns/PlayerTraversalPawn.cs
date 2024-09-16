@@ -11,12 +11,14 @@ public class PlayerTraversalPawn : TraversalPawn
     [SerializeField] private VisualEffect _slashEffect;
     [field: SerializeField] public EventReference slashSoundReference { get; private set; }
     private PlayerBattlePawn _battlePawn;
+    private ComboManager _comboManager;
     private bool attacking;
     private Interactable currInteractable;
     protected override void Awake()
     {
         base.Awake();
         _battlePawn = GetComponent<PlayerBattlePawn>();
+        _comboManager = GetComponent<ComboManager>();
     }
     public override void Move(Vector3 direction)
     {
@@ -33,6 +35,7 @@ public class PlayerTraversalPawn : TraversalPawn
         // Set the Slash Direction
         //SlashDirection = direction;
         //SlashDirection.Normalize();
+        updateCombo(slashDirection);
         DestructibleObject.PlayerSlash(slashDirection);
         StartCoroutine(Attacking());
     }
@@ -62,5 +65,49 @@ public class PlayerTraversalPawn : TraversalPawn
             // TODO: Hide the UI after poncho is away from interactable
             currInteractable = null;
         }
+    }
+    private void updateCombo(Vector2 slashDirection)
+    {
+        //if (slash)
+        //{
+            if (slashDirection == Vector2.left)
+            {
+                _comboManager.AppendToCombo('W');
+            }
+            else if (slashDirection == Vector2.right)
+            {
+                _comboManager.AppendToCombo('E');
+            }
+            else if (slashDirection == Vector2.up)
+            {
+                _comboManager.AppendToCombo('N');
+            }
+            else if (slashDirection == Vector2.down)
+            {
+                _comboManager.AppendToCombo('S');
+            }
+        //}
+        //else
+        //{
+        //    switch (DodgeDirection)
+        //    {
+        //        case Direction.North:
+        //            _comboManager.AppendToCombo('n');
+        //            UIManager.Instance.ComboDisplay.AddCombo("n");
+        //            break;
+        //        case Direction.South:
+        //            _comboManager.AppendToCombo('s');
+        //            UIManager.Instance.ComboDisplay.AddCombo("s");
+        //            break;
+        //        case Direction.West:
+        //            _comboManager.AppendToCombo('w');
+        //            UIManager.Instance.ComboDisplay.AddCombo("w");
+        //            break;
+        //        case Direction.East:
+        //            _comboManager.AppendToCombo('e');
+        //            UIManager.Instance.ComboDisplay.AddCombo("e");
+        //            break;
+        //    }
+        //}
     }
 }

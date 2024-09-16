@@ -25,43 +25,14 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     private bool deflected;
     public bool deflectionWindow { get; private set; }
     public bool dodging { get; set; }
-    [Header("Player Data")]
-    [SerializeField] protected int comboMeterMax = 100;
-    [SerializeField] protected int comboMeterCurr;
-    [SerializeField] protected Combo[] combos;
-    public int ComboMeterMax => comboMeterMax;
-    public int ComboMeterCurr 
-    { 
-        get { return comboMeterCurr; } 
-        set 
-        { 
-            comboMeterCurr = value;
-            if (comboMeterCurr > comboMeterMax)
-            {   
-                comboMeterCurr = comboMeterMax;
-            }
-            if (comboMeterCurr < 0)
-            {
-                comboMeterCurr = 0;
-            }
-            UIManager.Instance.UpdateComboMeter(this);
-        } 
-    }
-    private string comboString;
-    private Dictionary<string, Combo> comboDict;
-    private Coroutine comboStopper;
+    private ComboManager _comboManager;
     private Coroutine attackingThread;
     protected override void Awake()
     {
         base.Awake();
-        comboString = "";
-        comboDict = new Dictionary<string, Combo>();
-        foreach (Combo combo in combos)
-        {
-            comboDict.Add(combo.StrId, combo);
-        }
         _activeAttackRequesters = new Queue<IAttackRequester>();
         _traversalPawn = GetComponent<PlayerTraversalPawn>();
+        _comboManager = GetComponent<ComboManager>();
         SlashDirection = Vector2.zero;
     }
     // This will start a battle
@@ -152,31 +123,23 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     }
     private void updateCombo(bool slash)
     {
-        if (comboString.Length >= 4)
-        {
-            comboString = "";
-        }
         if (slash)
         {
             if (SlashDirection == Vector2.left)
             {
-                comboString += "W";
-                UIManager.Instance.ComboDisplay.AddCombo("W");
+                _comboManager.AppendToCombo('W');
             }
             else if (SlashDirection == Vector2.right)
             {
-                comboString += "E";
-                UIManager.Instance.ComboDisplay.AddCombo("E");
+                _comboManager.AppendToCombo('E');
             }
             else if (SlashDirection == Vector2.up) 
             {
-                comboString += "N";
-                UIManager.Instance.ComboDisplay.AddCombo("N");
+                _comboManager.AppendToCombo('N');
             }
             else if (SlashDirection == Vector2.down) 
             {
-                comboString += "S";
-                UIManager.Instance.ComboDisplay.AddCombo("S");
+                _comboManager.AppendToCombo('S');
             }
         }
         else
@@ -184,47 +147,19 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
             switch(DodgeDirection)
             {
                 case Direction.North:
-                    comboString += "n";
-                    UIManager.Instance.ComboDisplay.AddCombo("n");
+                    _comboManager.AppendToCombo('n');
                     break;
                 case Direction.South:
-                    comboString += "s";
-                    UIManager.Instance.ComboDisplay.AddCombo("s");
+                    _comboManager.AppendToCombo('s');
                     break;
                 case Direction.West:
-                    comboString += "w";
-                    UIManager.Instance.ComboDisplay.AddCombo("w");
+                    _comboManager.AppendToCombo('w');
                     break;
                 case Direction.East:
-                    comboString += "e";
-                    UIManager.Instance.ComboDisplay.AddCombo("e");
+                    _comboManager.AppendToCombo('e');
                     break;
             }
         }
-        if (comboStopper != null)
-        {
-            StopCoroutine(comboStopper);
-        }
-        comboStopper = StartCoroutine(TimeToResetCombo());
-        if (!comboDict.ContainsKey(comboString)) return;
-        if (ComboMeterCurr < comboDict[comboString].Cost)
-        {
-            UIManager.Instance.ComboDisplay.HideCombo();
-            comboString = "";
-            StopCoroutine(comboStopper);
-            return;
-        }
-        UIManager.Instance.ComboDisplay.ValidCombo();
-        ComboMeterCurr -= comboDict[comboString].Cost;
-        comboDict[comboString].StartComboAttack();
-        
-    }
-    private IEnumerator TimeToResetCombo()
-    {
-        // Give the player 2 beat of time
-        yield return new WaitForSeconds(BattleManager.Instance.Enemy.EnemyData.SPB * 2);
-        UIManager.Instance.ComboDisplay.HideCombo();
-        comboString = "";
     }
     #endregion
     /// <summary>
@@ -245,7 +180,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         {
             deflected = true;
             AudioManager.Instance.PlayOnShotSound(WeaponData.slashHitSound, transform.position);
-            ComboMeterCurr += 1;
+            _comboManager.CurrComboMeterAmount += 1;
             return false;
         }
         if (dodging && requester.OnRequestDodge(this))
@@ -292,8 +227,6 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
         {
             BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
-            // Uncomment below when Status Ailments have been defined
-            // BattleManager.Instance.Enemy.ApplyStatusAilments(_weaponData.ailments);
 
             updateCombo(true);
 

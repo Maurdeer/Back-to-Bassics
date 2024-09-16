@@ -58,10 +58,10 @@ public partial class UIManager
         // Enemy Pawn
         _enemyHpBar.fillAmount = (float)pawn.HP / pawn.Data.HP;
     }
-    public void UpdateComboMeter(PlayerBattlePawn playerPawn)
+    public void UpdateComboMeter(ComboManager manager)
     {
         // Combo Meter Update
-        _comboMeterBar.fillAmount = (float)playerPawn.ComboMeterCurr / playerPawn.ComboMeterMax;
+        _comboMeterBar.fillAmount = (float)manager.CurrComboMeterAmount / manager.MaxComboMeterAmount;
     }
     public void ShowBattlePanel()
     {
