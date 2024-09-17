@@ -9,4 +9,6 @@ public class EnemyBattlePawnData : BattlePawnData
     [SerializeField] private int _bpm;
     public int BPM => _bpm;
     public float SPB => 60f / _bpm;
+    
+    public FMODUnity.EventReference fmodEvent;
 }
