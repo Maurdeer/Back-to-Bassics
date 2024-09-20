@@ -25,43 +25,14 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     private bool deflected;
     public bool deflectionWindow { get; private set; }
     public bool dodging { get; set; }
-    [Header("Player Data")]
-    [SerializeField] protected int comboMeterMax = 100;
-    [SerializeField] protected int comboMeterCurr;
-    [SerializeField] protected Combo[] combos;
-    public int ComboMeterMax => comboMeterMax;
-    public int ComboMeterCurr 
-    { 
-        get { return comboMeterCurr; } 
-        set 
-        { 
-            comboMeterCurr = value;
-            if (comboMeterCurr > comboMeterMax)
-            {   
-                comboMeterCurr = comboMeterMax;
-            }
-            if (comboMeterCurr < 0)
-            {
-                comboMeterCurr = 0;
-            }
-            UIManager.Instance.UpdateComboMeter(this);
-        } 
-    }
-    private string comboString;
-    private Dictionary<string, Combo> comboDict;
-    private Coroutine comboStopper;
+    private ComboManager _comboManager;
     private Coroutine attackingThread;
     protected override void Awake()
     {
         base.Awake();
-        comboString = "";
-        comboDict = new Dictionary<string, Combo>();
-        foreach (Combo combo in combos)
-        {
-            comboDict.Add(combo.StrId, combo);
-        }
         _activeAttackRequesters = new Queue<IAttackRequester>();
         _traversalPawn = GetComponent<PlayerTraversalPawn>();
+        _comboManager = GetComponent<ComboManager>();
         SlashDirection = Vector2.zero;
     }
     // This will start a battle
@@ -108,8 +79,8 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         // Check a file called OnDodgeEnd.cs
         // (Ryan) This really sucky
         // Merge to one state called Open
-        updateCombo(false);
         DodgeDirection = DirectionHelper.GetVectorDirection(direction);
+        updateCombo(false);
         StartCoroutine(DodgeThread(DodgeDirection.ToString().ToLower()));
     }
     private IEnumerator DodgeThread(string directionAnimation)
@@ -150,33 +121,25 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         //}
         //else   
     }
-    public void updateCombo(bool slash)
+    private void updateCombo(bool slash)
     {
-        if (comboString.Length >= 4)
-        {
-            comboString = "";
-        }
         if (slash)
         {
             if (SlashDirection == Vector2.left)
             {
-                comboString += "W";
-                UIManager.Instance.ComboDisplay.AddCombo("W");
+                _comboManager.AppendToCombo('W');
             }
             else if (SlashDirection == Vector2.right)
             {
-                comboString += "E";
-                UIManager.Instance.ComboDisplay.AddCombo("E");
+                _comboManager.AppendToCombo('E');
             }
             else if (SlashDirection == Vector2.up) 
             {
-                comboString += "N";
-                UIManager.Instance.ComboDisplay.AddCombo("N");
+                _comboManager.AppendToCombo('N');
             }
             else if (SlashDirection == Vector2.down) 
             {
-                comboString += "S";
-                UIManager.Instance.ComboDisplay.AddCombo("S");
+                _comboManager.AppendToCombo('S');
             }
         }
         else
@@ -184,46 +147,19 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
             switch(DodgeDirection)
             {
                 case Direction.North:
-                    comboString += "n";
-                    UIManager.Instance.ComboDisplay.AddCombo("n");
+                    _comboManager.AppendToCombo('n');
                     break;
                 case Direction.South:
-                    comboString += "s";
-                    UIManager.Instance.ComboDisplay.AddCombo("s");
+                    _comboManager.AppendToCombo('s');
                     break;
                 case Direction.West:
-                    comboString += "w";
-                    UIManager.Instance.ComboDisplay.AddCombo("w");
+                    _comboManager.AppendToCombo('w');
                     break;
                 case Direction.East:
-                    comboString += "e";
-                    UIManager.Instance.ComboDisplay.AddCombo("e");
+                    _comboManager.AppendToCombo('e');
                     break;
             }
         }
-        if (comboStopper != null)
-        {
-            StopCoroutine(comboStopper);
-        }
-        comboStopper = StartCoroutine(TimeToResetCombo());
-        if (!comboDict.ContainsKey(comboString)) return;
-        if (ComboMeterCurr < comboDict[comboString].Cost)
-        {
-            UIManager.Instance.ComboDisplay.HideCombo();
-            comboString = "";
-            StopCoroutine(comboStopper);
-            return;
-        }
-        UIManager.Instance.ComboDisplay.ValidCombo();
-        ComboMeterCurr -= comboDict[comboString].Cost;
-        comboDict[comboString].StartComboAttack();
-        
-    }
-    private IEnumerator TimeToResetCombo()
-    {
-        yield return new WaitForSeconds(1f);
-        UIManager.Instance.ComboDisplay.HideCombo();
-        comboString = "";
     }
     #endregion
     /// <summary>
@@ -244,7 +180,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         {
             deflected = true;
             AudioManager.Instance.PlayOnShotSound(WeaponData.slashHitSound, transform.position);
-            ComboMeterCurr += 1;
+            _comboManager.CurrComboMeterAmount += 1;
             return false;
         }
         if (dodging && requester.OnRequestDodge(this))
@@ -285,29 +221,39 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         //if (attacking && BattleManager.Instance.Enemy.ESM.IsOnState<EnemyStateMachine.Attacking>()) Lurch(2f);
         //StopAllCoroutines();
         // Divides duration beats into four sections!
-        // First Divsion is early reveive
+        // First Divsion is early receive
         // second divsion is deflection window
         // Third Division is late receive
+        if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
+        {
+            BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
+
+            updateCombo(true);
+
+            BattleManager.Instance.Enemy.CompleteAttackRequest(this);
+        }
         float divisionTime = _weaponData.AttackDuration / 4f;
         attacking = true;
-        deflectionWindow = false;
+        deflectionWindow = true;
         yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
         deflectionWindow = true;
         yield return new WaitForSeconds(2 * divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
-        deflectionWindow = false;
+        deflectionWindow = true;
         // Direct Attack when no attack requesters
         // This is where combo strings should be processed
         if (!deflected && _activeAttackRequesters.Count <= 0)
         {
             // Process Combo Strings here if you have enough!
-            if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
-            {
-                BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
-                updateCombo(true);
-            }
-            
-            // BattleManager.Instance.Enemy.ApplyStatusAilments(_weaponData.ailments); -> uncomment when you have defined this
+            //if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
+            //{
+            //    BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
+            //    // Uncomment below when Status Ailments have been defined
+            //    // BattleManager.Instance.Enemy.ApplyStatusAilments(_weaponData.ailments);
 
+            //    updateCombo(true);
+
+            //    BattleManager.Instance.Enemy.CompleteAttackRequest(this);
+            //}
         }
         yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
         attacking = false;

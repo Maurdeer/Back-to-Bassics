@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d95aeea8bcd656440b467efae10d5311, type: 2}
+  - {fileID: 2100000, guid: 5ac06ce6e61473748ab43da52285f959, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32e41efaeb493184db44801193057725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minSpeed: 2
   maxSpeed: 8
   speed: 0
   ccw: 0
@@ -227,9 +228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21f8294a8d3e8c3438cea906399e64ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentPawn: {fileID: 4120296559865554346}
-  parentPawnSprite: {fileID: 0}
-  knifeFab: {fileID: 0}
   spinners:
   - {fileID: 7741238043298341659}
 --- !u!1 &2875592871770529580
@@ -343,6 +341,7 @@ GameObject:
   - component: {fileID: 9072350795508998758}
   - component: {fileID: 4677417291862444604}
   - component: {fileID: 5125261406916202024}
+  - component: {fileID: 2340527165043333837}
   m_Layer: 0
   m_Name: Turtle
   m_TagString: Untagged
@@ -444,6 +443,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c3a588bf0f7e5468c67609e4e6bb77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!210 &2340527165043333837
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4095286020021042877}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 1
 --- !u!1 &5768513268637482179
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,6 +621,7 @@ MonoBehaviour:
   damage: 1
   <health>k__BackingField: 50
   spinner: {fileID: 7741238043298341659}
+  fakeOutChance: 0.2
 --- !u!1 &6049803077617759701
 GameObject:
   m_ObjectHideFlags: 0

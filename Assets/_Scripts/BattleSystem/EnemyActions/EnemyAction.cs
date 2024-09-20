@@ -7,8 +7,8 @@ using UnityEngine;
 /// </summary>
 public abstract class EnemyAction : Conductable
 {
-    [SerializeField] protected EnemyBattlePawn parentPawn;
-    [SerializeField] protected PawnSprite parentPawnSprite;
+    protected EnemyBattlePawn parentPawn;
+    protected PawnSprite parentPawnSprite;
     public bool IsActive { get; protected set; }
     private void Awake()
     {

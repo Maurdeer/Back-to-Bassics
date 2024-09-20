@@ -7,13 +7,21 @@ public class CameraConfigure : Singleton<CameraConfigure>
 {
     [SerializeField] private CinemachineVirtualCamera firstVirtualCamera;
     private CinemachineVirtualCamera curr;
-    private int savedPriority;
     private CinemachineVirtualCamera prev;
     #region Unity Messages
     private void Awake()
     {
-        InitializeSingleton();
-        curr = firstVirtualCamera;
+        InitializeSingleton(); 
+    }
+    private void Start()
+    {
+        curr = GetComponent<CinemachineBrain>().ActiveVirtualCamera as CinemachineVirtualCamera;
+        // This shouldn't be needed please!!!
+        if (curr == null)
+        {
+            Debug.LogError("Please Let Camera Config Reference a camera.");
+            return;
+        }
         prev = curr;
         curr.Priority = 10;
     }
@@ -21,7 +29,7 @@ public class CameraConfigure : Singleton<CameraConfigure>
     public void SwitchToCamera(CinemachineVirtualCamera targetCamera)
     {
         //curr.Priority = savedPriority;
-        curr.Priority = 1;
+        if (curr != null) curr.Priority = 1;
         prev = curr;
         curr = targetCamera;
         //savedPriority = curr.Priority;

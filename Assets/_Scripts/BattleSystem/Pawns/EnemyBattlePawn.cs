@@ -24,8 +24,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     // Events
     //public event Action OnEnemyActionComplete; --> Hiding for now
     protected override void Awake()
-    {
-        base.Awake();
+    { 
         if (Data.GetType() != typeof(EnemyBattlePawnData))
         {
             Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" is set incorrectly");
@@ -43,6 +42,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" is must have a PositionStateMachine");
             return;
         }
+        base.Awake();
     }
     public EA GetEnemyAction<EA>() where EA : EnemyAction
     {
@@ -74,14 +74,14 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //    _actionIdx = i;
     //}
     #region IAttackReceiver Methods
-    public bool ReceiveAttackRequest(IAttackRequester requester)
+    public virtual bool ReceiveAttackRequest(IAttackRequester requester)
     {
         if (esm.IsOnState<Dead>() || psm.IsOnState<Distant>()) return false;
         return esm.CurrState.AttackRequestHandler(requester);
     }
-    public void CompleteAttackRequest(IAttackRequester requester)
+    public virtual void CompleteAttackRequest(IAttackRequester requester)
     {
-        throw new System.NotImplementedException();
+        // Does nothing for now, not waranted an exception!
     }
     #endregion
     #region BattlePawn Overrides

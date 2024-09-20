@@ -9,6 +9,7 @@ public class PawnSprite : MonoBehaviour
     protected Animator _animator;
     protected Vector3 _facingDirection;
     protected SpriteRenderer _spriteRenderer;
+    private Coroutine _flipRoutine;
     protected virtual void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -23,6 +24,7 @@ public class PawnSprite : MonoBehaviour
     {
         if (direction.x != 0)
         {
+
             _animator.SetFloat("x_faceDir", Mathf.Sign(direction.x));
         }
         if (direction.z != 0)
@@ -30,15 +32,27 @@ public class PawnSprite : MonoBehaviour
             _animator.SetFloat("z_faceDir", Mathf.Sign(direction.z));
         }
         Vector2 change = new Vector2(_animator.GetFloat("x_faceDir"), _animator.GetFloat("z_faceDir"));
+        //Vector2 change = new Vector2(direction.x != 0 ? Mathf.Sign(direction.x) : _facingDirection.x,
+        //    direction.z != 0 ? Mathf.Sign(direction.z) : _facingDirection.z);
         float angle = Vector2.SignedAngle(_facingDirection, change);
+        _facingDirection = change;
         if (angle > 0)
         {
             _animator.SetTrigger("flip_ccw");
+            //if (_flipRoutine != null) StopCoroutine(_flipRoutine);
+            //_flipRoutine = StartCoroutine(Part1Flip(change));
         }
         else if (angle < 0)
         {
             _animator.SetTrigger("flip_cw");
-        }
-        _facingDirection = change;
+            //if (_flipRoutine != null) StopCoroutine(_flipRoutine);
+            //_flipRoutine = StartCoroutine(Part1Flip(change));
+        }   
+    }
+    private IEnumerator Part1Flip(Vector2 change)
+    {
+        yield return new WaitForSeconds(0.1f);
+        _animator.SetFloat("x_faceDir", change.x);
+        _animator.SetFloat("z_faceDir", change.y);
     }
 }

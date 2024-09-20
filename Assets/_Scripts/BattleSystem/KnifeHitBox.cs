@@ -8,6 +8,7 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
     [field: SerializeField] public int health { get; private set; }
     [SerializeField] private Spinning spinner;
     private float resetSpeed = 0f;
+    [SerializeField] private float fakeOutChance = 0.2f;
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
@@ -27,8 +28,23 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
         }
         else
         {
-            spinner.speed += resetSpeed;
-            spinner.ChangeDirection(resetSpeed);
+            // Limit max speed of spinner
+            if (spinner.speed < spinner.maxSpeed) 
+            {
+                spinner.speed += resetSpeed;
+                spinner.speed = Mathf.Min(spinner.speed, spinner.maxSpeed);
+            }
+            // Randomize fake out chance
+            float rand = Random.Range(0f, 1f);
+            if (rand <= fakeOutChance)
+            {
+                spinner.FakeOut(resetSpeed);
+            }
+            else
+            {
+                spinner.ChangeDirection(resetSpeed);
+            }
+
         }
         resetSpeed += 0.2f;
         // (TEMP)----------- This is dumb IK---------------------
@@ -61,6 +77,13 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
             {
                 pawn.Damage(damage);
                 pawn.CompleteAttackRequest(this);
+                // Decrease spinner speed if player is hit
+                if (spinner.speed > spinner.minSpeed) {
+                    spinner.speed /= 2;
+                    spinner.speed = Mathf.Max(spinner.speed, spinner.minSpeed);
+                    spinner.ReduceSpeed(spinner.speed / 2);
+                    resetSpeed = spinner.speed / 2;
+                }
             }
         }
     }

@@ -12,7 +12,7 @@ public class ComboDisplay : MonoBehaviour
         ResetCombo();
         _animator = GetComponent<Animator>();
     }
-    public void AddCombo(string combo) 
+    public void AddCombo(char combo) 
     {
         if (_curridx == 0)
         {
@@ -21,35 +21,35 @@ public class ComboDisplay : MonoBehaviour
         Transform child = transform.GetChild(_curridx);
         switch (combo)
         {
-            case "W":
+            case 'W':
                 child.GetComponent<Image>().sprite = slashArrow;
                 child.rotation = Quaternion.Euler(0, 0, 90f);
                 break;
-            case "E":
+            case 'E':
                 child.GetComponent<Image>().sprite = slashArrow;
                 child.rotation = Quaternion.Euler(0, 0, -90f);
                 break;
-            case "S":
+            case 'S':
                 child.GetComponent<Image>().sprite = slashArrow;
                 child.rotation = Quaternion.Euler(0, 0, 180f);
                 break;
-            case "N":
+            case 'N':
                 child.GetComponent<Image>().sprite = slashArrow;
                 child.rotation = Quaternion.Euler(0, 0, 0f);
                 break;
-            case "w":
+            case 'w':
                 child.GetComponent<Image>().sprite = dodgeArrow;
                 child.rotation = Quaternion.Euler(0, 0, 90f);
                 break;
-            case "e":
+            case 'e':
                 child.GetComponent<Image>().sprite = dodgeArrow;
                 child.rotation = Quaternion.Euler(0, 0, -90f);
                 break;
-            case "s":
+            case 's':
                 child.GetComponent<Image>().sprite = dodgeArrow;
                 child.rotation = Quaternion.Euler(0, 0, 180f);
                 break;
-            case "n":
+            case 'n':
                 child.GetComponent<Image>().sprite = dodgeArrow;
                 child.rotation = Quaternion.Euler(0, 0, 0f);
                 break;
