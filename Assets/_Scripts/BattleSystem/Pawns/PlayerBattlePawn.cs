@@ -234,11 +234,11 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         }
         float divisionTime = _weaponData.AttackDuration / 4f;
         attacking = true;
-        deflectionWindow = false;
+        deflectionWindow = true;
         yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
         deflectionWindow = true;
         yield return new WaitForSeconds(2 * divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
-        deflectionWindow = false;
+        deflectionWindow = true;
         // Direct Attack when no attack requesters
         // This is where combo strings should be processed
         if (!deflected && _activeAttackRequesters.Count <= 0)

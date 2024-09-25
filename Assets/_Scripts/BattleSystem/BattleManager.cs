@@ -86,7 +86,8 @@ public class BattleManager : Singleton<BattleManager>
     private void OnPlayerDeath()
     {
         EndBattle();
-        UIManager.Instance.UpdateCenterText("Player Is Dead, SAD!");
+        //UIManager.Instance.UpdateCenterText("Player Is Dead, SAD!");
+        GameManager.Instance.GSM.Transition<GameStateMachine.Death>();
     }
     private void OnEnemyDeath()
     {

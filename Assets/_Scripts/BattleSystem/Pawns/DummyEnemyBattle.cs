@@ -17,6 +17,6 @@ public class DummyEnemyBattle : EnemyBattlePawn
         {
             _playerComboManager.CurrComboMeterAmount = _playerComboManager.MaxComboMeterAmount;
         }
-        return true;
+        return base.ReceiveAttackRequest(requester);
     }
 }

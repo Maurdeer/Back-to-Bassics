@@ -10,6 +10,7 @@ public partial class EnemyStateMachine : StateMachine<EnemyStateMachine, EnemySt
     {
         CurrInput.Enemy = GetComponent<EnemyBattlePawn>();
         CurrInput.EnemySprite = GetComponentInChildren<PawnSprite>();
+        CurrInput.EnemyParticleSystem = GetComponentInChildren<ParticleSystem>();
         Transition<Idle>();   
     }
 }

@@ -20,6 +20,7 @@ public class CameraConfigure : Singleton<CameraConfigure>
         if (curr == null)
         {
             Debug.LogError("Please Let Camera Config Reference a camera.");
+            return;
         }
         prev = curr;
         curr.Priority = 10;
@@ -28,7 +29,7 @@ public class CameraConfigure : Singleton<CameraConfigure>
     public void SwitchToCamera(CinemachineVirtualCamera targetCamera)
     {
         //curr.Priority = savedPriority;
-        curr.Priority = 1;
+        if (curr != null) curr.Priority = 1;
         prev = curr;
         curr = targetCamera;
         //savedPriority = curr.Priority;
