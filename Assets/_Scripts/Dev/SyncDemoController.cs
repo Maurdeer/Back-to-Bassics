@@ -47,6 +47,15 @@ public class SyncDemoController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Space down");
+
+            var currBeat = Conductor.Instance.Beat;
+            var delta = currBeat - _schedulable._state._evaluatedEndBeat;
+            Debug.Log($"SNOOP! Schedulable currently on beat #{currBeat} with delta {delta}");
+        }
+        
         if (autoCallHalf)
         {
             if (currentAnimationFinished)
@@ -98,10 +107,6 @@ public class SyncDemoController : MonoBehaviour
                     _schedulable);
                 currentAnimationFinished = false;
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Space down");
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {

@@ -5,6 +5,7 @@ using FMOD;
 using FMOD.Studio;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.Timeline;
 using Debug = UnityEngine.Debug;
 
 // AT: FMOD bs portion mainly implemented off of official timeline callback example,

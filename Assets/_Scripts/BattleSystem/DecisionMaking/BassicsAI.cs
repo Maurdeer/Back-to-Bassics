@@ -61,6 +61,8 @@ public class BassicsAI : Conductable
         {
             _bassics.esm.Transition<Attacking>();
             _director.playableAsset = _enemyActionSequences[idx];
+            _director.playableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+            _director.playableGraph.Evaluate(1.0f);
             _director.Play();
             _director.playableGraph.GetRootPlayable(0).SetSpeed(1 / _bassics.EnemyData.SPB);
         }
