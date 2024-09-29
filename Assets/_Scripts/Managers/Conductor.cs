@@ -608,10 +608,14 @@ public static class ConductorExtensions
             {
                 director.time = t - state._snappedToStartBeat;
                 director.Evaluate();
+            },
+            onCompleted: state =>
+            {
+                director.Stop();
             });
 
         var startTime = Conductor.Instance.SnapToCurrentBeat(Conductor.BeatFraction.full);
-        Conductor.Instance.ScheduleActionAsap(float.PositiveInfinity, startTime, schedulable);
+        Conductor.Instance.ScheduleActionAsap((float) director.duration, startTime, schedulable);
 
         return schedulable;
     }
