@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
         _playerinput.SwitchCurrentActionMap("PlayerTraversalPawn");
         _playerinput.actions["Slash"].performed += OnTraversalSlash;
         _playerinput.actions["Interact"].performed += OnInteractAction;
+        _playerinput.actions["Pause"].performed += OnPauseAction;
 
         // Input UI
         //_playerinput.SwitchCurrentActionMap("UI");
@@ -98,6 +99,10 @@ public class PlayerController : MonoBehaviour
     public void OnInteractAction(InputAction.CallbackContext context)
     {
         _traversalpawn.Interact();
+    }
+    public void OnPauseAction(InputAction.CallbackContext context)
+    {
+        UIManager.Instance.pauseMenu.TogglePause();
     }
     #endregion
 }
