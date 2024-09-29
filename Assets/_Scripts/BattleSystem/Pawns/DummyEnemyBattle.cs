@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class DummyEnemyBattle : EnemyBattlePawn
         _playerComboManager = BattleManager.Instance.Player.GetComponent<ComboManager>();
         _playerComboManager.CurrComboMeterAmount = _playerComboManager.MaxComboMeterAmount;
     }
-    public override bool ReceiveAttackRequest(IAttackRequester requester)
+    public override bool ReceiveAttackRequest(IAttackRequester requester, Action onPendingSuccess = null, Action onPendingFail = null)
     {
         PlayerBattlePawn player = requester as PlayerBattlePawn;
         if (player != null)

@@ -1,3 +1,5 @@
+using System;
+
 public interface IAttackReceiver
 {
     /// <summary>
@@ -5,8 +7,8 @@ public interface IAttackReceiver
     /// is allowed to attack or not.
     /// </summary>
     /// <param name="requester"></param>
-    /// <returns> Whether or not the requester is allowed to attack</returns>
-    public abstract bool ReceiveAttackRequest(IAttackRequester requester);
+    /// <returns> Whether or not the requester is allowed to attack</returns> // TODO: remove the return value once refactoring is done
+    public abstract bool ReceiveAttackRequest(IAttackRequester requester, Action onPendingSuccess = null, Action onPendingFail = null);
     /// <summary>
     /// Use this method when there is a timing between receiving the attack and completing the attack
     /// </summary>

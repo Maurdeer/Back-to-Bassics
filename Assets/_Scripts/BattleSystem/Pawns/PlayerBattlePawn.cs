@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -80,7 +81,6 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         // (Ryan) This really sucky
         // Merge to one state called Open
         DodgeDirection = DirectionHelper.GetVectorDirection(direction);
-        updateCombo(false);
         StartCoroutine(DodgeThread(DodgeDirection.ToString().ToLower()));
     }
     private IEnumerator DodgeThread(string directionAnimation)
@@ -91,6 +91,9 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         && _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle"));
         dodging = false;
     }
+    
+    private Conductor.ConductorSchedulable slashHandle;
+    private int slashCancelCounter = 0;
     /// <summary>
     /// Slash in a given direction. 
     /// If there are active attack requests, deflect them. 
@@ -102,16 +105,74 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         if (IsDead) return;
         //AnimatorStateInfo animatorState = _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
         //if (!animatorState.IsName("idle")) return;
-        _pawnSprite.FaceDirection(new Vector3(direction.x, 0, 1));
-        _pawnAnimator.Play($"Slash{DirectionHelper.GetVectorDirection(direction)}");
-        _slashEffect.Play();
-        AudioManager.Instance.PlayOnShotSound(WeaponData.slashAirSound, transform.position);
-        // Set the Slash Direction
-        SlashDirection = direction;
-        SlashDirection.Normalize();
+        
+            // AT: indented code commented for demo purpose, other code commented already
+            // _pawnSprite.FaceDirection(new Vector3(direction.x, 0, 1));
+            // _pawnAnimator.Play($"Slash{DirectionHelper.GetVectorDirection(direction)}");
+            // _slashEffect.Play();
+            // AudioManager.Instance.PlayOnShotSound(WeaponData.slashAirSound, transform.position);
+            // // Set the Slash Direction
+            // SlashDirection = direction;
+            // SlashDirection.Normalize();
+            
         //UIManager.Instance.PlayerSlash(SlashDirection);
-        if (attackingThread != null) StopCoroutine(attackingThread);
-        attackingThread = StartCoroutine(Attacking());
+        // if (attackingThread != null) StopCoroutine(attackingThread);
+        // attackingThread = StartCoroutine(Attacking());
+
+        if (slashHandle != null)
+        {
+            if (slashCancelCounter > 2)
+            {
+                Debug.LogWarning("Ran out of cancels");
+                return;
+            }
+            
+            Debug.Log($"Cancel previous slash");
+            slashHandle.SelfAbort();
+            slashCancelCounter += 1;
+        }
+
+        Debug.Log($"{_weaponData.AttackDuration}");
+        var attackDurationBeats = _weaponData.AttackDuration;
+        
+        slashHandle = new Conductor.ConductorSchedulable(
+            onStarted: (state, contextState) =>
+            {
+                //AnimatorStateInfo animatorState = _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
+                //if (!animatorState.IsName("idle")) return;
+                _pawnSprite.FaceDirection(new Vector3(direction.x, 0, 1));
+                _pawnAnimator.PlayInFixedTime($"Slash{DirectionHelper.GetVectorDirection(direction)}", -1, attackDurationBeats * contextState.spb);
+                _slashEffect.Play();
+                // Set the Slash Direction
+                AudioManager.Instance.PlayOnShotSound(WeaponData.slashAirSound, transform.position);
+                SlashDirection = direction;
+                SlashDirection.Normalize();
+                
+                if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
+                {
+                    BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
+
+                    updateCombo(true);
+
+                    BattleManager.Instance.Enemy.CompleteAttackRequest(this);
+                }
+                attacking = true;
+                deflectionWindow = true;
+            },
+            onUpdate: (state, contextState) => { },
+            onCompleted: (state, contextState) =>
+            {
+                deflectionWindow = false;
+                attacking = false;
+                _pawnAnimator.Play($"SlashEnd");
+                deflected = false;
+                slashHandle = null;
+                slashCancelCounter = 0;
+            },
+            onAborted: state => { }
+        );
+        
+        Conductor.Instance.ScheduleActionAsap(attackDurationBeats, Conductor.Instance.SnapToCurrentBeat(Conductor.BeatFraction.full), slashHandle, true);
 
         //if (_activeAttackRequesters.Count > 0)
         //{
@@ -121,6 +182,52 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         //}
         //else   
     }
+    
+    private IEnumerator Attacking()
+    {
+        //if (attacking && BattleManager.Instance.Enemy.ESM.IsOnState<EnemyStateMachine.Attacking>()) Lurch(2f);
+        //StopAllCoroutines();
+        // Divides duration beats into four sections!
+        // First Divsion is early receive
+        // second divsion is deflection window
+        // Third Division is late receive
+        if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
+        {
+            BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
+
+            updateCombo(true);
+
+            BattleManager.Instance.Enemy.CompleteAttackRequest(this);
+        }
+        float divisionTime = _weaponData.AttackDuration / 4f;
+        attacking = true;
+        deflectionWindow = true;
+        yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
+        deflectionWindow = true;
+        yield return new WaitForSeconds(2 * divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
+        deflectionWindow = true;
+        // Direct Attack when no attack requesters
+        // This is where combo strings should be processed
+        if (!deflected && _activeAttackRequesters.Count <= 0)
+        {
+            // Process Combo Strings here if you have enough!
+            //if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
+            //{
+            //BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
+            // Uncomment below when Status Ailments have been defined
+            // BattleManager.Instance.Enemy.ApplyStatusAilments(_weaponData.ailments);
+
+            //updateCombo(true);
+
+            //BattleManager.Instance.Enemy.CompleteAttackRequest(this);
+            //}
+        }
+        yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
+        attacking = false;
+        _pawnAnimator.Play($"SlashEnd");
+        deflected = false;
+    }
+    
     private void updateCombo(bool slash)
     {
         if (slash)
@@ -173,7 +280,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     //    if (!blocking && !attacking) base.RecoverSP(amount);
     //}
     #region IAttackReceiver Methods
-    public bool ReceiveAttackRequest(IAttackRequester requester)
+    public bool ReceiveAttackRequest(IAttackRequester requester, Action onPendingSuccess = null, Action onPendingFail = null)
     {
         _activeAttackRequesters.Enqueue(requester);
         if (/*!deflected && */ deflectionWindow && requester.OnRequestDeflect(this))
@@ -216,48 +323,4 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         return true;
     }
     #endregion
-    private IEnumerator Attacking()
-    {
-        //if (attacking && BattleManager.Instance.Enemy.ESM.IsOnState<EnemyStateMachine.Attacking>()) Lurch(2f);
-        //StopAllCoroutines();
-        // Divides duration beats into four sections!
-        // First Divsion is early receive
-        // second divsion is deflection window
-        // Third Division is late receive
-        if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
-        {
-            BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
-
-            updateCombo(true);
-
-            BattleManager.Instance.Enemy.CompleteAttackRequest(this);
-        }
-        float divisionTime = _weaponData.AttackDuration / 4f;
-        attacking = true;
-        deflectionWindow = true;
-        yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
-        deflectionWindow = true;
-        yield return new WaitForSeconds(2 * divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
-        deflectionWindow = true;
-        // Direct Attack when no attack requesters
-        // This is where combo strings should be processed
-        if (!deflected && _activeAttackRequesters.Count <= 0)
-        {
-            // Process Combo Strings here if you have enough!
-            //if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
-            //{
-                //BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
-                // Uncomment below when Status Ailments have been defined
-                // BattleManager.Instance.Enemy.ApplyStatusAilments(_weaponData.ailments);
-
-                //updateCombo(true);
-
-                //BattleManager.Instance.Enemy.CompleteAttackRequest(this);
-            //}
-        }
-        yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
-        attacking = false;
-        _pawnAnimator.Play($"SlashEnd");
-        deflected = false;
-    }
 }

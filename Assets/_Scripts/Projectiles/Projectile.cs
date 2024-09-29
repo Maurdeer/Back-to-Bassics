@@ -31,23 +31,22 @@ public class Projectile : MonoBehaviour, IAttackRequester
         var originalLocation = transform.position;
         
         var schedulable = new Conductor.ConductorSchedulable(
-            onStarted: (state) =>
+            onStarted: (state, ctxState) =>
             {
                 isDestroyed = false;
                 gameObject.SetActive(true);
             },
             onUpdate: (state, ctxState) =>
             {
-                Debug.Log($"{state} -> {ctxState}");
                 transform.position = originalLocation + lifetimeDisplacement * state._elapsedProgressCount;
                 // _rb.position = originalLocation + lifetimeDisplacement * state._elapsedProgressCount;
                 // _rb.velocity = lifetimeDisplacement / ctxState.spb; // current SPB at the update
             },
-            onCompleted: (state) => { Destroy(); },
+            onCompleted: (state, ctxState) => { Destroy(); },
             onAborted: (state) => { Destroy(); }
         );
         
-        Conductor.Instance.ScheduleActionAsap(duration, Conductor.Instance.Beat, schedulable);
+        Conductor.Instance.ScheduleActionAsap(duration, Conductor.Instance.Beat, schedulable, forceStart: true);
     }
     /// <summary>
     /// Spawn Projectile based on conductor's rule speed

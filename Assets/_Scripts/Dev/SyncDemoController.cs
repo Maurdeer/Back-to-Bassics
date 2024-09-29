@@ -34,9 +34,9 @@ public class SyncDemoController : MonoBehaviour
     {
         _schedulable = new Conductor.ConductorSchedulable(
             onUpdate: (state, ctxState) => OnAnimationUpdate(state),
-            onStarted: o => OnAnimationStart(o),
-            onCompleted: o => OnAnimationComplete(o),
-            onAborted: o => OnAnimationAbort(o)
+            onStarted: (state, ctxState) => OnAnimationStart(state),
+            onCompleted: (state, ctxState) => OnAnimationComplete(state),
+            onAborted: state => OnAnimationAbort(state)
         );
         OnUpdateTempo(null);
         Conductor.Instance.OnTempoChange += m
@@ -63,7 +63,8 @@ public class SyncDemoController : MonoBehaviour
                 Conductor.Instance.ScheduleActionAsap(
                     Conductor.BeatFraction.half, 
                     Conductor.BeatFraction.half,
-                    _schedulable);
+                    _schedulable,
+                    forceStart: true);
                 currentAnimationFinished = false;
             }
         }
@@ -82,7 +83,8 @@ public class SyncDemoController : MonoBehaviour
                         numerator = 1,
                         denominator = 3
                     },
-                    _schedulable);
+                    _schedulable,
+                    forceStart: true);
                 currentAnimationFinished = false;
             }
         }
@@ -93,7 +95,8 @@ public class SyncDemoController : MonoBehaviour
                 Conductor.Instance.ScheduleActionAsap(
                     Conductor.BeatFraction.full, 
                     Conductor.BeatFraction.full,
-                    _schedulable);
+                    _schedulable,
+                    forceStart: true);
                 currentAnimationFinished = false;
             }
         }
@@ -104,7 +107,8 @@ public class SyncDemoController : MonoBehaviour
                 Conductor.Instance.ScheduleActionAsap(
                     Conductor.BeatFraction.full, 
                     Conductor.BeatFraction.fullDouble,
-                    _schedulable);
+                    _schedulable,
+                    forceStart: true);
                 currentAnimationFinished = false;
             }
         }
@@ -115,7 +119,8 @@ public class SyncDemoController : MonoBehaviour
                 Conductor.Instance.ScheduleActionAsap(
                     Conductor.BeatFraction.half, 
                     Conductor.BeatFraction.half,
-                    _schedulable);
+                    _schedulable,
+                    forceStart: true);
                 currentAnimationFinished = false;
             }
         }
@@ -126,7 +131,8 @@ public class SyncDemoController : MonoBehaviour
                 Conductor.Instance.ScheduleActionAsap(
                     Conductor.BeatFraction.full, 
                     Conductor.BeatFraction.full,
-                    _schedulable);
+                    _schedulable,
+                    forceStart: true);
                 currentAnimationFinished = false;
             }
         }
@@ -137,7 +143,8 @@ public class SyncDemoController : MonoBehaviour
                 Conductor.Instance.ScheduleActionAsap(
                     Conductor.BeatFraction.full, 
                     Conductor.BeatFraction.fullDouble,
-                    _schedulable);
+                    _schedulable,
+                    forceStart: true);
                 currentAnimationFinished = false;
             }
         }
@@ -153,7 +160,7 @@ public class SyncDemoController : MonoBehaviour
     {
         animationTarget.AnimateStart();
 
-        var delta = (float)(state._actualStartBeat - state._snappedToStartBeat);
+        var delta = (float)(state._actualStartBeat - state._scheduledStartBeat);
 
         onTimeText.color = Color.Lerp(Color.red, Color.blue, delta);
 

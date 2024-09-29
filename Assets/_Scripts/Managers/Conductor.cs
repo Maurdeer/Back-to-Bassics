@@ -163,7 +163,7 @@ public class Conductor : Singleton<Conductor>
     }
     
     /// <returns>Starting time </returns>
-    public void ScheduleActionAsap(float duration, float time, ConductorSchedulable schedulable)
+    public void ScheduleActionAsap(float duration, float time, ConductorSchedulable schedulable, bool forceStart)
     {
         if (ctx is null)
         {
@@ -171,23 +171,41 @@ public class Conductor : Singleton<Conductor>
         }
         
         schedulable._parent = this;
+
+        float startTime;
+        if (time <= ctx.currentState.ElapsedBeat || forceStart)
+        {
+            startTime = ctx.currentState.ElapsedBeat;
+        }
+        else
+        {
+            startTime = time;
+        }
+        
         schedulable._state =
-            new ConductorSchedulableState(ctx.currentState.ElapsedBeat, duration, time);
+            new ConductorSchedulableState(startTime, duration, time);
         
         // this function might be called from animations, which is in turn called during scheduled queue loop
         // we don't want to modify the queue within the foreach loop, so instead we make a buffer outside
         // and commit the transaction at the end of the frame.
         ctx.transaction.Add((schedulable, schedulable._state._evaluatedEndBeat));
-        
-        schedulable.OnStarted(schedulable._state);
+
+        if (time <= startTime)
+        {
+            schedulable._state._started = true;
+            schedulable.OnStarted(schedulable._state, ctx.currentState);
+        }
     }
 
     public class ConductorSchedulableState
     {
+        public bool _started = false;
+        public bool _aborted = false;
+        
         /// <summary>
         /// The correct beat the action should have started, if not for player delays
         /// </summary>
-        public float _snappedToStartBeat;
+        public float _scheduledStartBeat;
         /// <summary>
         /// The actual beat the schedulable was added to the system
         /// </summary>
@@ -211,12 +229,12 @@ public class Conductor : Singleton<Conductor>
         /// </summary>
         public float _elapsedProgressCount;
 
-        internal ConductorSchedulableState(float elapsedTotal, float duration, float snappedStart)
+        internal ConductorSchedulableState(float actualStartBeat, float duration, float snappedStart)
         {
-            _actualStartBeat = elapsedTotal;
-            _snappedToStartBeat = snappedStart;
+            _actualStartBeat = actualStartBeat;
+            _scheduledStartBeat = snappedStart;
             _scheduledDuration = duration;
-            _evaluatedEndBeat = _snappedToStartBeat + _scheduledDuration;
+            _evaluatedEndBeat = _scheduledStartBeat + _scheduledDuration;
             _elapsedProgressCount = 0.0f;
         }
     }
@@ -228,14 +246,14 @@ public class Conductor : Singleton<Conductor>
         internal Conductor _parent;
         
         public Action<ConductorSchedulableState, ConductorContextState> OnUpdate;
-        public Action<ConductorSchedulableState> OnStarted;
-        public Action<ConductorSchedulableState> OnCompleted;
+        public Action<ConductorSchedulableState, ConductorContextState> OnStarted;
+        public Action<ConductorSchedulableState, ConductorContextState> OnCompleted;
         public Action<ConductorSchedulableState> OnAborted;
 
         public ConductorSchedulable(
             Action<ConductorSchedulableState, ConductorContextState> onUpdate = null, 
-            Action<ConductorSchedulableState> onStarted = null, 
-            Action<ConductorSchedulableState> onCompleted = null, 
+            Action<ConductorSchedulableState, ConductorContextState> onStarted = null, 
+            Action<ConductorSchedulableState, ConductorContextState> onCompleted = null, 
             Action<ConductorSchedulableState> onAborted = null)
         {
             OnUpdate = onUpdate;
@@ -246,8 +264,8 @@ public class Conductor : Singleton<Conductor>
 
         public void SelfAbort()
         {
-            // TODO: figure out how to implement this without iterating through the entire heap...
-            throw new NotImplementedException();
+            _state._aborted = true;
+            OnAborted?.Invoke(_state);
         }
     }
 
@@ -340,17 +358,35 @@ public class Conductor : Singleton<Conductor>
             // dequeue schedulables until the next upcoming one is not actually completed
             while (scheduled.TryPeek(out var scheduledItem, out var finishTime) && finishTime < currentState.ElapsedBeat)
             {
-                scheduledItem.OnCompleted(scheduledItem._state);
+                if (!scheduledItem._state._aborted)
+                {
+                    scheduledItem.OnCompleted(scheduledItem._state, currentState);
+                }
+
                 scheduled.Dequeue();
             }
             
             // iterate through schedulables in unsorted manner calling their update methods
             foreach (var (scheduledItem, finishTime) in scheduled.UnorderedItems)
             {
+                if (scheduledItem._state._aborted)
+                {
+                    continue;
+                }
+                
                 scheduledItem._state._elapsedProgressCount =
                     (currentState.ElapsedBeat - scheduledItem._state._actualStartBeat) / (scheduledItem._state._actualDuration);
-                
-                scheduledItem.OnUpdate(scheduledItem._state, currentState);
+
+                if (scheduledItem._state._actualStartBeat <= currentState.ElapsedBeat)
+                {
+                    if (!scheduledItem._state._started)
+                    {
+                        scheduledItem._state._started = true;
+                        scheduledItem.OnStarted(scheduledItem._state, currentState);
+                    }
+                    
+                    scheduledItem.OnUpdate(scheduledItem._state, currentState);
+                }
             }
             
             // commit transaction (prevent queue from being modified mid-loop)
@@ -604,23 +640,26 @@ public static class ConductorExtensions
         director.timeUpdateMode = DirectorUpdateMode.Manual;
         director.Play();
         var schedulable = new Conductor.ConductorSchedulable(
-            onStarted: state =>
+            onStarted: (state, ctxState) =>
             {
                 director.time = 0;
                 director.Evaluate();
             },
             onUpdate: (state, ctxState) =>
             {
-                director.time = ctxState.ElapsedBeat - state._snappedToStartBeat;
-                director.Evaluate();
+                director.time = ctxState.ElapsedBeat - state._scheduledStartBeat;
+                if (director.time >= 0)
+                {
+                    director.Evaluate();
+                }
             },
-            onCompleted: state =>
+            onCompleted: (state, ctxState) =>
             {
                 director.Stop();
             });
 
         var startTime = Conductor.Instance.SnapToCurrentBeat(Conductor.BeatFraction.full);
-        Conductor.Instance.ScheduleActionAsap((float) director.duration, startTime, schedulable);
+        Conductor.Instance.ScheduleActionAsap((float) director.duration, startTime, schedulable, forceStart: true);
 
         return schedulable;
     }

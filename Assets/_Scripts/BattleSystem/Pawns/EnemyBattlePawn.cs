@@ -74,7 +74,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //    _actionIdx = i;
     //}
     #region IAttackReceiver Methods
-    public virtual bool ReceiveAttackRequest(IAttackRequester requester)
+    public virtual bool ReceiveAttackRequest(IAttackRequester requester, Action onPendingSuccess = null, Action onPendingFail = null)
     {
         if (esm.IsOnState<Dead>() || psm.IsOnState<Distant>()) return false;
         return esm.CurrState.AttackRequestHandler(requester);
