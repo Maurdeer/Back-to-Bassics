@@ -22,7 +22,8 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     public EnemyBattlePawnData EnemyData => (EnemyBattlePawnData)Data;
     private Dictionary<Type, EnemyAction> _enemyActions = new Dictionary<Type, EnemyAction>();
     public event Action OnEnemyStaggerEvent;
-    public int CurrentStagger { get; set; }
+    public int CurrentStaggerHealth { get; set; }
+    public int StaggerArmor; // reduces stagger damage taken from attacks
     // Events
     //public event Action OnEnemyActionComplete; --> Hiding for now
     protected override void Awake()
@@ -44,6 +45,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" is must have a PositionStateMachine");
             return;
         }
+        CurrentStaggerHealth = EnemyData.StaggerHealth;
         base.Awake();
     }
     public EA GetEnemyAction<EA>() where EA : EnemyAction
@@ -75,19 +77,21 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //    _enemyActions[i].StartAction();
     //    _actionIdx = i;
     //}
-    public void StaggerBuildUp(int staggerDamage)
+    public void StaggerDamage(int staggerDamage)
     {
-        Debug.Log("I was called!");
         if (EnemyData == null)
         {
             Debug.LogError("EnemyData is not assigned.");
             return;
         }
-        CurrentStagger += staggerDamage;
-        if (CurrentStagger >= EnemyData.StaggerHealth)
+        Debug.Log("curr stagger health: " + CurrentStaggerHealth);
+        staggerDamage -= StaggerArmor;
+        if (staggerDamage < 0) return;
+        CurrentStaggerHealth -= staggerDamage;
+        if (CurrentStaggerHealth <= 0)
         {
             Stagger();
-            CurrentStagger = 0;
+            CurrentStaggerHealth = EnemyData.StaggerHealth;
         }
     }
     #region IAttackReceiver Methods

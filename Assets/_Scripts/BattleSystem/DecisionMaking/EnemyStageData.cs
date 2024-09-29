@@ -13,10 +13,12 @@ public class EnemyStageData : ScriptableObject {
     // indices of attacks in enemyActionSequences
     [SerializeField] private TimelineAsset[] _enemyActionSequences;
     [SerializeField] private int _beatsPerDecision;
+    [SerializeField] private int _staggerArmor;
 
     // future: add dialogue, bpm changes?
 
     public float HealthThreshold => _healthThreshold;
     public TimelineAsset[] EnemyActionSequences => _enemyActionSequences;
     public int BeatsPerDecision => _beatsPerDecision;
+    public int StaggerArmor => _staggerArmor;
 }

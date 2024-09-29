@@ -40,6 +40,7 @@ public class BassicsAI : Conductable
         _lastAction = -1;
         _currentStage = 0;
         _beatsPerDecision =  _enemyStages[_currentStage].BeatsPerDecision;
+        _bassics.StaggerArmor = _enemyStages[_currentStage].StaggerArmor;
     }
     private void Start()
     {
@@ -63,24 +64,32 @@ public class BassicsAI : Conductable
     {
         // (Ryan) Should't need to check for death here, just disable the conducatable conductor connection 
         //if (Conductor.Instance.Beat < _decisionTime || (_enemyActions != null && _enemyActions[_actionIdx].IsActive) || IsDead) return;
-        if (Conductor.Instance.Beat < _decisionTime 
-            || _director.state == PlayState.Playing 
+        if (_director.state == PlayState.Playing 
             || _bassics.IsDead || _bassics.IsStaggered) return;
+        
+        if (_decisionTime > 0) {
+            _decisionTime--;
+            return;
+        }
+
         if (_currentStage+1 < _enemyStages.Length && 
             _enemyStages[_currentStage+1].HealthThreshold > (float)_bassics.HP/_bassics.MaxHP) {
                 _currentStage++;
                 _beatsPerDecision = _enemyStages[_currentStage].BeatsPerDecision;
-                _bassics.psm.Transition<Distant>();
+                _bassics.psm.Transition<Distant>(); 
+                _bassics.StaggerArmor = _enemyStages[_currentStage].StaggerArmor;
                 OnEnemyStageTransition?.Invoke();
             }
             
         TimelineAsset[] actions = _enemyStages[_currentStage].EnemyActionSequences;
         
-        int idx = Random.Range(0, (actions != null ? actions.Length : 0) + 4) - 4;
+        int idx = Random.Range(0, actions != null ? actions.Length : 0);
         // int idx = Random.Range(0, actions != null ? actions.Length : 0);
         if (idx == _lastAction)
             idx = (idx + 1) % actions.Length;
         _lastAction = idx;
+        Debug.Log("Choosing action" + idx);
+        _bassics.CurrentStaggerHealth = _bassics.EnemyData.StaggerHealth;
         //int idx = UnityEngine.Random.Range(0, 4);
         if (idx < 0)
         {
@@ -93,6 +102,6 @@ public class BassicsAI : Conductable
             _director.Play();
             _director.playableGraph.GetRootPlayable(0).SetSpeed(1 / _bassics.EnemyData.SPB);
         }
-        _decisionTime = Conductor.Instance.Beat + _beatsPerDecision;
+        _decisionTime = _beatsPerDecision;
     }
 }

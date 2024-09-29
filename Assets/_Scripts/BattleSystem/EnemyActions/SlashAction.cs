@@ -16,7 +16,7 @@ public class SlashAction : EnemyAction, IAttackRequester
     public float minSlashTillHitInBeats => minSlashTillHitDuration / parentPawn.EnemyData.SPB;
     private SlashNode _currNode;
     //Amount of stagger damage towards enemy of successful deflect.
-    private int _staggerDamage = 80;
+    private int _staggerDamage = 50;
     public void Broadcast(Direction direction)
     {
         Vector2 slashDirection = DirectionHelper.GetVectorFromDirection(direction);
@@ -80,7 +80,7 @@ public class SlashAction : EnemyAction, IAttackRequester
             Debug.Log("Slash Parry!");
             if (parentPawn is EnemyBattlePawn enemyPawn)
             {
-                enemyPawn.StaggerBuildUp(_staggerDamage);
+                enemyPawn.StaggerDamage(_staggerDamage);
             }
             yield return new WaitForSeconds(deflectedClip.length);
         }

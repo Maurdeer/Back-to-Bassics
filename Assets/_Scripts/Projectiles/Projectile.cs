@@ -75,7 +75,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementParryTracker();
         //---------------------------------------
-        _targetEnemy?.StaggerBuildUp(_staggerDamage);
+        _targetEnemy?.StaggerDamage(_staggerDamage);
         Destroy();
         receiver.CompleteAttackRequest(this);
         return true;

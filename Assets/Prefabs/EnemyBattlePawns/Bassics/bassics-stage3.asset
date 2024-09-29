@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebca2f589a529e545aaf5c099703c5e4, type: 3}
-  m_Name: bassics-stage1
+  m_Name: bassics-stage3
   m_EditorClassIdentifier: 
-  _healthThreshold: 0.8
+  _healthThreshold: 0.5
   _enemyActionSequences:
-  - {fileID: 11400000, guid: 53a003f3e97619748816d2b4ddf11025, type: 2}
-  - {fileID: 11400000, guid: 04d5e389a963e0343aa6b76666a8d3dc, type: 2}
-  _beatsPerDecision: 6
-  _staggerArmor: 1
+  - {fileID: 11400000, guid: 878f6ef31a2a8bc43aeb43a43d502ba2, type: 2}
+  _beatsPerDecision: 4
+  _staggerArmor: 5
