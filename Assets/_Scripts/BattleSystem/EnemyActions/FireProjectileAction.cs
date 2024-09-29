@@ -72,7 +72,7 @@ public class FireProjectileAction : EnemyAction
         }
         Projectile proj = objRef.GetComponent<Projectile>();
         proj.transform.position = BattleManager.Instance.Player.playerCollider.position + node.relativeSpawnPosition;
-        proj.Fire((BattleManager.Instance.Player.playerCollider.position - proj.transform.position) / (node.speed * Conductor.Instance.spb));
+        proj.Fire(BattleManager.Instance.Player.playerCollider.position - proj.transform.position, 1);
 
         // This Only talors to bassics, not in general
         parentPawnSprite.FaceDirection(new Vector3(-node.relativeSpawnPosition.x, 0, -1));

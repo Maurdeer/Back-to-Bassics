@@ -5,7 +5,6 @@ using FMOD;
 using FMOD.Studio;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.Timeline;
 using Debug = UnityEngine.Debug;
 
 // AT: FMOD bs portion mainly implemented off of official timeline callback example,
@@ -18,9 +17,9 @@ public class Conductor : Singleton<Conductor>
 {
     public bool IsPlaying => ctx != null;
     
-    public float Beat => (ctx?.elapsedTotal ?? throw new ArgumentException("don't poll beat without music playing :)"));
+    public float Beat => (ctx?.currentState.ElapsedBeat ?? throw new ArgumentException("don't poll beat without music playing :)"));
 
-    public float spb => (ctx?.lastMarker.msPerBeat ?? throw new ArgumentException("don't poll spb without music playing :)")) / 1000;
+    // public float spb => (ctx?.lastMarker.msPerBeat ?? throw new ArgumentException("don't poll spb without music playing :)")) / 1000;
 
     /// <summary>
     /// A json file containing mapping from each event path to an array of tempo markers, containing the following info:
@@ -137,35 +136,6 @@ public class Conductor : Singleton<Conductor>
         ctx.Tick();
     }
 
-    // private IEnumerator Conduct()
-    // {
-    //     float quarterTime = spb / 4f;
-    //     OnFirstBeat?.Invoke();
-    //     while (isConducting)
-    //     {
-    //         yield return new WaitForSeconds(quarterTime);
-    //         Beat += 0.25f;
-    //         OnQuarterBeat?.Invoke();
-    //         
-    //         yield return new WaitForSeconds(quarterTime);
-    //         Beat += 0.25f;
-    //         OnQuarterBeat?.Invoke();
-    //         OnHalfBeat?.Invoke();
-    //         
-    //         yield return new WaitForSeconds(quarterTime);
-    //         Beat += 0.25f;
-    //         OnQuarterBeat?.Invoke();
-    //         
-    //         yield return new WaitForSeconds(quarterTime);
-    //         Beat += 0.25f;
-    //         OnQuarterBeat?.Invoke();
-    //         OnHalfBeat?.Invoke();
-    //         OnFullBeat?.Invoke();
-    //         
-    //     }
-    //     OnLastBeat?.Invoke();
-    // }
-
     public struct BeatFraction
     {
         public int numerator;
@@ -202,8 +172,12 @@ public class Conductor : Singleton<Conductor>
         
         schedulable._parent = this;
         schedulable._state =
-            new ConductorSchedulableState(ctx.elapsedTotal, duration, time);
-        ctx.scheduled.Enqueue(schedulable, schedulable._state._evaluatedEndBeat);
+            new ConductorSchedulableState(ctx.currentState.ElapsedBeat, duration, time);
+        
+        // this function might be called from animations, which is in turn called during scheduled queue loop
+        // we don't want to modify the queue within the foreach loop, so instead we make a buffer outside
+        // and commit the transaction at the end of the frame.
+        ctx.transaction.Add((schedulable, schedulable._state._evaluatedEndBeat));
         
         schedulable.OnStarted(schedulable._state);
     }
@@ -253,13 +227,13 @@ public class Conductor : Singleton<Conductor>
 
         internal Conductor _parent;
         
-        public Action<ConductorSchedulableState, float, float> OnUpdate;
+        public Action<ConductorSchedulableState, ConductorContextState> OnUpdate;
         public Action<ConductorSchedulableState> OnStarted;
         public Action<ConductorSchedulableState> OnCompleted;
         public Action<ConductorSchedulableState> OnAborted;
 
         public ConductorSchedulable(
-            Action<ConductorSchedulableState, float, float> onUpdate = null, 
+            Action<ConductorSchedulableState, ConductorContextState> onUpdate = null, 
             Action<ConductorSchedulableState> onStarted = null, 
             Action<ConductorSchedulableState> onCompleted = null, 
             Action<ConductorSchedulableState> onAborted = null)
@@ -276,6 +250,29 @@ public class Conductor : Singleton<Conductor>
             throw new NotImplementedException();
         }
     }
+
+    public class ConductorContextState
+    {
+        private float elapsedBeat;
+        public float deltaBeat;
+
+        public float ElapsedBeat
+        {
+            get => elapsedBeat;
+            set
+            {
+                deltaBeat = value - elapsedBeat;
+                elapsedBeat = value;
+            }
+        }
+        public float bpm;
+        public float spb;
+
+        public override string ToString()
+        {
+            return $"[ctxState: beat {elapsedBeat}; bpm {bpm} <-> spb {spb}]";
+        }
+    }
     
     private class ConductorContext
     {
@@ -289,12 +286,14 @@ public class Conductor : Singleton<Conductor>
         public FMOD.Studio.EVENT_CALLBACK beatCallback;
         public int elapsedWholeBeats = 0;
         // public ulong lastBeatDsp = 0;
-        public float elapsedTotal = 0.0f;
         public float elapsedLastTotal = 0.0f;
         public float elapsedSinceLastBeat = 0.0f;
+
+        public ConductorContextState currentState;
         // public int samplerRate;
 
         internal PriorityQueue<ConductorSchedulable, float> scheduled = new();
+        internal List<(ConductorSchedulable, float)> transaction = new();
         
         public ConductorContext(Conductor parent, EnemyBattlePawn pawn)
         {
@@ -315,7 +314,14 @@ public class Conductor : Singleton<Conductor>
 
             this.lastMarker = lastMarker;
             this.nextMarker = nextMarker;
-            
+
+            currentState = new ConductorContextState()
+            {
+                ElapsedBeat = 0,
+                bpm = lastMarker.tempoBpm,
+                spb = lastMarker.msPerBeat / 1E3f
+            };
+
             // FMODUnity.RuntimeManager.CoreSystem.getSoftwareFormat(out var samplerRate, out var _, out var __);
             // this.samplerRate = samplerRate;
         }
@@ -329,37 +335,34 @@ public class Conductor : Singleton<Conductor>
         internal void Tick()
         {
             // TODO: look into duplicate entries issue...
-            elapsedTotal = elapsedWholeBeats + ElapsedBeatSinceLastBeat();
-            // Debug.Log(elapsedTotal);
+            currentState.ElapsedBeat = elapsedWholeBeats + ElapsedBeatSinceLastBeat();
 
             // dequeue schedulables until the next upcoming one is not actually completed
-            while (scheduled.TryPeek(out var scheduledItem, out var finishTime) && finishTime < elapsedTotal)
+            while (scheduled.TryPeek(out var scheduledItem, out var finishTime) && finishTime < currentState.ElapsedBeat)
             {
                 scheduledItem.OnCompleted(scheduledItem._state);
-                // Debug.Log($"{scheduledItem.GetHashCode()} finished, removing from queue...");
                 scheduled.Dequeue();
             }
-
-            var deltaBeat = elapsedTotal - elapsedLastTotal;
-
+            
             // iterate through schedulables in unsorted manner calling their update methods
             foreach (var (scheduledItem, finishTime) in scheduled.UnorderedItems)
             {
                 scheduledItem._state._elapsedProgressCount =
-                    (elapsedTotal - scheduledItem._state._actualStartBeat) / (scheduledItem._state._actualDuration);
+                    (currentState.ElapsedBeat - scheduledItem._state._actualStartBeat) / (scheduledItem._state._actualDuration);
                 
-                // Debug.Log($"{scheduledItem.GetHashCode()}: ({elapsedTotal} - {scheduledItem._state._actualStartBeat}) / {scheduledItem._state._actualDuration} = {scheduledItem._state._elapsedProgressCount}");
-                scheduledItem.OnUpdate(scheduledItem._state, deltaBeat, elapsedTotal);
+                scheduledItem.OnUpdate(scheduledItem._state, currentState);
             }
-
-            elapsedLastTotal = elapsedTotal;
+            
+            // commit transaction (prevent queue from being modified mid-loop)
+            scheduled.EnqueueRange(transaction);
+            transaction.Clear();
         }
 
         internal float SnapToCurrent(BeatFraction granularity)
         {
-            var elapsedScaled = elapsedTotal / granularity.Eval();
+            var elapsedScaled = currentState.ElapsedBeat / granularity;
             var snapUnitTime = Mathf.RoundToInt((float)elapsedScaled);
-            var snapBeatTime = snapUnitTime * granularity.Eval();
+            var snapBeatTime = snapUnitTime * granularity;
             return snapBeatTime;
         }
 
@@ -512,6 +515,8 @@ public class Conductor : Singleton<Conductor>
 
                         if (shouldInvokeOnTempoChange)
                         {
+                            ctxObj.currentState.bpm = prevMarker.tempoBpm;
+                            ctxObj.currentState.spb = prevMarker.msPerBeat / 1E3f;
                             ctxObj.OnTempoChange();
                         }
 
@@ -594,7 +599,7 @@ public class Conductor : Singleton<Conductor>
 
 public static class ConductorExtensions
 {
-    public static Conductor.ConductorSchedulable ScheduleTimeline(this PlayableDirector director)
+    public static Conductor.ConductorSchedulable ScheduleToBeat(this PlayableDirector director)
     {
         director.timeUpdateMode = DirectorUpdateMode.Manual;
         director.Play();
@@ -604,9 +609,9 @@ public static class ConductorExtensions
                 director.time = 0;
                 director.Evaluate();
             },
-            onUpdate: (state, dt, t) =>
+            onUpdate: (state, ctxState) =>
             {
-                director.time = t - state._snappedToStartBeat;
+                director.time = ctxState.ElapsedBeat - state._snappedToStartBeat;
                 director.Evaluate();
             },
             onCompleted: state =>

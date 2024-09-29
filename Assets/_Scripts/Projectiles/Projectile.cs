@@ -20,16 +20,34 @@ public class Projectile : MonoBehaviour, IAttackRequester
         Destroy();
     }
     #endregion
+
     /// <summary>
-    /// Spawn a projectile with a particular speed
+    /// Spawn a projectile with a predetermined offset
     /// </summary>
-    /// <param name="position"></param>
-    /// <param name="velocity"></param>
-    public void Fire(Vector3 velocity)
+    /// <param name="lifetimeDisplacement">total traversal the projectile should go through in its lifetime</param>
+    /// <param name="duration">duration in beats</param>
+    public void Fire(Vector3 lifetimeDisplacement, float duration)
     {
-        _rb.velocity = velocity;
-        isDestroyed = false;
-        gameObject.SetActive(true);
+        var originalLocation = transform.position;
+        
+        var schedulable = new Conductor.ConductorSchedulable(
+            onStarted: (state) =>
+            {
+                isDestroyed = false;
+                gameObject.SetActive(true);
+            },
+            onUpdate: (state, ctxState) =>
+            {
+                Debug.Log($"{state} -> {ctxState}");
+                transform.position = originalLocation + lifetimeDisplacement * state._elapsedProgressCount;
+                // _rb.position = originalLocation + lifetimeDisplacement * state._elapsedProgressCount;
+                // _rb.velocity = lifetimeDisplacement / ctxState.spb; // current SPB at the update
+            },
+            onCompleted: (state) => { Destroy(); },
+            onAborted: (state) => { Destroy(); }
+        );
+        
+        Conductor.Instance.ScheduleActionAsap(duration, Conductor.Instance.Beat, schedulable);
     }
     /// <summary>
     /// Spawn Projectile based on conductor's rule speed

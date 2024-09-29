@@ -62,7 +62,7 @@ public class BassicsAI : Conductable
             _bassics.esm.Transition<Attacking>();
             _director.playableAsset = _enemyActionSequences[idx];
             _director.Play();
-            var handle = _director.ScheduleTimeline();
+            var handle = _director.ScheduleToBeat();
         }
         _decisionTime = Conductor.Instance.Beat + _beatsPerDecision;
     }

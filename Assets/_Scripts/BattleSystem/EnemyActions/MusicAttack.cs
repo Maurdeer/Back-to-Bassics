@@ -26,7 +26,9 @@ public class MusicAttack : EnemyAction
             parentPawnSprite.Animator.SetFloat("xdir", directionVector.x);
             proj.transform.position = BattleManager.Instance.Player.transform.position + (directionVector) * 6;
             // Take One Beat to fire
-            proj.Fire((BattleManager.Instance.Player.transform.position - proj.transform.position)/(2*Conductor.Instance.spb));
+            var disp = (BattleManager.Instance.Player.transform.position - proj.transform.position);
+            // /(2*Conductor.Instance.spb)
+            proj.Fire(disp, 2);
             currIdx++;
             if (currIdx >= directions.Length)
             {
