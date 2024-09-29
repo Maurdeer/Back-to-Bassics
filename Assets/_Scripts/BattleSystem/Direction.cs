@@ -19,6 +19,11 @@ public static class DirectionHelper
     const float inbetween = 22.5f;
     public static Direction GetVectorDirection(Vector2 line)
     {
+        if (line == Vector2.zero)
+        {
+            return Direction.None;
+        }
+
         float angle = Vector2.SignedAngle(line.normalized, Vector2.up);
 
         if (angle >= 0)

@@ -246,13 +246,13 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
             // Process Combo Strings here if you have enough!
             //if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
             //{
-            //    BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
-            //    // Uncomment below when Status Ailments have been defined
-            //    // BattleManager.Instance.Enemy.ApplyStatusAilments(_weaponData.ailments);
+                //BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
+                // Uncomment below when Status Ailments have been defined
+                // BattleManager.Instance.Enemy.ApplyStatusAilments(_weaponData.ailments);
 
-            //    updateCombo(true);
+                //updateCombo(true);
 
-            //    BattleManager.Instance.Enemy.CompleteAttackRequest(this);
+                //BattleManager.Instance.Enemy.CompleteAttackRequest(this);
             //}
         }
         yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
