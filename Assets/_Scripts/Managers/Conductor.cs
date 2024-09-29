@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using FMOD;
 using FMOD.Studio;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using Debug = UnityEngine.Debug;
 
@@ -16,9 +16,9 @@ using Debug = UnityEngine.Debug;
 
 public class Conductor : Singleton<Conductor>
 {
-    public float Beat => (ctx?.elapsedTotal ?? throw new ArgumentException("don't poll beat without music playing :)"));
+    public bool IsPlaying => ctx != null;
     
-    public float time => Beat * spb;
+    public float Beat => (ctx?.elapsedTotal ?? throw new ArgumentException("don't poll beat without music playing :)"));
 
     public float spb => (ctx?.lastMarker.msPerBeat ?? throw new ArgumentException("don't poll spb without music playing :)")) / 1000;
 
@@ -180,10 +180,20 @@ public class Conductor : Singleton<Conductor>
         public static readonly BeatFraction quarter = new BeatFraction() { numerator = 1, denominator = 4 };
         public static readonly BeatFraction eighth = new BeatFraction() { numerator = 1, denominator = 8 };
         public static readonly BeatFraction sixteenth = new BeatFraction() { numerator = 1, denominator = 16 };
+        
+        public static implicit operator float(BeatFraction bf)
+        {
+            return bf.Eval();
+        }
+    }
+
+    public float SnapToCurrentBeat(BeatFraction granularity)
+    {
+        return ctx.SnapToCurrent(granularity);
     }
     
-    public void ScheduleActionAsap(
-        BeatFraction scheduleGranularity, BeatFraction duration, ConductorSchedulable schedulable)
+    /// <returns>Starting time </returns>
+    public void ScheduleActionAsap(float duration, float time, ConductorSchedulable schedulable)
     {
         if (ctx is null)
         {
@@ -192,7 +202,7 @@ public class Conductor : Singleton<Conductor>
         
         schedulable._parent = this;
         schedulable._state =
-            new ConductorSchedulableState(ctx.elapsedTotal, duration.Eval(), ctx.SnapToCurrent(scheduleGranularity));
+            new ConductorSchedulableState(ctx.elapsedTotal, duration, time);
         ctx.scheduled.Enqueue(schedulable, schedulable._state._evaluatedEndBeat);
         
         schedulable.OnStarted(schedulable._state);
@@ -216,12 +226,14 @@ public class Conductor : Singleton<Conductor>
         /// The number of beats passed in when this schedulable is scheduled
         /// </summary>
         public float _scheduledDuration;
+
         /// <summary>
         /// The actual duration the schedulable will remain in the system until complete is called (_evaluatedEndBeat - _actualStartBeat)
         /// </summary>
         public float _actualDuration => _evaluatedEndBeat - _actualStartBeat;
         /// <summary>
         /// Percentage (0.0 ~ 1.0) version of _actualDuration. May have errors due to floating point math! Please prefer other measures instead
+        /// When there is no ending (duration is positive infinity), progress count is just set to current elapsed beat - starting beat
         /// </summary>
         public float _elapsedProgressCount;
 
@@ -241,16 +253,16 @@ public class Conductor : Singleton<Conductor>
 
         internal Conductor _parent;
         
-        public Action<ConductorSchedulableState> OnUpdate;
+        public Action<ConductorSchedulableState, float, float> OnUpdate;
         public Action<ConductorSchedulableState> OnStarted;
         public Action<ConductorSchedulableState> OnCompleted;
         public Action<ConductorSchedulableState> OnAborted;
 
         public ConductorSchedulable(
-            Action<ConductorSchedulableState> onUpdate, 
-            Action<ConductorSchedulableState> onStarted, 
-            Action<ConductorSchedulableState> onCompleted, 
-            Action<ConductorSchedulableState> onAborted)
+            Action<ConductorSchedulableState, float, float> onUpdate = null, 
+            Action<ConductorSchedulableState> onStarted = null, 
+            Action<ConductorSchedulableState> onCompleted = null, 
+            Action<ConductorSchedulableState> onAborted = null)
         {
             OnUpdate = onUpdate;
             OnStarted = onStarted;
@@ -278,6 +290,7 @@ public class Conductor : Singleton<Conductor>
         public int elapsedWholeBeats = 0;
         // public ulong lastBeatDsp = 0;
         public float elapsedTotal = 0.0f;
+        public float elapsedLastTotal = 0.0f;
         public float elapsedSinceLastBeat = 0.0f;
         // public int samplerRate;
 
@@ -327,14 +340,19 @@ public class Conductor : Singleton<Conductor>
                 scheduled.Dequeue();
             }
 
+            var deltaBeat = elapsedTotal - elapsedLastTotal;
+
             // iterate through schedulables in unsorted manner calling their update methods
             foreach (var (scheduledItem, finishTime) in scheduled.UnorderedItems)
             {
                 scheduledItem._state._elapsedProgressCount =
                     (elapsedTotal - scheduledItem._state._actualStartBeat) / (scheduledItem._state._actualDuration);
+                
                 // Debug.Log($"{scheduledItem.GetHashCode()}: ({elapsedTotal} - {scheduledItem._state._actualStartBeat}) / {scheduledItem._state._actualDuration} = {scheduledItem._state._elapsedProgressCount}");
-                scheduledItem.OnUpdate(scheduledItem._state);
+                scheduledItem.OnUpdate(scheduledItem._state, deltaBeat, elapsedTotal);
             }
+
+            elapsedLastTotal = elapsedTotal;
         }
 
         internal float SnapToCurrent(BeatFraction granularity)
@@ -572,4 +590,29 @@ public class Conductor : Singleton<Conductor>
         public SerializedEvent[] events;
     }
     #endregion
+}
+
+public static class ConductorExtensions
+{
+    public static Conductor.ConductorSchedulable ScheduleTimeline(this PlayableDirector director)
+    {
+        director.timeUpdateMode = DirectorUpdateMode.Manual;
+        director.Play();
+        var schedulable = new Conductor.ConductorSchedulable(
+            onStarted: state =>
+            {
+                director.time = 0;
+                director.Evaluate();
+            },
+            onUpdate: (state, dt, t) =>
+            {
+                director.time = t - state._snappedToStartBeat;
+                director.Evaluate();
+            });
+
+        var startTime = Conductor.Instance.SnapToCurrentBeat(Conductor.BeatFraction.full);
+        Conductor.Instance.ScheduleActionAsap(float.PositiveInfinity, startTime, schedulable);
+
+        return schedulable;
+    }
 }

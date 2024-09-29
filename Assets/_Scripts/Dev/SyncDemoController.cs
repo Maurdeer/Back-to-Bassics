@@ -33,7 +33,7 @@ public class SyncDemoController : MonoBehaviour
     void Start()
     {
         _schedulable = new Conductor.ConductorSchedulable(
-            onUpdate: o => OnAnimationUpdate(o),
+            onUpdate: (o, dt, t) => OnAnimationUpdate(o),
             onStarted: o => OnAnimationStart(o),
             onCompleted: o => OnAnimationComplete(o),
             onAborted: o => OnAnimationAbort(o)
