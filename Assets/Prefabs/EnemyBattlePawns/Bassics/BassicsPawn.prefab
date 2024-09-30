@@ -521,6 +521,7 @@ MonoBehaviour:
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 8599476617418693142}
   <battleCam>k__BackingField: {fileID: 0}
+  StaggerArmor: 0
 --- !u!114 &1337638542897606784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,7 +555,7 @@ PlayableDirector:
   m_GameObject: {fileID: 4221122890883084785}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 11d4efc082ecd284fb4f1b6d30b1b11e, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 878f6ef31a2a8bc43aeb43a43d502ba2, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -572,6 +573,26 @@ PlayableDirector:
     value: {fileID: 1961778708237596147}
   - key: {fileID: 7993128218519378286, guid: 1e54ae3e0b94e6f41990f7ed2546bc55, type: 2}
     value: {fileID: 7789150339329146010}
+  - key: {fileID: -5820859170204454464, guid: 53a003f3e97619748816d2b4ddf11025, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: 1456448326656696158, guid: 53a003f3e97619748816d2b4ddf11025, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: -5820859170204454464, guid: 04d5e389a963e0343aa6b76666a8d3dc, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: 1456448326656696158, guid: 04d5e389a963e0343aa6b76666a8d3dc, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: -2169107463020495374, guid: d79574ff93d181d44b730d1dffe5531a, type: 2}
+    value: {fileID: 1961778708237596147}
+  - key: {fileID: 5312430939684831415, guid: d79574ff93d181d44b730d1dffe5531a, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: -2981694602180991079, guid: d79574ff93d181d44b730d1dffe5531a, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: -7370822144654590419, guid: 878f6ef31a2a8bc43aeb43a43d502ba2, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: -7705651088447237846, guid: 878f6ef31a2a8bc43aeb43a43d502ba2, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: 5569864732102683870, guid: 878f6ef31a2a8bc43aeb43a43d502ba2, type: 2}
+    value: {fileID: 1961778708237596147}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &9217918879987837135
@@ -587,8 +608,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _beatsPerDecision: 2
-  _enemyActionSequences:
-  - {fileID: 11400000, guid: 0995f9fefe54b534f85a121bc1bde168, type: 2}
+  _enemyStages:
+  - {fileID: 11400000, guid: d9e399babefb47f41bc6ab76fcf9cf65, type: 2}
+  - {fileID: 11400000, guid: b20da1e55bbff9249b505ca8e9ddb9b6, type: 2}
+  - {fileID: 11400000, guid: a6b1bc212cb8c214f9927bcedc3cf890, type: 2}
 --- !u!210 &8694757469888071649
 SortingGroup:
   m_ObjectHideFlags: 0
