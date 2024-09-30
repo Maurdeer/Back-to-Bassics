@@ -257,6 +257,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         }
         yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
         attacking = false;
+        deflectionWindow = false;
         _pawnAnimator.Play($"SlashEnd");
         deflected = false;
     }

@@ -32,6 +32,11 @@ public class SlashAction : EnemyAction, IAttackRequester
     }
     public void Slash(SlashNode node)
     {
+        if (node.slashLengthInBeats < 1)
+        {
+            Debug.LogError("Timeline asset slash is not long enough.");
+            return;
+        }
         // (Ryan) Nor here :p
         parentPawn.psm.Transition<Center>();
         StartCoroutine(SlashThread(node));
@@ -47,21 +52,25 @@ public class SlashAction : EnemyAction, IAttackRequester
         parentPawnSprite.FaceDirection(new Vector3(-_currNode.slashVector.x, 0, -1));
         parentPawnSprite.Animator.SetFloat("x_slashDir", _currNode.slashVector.x);
         parentPawnSprite.Animator.SetFloat("y_slashDir", _currNode.slashVector.y);
+        float syncedAnimationTime = (_currNode.slashLengthInBeats - 1) * Conductor.Instance.spb;
+        parentPawnSprite.Animator.SetFloat("speed", broadcastClip.length / syncedAnimationTime);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_broadcast");
-
-        float broadcastHoldTime = (_currNode.slashLengthInBeats * parentPawn.EnemyData.SPB) - minSlashTillHitDuration;
-        yield return new WaitForSeconds(broadcastHoldTime);
+        Debug.Log("Broadcast");
+        //float broadcastHoldTime = (_currNode.slashLengthInBeats * parentPawn.EnemyData.SPB) - minSlashTillHitDuration;
+        yield return new WaitForSeconds(syncedAnimationTime);
 
         // Animation Before Hit -> Setup animation speed
-        //int beats = Mathf.RoundToInt(node.preHitClip.length / Conductor.Instance.spb);
+        //int beats = Mathf.RoundToInt(preHitClip.length / Conductor.Instance.spb);
         //if (beats == 0) beats = 1;
         //float syncedAnimationTime = beats * Conductor.Instance.spb;
-        //parentPawn.SpriteAnimator.SetFloat("speed", node.preHitClip.length / syncedAnimationTime);
-
+        //parentPawnSprite.Animator.SetFloat("speed", preHitClip.length / syncedAnimationTime);
+        parentPawnSprite.Animator.SetFloat("speed", preHitClip.length / Conductor.Instance.spb);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_prehit");
-        yield return new WaitForSeconds(preHitClip.length);
+        Debug.Log("Prehit");
+        yield return new WaitForSeconds(Conductor.Instance.spb);
         //yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
         // Hit Moment
+        Debug.Log("Hitting");
         if (BattleManager.Instance.Player.ReceiveAttackRequest(this))
         {
             PerformSlashOnPlayer();
@@ -84,8 +93,6 @@ public class SlashAction : EnemyAction, IAttackRequester
             }
             yield return new WaitForSeconds(deflectedClip.length);
         }
-        Debug.Log("SLASH COMPLETE");
-        //yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
     }
 
 
