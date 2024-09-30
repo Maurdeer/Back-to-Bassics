@@ -12,6 +12,10 @@ public class DestructibleObject : MonoBehaviour
     static bool playerSlashing = false;
     static Direction slashDirection;
 
+    public bool destructibleByCombo;
+    static string comboString;
+    public string comboToBreak;
+
     public static void PlayerSlash(Vector2 slashDirection)
     {
         //Debug.Log(DirectionHelper.GetVectorDirection(slashDirection));
@@ -22,26 +26,57 @@ public class DestructibleObject : MonoBehaviour
     {
         playerSlashing = false;
     }
+    public static void PlayerCombo(string comboString)
+    {
+        //Debug.Log(DirectionHelper.GetVectorDirection(slashDirection));
+        playerSlashing = true;
+        DestructibleObject.comboString = comboString;
+    }
     public void OnTriggerStay(Collider other)
     {
         if (!playerSlashing)
         {
             hit = false;
         }
-        if (other.gameObject.name == "slash_region" && playerSlashing && !hit)
+        if(!destructibleByCombo)
         {
-            //Debug.Log(slashDirection);
-            if (directionToBreak == Direction.None || directionToBreak == slashDirection)
+            if (other.gameObject.name == "slash_region" && playerSlashing && !hit)
             {
-                //Debug.Log("i have been destro");
-                gameObject.GetComponent<Collider>().enabled = false;
-                if (droppedOnBreak != null)
+                //Debug.Log(slashDirection);
+                if (directionToBreak == Direction.None || directionToBreak == slashDirection)
                 {
-                    Instantiate(droppedOnBreak, transform.position, transform.rotation);
+                    //Debug.Log("i have been destro");
+                    destroySelf();
                 }
-                Object.Destroy(gameObject);
-            }
             hit = true;
+            }
         }
+        else 
+        {
+            
+            if (other.gameObject.name == "slash_region" && playerSlashing && !hit)
+            {
+                //Debug.Log(slashDirection);
+                if (comboString == comboToBreak)
+                {
+                    //Debug.Log("i have been destro");
+                    DestructibleObject.comboString = "";
+                    destroySelf();
+                }
+            hit = true;
+            }
+            
+        }
+        
     }
+
+    public void destroySelf()
+    {
+        gameObject.GetComponent<Collider>().enabled = false;
+        if (droppedOnBreak != null)
+        {
+            Instantiate(droppedOnBreak, transform.position, transform.rotation);
+        }
+        Object.Destroy(gameObject);
+    } 
 }
