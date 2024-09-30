@@ -110,13 +110,11 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     {
         //get player transform and assign it to data's player position
         this.transform.position = data.playerPosition;
-        this.transform.rotation = data.playerRotation;//Doesn't seem to work right, figure out
     }
 
     public void SaveData(GameData data)
     {
         //change the player's position to match the saved data's player position
         data.playerPosition = this.transform.position;
-        data.playerRotation = this.transform.rotation;
     }
 }
