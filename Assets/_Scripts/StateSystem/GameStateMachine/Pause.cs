@@ -10,13 +10,11 @@ public partial class GameStateMachine
         {
             GameManager.Instance.PC.SwitchToUIActions();
             Time.timeScale = 0f;
-
         }
         public override void Exit(GameStateInput i)
         {
             // Make sure that you use the prev state property to go back correctly!
             Time.timeScale = 1f;
-
         }
     }
 }

@@ -28,10 +28,16 @@ public class SaveMenu : Menu
         }
     }
 
+    public void OnSaveCurrentProfileClicked()
+    {
+        DataPersistenceManager.instance.SaveGame();
+    }
 
     public void OnNewGameClicked()
     {
+#if DEBUG
         Debug.Log("Starting new game");
+#endif
         saveSlotsMenu.ActivateMenu(false);
         this.DeactivateMenu();
     }
@@ -44,7 +50,9 @@ public class SaveMenu : Menu
 
     public void OnContinueGameClicked()
     {
+#if DEBUG
         Debug.Log("Loading saved game");
+#endif
         DisableMenuButtons();
 
         // save the game anytime before loading a new scene
