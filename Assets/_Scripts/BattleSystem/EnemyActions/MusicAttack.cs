@@ -15,6 +15,7 @@ public class MusicAttack : EnemyAction
     protected override void OnStartAction()
     {
         currIdx = 0;
+        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         parentPawnSprite.Animator.Play("music");
     }
     protected override void OnFullBeat()

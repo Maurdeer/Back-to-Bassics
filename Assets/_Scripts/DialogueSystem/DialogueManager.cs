@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
-
+using Cinemachine;
 public class DialogueManager : Singleton<DialogueManager>
 {
     // Reference to the existing Dialogue Runner in the scene
@@ -51,6 +51,7 @@ public class DialogueManager : Singleton<DialogueManager>
         Debug.Log($"Switching to view: {viewType}");
         activeDialogueView = null;
         // Loop through dialogue views and find the matching one
+        int i = 0;
         foreach (var view in availableDialogueViews)
         {
             if (view.name.Equals(viewType, System.StringComparison.OrdinalIgnoreCase))
@@ -63,6 +64,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 Debug.Log($"Dialogue View Set to: {viewType}");
                 break;
             }
+            i++;
         }
 
         // If no view matches, log a warning

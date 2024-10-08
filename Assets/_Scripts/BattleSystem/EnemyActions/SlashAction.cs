@@ -27,7 +27,8 @@ public class SlashAction : EnemyAction, IAttackRequester
         parentPawnSprite.Animator.SetFloat("y_slashDir", slashDirection.y);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_broadcast");
 
-        // (Ryan) Maybe it shouldn't be here
+        // (Ryan) Transition Maybe shouldn't be here
+        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         parentPawn.psm.Transition<Center>();
     }
     public void Slash(SlashNode node)
@@ -37,8 +38,6 @@ public class SlashAction : EnemyAction, IAttackRequester
             Debug.LogError("Timeline asset slash is not long enough.");
             return;
         }
-        // (Ryan) Nor here :p
-        parentPawn.psm.Transition<Center>();
         StartCoroutine(SlashThread(node));
     }
     private IEnumerator SlashThread(SlashNode node)
@@ -49,6 +48,12 @@ public class SlashAction : EnemyAction, IAttackRequester
         // Broadcast
         // Direction setup
         // The y value here is facing forward
+        if (parentPawn.psm.IsOnState<Distant>())
+        {
+            parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
+            parentPawn.psm.Transition<Center>();
+            yield return new WaitForSeconds(Conductor.Instance.spb);
+        } 
         parentPawnSprite.FaceDirection(new Vector3(-_currNode.slashVector.x, 0, -1));
         parentPawnSprite.Animator.SetFloat("x_slashDir", _currNode.slashVector.x);
         parentPawnSprite.Animator.SetFloat("y_slashDir", _currNode.slashVector.y);

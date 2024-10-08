@@ -5,15 +5,14 @@ using static EnemyStateMachine;
 
 public partial class EnemyStateMachine
 {
-    public class Idle : EnemyState
+    public class NotInBattle : EnemyState
     {
         public override void Enter(EnemyStateInput i)
         {
             base.Enter(i);
             if (Input.EnemySprite != null)
             {
-                Input.EnemySprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
-                Input.EnemySprite.Animator?.Play("idle_battle");
+                Input.EnemySprite.Animator?.Play("idle");
             }
         }
         public override bool AttackRequestHandler(IAttackRequester requester)

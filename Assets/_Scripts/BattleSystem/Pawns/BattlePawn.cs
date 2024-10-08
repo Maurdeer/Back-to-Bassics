@@ -78,10 +78,13 @@ public class BattlePawn : Conductable
     #endregion
     public virtual void EnterBattle()
     {
+        _pawnSprite.Animator.Play("enterbattle");
+    }
+    public virtual void StartBattle()
+    {
         Enable();
         OnEnterBattle?.Invoke();
         UIManager.Instance.UpdateHP(this);
-        //_spriteAnimator.Play("enterbattle");
     }
     public virtual void ExitBattle()
     {
