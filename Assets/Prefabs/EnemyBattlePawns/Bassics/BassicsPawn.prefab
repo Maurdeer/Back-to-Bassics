@@ -555,7 +555,7 @@ PlayableDirector:
   m_GameObject: {fileID: 4221122890883084785}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 878f6ef31a2a8bc43aeb43a43d502ba2, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: bafcc8c7b781a014fabfbda5cda56669, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -593,6 +593,14 @@ PlayableDirector:
     value: {fileID: 7789150339329146010}
   - key: {fileID: 5569864732102683870, guid: 878f6ef31a2a8bc43aeb43a43d502ba2, type: 2}
     value: {fileID: 1961778708237596147}
+  - key: {fileID: -2828778185108891118, guid: a17f65f8ebf21a64184e90cb0c0d07ba, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: -7370822144654590419, guid: bafcc8c7b781a014fabfbda5cda56669, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: -7705651088447237846, guid: bafcc8c7b781a014fabfbda5cda56669, type: 2}
+    value: {fileID: 7789150339329146010}
+  - key: {fileID: 5569864732102683870, guid: bafcc8c7b781a014fabfbda5cda56669, type: 2}
+    value: {fileID: 1961778708237596147}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &9217918879987837135
@@ -604,10 +612,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4221122890883084785}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66097ae241a807a4fa3735abb706837b, type: 3}
+  m_Script: {fileID: 11500000, guid: 56a4a76b7b4021a41bd0832c08f8b851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _beatsPerDecision: 2
   _enemyStages:
   - {fileID: 11400000, guid: d9e399babefb47f41bc6ab76fcf9cf65, type: 2}
   - {fileID: 11400000, guid: b20da1e55bbff9249b505ca8e9ddb9b6, type: 2}
