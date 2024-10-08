@@ -48,7 +48,8 @@ public class BossAI : Conductable
         { 
             if (_enemyBattlePawn.esm.IsOnState<Idle>() && _enemyBattlePawn.psm.IsOnState<Center>() && _currentStage > 0)
             {
-                _enemyBattlePawn.psm.Transition<Distant>();
+                // _enemyBattlePawn.psm.Transition<Distant>();
+                _enemyBattlePawn.esm.Transition<Block>();
             }
         };
     }
