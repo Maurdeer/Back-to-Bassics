@@ -76,8 +76,6 @@ public class Projectile : MonoBehaviour, IAttackRequester
         //---------------------------------------
 
         _hitPlayerPawn.Damage(_dmg);
-
-        _hitPlayerPawn.CompleteAttackRequest(this);
         Destroy();
     }
     

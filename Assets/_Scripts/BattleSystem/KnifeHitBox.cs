@@ -18,7 +18,6 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
         }
         
         pawn.Damage(damage);
-        pawn.CompleteAttackRequest(this);
         // Decrease spinner speed if player is hit
         if (spinner.speed > spinner.minSpeed) {
             spinner.speed /= 2;
@@ -69,7 +68,6 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
         // (TEMP)----------- This is dumb IK---------------------
         BattleManager.Instance.Enemy.Damage(1);
         //-------------------------------------------------------
-        player.CompleteAttackRequest(this);
         return true;
     }
     public bool OnRequestBlock(IAttackReceiver receiver)
