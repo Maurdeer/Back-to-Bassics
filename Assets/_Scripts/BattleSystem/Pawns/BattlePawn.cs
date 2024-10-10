@@ -17,6 +17,7 @@ public class BattlePawn : Conductable
     [Header("Battle Pawn Data")]
     [SerializeField] protected int _currHP;
     public int HP => _currHP;
+    public int MaxHP => _data.HP;
 
     #region BattlePawn Boolean States
     public bool IsDead { get; private set; }
@@ -33,7 +34,7 @@ public class BattlePawn : Conductable
     #region Unity Messages
     protected virtual void Awake()
     {
-        _currHP = _data.HP;
+        _currHP = MaxHP;
         _pawnAnimator = GetComponent<Animator>();
         _pawnSprite = GetComponentInChildren<PawnSprite>();
     }
@@ -59,7 +60,7 @@ public class BattlePawn : Conductable
     }
     public virtual void Heal(int amount)
     {
-        if (_currHP < _data.HP)
+        if (_currHP < MaxHP)
         {
             _currHP += amount;
             UIManager.Instance.UpdateHP(this);

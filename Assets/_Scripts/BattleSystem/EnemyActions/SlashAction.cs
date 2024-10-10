@@ -15,6 +15,8 @@ public class SlashAction : EnemyAction, IAttackRequester
     public float minSlashTillHitDuration => (preHitClip.length + broadcastClip.length);
     public float minSlashTillHitInBeats => minSlashTillHitDuration / parentPawn.EnemyData.SPB;
     private SlashNode _currNode;
+    //Amount of stagger damage towards enemy of successful deflect.
+    private int _staggerDamage = 50;
     public void Broadcast(Direction direction)
     {
         Vector2 slashDirection = DirectionHelper.GetVectorFromDirection(direction);
@@ -77,19 +79,28 @@ public class SlashAction : EnemyAction, IAttackRequester
         if (BattleManager.Instance.Player.ReceiveAttackRequest(this))
         {
             PerformSlashOnPlayer();
+            Debug.Log("Slash Start!");
             BattleManager.Instance.Player.CompleteAttackRequest(this);
         }
         yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_posthit") ||
         parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_deflected"));
         if (parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_posthit"))
         {
+            Debug.Log("Slash Hit!");
             yield return new WaitForSeconds(postHitClip.length);
         }
         else
         {
+            Debug.Log("Slash Parry!");
+            if (parentPawn is EnemyBattlePawn enemyPawn)
+            {
+                enemyPawn.StaggerDamage(_staggerDamage);
+            }
             yield return new WaitForSeconds(deflectedClip.length);
         }
     }
+
+
     public bool OnRequestBlock(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
@@ -106,9 +117,9 @@ public class SlashAction : EnemyAction, IAttackRequester
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
-        if (player == null 
-            || !DirectionHelper.MaxAngleBetweenVectors(-_currNode.slashVector, player.SlashDirection, 5f)) 
-                return false; 
+        if (player == null
+            || !DirectionHelper.MaxAngleBetweenVectors(-_currNode.slashVector, player.SlashDirection, 5f))
+            return false;
 
         // (TEMP) DEBUG UI Tracker -------
         UIManager.Instance.IncrementParryTracker();
@@ -140,6 +151,22 @@ public class SlashAction : EnemyAction, IAttackRequester
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
         BattleManager.Instance.Player.Damage(_currNode.dmg);
     }
+
+    //private void StaggerBuildUp(int staggerDamage)
+    //{
+    //    if (parentPawn == null)
+    //    {
+    //        Debug.LogError("Parent pawn is not assigned.");
+    //        return;
+    //    }
+    //    parentPawn.CurrentStagger += staggerDamage; 
+    //    if (parentPawn.CurrentStagger >= parentPawn.EnemyData.StaggerHealth)
+    //    {
+    //        parentPawn.Stagger(); 
+    //        parentPawn.CurrentStagger = 0; 
+    //    }
+    //}
+   
 }
 
 [Serializable]

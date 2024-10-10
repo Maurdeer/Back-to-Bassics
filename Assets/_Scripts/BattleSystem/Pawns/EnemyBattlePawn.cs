@@ -18,9 +18,12 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //[SerializeField] private ParticleSystem _particleSystem;
     [field: SerializeField] public Transform targetFightingLocation { get; private set; }
     [field: SerializeField] public CinemachineVirtualCamera battleCam { get; private set; }
+    //reference to director for stagger implementation
     public EnemyBattlePawnData EnemyData => (EnemyBattlePawnData)Data;
     private Dictionary<Type, EnemyAction> _enemyActions = new Dictionary<Type, EnemyAction>();
-
+    public event Action OnEnemyStaggerEvent;
+    public int CurrentStaggerHealth { get; set; }
+    public int StaggerArmor; // reduces stagger damage taken from attacks
     // Events
     //public event Action OnEnemyActionComplete; --> Hiding for now
     protected override void Awake()
@@ -42,6 +45,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" is must have a PositionStateMachine");
             return;
         }
+        CurrentStaggerHealth = EnemyData.StaggerHealth;
         base.Awake();
     }
     public EA GetEnemyAction<EA>() where EA : EnemyAction
@@ -73,6 +77,23 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //    _enemyActions[i].StartAction();
     //    _actionIdx = i;
     //}
+    public void StaggerDamage(int staggerDamage)
+    {
+        if (EnemyData == null)
+        {
+            Debug.LogError("EnemyData is not assigned.");
+            return;
+        }
+        Debug.Log("curr stagger health: " + CurrentStaggerHealth);
+        staggerDamage -= StaggerArmor;
+        if (staggerDamage < 0) return;
+        CurrentStaggerHealth -= staggerDamage;
+        if (CurrentStaggerHealth <= 0)
+        {
+            Stagger();
+            CurrentStaggerHealth = EnemyData.StaggerHealth;
+        }
+    }
     #region IAttackReceiver Methods
     public virtual bool ReceiveAttackRequest(IAttackRequester requester)
     {
@@ -96,12 +117,19 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //    amount = _esm.CurrState.OnLurch(amount);
     //    base.Lurch(amount);
     //}
+
     protected override void OnStagger()
     {
         if (esm.IsOnState<Dead>()) return;
         base.OnStagger();
         // Staggered Animation (Paper Crumple)
+        psm.Transition<Center>();
         esm.Transition<Stagger>();
+        OnEnemyStaggerEvent?.Invoke();
+        foreach (EnemyAction action in _enemyActions.Values)
+        {
+            action.StopAction();
+        }
         //_particleSystem?.Play();
     }
     protected override void OnUnstagger()

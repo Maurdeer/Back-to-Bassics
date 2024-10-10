@@ -10,6 +10,7 @@ public class BattlePawnData : ScriptableObject
     [SerializeField, Tooltip("Hit points")] private int _hp;
     [SerializeField] private float staggerDuration = 4f;
     [SerializeField, TextArea] private string _lore;
+ 
 
     //[Header("Resistances")]
     //[SerializeField] private float _blockingReduction;

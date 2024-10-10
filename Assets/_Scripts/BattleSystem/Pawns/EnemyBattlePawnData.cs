@@ -7,6 +7,8 @@ public class EnemyBattlePawnData : BattlePawnData
 {
     [Header("Enemy Data")]
     [SerializeField] private int _bpm;
+    [SerializeField] private int _staggerHealth;
     public int BPM => _bpm;
     public float SPB => 60f / _bpm;
+    public int StaggerHealth => _staggerHealth;
 }

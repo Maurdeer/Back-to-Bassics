@@ -7,10 +7,12 @@ public class Projectile : MonoBehaviour, IAttackRequester
 {
     [Header("Projectile Specs")]
     [SerializeField] private int _dmg;
+    [SerializeField] private int _staggerDamage;
     private float _speed;
     private Rigidbody _rb;
     public bool isDestroyed { get; private set; }
     private PlayerBattlePawn _hitPlayerPawn;
+    private EnemyBattlePawn _targetEnemy;
     public float AttackDamage => _dmg;
     public float AttackLurch => _dmg;
     #region Unity Messages
@@ -73,6 +75,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementParryTracker();
         //---------------------------------------
+        _targetEnemy?.StaggerDamage(_staggerDamage);
         Destroy();
         receiver.CompleteAttackRequest(this);
         return true;
@@ -96,5 +99,10 @@ public class Projectile : MonoBehaviour, IAttackRequester
         isDestroyed = true;
         _hitPlayerPawn = null;
         gameObject.SetActive(false);
+    }
+    public void SetTargetEnemy(EnemyBattlePawn targetEnemy)
+    {
+        _targetEnemy = targetEnemy;
+        _targetEnemy.OnEnemyStaggerEvent += Destroy;
     }
 }
