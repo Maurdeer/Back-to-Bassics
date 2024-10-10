@@ -59,11 +59,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         yield return new WaitForSeconds(preHitClip.length);
         //yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
         // Hit Moment
-        if (BattleManager.Instance.Player.ReceiveAttackRequest(this))
-        {
-            PerformSlashOnPlayer();
-            BattleManager.Instance.Player.CompleteAttackRequest(this);
-        }
+        BattleManager.Instance.Player.ReceiveAttackRequest(this);
         yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_posthit") ||
         parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_deflected"));
         if (parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_posthit"))
@@ -77,6 +73,17 @@ public class SlashAction : EnemyAction, IAttackRequester
         Debug.Log("SLASH COMPLETE");
         //yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
     }
+    
+    public void OnAttackMaterialize(IAttackReceiver receiver)
+    {
+        // (TEMP) DEBUG UI Tracker -------
+        UIManager.Instance.IncrementMissTracker();
+        //---------------------------------------
+
+        parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
+        BattleManager.Instance.Player.Damage(_currNode.dmg);
+    }
+    
     public bool OnRequestBlock(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
@@ -86,10 +93,9 @@ public class SlashAction : EnemyAction, IAttackRequester
         //---------------------------------------
 
         //parentPawnSprite.Animator.SetTrigger("blocked");
-
-        receiver.CompleteAttackRequest(this);
         return true;
     }
+    
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
@@ -106,7 +112,6 @@ public class SlashAction : EnemyAction, IAttackRequester
         {
             parentPawn.Stagger();
         }
-        receiver.CompleteAttackRequest(this);
         return true;
     }
     public bool OnRequestDodge(IAttackReceiver receiver)
@@ -115,17 +120,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         if (player == null || !_currNode.dodgeDirections.Contains(player.DodgeDirection)) return false;
 
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
-        receiver.CompleteAttackRequest(this);
         return true;
-    }
-    private void PerformSlashOnPlayer()
-    {
-        // (TEMP) DEBUG UI Tracker -------
-        UIManager.Instance.IncrementMissTracker();
-        //---------------------------------------
-
-        parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
-        BattleManager.Instance.Player.Damage(_currNode.dmg);
     }
 }
 

@@ -11,13 +11,13 @@ public class DummyEnemyBattle : EnemyBattlePawn
         _playerComboManager = BattleManager.Instance.Player.GetComponent<ComboManager>();
         _playerComboManager.CurrComboMeterAmount = _playerComboManager.MaxComboMeterAmount;
     }
-    public override bool ReceiveAttackRequest(IAttackRequester requester, Action onPendingSuccess = null, Action onPendingFail = null)
+    public override void ReceiveAttackRequest(IAttackRequester requester)
     {
         PlayerBattlePawn player = requester as PlayerBattlePawn;
         if (player != null)
         {
             _playerComboManager.CurrComboMeterAmount = _playerComboManager.MaxComboMeterAmount;
         }
-        return base.ReceiveAttackRequest(requester);
+        base.ReceiveAttackRequest(requester);
     }
 }

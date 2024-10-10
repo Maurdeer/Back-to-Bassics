@@ -20,18 +20,19 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     public PlayerWeaponData WeaponData => _weaponData;
     public Vector2 SlashDirection { get; private set; }
     public Direction DodgeDirection { get; private set; }
-    private Queue<IAttackRequester> _activeAttackRequesters;
     public float AttackDamage { get => _weaponData.Dmg; }
     public bool attacking { get; private set; }
     private bool deflected;
     public bool deflectionWindow { get; private set; }
     public bool dodging { get; set; }
     private ComboManager _comboManager;
-    private Coroutine attackingThread;
+    // private Coroutine attackingThread;
+
+    private PriorityQueue<IAttackRequester, float> ActiveAttacks = new();
+    
     protected override void Awake()
     {
         base.Awake();
-        _activeAttackRequesters = new Queue<IAttackRequester>();
         _traversalPawn = GetComponent<PlayerTraversalPawn>();
         _comboManager = GetComponent<ComboManager>();
         SlashDirection = Vector2.zero;
@@ -142,20 +143,15 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 //if (!animatorState.IsName("idle")) return;
                 _pawnSprite.FaceDirection(new Vector3(direction.x, 0, 1));
                 _pawnAnimator.PlayInFixedTime($"Slash{DirectionHelper.GetVectorDirection(direction)}", -1, attackDurationBeats * contextState.spb);
+
+                // _slashEffect.playRate;
                 _slashEffect.Play();
                 // Set the Slash Direction
                 AudioManager.Instance.PlayOnShotSound(WeaponData.slashAirSound, transform.position);
                 SlashDirection = direction;
                 SlashDirection.Normalize();
-                
-                if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
-                {
-                    BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
 
-                    updateCombo(true);
-
-                    BattleManager.Instance.Enemy.CompleteAttackRequest(this);
-                }
+                BattleManager.Instance.Enemy.ReceiveAttackRequest(this);
                 attacking = true;
                 deflectionWindow = true;
             },
@@ -191,14 +187,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         // First Divsion is early receive
         // second divsion is deflection window
         // Third Division is late receive
-        if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
-        {
-            BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
-
-            updateCombo(true);
-
-            BattleManager.Instance.Enemy.CompleteAttackRequest(this);
-        }
+        BattleManager.Instance.Enemy.ReceiveAttackRequest(this);
         float divisionTime = _weaponData.AttackDuration / 4f;
         attacking = true;
         deflectionWindow = true;
@@ -208,8 +197,8 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         deflectionWindow = true;
         // Direct Attack when no attack requesters
         // This is where combo strings should be processed
-        if (!deflected && _activeAttackRequesters.Count <= 0)
-        {
+        // if (!deflected && _activeAttackRequesters.Count <= 0)
+        // {
             // Process Combo Strings here if you have enough!
             //if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
             //{
@@ -221,7 +210,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 
             //BattleManager.Instance.Enemy.CompleteAttackRequest(this);
             //}
-        }
+        // }
         yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
         attacking = false;
         _pawnAnimator.Play($"SlashEnd");
@@ -278,36 +267,45 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     //    // Technically inefficent due to second method call, but good for readablity and modularity!
     //    // o7 sp
     //    if (!blocking && !attacking) base.RecoverSP(amount);
-    //}
+    //}ikjm,,k
     #region IAttackReceiver Methods
-    public bool ReceiveAttackRequest(IAttackRequester requester, Action onPendingSuccess = null, Action onPendingFail = null)
+    public void ReceiveAttackRequest(IAttackRequester requester)
     {
-        _activeAttackRequesters.Enqueue(requester);
+        if (TryResolveAttackEarly(requester))
+        {
+            return;
+        }
+        
+        // Add to queue
+        
+    }
+    #endregion
+
+    bool TryResolveAttackEarly(IAttackRequester requester)
+    {
         if (/*!deflected && */ deflectionWindow && requester.OnRequestDeflect(this))
         {
             deflected = true;
             AudioManager.Instance.PlayOnShotSound(WeaponData.slashHitSound, transform.position);
             _comboManager.CurrComboMeterAmount += 1;
-            return false;
+            return true;
         }
         if (dodging && requester.OnRequestDodge(this))
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
-
-    public void CompleteAttackRequest(IAttackRequester requester)
-    {
-        if (_activeAttackRequesters.Peek() != requester)
-        {
-            Debug.LogError($"Attack Request and Completion missmatch, expected attack requester \"{_activeAttackRequesters.Peek()}\" instead got \"{requester}.\"");
-            return;
-        }
-        _activeAttackRequesters.Dequeue();
-    }
-    #endregion
+    
     #region IAttackRequester Methods
+
+    public void OnAttackMaterialize(IAttackReceiver receiver)
+    {
+        BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
+        updateCombo(true);
+        BattleManager.Instance.Enemy.CompleteAttackRequest(this);
+    }
+    
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         return true;

@@ -66,32 +66,35 @@ public class Projectile : MonoBehaviour, IAttackRequester
         _hitPlayerPawn = collision.GetComponent<PlayerBattlePawn>();
         if (_hitPlayerPawn == null) _hitPlayerPawn = collision.GetComponentInParent<PlayerBattlePawn>();
         if (_hitPlayerPawn == null) return;
-        if (_hitPlayerPawn.ReceiveAttackRequest(this))
-        {
-            // (TEMP) Manual DEBUG UI Tracker -------
-            UIManager.Instance.IncrementMissTracker();
-            //---------------------------------------
-
-            _hitPlayerPawn.Damage(_dmg);
-
-            _hitPlayerPawn.CompleteAttackRequest(this);
-            Destroy();
-        }
-
+        _hitPlayerPawn.ReceiveAttackRequest(this);
     }
+
+    public void OnAttackMaterialize(IAttackReceiver receiver)
+    {
+        // (TEMP) Manual DEBUG UI Tracker -------
+        UIManager.Instance.IncrementMissTracker();
+        //---------------------------------------
+
+        _hitPlayerPawn.Damage(_dmg);
+
+        _hitPlayerPawn.CompleteAttackRequest(this);
+        Destroy();
+    }
+    
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         // Did receiver deflect in correct direction?
-        if (player == null 
-            ||!DirectionHelper.MaxAngleBetweenVectors(-_rb.velocity, player.SlashDirection, 5f)) 
-                return false;
+        if (player == null
+            || !DirectionHelper.MaxAngleBetweenVectors(-_rb.velocity, player.SlashDirection, 5f))
+        {
+            return false;
+        }
 
         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementParryTracker();
         //---------------------------------------
         Destroy();
-        receiver.CompleteAttackRequest(this);
         return true;
     }
     public bool OnRequestBlock(IAttackReceiver receiver)
@@ -101,7 +104,6 @@ public class Projectile : MonoBehaviour, IAttackRequester
         //---------------------------------------
         //_hitPlayerPawn.Lurch(_dmg);
         Destroy();
-        receiver.CompleteAttackRequest(this);
         return true;
     }
     public bool OnRequestDodge(IAttackReceiver receiver) 
