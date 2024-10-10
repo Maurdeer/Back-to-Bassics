@@ -93,6 +93,7 @@ public class FireProjectileAction : EnemyAction
         // This Only talors to bassics, not in general
         parentPawnSprite.FaceDirection(new Vector3(-node.relativeSpawnPosition.x, 0, -1));
         //parentPawnSprite.Animator.SetFloat("x_slashDir", -node.relativeSpawnPosition.x);
+        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         parentPawnSprite.Animator.Play(animationName);
     }
    
