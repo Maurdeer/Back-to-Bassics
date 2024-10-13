@@ -18,8 +18,8 @@ public class BeatIndicator : Conductable
         float halfSpb = Conductor.Instance.spb / 2f;
         float elapsedTime = 0f;
 
-        float rightStartValue = 0.5f;
-        float leftStartValue = 0.5f;
+        float rightStartValue = 0.89f;
+        float leftStartValue = 0.89f;
 
         float targetValue = 1f;
 
@@ -28,8 +28,10 @@ public class BeatIndicator : Conductable
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / halfSpb;
 
-            rightSlider.value = Mathf.Lerp(rightStartValue, targetValue, t);
-            leftSlider.value = Mathf.Lerp(leftStartValue, targetValue, t);
+            float curvedT = Mathf.SmoothStep(0.89f, 1f, t);
+
+            rightSlider.value = Mathf.Lerp(rightStartValue, targetValue, curvedT);
+            leftSlider.value = Mathf.Lerp(leftStartValue, targetValue, curvedT);
 
             yield return null;
         }
@@ -41,12 +43,15 @@ public class BeatIndicator : Conductable
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / halfSpb;
 
-            rightSlider.value = Mathf.Lerp(targetValue, rightStartValue, t);
-            leftSlider.value = Mathf.Lerp(targetValue, leftStartValue, t);
+            float curvedT = Mathf.SmoothStep(0f, 1f, t);
+
+            rightSlider.value = Mathf.Lerp(targetValue, rightStartValue, curvedT);
+            leftSlider.value = Mathf.Lerp(targetValue, rightStartValue, curvedT);
 
             yield return null;
         }
     }
+
 
 
     protected override void OnFullBeat()
