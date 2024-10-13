@@ -12,6 +12,7 @@ public partial class EnemyStateMachine
             base.Enter(i);
             if (Input.EnemySprite != null)
             {
+                Input.EnemySprite?.Animator?.Play("standby");
                 Input.EnemySprite.Animator?.Play("dead");
             }   
         }

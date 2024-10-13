@@ -82,6 +82,9 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         // (Ryan) This really sucky
         // Merge to one state called Open
         DodgeDirection = DirectionHelper.GetVectorDirection(direction);
+        updateCombo(false);
+
+        // TODO: refactor coroutine
         StartCoroutine(DodgeThread(DodgeDirection.ToString().ToLower()));
     }
     private IEnumerator DodgeThread(string directionAnimation)

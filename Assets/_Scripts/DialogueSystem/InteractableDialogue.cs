@@ -6,15 +6,8 @@ using Yarn.Unity;
 public class InteractableDialogue : MonoBehaviour, Interactable
 {
     [SerializeField] private string nodeName;
-    DialogueRunner dialogueRunner;
-    // Start is called before the first frame update
-    void Start()
-    {
-        dialogueRunner = FindObjectOfType<DialogueRunner>();
-    }
-
     public void Interact()
     {
-        dialogueRunner.StartDialogue(nodeName);
+        DialogueManager.Instance.RunDialogueNode(nodeName);
     }
 }
