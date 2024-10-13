@@ -17,7 +17,7 @@ public class DataPersistenceManager : MonoBehaviour
     [SerializeField] private bool useEncryption;
 
     [Header("Auto Saving Configuration")]
-    [SerializeField] private bool enableAutoSave = false;
+    [SerializeField] private bool autoSaveEnabled = false;
     [SerializeField] private float autoSaveTimeSeconds = 60f;
 
     private GameData gameData;
@@ -49,16 +49,6 @@ public class DataPersistenceManager : MonoBehaviour
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
 
         InitializeSelectedProfileId();
-    }
-
-    private void Update()
-    {
-#if DEBUG
-        if (enableAutoSave && autoSaveCoroutine == null)
-        {
-            autoSaveCoroutine = StartCoroutine(AutoSave());
-        }
-#endif
     }
 
     private void OnEnable()
@@ -216,25 +206,12 @@ public class DataPersistenceManager : MonoBehaviour
 
     private IEnumerator AutoSave()
     {
-        while (enableAutoSave)
+        while (autoSaveEnabled)
         {
             yield return new WaitForSeconds(autoSaveTimeSeconds);
             SaveGame();
-#if DEBUG
             Debug.Log("Auto Saved Game");
-#endif
         }
         autoSaveCoroutine = null;
-    }
-    public void DisableSaving()
-    {
-        disableDataPersistence = true;
-        StopCoroutine(autoSaveCoroutine);
-        autoSaveCoroutine = null;
-    }
-    public void EnableSaving()
-    {
-        disableDataPersistence = false;
-        autoSaveCoroutine = StartCoroutine(AutoSave());
     }
 }
