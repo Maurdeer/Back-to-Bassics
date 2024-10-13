@@ -26,7 +26,12 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
             resetSpeed = spinner.speed / 2;
         }
     }
-    
+
+    public float GetDeflectionCoyoteTime()
+    {
+        return 0.5f;
+    }
+
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;

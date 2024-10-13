@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using FMODUnity;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -21,6 +20,8 @@ public class Projectile : MonoBehaviour, IAttackRequester
     }
     #endregion
 
+    [SerializeField] private EventReference playOnMiss;
+    
     /// <summary>
     /// Spawn a projectile with a predetermined offset
     /// </summary>
@@ -42,7 +43,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
                 // _rb.position = originalLocation + lifetimeDisplacement * state._elapsedProgressCount;
                 // _rb.velocity = lifetimeDisplacement / ctxState.spb; // current SPB at the update
             },
-            onCompleted: (state, ctxState) => { Destroy(); },
+            onCompleted: (state, ctxState) => { },
             onAborted: (state) => { Destroy(); }
         );
         
@@ -76,9 +77,20 @@ public class Projectile : MonoBehaviour, IAttackRequester
         //---------------------------------------
 
         _hitPlayerPawn.Damage(_dmg);
+        FMODUnity.RuntimeManager.PlayOneShot(playOnMiss);
         Destroy();
     }
-    
+
+    public float GetDeflectionCoyoteTime()
+    {
+        return 0.5f;
+    }
+
+    public void OnUpdateDuringCoyoteTime(Conductor.ConductorSchedulableState state, Conductor.ConductorContextState ctx)
+    {
+        transform.localScale = Vector3.one * (1 - state._elapsedProgressCount);
+    }
+
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
@@ -106,6 +118,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
     }
     public bool OnRequestDodge(IAttackReceiver receiver) 
     {
+        Destroy();
         return true;
     }
     public void Destroy()

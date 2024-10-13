@@ -95,7 +95,12 @@ public class SlashAction : EnemyAction, IAttackRequester
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
         BattleManager.Instance.Player.Damage(_currNode.dmg);
     }
-    
+
+    public float GetDeflectionCoyoteTime()
+    {
+        return 0.5f;
+    }
+
     public bool OnRequestBlock(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;

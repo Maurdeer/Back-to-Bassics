@@ -19,7 +19,7 @@ public class Conductor : Singleton<Conductor>
     
     public float Beat => (ctx?.currentState.ElapsedBeat ?? throw new ArgumentException("don't poll beat without music playing :)"));
 
-    // public float spb => (ctx?.lastMarker.msPerBeat ?? throw new ArgumentException("don't poll spb without music playing :)")) / 1000;
+    public float spb => (ctx?.lastMarker.msPerBeat ?? throw new ArgumentException("don't poll spb without music playing :)")) / 1000;
 
     /// <summary>
     /// A json file containing mapping from each event path to an array of tempo markers, containing the following info:
@@ -41,6 +41,7 @@ public class Conductor : Singleton<Conductor>
         {
             if (_ctx != null)
             {
+                Debug.Log("=========== STOPPED CONDUCTING ===========");
                 _ctx.Stop();
                 ctxHandle.Free();
             }
@@ -110,7 +111,7 @@ public class Conductor : Singleton<Conductor>
             Debug.LogWarning("Conductor was issued to stop conducting when it already is not conducting");
             return;
         }
-
+        
         ctx = null;
     }
 
@@ -193,7 +194,7 @@ public class Conductor : Singleton<Conductor>
         if (time <= startTime)
         {
             schedulable._state._started = true;
-            schedulable.OnStarted(schedulable._state, ctx.currentState);
+            schedulable.OnStarted?.Invoke(schedulable._state, ctx.currentState);
         }
     }
 
@@ -245,10 +246,10 @@ public class Conductor : Singleton<Conductor>
 
         internal Conductor _parent;
         
-        public Action<ConductorSchedulableState, ConductorContextState> OnUpdate;
-        public Action<ConductorSchedulableState, ConductorContextState> OnStarted;
-        public Action<ConductorSchedulableState, ConductorContextState> OnCompleted;
-        public Action<ConductorSchedulableState> OnAborted;
+        public readonly Action<ConductorSchedulableState, ConductorContextState> OnUpdate;
+        public readonly Action<ConductorSchedulableState, ConductorContextState> OnStarted;
+        public readonly Action<ConductorSchedulableState, ConductorContextState> OnCompleted;
+        public readonly Action<ConductorSchedulableState> OnAborted;
 
         public ConductorSchedulable(
             Action<ConductorSchedulableState, ConductorContextState> onUpdate = null, 
@@ -360,7 +361,7 @@ public class Conductor : Singleton<Conductor>
             {
                 if (!scheduledItem._state._aborted)
                 {
-                    scheduledItem.OnCompleted(scheduledItem._state, currentState);
+                    scheduledItem.OnCompleted?.Invoke(scheduledItem._state, currentState);
                 }
 
                 scheduled.Dequeue();
@@ -382,10 +383,10 @@ public class Conductor : Singleton<Conductor>
                     if (!scheduledItem._state._started)
                     {
                         scheduledItem._state._started = true;
-                        scheduledItem.OnStarted(scheduledItem._state, currentState);
+                        scheduledItem.OnStarted?.Invoke(scheduledItem._state, currentState);
                     }
                     
-                    scheduledItem.OnUpdate(scheduledItem._state, currentState);
+                    scheduledItem.OnUpdate?.Invoke(scheduledItem._state, currentState);
                 }
             }
             
@@ -421,12 +422,12 @@ public class Conductor : Singleton<Conductor>
 
         internal void Stop()
         {
-            fmodInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            fmodInstance.stop(STOP_MODE.IMMEDIATE);
             
             // iterate through schedulables in unsorted manner, calling their abort method
             foreach (var (scheduledItem, finishTime) in scheduled.UnorderedItems)
             {
-                scheduledItem.OnAborted(scheduledItem._state);
+                scheduledItem.OnAborted?.Invoke(scheduledItem._state);
             }
         }
 
@@ -471,32 +472,22 @@ public class Conductor : Singleton<Conductor>
                     timeSignatureDenominator = markers[^1].timeSignatureDenominator
                 });
             }
-            
-            // search sorted markers array where t in inbetween consecutive markers, return the earlier of those markers
-            // lol i love implementing binary search from scratch ...
-            var l = 1;
-            var r = markers.Length;
 
-            while (l < r)
+            for (int i = 0; i < markers.Length-1; i++)
             {
-                var m = (l + r) / 2;
-
-                if (markers[m].positionMs >= timelinePositionMs && markers[m - 1].positionMs <= timelinePositionMs)
+                if (markers[i].positionMs >= timelinePositionMs)
                 {
-                    return (markers[m-1], markers[m]);
-                }
-
-                if (markers[m].positionMs < timelinePositionMs)
-                {
-                    l = m + 1;
-                }
-                else
-                {
-                    r = m - 1;
+                    return (markers[i], markers[i+1]);
                 }
             }
-
-            throw new Exception("funny haha error, I can't write binary search :*(");
+            
+            return (markers[^1], new SerializedTempoMarker{
+                id = null,
+                positionMs = int.MaxValue,
+                tempoBpm = markers[^1].tempoBpm,
+                timeSignatureNumerator = markers[^1].timeSignatureNumerator,
+                timeSignatureDenominator = markers[^1].timeSignatureDenominator
+            });
         }
 
         public void SetCallback(GCHandle handle)

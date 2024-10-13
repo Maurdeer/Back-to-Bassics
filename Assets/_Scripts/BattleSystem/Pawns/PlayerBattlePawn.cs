@@ -28,7 +28,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     private ComboManager _comboManager;
     // private Coroutine attackingThread;
 
-    private PriorityQueue<IAttackRequester, float> ActiveAttacks = new();
+    private HashSet<IAttackRequester> ActiveAttacks = new();
     
     protected override void Awake()
     {
@@ -107,21 +107,6 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     public void Slash(Vector2 direction)
     {
         if (IsDead) return;
-        //AnimatorStateInfo animatorState = _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
-        //if (!animatorState.IsName("idle")) return;
-        
-            // AT: indented code commented for demo purpose, other code commented already
-            // _pawnSprite.FaceDirection(new Vector3(direction.x, 0, 1));
-            // _pawnAnimator.Play($"Slash{DirectionHelper.GetVectorDirection(direction)}");
-            // _slashEffect.Play();
-            // AudioManager.Instance.PlayOnShotSound(WeaponData.slashAirSound, transform.position);
-            // // Set the Slash Direction
-            // SlashDirection = direction;
-            // SlashDirection.Normalize();
-            
-        //UIManager.Instance.PlayerSlash(SlashDirection);
-        // if (attackingThread != null) StopCoroutine(attackingThread);
-        // attackingThread = StartCoroutine(Attacking());
 
         if (slashHandle != null)
         {
@@ -135,8 +120,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
             slashHandle.SelfAbort();
             slashCancelCounter += 1;
         }
-
-        Debug.Log($"{_weaponData.AttackDuration}");
+        
         var attackDurationBeats = _weaponData.AttackDuration;
         
         slashHandle = new Conductor.ConductorSchedulable(
@@ -145,9 +129,8 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 //AnimatorStateInfo animatorState = _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
                 //if (!animatorState.IsName("idle")) return;
                 _pawnSprite.FaceDirection(new Vector3(direction.x, 0, 1));
-                _pawnAnimator.PlayInFixedTime($"Slash{DirectionHelper.GetVectorDirection(direction)}", -1, attackDurationBeats * contextState.spb);
-
-                // _slashEffect.playRate;
+                _pawnAnimator.StopPlayback();
+                _pawnAnimator.PlayInFixedTime($"Slash{DirectionHelper.GetVectorDirection(direction)}", -1, state._actualDuration * contextState.spb);
                 _slashEffect.Play();
                 // Set the Slash Direction
                 AudioManager.Instance.PlayOnShotSound(WeaponData.slashAirSound, transform.position);
@@ -157,6 +140,12 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 BattleManager.Instance.Enemy.ReceiveAttackRequest(this);
                 attacking = true;
                 deflectionWindow = true;
+
+                // as soon as deflection window starts, clear all dodge-able attacks, considering all of them as "deflected"
+                if (ActiveAttacks.Count > 0)
+                {
+                    ActiveAttacks.RemoveWhere(TryDodgeAttack);
+                }
             },
             onUpdate: (state, contextState) => { },
             onCompleted: (state, contextState) =>
@@ -172,52 +161,6 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         );
         
         Conductor.Instance.ScheduleActionAsap(attackDurationBeats, Conductor.Instance.SnapToCurrentBeat(Conductor.BeatFraction.full), slashHandle, true);
-
-        //if (_activeAttackRequesters.Count > 0)
-        //{
-        //    // (Suggestion) Maybe you should process all requests?
-        //    // Note we are dequeing!
-        //    //_activeAttackRequesters.Peek().OnRequestDeflect(this);
-        //}
-        //else   
-    }
-    
-    private IEnumerator Attacking()
-    {
-        //if (attacking && BattleManager.Instance.Enemy.ESM.IsOnState<EnemyStateMachine.Attacking>()) Lurch(2f);
-        //StopAllCoroutines();
-        // Divides duration beats into four sections!
-        // First Divsion is early receive
-        // second divsion is deflection window
-        // Third Division is late receive
-        BattleManager.Instance.Enemy.ReceiveAttackRequest(this);
-        float divisionTime = _weaponData.AttackDuration / 4f;
-        attacking = true;
-        deflectionWindow = true;
-        yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
-        deflectionWindow = true;
-        yield return new WaitForSeconds(2 * divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
-        deflectionWindow = true;
-        // Direct Attack when no attack requesters
-        // This is where combo strings should be processed
-        // if (!deflected && _activeAttackRequesters.Count <= 0)
-        // {
-            // Process Combo Strings here if you have enough!
-            //if (BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
-            //{
-            //BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
-            // Uncomment below when Status Ailments have been defined
-            // BattleManager.Instance.Enemy.ApplyStatusAilments(_weaponData.ailments);
-
-            //updateCombo(true);
-
-            //BattleManager.Instance.Enemy.CompleteAttackRequest(this);
-            //}
-        // }
-        yield return new WaitForSeconds(divisionTime /* * Conductor.quarter * Conductor.Instance.spb*/);
-        attacking = false;
-        _pawnAnimator.Play($"SlashEnd");
-        deflected = false;
     }
     
     private void updateCombo(bool slash)
@@ -274,17 +217,48 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     #region IAttackReceiver Methods
     public void ReceiveAttackRequest(IAttackRequester requester)
     {
-        if (TryResolveAttackEarly(requester))
+        if (TryDodgeAttack(requester))
         {
             return;
         }
         
-        // Add to queue
+        // Place this requester in the ActiveRequester set (currently disallow two different attacks from the same requester)
+        // until completed/aborted callback that removes itself (only evaluates attack upon completion)
+        Conductor.ConductorSchedulable handle = new Conductor.ConductorSchedulable(
+            onStarted: (state, ctx) => { },
+            onUpdate: requester.OnUpdateDuringCoyoteTime,
+            onCompleted: (state, ctx) =>
+            {
+                if (ActiveAttacks.Contains(requester))
+                {
+                    requester.OnAttackMaterialize(this);
+                    ActiveAttacks.Remove(requester);
+                }
+                else
+                {
+                    // requester was removed by dodging logic, no need to handle
+                }
+            },
+            onAborted: (state) =>
+            {
+                if (ActiveAttacks.Contains(requester))
+                {
+                    ActiveAttacks.Remove(requester);
+                }
+                else
+                {
+                    // requester was removed by dodging logic, no need to handle
+                }
+            });
         
+        Conductor.Instance.ScheduleActionAsap(
+            requester.GetDeflectionCoyoteTime(), Conductor.Instance.Beat, handle, true);
+        
+        ActiveAttacks.Add(requester);
     }
     #endregion
 
-    bool TryResolveAttackEarly(IAttackRequester requester)
+    bool TryDodgeAttack(IAttackRequester requester)
     {
         if (/*!deflected && */ deflectionWindow && requester.OnRequestDeflect(this))
         {
@@ -308,10 +282,15 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         updateCombo(true);
         BattleManager.Instance.Enemy.CompleteAttackRequest(this);
     }
-    
+
+    public float GetDeflectionCoyoteTime()
+    {
+        throw new NotImplementedException(); // this is intended, play attacks shouldn't be deflected
+    }
+
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
-        return true;
+        throw new NotImplementedException(); // this is intended, play attacks shouldn't be deflected
     }
     public bool OnRequestBlock(IAttackReceiver receiver)
     {
