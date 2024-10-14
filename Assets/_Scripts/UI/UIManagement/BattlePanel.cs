@@ -27,7 +27,14 @@ public partial class UIManager
     // Debug
     private void FixedUpdate()
     {
-        beatTracker.text = $"Beat: {(int)Conductor.Instance.Beat}";
+        if (Conductor.Instance.IsPlaying)
+        {
+            beatTracker.text = $"Beat: {(int)Conductor.Instance.Beat}";
+        }
+        else
+        {
+            beatTracker.text = "";
+        }
     }
     public void IncrementParryTracker()
     {

@@ -9,6 +9,29 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
     [SerializeField] private Spinning spinner;
     private float resetSpeed = 0f;
     [SerializeField] private float fakeOutChance = 0.2f;
+
+    public void OnAttackMaterialize(IAttackReceiver receiver)
+    {
+        if (receiver is not PlayerBattlePawn pawn)
+        {
+            return;
+        }
+        
+        pawn.Damage(damage);
+        // Decrease spinner speed if player is hit
+        if (spinner.speed > spinner.minSpeed) {
+            spinner.speed /= 2;
+            spinner.speed = Mathf.Max(spinner.speed, spinner.minSpeed);
+            spinner.ReduceSpeed(spinner.speed / 2);
+            resetSpeed = spinner.speed / 2;
+        }
+    }
+
+    public float GetDeflectionCoyoteTime()
+    {
+        return 0.5f;
+    }
+
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
@@ -50,7 +73,6 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
         // (TEMP)----------- This is dumb IK---------------------
         BattleManager.Instance.Enemy.Damage(1);
         //-------------------------------------------------------
-        player.CompleteAttackRequest(this);
         return true;
     }
     public bool OnRequestBlock(IAttackReceiver receiver)
@@ -73,18 +95,7 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
     {
         if (other.gameObject.TryGetComponent(out PlayerBattlePawn pawn))
         {
-            if (pawn.ReceiveAttackRequest(this))
-            {
-                pawn.Damage(damage);
-                pawn.CompleteAttackRequest(this);
-                // Decrease spinner speed if player is hit
-                if (spinner.speed > spinner.minSpeed) {
-                    spinner.speed /= 2;
-                    spinner.speed = Mathf.Max(spinner.speed, spinner.minSpeed);
-                    spinner.ReduceSpeed(spinner.speed / 2);
-                    resetSpeed = spinner.speed / 2;
-                }
-            }
+            pawn.ReceiveAttackRequest(this);
         }
     }
 }
