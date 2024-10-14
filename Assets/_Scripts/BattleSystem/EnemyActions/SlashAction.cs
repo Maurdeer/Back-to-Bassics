@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using static PositionStateMachine;
 public class SlashAction : EnemyAction, IAttackRequester
@@ -76,12 +75,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         //yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
         // Hit Moment
         Debug.Log("Hitting");
-        if (BattleManager.Instance.Player.ReceiveAttackRequest(this))
-        {
-            PerformSlashOnPlayer();
-            Debug.Log("Slash Start!");
-            BattleManager.Instance.Player.CompleteAttackRequest(this);
-        }
+        BattleManager.Instance.Player.ReceiveAttackRequest(this);
         yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_posthit") ||
         parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_deflected"));
         if (parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_posthit"))
@@ -99,7 +93,21 @@ public class SlashAction : EnemyAction, IAttackRequester
             yield return new WaitForSeconds(deflectedClip.length);
         }
     }
+    
+    public void OnAttackMaterialize(IAttackReceiver receiver)
+    {
+        // (TEMP) DEBUG UI Tracker -------
+        UIManager.Instance.IncrementMissTracker();
+        //---------------------------------------
 
+        parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
+        BattleManager.Instance.Player.Damage(_currNode.dmg);
+    }
+
+    public float GetDeflectionCoyoteTime()
+    {
+        return 0.5f;
+    }
 
     public bool OnRequestBlock(IAttackReceiver receiver)
     {
@@ -110,10 +118,9 @@ public class SlashAction : EnemyAction, IAttackRequester
         //---------------------------------------
 
         //parentPawnSprite.Animator.SetTrigger("blocked");
-
-        receiver.CompleteAttackRequest(this);
         return true;
     }
+    
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
@@ -130,7 +137,6 @@ public class SlashAction : EnemyAction, IAttackRequester
         {
             parentPawn.Stagger();
         }
-        receiver.CompleteAttackRequest(this);
         return true;
     }
     public bool OnRequestDodge(IAttackReceiver receiver)
@@ -139,34 +145,8 @@ public class SlashAction : EnemyAction, IAttackRequester
         if (player == null || !_currNode.dodgeDirections.Contains(player.DodgeDirection)) return false;
 
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
-        receiver.CompleteAttackRequest(this);
         return true;
     }
-    private void PerformSlashOnPlayer()
-    {
-        // (TEMP) DEBUG UI Tracker -------
-        UIManager.Instance.IncrementMissTracker();
-        //---------------------------------------
-
-        parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
-        BattleManager.Instance.Player.Damage(_currNode.dmg);
-    }
-
-    //private void StaggerBuildUp(int staggerDamage)
-    //{
-    //    if (parentPawn == null)
-    //    {
-    //        Debug.LogError("Parent pawn is not assigned.");
-    //        return;
-    //    }
-    //    parentPawn.CurrentStagger += staggerDamage; 
-    //    if (parentPawn.CurrentStagger >= parentPawn.EnemyData.StaggerHealth)
-    //    {
-    //        parentPawn.Stagger(); 
-    //        parentPawn.CurrentStagger = 0; 
-    //    }
-    //}
-   
 }
 
 [Serializable]

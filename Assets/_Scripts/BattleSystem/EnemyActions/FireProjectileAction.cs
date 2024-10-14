@@ -76,7 +76,7 @@ public class FireProjectileAction : EnemyAction
         Projectile proj = objRef.GetComponent<Projectile>();
         proj.SetTargetEnemy(parentPawn);
         proj.transform.position = BattleManager.Instance.Player.playerCollider.position + node.relativeSpawnPosition;
-        proj.Fire((BattleManager.Instance.Player.playerCollider.position - proj.transform.position) / (node.speed * Conductor.Instance.spb));
+        proj.Fire(BattleManager.Instance.Player.playerCollider.position - proj.transform.position, node.duration);
 
    
 
@@ -104,7 +104,7 @@ public struct FireProjectileNode
 {
     public bool useDefault;
     public GameObject projRef;
-    [Tooltip("In Beats")] public float speed;
+    [Tooltip("In Beats")] public float duration;
     public Vector3 relativeSpawnPosition;
 }
 public enum ProjectileSourceChoice

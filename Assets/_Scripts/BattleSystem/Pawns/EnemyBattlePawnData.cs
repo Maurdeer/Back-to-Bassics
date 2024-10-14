@@ -11,4 +11,5 @@ public class EnemyBattlePawnData : BattlePawnData
     public int BPM => _bpm;
     public float SPB => 60f / _bpm;
     public int StaggerHealth => _staggerHealth;
+    public FMODUnity.EventReference fmodEvent;
 }

@@ -50,7 +50,7 @@ public class BattleManager : Singleton<BattleManager>
             yield return new WaitForSeconds(1f);
         }
         UIManager.Instance.UpdateCenterText("Battle!");
-        Conductor.Instance.BeginConducting(Enemy.EnemyData.SPB);
+        Conductor.Instance.BeginConducting(Enemy);
         GameManager.Instance.GSM.Transition<GameStateMachine.Battle>();
         Player.StartBattle();
         Enemy.StartBattle();
@@ -72,7 +72,7 @@ public class BattleManager : Singleton<BattleManager>
         yield return new WaitForSeconds(1f);
         Enemy.StartBattle();
         UIManager.Instance.UpdateCenterText("");
-        Conductor.Instance.BeginConducting(Enemy.EnemyData.SPB);
+        Conductor.Instance.BeginConducting(Enemy);
         IsBattleActive = true;
     }
     public void OnPawnDeath(BattlePawn pawn) 

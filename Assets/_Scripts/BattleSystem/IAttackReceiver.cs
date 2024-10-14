@@ -5,11 +5,11 @@ public interface IAttackReceiver
     /// is allowed to attack or not.
     /// </summary>
     /// <param name="requester"></param>
-    /// <returns> Whether or not the requester is allowed to attack</returns>
-    public abstract bool ReceiveAttackRequest(IAttackRequester requester);
+    public abstract void ReceiveAttackRequest(IAttackRequester requester);
+    
     /// <summary>
     /// Use this method when there is a timing between receiving the attack and completing the attack
     /// </summary>
     /// <param name="requester"></param>
-    public abstract void CompleteAttackRequest(IAttackRequester requester);
+    // public abstract void CompleteAttackRequest(IAttackRequester requester);
 }

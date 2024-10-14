@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EnemyStateMachine;
 using static PositionStateMachine;
-using UnityEngine.Playables;
-using UnityEngine.Timeline;
 using Cinemachine;
 
 /// <summary>
@@ -95,10 +93,10 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         }
     }
     #region IAttackReceiver Methods
-    public virtual bool ReceiveAttackRequest(IAttackRequester requester)
+    public virtual void ReceiveAttackRequest(IAttackRequester requester)
     {
-        if (esm.IsOnState<Dead>() || psm.IsOnState<Distant>()) return false;
-        return esm.CurrState.AttackRequestHandler(requester);
+        if (esm.IsOnState<Dead>() || psm.IsOnState<Distant>()) return;
+        esm.CurrState.AttackRequestHandler(requester);
     }
     public virtual void CompleteAttackRequest(IAttackRequester requester)
     {
