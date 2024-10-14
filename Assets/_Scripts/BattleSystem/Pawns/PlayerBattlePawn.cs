@@ -110,7 +110,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 
         if (slashHandle != null)
         {
-            if (slashCancelCounter > 2)
+            if (slashCancelCounter > 2) // <-- tweak here for number of cancels allowed
             {
                 Debug.LogWarning("Ran out of cancels");
                 return;
@@ -130,7 +130,8 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 //if (!animatorState.IsName("idle")) return;
                 _pawnSprite.FaceDirection(new Vector3(direction.x, 0, 1));
                 _pawnAnimator.StopPlayback();
-                _pawnAnimator.PlayInFixedTime($"Slash{DirectionHelper.GetVectorDirection(direction)}", -1, state._actualDuration * contextState.spb);
+                _pawnAnimator.Play($"Slash{DirectionHelper.GetVectorDirection(direction)}", -1, 0);
+                _pawnAnimator.speed = contextState.spb;
                 _slashEffect.Play();
                 // Set the Slash Direction
                 AudioManager.Instance.PlayOnShotSound(WeaponData.slashAirSound, transform.position);
@@ -160,7 +161,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
             onAborted: state => { }
         );
         
-        Conductor.Instance.ScheduleActionAsap(attackDurationBeats, Conductor.Instance.SnapToCurrentBeat(Conductor.BeatFraction.full), slashHandle, true);
+        Conductor.Instance.ScheduleActionAsap(attackDurationBeats, Conductor.Instance.Beat, slashHandle, true);
     }
     
     private void updateCombo(bool slash)

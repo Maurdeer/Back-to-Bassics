@@ -21,6 +21,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
     #endregion
 
     [SerializeField] private EventReference playOnMiss;
+    private float coyoteTimer = 0;
     
     /// <summary>
     /// Spawn a projectile with a predetermined offset
@@ -89,6 +90,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
     public void OnUpdateDuringCoyoteTime(Conductor.ConductorSchedulableState state, Conductor.ConductorContextState ctx)
     {
         transform.localScale = Vector3.one * (1 - state._elapsedProgressCount);
+        coyoteTimer = GetDeflectionCoyoteTime() * state._elapsedProgressCount;
     }
 
     public bool OnRequestDeflect(IAttackReceiver receiver)
@@ -103,6 +105,15 @@ public class Projectile : MonoBehaviour, IAttackRequester
 
         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementParryTracker();
+        if (coyoteTimer > 0)
+        {
+            Debug.Log($"Note deflected after impact at +{coyoteTimer} beats");
+        }
+        else
+        {
+            Debug.Log($"Note deflected by ongoing slash");
+        }
+        
         //---------------------------------------
         Destroy();
         return true;
