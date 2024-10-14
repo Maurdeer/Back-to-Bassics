@@ -22,6 +22,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
 
     [SerializeField] private EventReference playOnMiss;
     private float coyoteTimer = 0;
+    private Vector3 _slashDirection;
     
     /// <summary>
     /// Spawn a projectile with a predetermined offset
@@ -31,7 +32,8 @@ public class Projectile : MonoBehaviour, IAttackRequester
     public void Fire(Vector3 lifetimeDisplacement, float duration)
     {
         var originalLocation = transform.position;
-        
+        _slashDirection = -lifetimeDisplacement;
+
         var schedulable = new Conductor.ConductorSchedulable(
             onStarted: (state, ctxState) =>
             {
@@ -55,14 +57,14 @@ public class Projectile : MonoBehaviour, IAttackRequester
     /// </summary>
     /// <param name="position"></param>
     /// <param name="dir"></param>
-    public void Fire(Direction dir)
-    {
-        _rb.velocity = _speed * DirectionHelper.GetVectorFromDirection(dir);
+    //public void Fire(Direction dir)
+    //{
+    //    _rb.velocity = _speed * DirectionHelper.GetVectorFromDirection(dir);
 
-        // Inefficent as heck, but does the job
-        isDestroyed = false;
-        gameObject.SetActive(true);
-    }
+    //    // Inefficent as heck, but does the job
+    //    isDestroyed = false;
+    //    gameObject.SetActive(true);
+    //}
     private void OnTriggerEnter(Collider collision)
     {
         _hitPlayerPawn = collision.GetComponent<PlayerBattlePawn>();
@@ -98,7 +100,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         // Did receiver deflect in correct direction?
         if (player == null
-            || !DirectionHelper.MaxAngleBetweenVectors(-_rb.velocity, player.SlashDirection, 5f))
+            || !DirectionHelper.MaxAngleBetweenVectors(_slashDirection, player.SlashDirection, 5f))
         {
             return false;
         }
@@ -123,7 +125,6 @@ public class Projectile : MonoBehaviour, IAttackRequester
         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementBlockTracker();
         //---------------------------------------
-        //_hitPlayerPawn.Lurch(_dmg);
         Destroy();
         return true;
     }

@@ -43,34 +43,6 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         BattleManager.Instance.StartBattle(new EnemyBattlePawn[] { enemy });
     }
     #region Player Actions
-    /// <summary>
-    /// Processes blocks to any active attack requests.
-    /// </summary>
-    //public void Block()
-    //{
-    //    if (IsStaggered || IsDead) return;
-    //    AnimatorStateInfo animatorState = _spriteAnimator.GetCurrentAnimatorStateInfo(0);
-    //    if (!animatorState.IsName("idle") || blocking) return;
-    //    blocking = true;
-    //    _spriteAnimator.Play("block");
-    //    if (_activeAttackRequesters.Count > 0)
-    //    {
-    //        // (Suggestion) Maybe you should process all requests?
-    //        // Note we are dequeing!
-    //        _activeAttackRequesters.Peek().OnRequestBlock(this);
-    //    }
-    //}
-    /// <summary>
-    /// Should Follow Blocking, the animation and the input.
-    /// Might not need the !blocking check
-    /// </summary>
-    //public void Unblock()
-    //{
-    //    AnimatorStateInfo animatorState = _spriteAnimator.GetCurrentAnimatorStateInfo(0);
-    //    if (!animatorState.IsName("block") || !blocking) return;
-    //    blocking = false;
-    //    _spriteAnimator.Play("unblock");
-    //}
     public void Dodge(Vector2 direction)
     {
         if (IsDead) return;
