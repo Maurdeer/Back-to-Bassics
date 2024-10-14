@@ -110,7 +110,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 
         if (slashHandle != null)
         {
-            if (slashCancelCounter > 2) // <-- tweak here for number of cancels allowed
+            if (slashCancelCounter > 0) // <-- tweak here for number of cancels allowed
             {
                 Debug.LogWarning("Ran out of cancels");
                 return;
@@ -158,7 +158,12 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 slashHandle = null;
                 slashCancelCounter = 0;
             },
-            onAborted: state => { }
+            onAborted: state =>
+            {
+                deflectionWindow = false;
+                attacking = false;
+                deflected = false;
+            }
         );
         
         Conductor.Instance.ScheduleActionAsap(attackDurationBeats, Conductor.Instance.Beat, slashHandle, true);
