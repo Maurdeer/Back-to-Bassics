@@ -24,11 +24,12 @@ public class BeatIndicator : Conductable
 
         Vector3 originalScale = transform.localScale;
 
+        // pulse out
         while (elapsedTime < halfSpb)
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / halfSpb;
-            float curvedT = Mathf.SmoothStep(0.89f, 1f, t);
+            float curvedT = Mathf.SmoothStep(0.9f, 1f, t);
 
             rightSlider.value = Mathf.Lerp(rightStartValue, targetValue, curvedT);
             leftSlider.value = Mathf.Lerp(leftStartValue, targetValue, curvedT);
@@ -41,6 +42,7 @@ public class BeatIndicator : Conductable
 
         elapsedTime = 0f;
 
+        // fall back
         while (elapsedTime < halfSpb)
         {
             elapsedTime += Time.deltaTime;
