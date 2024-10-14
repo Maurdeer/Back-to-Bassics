@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MusicAttack : EnemyAction
@@ -15,6 +13,7 @@ public class MusicAttack : EnemyAction
     protected override void OnStartAction()
     {
         currIdx = 0;
+        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         parentPawnSprite.Animator.Play("music");
     }
     protected override void OnFullBeat()
@@ -26,7 +25,9 @@ public class MusicAttack : EnemyAction
             parentPawnSprite.Animator.SetFloat("xdir", directionVector.x);
             proj.transform.position = BattleManager.Instance.Player.transform.position + (directionVector) * 6;
             // Take One Beat to fire
-            proj.Fire((BattleManager.Instance.Player.transform.position - proj.transform.position)/(2*Conductor.Instance.spb));
+            var disp = (BattleManager.Instance.Player.transform.position - proj.transform.position);
+            // /(2*Conductor.Instance.spb)
+            proj.Fire(disp, 2);
             currIdx++;
             if (currIdx >= directions.Length)
             {

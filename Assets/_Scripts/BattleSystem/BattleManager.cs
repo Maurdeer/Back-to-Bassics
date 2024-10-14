@@ -42,16 +42,18 @@ public class BattleManager : Singleton<BattleManager>
     {
         GameManager.Instance.PC.DisableControl();
         yield return PlayerEngageCurrentEnemy();
+        Player.EnterBattle();
+        Enemy.EnterBattle();
         for (float i = battleDelay; i > 0; i--)
         {
             UIManager.Instance.UpdateCenterText(i.ToString());
             yield return new WaitForSeconds(1f);
         }
         UIManager.Instance.UpdateCenterText("Battle!");
-        Conductor.Instance.BeginConducting(Enemy.EnemyData.SPB);
+        Conductor.Instance.BeginConducting(Enemy);
         GameManager.Instance.GSM.Transition<GameStateMachine.Battle>();
-        Player.EnterBattle();
-        Enemy.EnterBattle();
+        Player.StartBattle();
+        Enemy.StartBattle();
         yield return new WaitForSeconds(1f);
         UIManager.Instance.UpdateCenterText("");
         IsBattleActive = true;
@@ -68,8 +70,9 @@ public class BattleManager : Singleton<BattleManager>
         //}
         UIManager.Instance.UpdateCenterText("Battle!");
         yield return new WaitForSeconds(1f);
+        Enemy.StartBattle();
         UIManager.Instance.UpdateCenterText("");
-        Conductor.Instance.BeginConducting(Enemy.EnemyData.SPB);
+        Conductor.Instance.BeginConducting(Enemy);
         IsBattleActive = true;
     }
     public void OnPawnDeath(BattlePawn pawn) 

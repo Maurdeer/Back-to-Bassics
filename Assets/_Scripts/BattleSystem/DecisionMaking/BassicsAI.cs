@@ -39,7 +39,8 @@ public class BassicsAI : Conductable
         { 
             if (_bassics.esm.IsOnState<Idle>() && _bassics.psm.IsOnState<Center>())
             {
-                _bassics.psm.Transition<Distant>();
+                //_bassics.psm.Transition<Distant>();
+                _bassics.esm.Transition<Block>();
             }
         };
     }
@@ -62,7 +63,7 @@ public class BassicsAI : Conductable
             _bassics.esm.Transition<Attacking>();
             _director.playableAsset = _enemyActionSequences[idx];
             _director.Play();
-            _director.playableGraph.GetRootPlayable(0).SetSpeed(1 / _bassics.EnemyData.SPB);
+            var handle = _director.ScheduleToBeat();
         }
         _decisionTime = Conductor.Instance.Beat + _beatsPerDecision;
     }

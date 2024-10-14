@@ -21,7 +21,7 @@ public class SlashBehaviour : PlayableBehaviour
             //Debug.LogError($"{this} Node did not perform slash animation, enemy reference was null");
             return;
         }
-        node.slashLengthInBeats = (float) playable.GetDuration();
+        node.slashLengthInBeats = (float)playable.GetDuration();
         _cachedSlashRef.Slash(node);
     }
 }

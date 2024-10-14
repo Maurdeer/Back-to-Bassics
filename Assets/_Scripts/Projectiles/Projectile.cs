@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using FMODUnity;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -20,61 +19,105 @@ public class Projectile : MonoBehaviour, IAttackRequester
         Destroy();
     }
     #endregion
+
+    [SerializeField] private EventReference playOnMiss;
+    private float coyoteTimer = 0;
+    private Vector3 _slashDirection;
+    
     /// <summary>
-    /// Spawn a projectile with a particular speed
+    /// Spawn a projectile with a predetermined offset
     /// </summary>
-    /// <param name="position"></param>
-    /// <param name="velocity"></param>
-    public void Fire(Vector3 velocity)
+    /// <param name="lifetimeDisplacement">total traversal the projectile should go through in its lifetime</param>
+    /// <param name="duration">duration in beats</param>
+    public void Fire(Vector3 lifetimeDisplacement, float duration)
     {
-        _rb.velocity = velocity;
-        isDestroyed = false;
-        gameObject.SetActive(true);
+        var originalLocation = transform.position;
+        _slashDirection = -lifetimeDisplacement;
+
+        var schedulable = new Conductor.ConductorSchedulable(
+            onStarted: (state, ctxState) =>
+            {
+                isDestroyed = false;
+                gameObject.SetActive(true);
+            },
+            onUpdate: (state, ctxState) =>
+            {
+                transform.position = originalLocation + lifetimeDisplacement * state._elapsedProgressCount;
+                // _rb.position = originalLocation + lifetimeDisplacement * state._elapsedProgressCount;
+                // _rb.velocity = lifetimeDisplacement / ctxState.spb; // current SPB at the update
+            },
+            onCompleted: (state, ctxState) => { },
+            onAborted: (state) => { Destroy(); }
+        );
+        
+        Conductor.Instance.ScheduleActionAsap(duration, Conductor.Instance.Beat, schedulable, forceStart: true);
     }
     /// <summary>
     /// Spawn Projectile based on conductor's rule speed
     /// </summary>
     /// <param name="position"></param>
     /// <param name="dir"></param>
-    public void Fire(Direction dir)
-    {
-        _rb.velocity = _speed * DirectionHelper.GetVectorFromDirection(dir);
+    //public void Fire(Direction dir)
+    //{
+    //    _rb.velocity = _speed * DirectionHelper.GetVectorFromDirection(dir);
 
-        // Inefficent as heck, but does the job
-        isDestroyed = false;
-        gameObject.SetActive(true);
-    }
+    //    // Inefficent as heck, but does the job
+    //    isDestroyed = false;
+    //    gameObject.SetActive(true);
+    //}
     private void OnTriggerEnter(Collider collision)
     {
         _hitPlayerPawn = collision.GetComponent<PlayerBattlePawn>();
         if (_hitPlayerPawn == null) _hitPlayerPawn = collision.GetComponentInParent<PlayerBattlePawn>();
         if (_hitPlayerPawn == null) return;
-        if (_hitPlayerPawn.ReceiveAttackRequest(this))
-        {
-            // (TEMP) Manual DEBUG UI Tracker -------
-            UIManager.Instance.IncrementMissTracker();
-            //---------------------------------------
-
-            _hitPlayerPawn.Damage(_dmg);
-
-            _hitPlayerPawn.CompleteAttackRequest(this);
-            Destroy();
-        }
-
+        _hitPlayerPawn.ReceiveAttackRequest(this);
     }
+
+    public void OnAttackMaterialize(IAttackReceiver receiver)
+    {
+        // (TEMP) Manual DEBUG UI Tracker -------
+        UIManager.Instance.IncrementMissTracker();
+        //---------------------------------------
+
+        _hitPlayerPawn.Damage(_dmg);
+        FMODUnity.RuntimeManager.PlayOneShot(playOnMiss);
+        Destroy();
+    }
+
+    public float GetDeflectionCoyoteTime()
+    {
+        return 0.5f;
+    }
+
+    public void OnUpdateDuringCoyoteTime(Conductor.ConductorSchedulableState state, Conductor.ConductorContextState ctx)
+    {
+        transform.localScale = Vector3.one * (1 - state._elapsedProgressCount);
+        coyoteTimer = GetDeflectionCoyoteTime() * state._elapsedProgressCount;
+    }
+
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         // Did receiver deflect in correct direction?
-        if (player == null 
-            ||!DirectionHelper.MaxAngleBetweenVectors(-_rb.velocity, player.SlashDirection, 5f)) 
-                return false;
+        if (player == null
+            || !DirectionHelper.MaxAngleBetweenVectors(_slashDirection, player.SlashDirection, 5f))
+        {
+            return false;
+        }
 
         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementParryTracker();
+        if (coyoteTimer > 0)
+        {
+            Debug.Log($"Note deflected after impact at +{coyoteTimer} beats");
+        }
+        else
+        {
+            Debug.Log($"Note deflected by ongoing slash");
+        }
+        
         //---------------------------------------
         Destroy();
-        receiver.CompleteAttackRequest(this);
         return true;
     }
     public bool OnRequestBlock(IAttackReceiver receiver)
@@ -82,13 +125,12 @@ public class Projectile : MonoBehaviour, IAttackRequester
         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementBlockTracker();
         //---------------------------------------
-        //_hitPlayerPawn.Lurch(_dmg);
         Destroy();
-        receiver.CompleteAttackRequest(this);
         return true;
     }
     public bool OnRequestDodge(IAttackReceiver receiver) 
     {
+        Destroy();
         return true;
     }
     public void Destroy()
