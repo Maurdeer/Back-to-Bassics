@@ -41,7 +41,14 @@ public class AudioManager : Singleton<AudioManager>
         eventInstances.Add(eventInstance);  
         return eventInstance;
     }
-
+    public void SetAmbienceVolume(float volume)
+    {
+        foreach (EventInstance amb in ambienceInstances.Values)
+        {
+            Debug.Log("VolumeDecrease");
+            amb.setVolume(volume);
+        }
+    }
     private void CleanUp()
     {
         foreach (EventInstance eventInstance in eventInstances)

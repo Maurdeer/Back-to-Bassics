@@ -44,6 +44,8 @@ public class BattleManager : Singleton<BattleManager>
         yield return PlayerEngageCurrentEnemy();
         Player.EnterBattle();
         Enemy.EnterBattle();
+        AudioManager.Instance.SetAmbienceVolume(0.1f);
+        CameraConfigure.Instance.SwitchToCamera(Enemy.battleCam);
         for (float i = battleDelay; i > 0; i--)
         {
             UIManager.Instance.UpdateCenterText(i.ToString());
@@ -63,6 +65,7 @@ public class BattleManager : Singleton<BattleManager>
         // The problem with this is that the player can still input stuff while transitioning.
         yield return PlayerEngageCurrentEnemy();
         Enemy.EnterBattle();
+        CameraConfigure.Instance.SwitchToCamera(Enemy.battleCam);
         //for (float i = battleDelay; i > 0; i--)
         //{
         //    UIManager.Instance.UpdateCenterText(i.ToString());
@@ -94,6 +97,7 @@ public class BattleManager : Singleton<BattleManager>
     }
     private void OnEnemyDeath()
     {
+        CameraConfigure.Instance.SwitchBackToPrev();
         if (enemyBattlePawns.Count > 0)
         {
             // TODO: Multiple Enemy Logic
