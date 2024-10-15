@@ -31,10 +31,10 @@ public class BeatIndicator : Conductable
 
     private void Update()
     {
+        elapsedTime += Time.deltaTime;
+
         if (isBeat)
         {
-            elapsedTime += Time.deltaTime;
-
             if (elapsedTime < halfSpb)
             {
                 float t = elapsedTime / halfSpb;
@@ -54,8 +54,6 @@ public class BeatIndicator : Conductable
         }
         else
         {
-            elapsedTime += Time.deltaTime;
-
             if (elapsedTime < halfSpb)
             {
                 float t = elapsedTime / halfSpb;
