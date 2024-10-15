@@ -16,9 +16,6 @@ public partial class EnemyStateMachine
         }
         public override bool AttackRequestHandler(IAttackRequester requester)
         {
-            //Input.EnemySprite.Animator.Play("take_damage");
-            // Move this somewhere else
-            Input.EnemyParticleSystem.Play();
             return true;
         }
     }

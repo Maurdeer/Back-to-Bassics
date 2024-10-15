@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 using static EnemyStateMachine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 /// <summary>
 /// Playable Battle Pawn
@@ -111,6 +112,8 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 SlashDirection.Normalize();
 
                 BattleManager.Instance.Enemy.ReceiveAttackRequest(this);
+                BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
+                updateCombo(true);
                 attacking = true;
                 deflectionWindow = true;
 
@@ -256,9 +259,13 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 
     public void OnAttackMaterialize(IAttackReceiver receiver)
     {
-        BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
-        updateCombo(true);
-        BattleManager.Instance.Enemy.CompleteAttackRequest(this);
+        EnemyBattlePawn enemy = receiver as EnemyBattlePawn;
+        if (enemy != null) 
+        {
+            enemy.Damage(_weaponData.Dmg);
+            updateCombo(true);
+            enemy.CompleteAttackRequest(this);
+        }
     }
 
     public float GetDeflectionCoyoteTime()

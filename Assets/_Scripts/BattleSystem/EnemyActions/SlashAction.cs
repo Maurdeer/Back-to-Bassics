@@ -43,13 +43,13 @@ public class SlashAction : EnemyAction, IAttackRequester
     {
         // Slash Initialization
         _currNode = node;
-
+        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         // Broadcast
         // Direction setup
         // The y value here is facing forward
         if (parentPawn.psm.IsOnState<Distant>())
         {
-            parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
+            //parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
             parentPawn.psm.Transition<Center>();
             yield return new WaitForSeconds(Conductor.Instance.spb);
         } 
@@ -57,7 +57,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         parentPawnSprite.Animator.SetFloat("x_slashDir", _currNode.slashVector.x);
         parentPawnSprite.Animator.SetFloat("y_slashDir", _currNode.slashVector.y);
         float syncedAnimationTime = (_currNode.slashLengthInBeats - 1) * Conductor.Instance.spb;
-        parentPawnSprite.Animator.SetFloat("speed", broadcastClip.length / syncedAnimationTime);
+        //parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_broadcast");
         Debug.Log("Broadcast");
         //float broadcastHoldTime = (_currNode.slashLengthInBeats * parentPawn.EnemyData.SPB) - minSlashTillHitDuration;
@@ -68,7 +68,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         //if (beats == 0) beats = 1;
         //float syncedAnimationTime = beats * Conductor.Instance.spb;
         //parentPawnSprite.Animator.SetFloat("speed", preHitClip.length / syncedAnimationTime);
-        parentPawnSprite.Animator.SetFloat("speed", preHitClip.length / Conductor.Instance.spb);
+        //parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_prehit");
         Debug.Log("Prehit");
         yield return new WaitForSeconds(Conductor.Instance.spb);
@@ -81,7 +81,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         if (parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_posthit"))
         {
             Debug.Log("Slash Hit!");
-            yield return new WaitForSeconds(postHitClip.length);
+            yield return new WaitForSeconds(Conductor.Instance.spb);
         }
         else
         {
@@ -90,7 +90,7 @@ public class SlashAction : EnemyAction, IAttackRequester
             {
                 enemyPawn.StaggerDamage(_staggerDamage);
             }
-            yield return new WaitForSeconds(deflectedClip.length);
+            yield return new WaitForSeconds(Conductor.Instance.spb);
         }
     }
     

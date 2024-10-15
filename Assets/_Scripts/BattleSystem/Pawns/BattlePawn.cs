@@ -13,6 +13,7 @@ public class BattlePawn : Conductable
     public BattlePawnData Data => _data;
     protected Animator _pawnAnimator;
     protected PawnSprite _pawnSprite;
+    protected ParticleSystem _paperShredBurst;
 
     [Header("Battle Pawn Data")]
     [SerializeField] protected int _currHP;
@@ -37,12 +38,18 @@ public class BattlePawn : Conductable
         _currHP = MaxHP;
         _pawnAnimator = GetComponent<Animator>();
         _pawnSprite = GetComponentInChildren<PawnSprite>();
+        _paperShredBurst = GetComponentInChildren<ParticleSystem>();
     }
     #endregion
     #region Modification Methods
     public virtual void Damage(int amount)
     {
         if (IsDead) return;
+        // Could make this more variable
+        if (amount > 0)
+        {
+            _paperShredBurst.Play();
+        }
         _currHP -= amount;
         UIManager.Instance.UpdateHP(this);
         OnDamage?.Invoke();

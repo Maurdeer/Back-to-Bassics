@@ -159,29 +159,6 @@ MonoBehaviour:
     m_DisplayName: SampleProjectile
   m_Markers:
     m_Objects: []
---- !u!114 &-2169107463020495374
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 485eeb53b7768504686f2bbe0d857ee9, type: 3}
-  m_Name: Slash Track
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  m_AnimClip: {fileID: 0}
-  m_Locked: 0
-  m_Muted: 1
-  m_CustomPlayableFullTypename: 
-  m_Curves: {fileID: 0}
-  m_Parent: {fileID: 11400000}
-  m_Children: []
-  m_Clips: []
-  m_Markers:
-    m_Objects: []
 --- !u!114 &-1849624761529540232
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -197,7 +174,7 @@ MonoBehaviour:
   template:
     useDefault: 1
     projectileRef: {fileID: 6525783190841855137, guid: 1c95da4203eea1d4a92ee84f349d4beb, type: 3}
-    fireDirection: 2
+    fireDirection: 4
     fireDistance: 12
 --- !u!114 &11400000
 MonoBehaviour:
@@ -213,7 +190,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Version: 0
   m_Tracks:
-  - {fileID: -2169107463020495374}
   - {fileID: 5312430939684831415}
   - {fileID: -2981694602180991079}
   m_FixedDuration: 0
@@ -254,7 +230,7 @@ MonoBehaviour:
   template:
     useDefault: 1
     projectileRef: {fileID: 6525783190841855137, guid: 1c95da4203eea1d4a92ee84f349d4beb, type: 3}
-    fireDirection: 2
+    fireDirection: 3
     fireDistance: 12
 --- !u!114 &5312430939684831415
 MonoBehaviour:

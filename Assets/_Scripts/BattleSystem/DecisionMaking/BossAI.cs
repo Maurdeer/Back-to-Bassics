@@ -70,7 +70,7 @@ public class BossAI : Conductable
             _enemyStages[_currentStage+1].HealthThreshold > (float)_enemyBattlePawn.HP/_enemyBattlePawn.MaxHP) {
                 _currentStage++;
                 _beatsPerDecision = _enemyStages[_currentStage].BeatsPerDecision;
-                _enemyBattlePawn.psm.Transition<Distant>(); 
+                _enemyBattlePawn.psm.Transition<Distant>();
                 _enemyBattlePawn.StaggerArmor = _enemyStages[_currentStage].StaggerArmor;
                 OnEnemyStageTransition?.Invoke();
             }
@@ -88,8 +88,8 @@ public class BossAI : Conductable
         _enemyBattlePawn.esm.Transition<Attacking>();
         _director.playableAsset = actions[idx];
         _director.Play();
-        _director.playableGraph.GetRootPlayable(0).SetSpeed(1 / _enemyBattlePawn.EnemyData.SPB);
-        
+        var handle = _director.ScheduleToBeat();
+
         _decisionTime = _beatsPerDecision;
     }
 }
