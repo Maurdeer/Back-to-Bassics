@@ -185,7 +185,7 @@ RectTransform:
   m_Father: {fileID: 6882416928573291449}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 145, y: 0}
   m_SizeDelta: {x: -710, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -441,6 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08d1ec395bab714dae93b3546ea65de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startValue: 0.8
   rightSlider: {fileID: 1600697867917202071}
   leftSlider: {fileID: 2586197426155643887}
 --- !u!1 &9123919089653646380
