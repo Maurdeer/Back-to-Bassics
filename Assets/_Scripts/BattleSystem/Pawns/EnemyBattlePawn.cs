@@ -18,7 +18,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     [field: SerializeField] public CinemachineVirtualCamera battleCam { get; private set; }
     //reference to director for stagger implementation
     public EnemyBattlePawnData EnemyData => (EnemyBattlePawnData)Data;
-    private Dictionary<Type, EnemyAction> _enemyActions = new Dictionary<Type, EnemyAction>();
+    private Dictionary<Type, List<EnemyAction>> _enemyActions = new Dictionary<Type, List<EnemyAction>>();
     public event Action OnEnemyStaggerEvent;
     public int CurrentStaggerHealth { get; set; }
     public int StaggerArmor; // reduces stagger damage taken from attacks
@@ -46,18 +46,22 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         CurrentStaggerHealth = EnemyData.StaggerHealth;
         base.Awake();
     }
-    public EA GetEnemyAction<EA>() where EA : EnemyAction
+    public EA GetEnemyAction<EA>(int idx = 0) where EA : EnemyAction
     {
-        return _enemyActions[typeof(EA)] as EA;
+        return _enemyActions[typeof(EA)][idx] as EA;
     }
     public void AddEnemyAction(EnemyAction action)
     {
         if (_enemyActions.ContainsKey(action.GetType()))
         {
-            Debug.LogError($"Enemy Action {action.GetType()} is redundantly referenced, only one should be.");
-            return;
+            //Debug.LogError($"Enemy Action {action.GetType()} is redundantly referenced, only one should be.");
+            //return;
+            _enemyActions[action.GetType()].Add(action);
         }
-        _enemyActions[action.GetType()] = action;
+        else 
+        {
+            _enemyActions[action.GetType()] = new List<EnemyAction> { action };
+        }   
     }
     /// <summary>
     /// Select from some attack i to perform, and then provide a direction if the attack has variants based on this
@@ -124,10 +128,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         psm.Transition<Center>();
         esm.Transition<Stagger>();
         OnEnemyStaggerEvent?.Invoke();
-        foreach (EnemyAction action in _enemyActions.Values)
-        {
-            action.StopAction();
-        }
+        StopAllEnemyActions();
         //_particleSystem?.Play();
     }
     protected override void OnUnstagger()
@@ -142,7 +143,18 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     {
         base.OnDeath();
         esm.Transition<Dead>();
+        StopAllEnemyActions();
         //_particleSystem?.Stop();
+    }
+    protected void StopAllEnemyActions()
+    {
+        foreach (List<EnemyAction> list in _enemyActions.Values)
+        {
+            foreach (EnemyAction action in list)
+            {
+                action.StopAction();
+            }
+        }
     }
     // This could get used or not, was intended for random choices :p
     //public void OnActionComplete()

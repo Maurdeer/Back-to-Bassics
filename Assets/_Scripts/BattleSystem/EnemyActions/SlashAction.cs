@@ -147,6 +147,11 @@ public class SlashAction : EnemyAction, IAttackRequester
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
         return true;
     }
+
+    protected override void OnStopAction()
+    {
+        StopAllCoroutines();
+    }
 }
 
 [Serializable]

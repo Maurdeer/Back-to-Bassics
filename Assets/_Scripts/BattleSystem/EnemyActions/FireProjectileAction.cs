@@ -96,7 +96,6 @@ public class FireProjectileAction : EnemyAction
         parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         parentPawnSprite.Animator.Play(animationName);
     }
-   
 }
 
 [SerializeField]
