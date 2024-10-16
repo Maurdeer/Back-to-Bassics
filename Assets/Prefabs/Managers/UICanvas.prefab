@@ -547,7 +547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7241838243357117565
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5689,6 +5689,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2407161826753517716}
     m_Modifications:
+    - target: {fileID: 85820225546006598, guid: cdda41d1312c0fa449a5ab560b372250, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 85820225546006598, guid: cdda41d1312c0fa449a5ab560b372250, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5976135845896440880, guid: cdda41d1312c0fa449a5ab560b372250, type: 3}
       propertyPath: m_Name
       value: BeatIndicator
