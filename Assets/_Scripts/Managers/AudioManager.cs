@@ -47,6 +47,9 @@ public class AudioManager : Singleton<AudioManager>
         {
             Debug.Log("VolumeDecrease");
             amb.setVolume(volume);
+            float volume2;
+            amb.getVolume(out volume2);
+            Debug.Log(volume2);
         }
     }
     private void CleanUp()

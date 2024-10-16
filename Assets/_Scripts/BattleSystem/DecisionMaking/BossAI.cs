@@ -14,24 +14,14 @@ public class BossAI : Conductable
     private int _currentStage;
     public event System.Action OnEnemyStageTransition;
     private int _beatsPerDecision;
-
     
     // references
     private EnemyBattlePawn _enemyBattlePawn;
-    private PlayableDirector _director;
     private float _decisionTime;
     
     private void Awake()
     {
         _enemyBattlePawn = GetComponent<EnemyBattlePawn>();
-        _director = GetComponent<PlayableDirector>();
-        _enemyBattlePawn.OnEnemyStaggerEvent += _director.Stop;
-        
-        if (_director == null)
-        {
-            Debug.LogError($"Enemy Battle Pawn \"{_enemyBattlePawn.Data.name}\" has no playable director referenced!");
-            return;
-        }
 
         _lastAction = -1;
         _currentStage = 0;
@@ -41,7 +31,7 @@ public class BossAI : Conductable
 
     private void Start()
     {
-        _enemyBattlePawn.OnPawnDeath += _director.Stop;
+        _enemyBattlePawn.OnPawnDeath += _enemyBattlePawn.Director.Stop;
         _enemyBattlePawn.OnEnterBattle += Enable;
         _enemyBattlePawn.OnExitBattle += Disable;
         _enemyBattlePawn.OnDamage += delegate
@@ -69,7 +59,7 @@ public class BossAI : Conductable
         }
         PhaseChange();
 
-        if (_director.state == PlayState.Playing 
+        if (_enemyBattlePawn.Director.state == PlayState.Playing 
             || _enemyBattlePawn.IsDead || _enemyBattlePawn.IsStaggered || DialogueManager.Instance.IsDialogueRunning) return;
         
         if (_decisionTime > 0) {
@@ -89,9 +79,9 @@ public class BossAI : Conductable
         // may want to abstract enemy actions away from just timelines in the future?
         _enemyBattlePawn.CurrentStaggerHealth = _enemyBattlePawn.EnemyData.StaggerHealth;
         _enemyBattlePawn.esm.Transition<Attacking>();
-        _director.playableAsset = actions[idx];
-        _director.Play();
-        var handle = _director.ScheduleToBeat();
+        _enemyBattlePawn.Director.playableAsset = actions[idx];
+        _enemyBattlePawn.Director.Play();
+        var handle = _enemyBattlePawn.Director.ScheduleToBeat();
 
         _decisionTime = _beatsPerDecision;
     }

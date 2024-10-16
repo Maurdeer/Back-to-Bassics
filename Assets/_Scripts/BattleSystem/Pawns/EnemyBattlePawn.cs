@@ -4,6 +4,9 @@ using UnityEngine;
 using static EnemyStateMachine;
 using static PositionStateMachine;
 using Cinemachine;
+using System.Collections;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 /// <summary>
 /// Manipulate by an external class, not within the class!!
@@ -19,11 +22,15 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //reference to director for stagger implementation
     public EnemyBattlePawnData EnemyData => (EnemyBattlePawnData)Data;
     private Dictionary<Type, List<EnemyAction>> _enemyActions = new Dictionary<Type, List<EnemyAction>>();
+    // Events
     public event Action OnEnemyStaggerEvent;
+    public TimelineAsset IntroCutscene;
+    
     public int CurrentStaggerHealth { get; set; }
     public int StaggerArmor; // reduces stagger damage taken from attacks
-    // Events
-    //public event Action OnEnemyActionComplete; --> Hiding for now
+    // References
+    private PlayableDirector _director;
+    public PlayableDirector Director => _director;
     protected override void Awake()
     { 
         if (Data.GetType() != typeof(EnemyBattlePawnData))
@@ -34,13 +41,19 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         esm = GetComponent<EnemyStateMachine>();
         if (esm == null)
         {
-            Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" is must have an EnemyStateMachine");
+            Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" must have an EnemyStateMachine");
             return;
         }
         psm = GetComponent<PositionStateMachine>();
         if (psm == null)
         {
-            Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" is must have a PositionStateMachine");
+            Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" must have a PositionStateMachine");
+            return;
+        }
+        _director = GetComponent<PlayableDirector>();
+        if (_director == null)
+        {
+            Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" must have a PlayableDirector");
             return;
         }
         CurrentStaggerHealth = EnemyData.StaggerHealth;
@@ -96,6 +109,18 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             CurrentStaggerHealth = EnemyData.StaggerHealth;
         }
     }
+    public Coroutine PlayIntroCutscene()
+    {
+        return StartCoroutine(Cutscene());
+    }
+    private IEnumerator Cutscene()
+    {
+        _director.playableAsset = IntroCutscene;
+        _director.timeUpdateMode = DirectorUpdateMode.GameTime;
+        _director.Play();
+        _director.playableGraph.GetRootPlayable(0).SetSpeed(1);
+        yield return new WaitUntil(() => _director.state != PlayState.Playing);
+    }
     #region IAttackReceiver Methods
     public virtual bool ReceiveAttackRequest(IAttackRequester requester)
     {
@@ -127,6 +152,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         // Staggered Animation (Paper Crumple)
         psm.Transition<Center>();
         esm.Transition<Stagger>();
+        _director.Stop();
         OnEnemyStaggerEvent?.Invoke();
         StopAllEnemyActions();
         //_particleSystem?.Play();
