@@ -57,23 +57,37 @@ public class BossAI : Conductable
     protected override void OnFullBeat()
     {
         // (Ryan) Should't need to check for death here, just disable the conducatable conductor connection 
+
+        if (_currentStage + 1 < _enemyStages.Length &&
+            _enemyStages[_currentStage + 1].HealthThreshold > (float)_enemyBattlePawn.HP / _enemyBattlePawn.MaxHP)
+
+        {
+            _currentStage++;
+            Debug.Log($"Phase: {_currentStage}");
+            _beatsPerDecision = _enemyStages[_currentStage].BeatsPerDecision;
+            Conductor.Instance.ChangeMusicPhase(_currentStage + 1);
+            _enemyBattlePawn.UnStagger();
+            _enemyBattlePawn.psm.Transition<Distant>();
+            _enemyBattlePawn.StaggerArmor = _enemyStages[_currentStage].StaggerArmor;
+            if (DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode))
+            {
+                Debug.Log("Dialogue is running");
+            }
+            else
+            {
+                Debug.Log("Dialogue is not running");
+            }
+            OnEnemyStageTransition?.Invoke();
+        }
+
         if (_director.state == PlayState.Playing 
-            || _enemyBattlePawn.IsDead || _enemyBattlePawn.IsStaggered) return;
+            || _enemyBattlePawn.IsDead || _enemyBattlePawn.IsStaggered || DialogueManager.Instance.IsDialogueRunning) return;
         
         if (_decisionTime > 0) {
             // counting down time between attacks
             _decisionTime--;
             return;
         }
-
-        if (_currentStage+1 < _enemyStages.Length && 
-            _enemyStages[_currentStage+1].HealthThreshold > (float)_enemyBattlePawn.HP/_enemyBattlePawn.MaxHP) {
-                _currentStage++;
-                _beatsPerDecision = _enemyStages[_currentStage].BeatsPerDecision;
-                _enemyBattlePawn.psm.Transition<Distant>();
-                _enemyBattlePawn.StaggerArmor = _enemyStages[_currentStage].StaggerArmor;
-                OnEnemyStageTransition?.Invoke();
-            }
             
         TimelineAsset[] actions = _enemyStages[_currentStage].EnemyActionSequences;
         

@@ -32,6 +32,9 @@ public class BattlePawn : Conductable
     public event Action OnExitBattle;
     public event Action OnDamage;
 
+    // Extra
+    private Coroutine selfStaggerInstance;
+
     #region Unity Messages
     protected virtual void Awake()
     {
@@ -75,7 +78,15 @@ public class BattlePawn : Conductable
     }
     public virtual void Stagger()
     {
-        StartCoroutine(StaggerSelf());
+        selfStaggerInstance = StartCoroutine(StaggerSelf());
+    }
+    public virtual void UnStagger()
+    {
+        if (selfStaggerInstance == null) return;
+
+        StopCoroutine(selfStaggerInstance);
+        IsStaggered = false;
+        OnUnstagger();
     }
     public virtual void ApplyStatusAilment<SA>() 
         where SA : StatusAilment

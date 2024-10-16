@@ -114,6 +114,10 @@ public class Conductor : Singleton<Conductor>
         
         ctx = null;
     }
+    public void ChangeMusicPhase(int phase)
+    {
+        ctx.fmodInstance.setParameterByName("Phase", phase);
+    }
 
     // AT: Run this after the regular update so that all events are definitely triggered within the same interval,
     // instead of in-between regular updates

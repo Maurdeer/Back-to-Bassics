@@ -9,14 +9,14 @@ public class DialogueManager : Singleton<DialogueManager>
     public DialogueRunner customDialogueRunner; // Renamed from dialogueRunner to avoid ambiguity
     public List<DialogueViewBase> availableDialogueViews; // Renamed from dialogueViews to avoid ambiguity
     private DialogueViewBase activeDialogueView; // Current active dialogue view
+    public bool IsDialogueRunning => customDialogueRunner.IsDialogueRunning;
 
     private void Awake()
     {
-        Debug.Log("1");
         bool wasInitialized = InitializeSingleton(this);
         if (!wasInitialized)
         {
-            Debug.LogError("Failed");
+            Debug.LogError("Dialogue System Already Initialized!");
         }
     }
 
@@ -40,9 +40,10 @@ public class DialogueManager : Singleton<DialogueManager>
         customDialogueRunner.AddCommandHandler<string>("setView", SetDialogueView);
     }
 
-    public void RunDialogueNode(string node)
+    public bool RunDialogueNode(string node)
     {
         customDialogueRunner.StartDialogue(node);
+        return customDialogueRunner.IsDialogueRunning;
     }
 
     // This method handles the Yarn command to switch dialogue views
