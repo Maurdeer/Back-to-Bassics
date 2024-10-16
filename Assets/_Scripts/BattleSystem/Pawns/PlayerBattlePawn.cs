@@ -101,6 +101,8 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 //AnimatorStateInfo animatorState = _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
                 //if (!animatorState.IsName("idle")) return;
                 _pawnSprite.FaceDirection(new Vector3(direction.x, 0, 1));
+                _pawnSprite.Animator.SetFloat("speed", 1/ contextState.spb);
+                _pawnSprite.Animator.Play("slash");
                 _pawnAnimator.StopPlayback();
                 _pawnAnimator.Play($"Slash{DirectionHelper.GetVectorDirection(direction)}", -1, 0);
                 _pawnAnimator.speed = contextState.spb;
