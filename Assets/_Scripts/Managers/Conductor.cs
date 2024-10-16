@@ -62,7 +62,7 @@ public class Conductor : Singleton<Conductor>
     // public event Action OnHalfBeat;
     // public event Action OnFullBeat;
     public event Action OnFullBeat = delegate { };
-    // public event Action OnFirstBeat;
+    public event Action OnFirstBeat = delegate { };
     // public event Action OnLastBeat;
 
     public event Action<SerializedTempoMarker> OnTempoChange = delegate { };
@@ -550,7 +550,6 @@ public class Conductor : Singleton<Conductor>
                             ctxObj.currentState.spb = prevMarker.msPerBeat / 1E3f;
                             ctxObj.OnTempoChange();
                         }
-
                         ctxObj.elapsedWholeBeats += 1;
                         // ctxObj.parent.masterChannelGroup.getDSPClock(out var dspClock, out var parentDSP);
                         // ctxObj.lastBeatDsp = dspClock;

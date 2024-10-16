@@ -86,7 +86,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             Debug.LogError("EnemyData is not assigned.");
             return;
         }
-        Debug.Log("curr stagger health: " + CurrentStaggerHealth);
+        //Debug.Log("curr stagger health: " + CurrentStaggerHealth);
         staggerDamage -= StaggerArmor;
         if (staggerDamage < 0) return;
         CurrentStaggerHealth -= staggerDamage;

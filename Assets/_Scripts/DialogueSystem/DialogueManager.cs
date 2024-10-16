@@ -49,7 +49,7 @@ public class DialogueManager : Singleton<DialogueManager>
     // This method handles the Yarn command to switch dialogue views
     public IEnumerator SetDialogueView(string viewType)
     {
-        Debug.Log($"Switching to view: {viewType}");
+        //Debug.Log($"Switching to view: {viewType}");
         activeDialogueView = null;
         // Loop through dialogue views and find the matching one
         int i = 0;
@@ -62,7 +62,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
                 // Swaps the dialogue view 
                 customDialogueRunner.SetDialogueViews(new DialogueViewBase[] { view });
-                Debug.Log($"Dialogue View Set to: {viewType}");
+                //Debug.Log($"Dialogue View Set to: {viewType}");
                 break;
             }
             i++;

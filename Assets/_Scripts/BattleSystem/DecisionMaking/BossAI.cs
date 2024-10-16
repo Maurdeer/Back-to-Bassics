@@ -53,32 +53,21 @@ public class BossAI : Conductable
             }
         };
     }
-    // Perform Random Battle Action --> This is not the way this should be done
+
+    protected override void OnFirstBeat()
+    {
+        base.OnFirstBeat();
+        _currentStage = -1;
+        PhaseChange();
+    }
     protected override void OnFullBeat()
     {
-        // (Ryan) Should't need to check for death here, just disable the conducatable conductor connection 
-
-        if (_currentStage + 1 < _enemyStages.Length &&
-            _enemyStages[_currentStage + 1].HealthThreshold > (float)_enemyBattlePawn.HP / _enemyBattlePawn.MaxHP)
-
+        // (Ryan) Should't need to check for death here, just disable the conducatable conductor connection
+        if (Conductor.Instance.Beat <= 1)
         {
-            _currentStage++;
-            Debug.Log($"Phase: {_currentStage}");
-            _beatsPerDecision = _enemyStages[_currentStage].BeatsPerDecision;
-            Conductor.Instance.ChangeMusicPhase(_currentStage + 1);
-            _enemyBattlePawn.UnStagger();
-            _enemyBattlePawn.psm.Transition<Distant>();
-            _enemyBattlePawn.StaggerArmor = _enemyStages[_currentStage].StaggerArmor;
-            if (DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode))
-            {
-                Debug.Log("Dialogue is running");
-            }
-            else
-            {
-                Debug.Log("Dialogue is not running");
-            }
-            OnEnemyStageTransition?.Invoke();
+            OnFirstBeat();
         }
+        PhaseChange();
 
         if (_director.state == PlayState.Playing 
             || _enemyBattlePawn.IsDead || _enemyBattlePawn.IsStaggered || DialogueManager.Instance.IsDialogueRunning) return;
@@ -105,6 +94,30 @@ public class BossAI : Conductable
         var handle = _director.ScheduleToBeat();
 
         _decisionTime = _beatsPerDecision;
+    }
+    protected void PhaseChange()
+    {
+        if (_currentStage + 1 < _enemyStages.Length &&
+            _enemyStages[_currentStage + 1].HealthThreshold >= (float)_enemyBattlePawn.HP / _enemyBattlePawn.MaxHP)
+
+        {
+            _currentStage++;
+            //Debug.Log($"Phase: {_currentStage}");
+            _beatsPerDecision = _enemyStages[_currentStage].BeatsPerDecision;
+            Conductor.Instance.ChangeMusicPhase(_currentStage + 1);
+            _enemyBattlePawn.UnStagger();
+            _enemyBattlePawn.psm.Transition<Distant>();
+            _enemyBattlePawn.StaggerArmor = _enemyStages[_currentStage].StaggerArmor;
+            if (DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode))
+            {
+                //Debug.Log("Dialogue is running");
+            }
+            else
+            {
+                //Debug.Log("Dialogue is not running");
+            }
+            OnEnemyStageTransition?.Invoke();
+        }
     }
 }
 

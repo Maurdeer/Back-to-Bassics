@@ -14,10 +14,12 @@ public class Projectile : MonoBehaviour, IAttackRequester
     private EnemyBattlePawn _targetEnemy;
     public float AttackDamage => _dmg;
     public float AttackLurch => _dmg;
+    private Vector3 _initialScale;
     #region Unity Messages
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _initialScale = transform.localScale;
         Destroy();
     }
     #endregion
@@ -35,7 +37,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
     {
         var originalLocation = transform.position;
         _slashDirection = -lifetimeDisplacement;
-
+        transform.localScale = _initialScale;
         var schedulable = new Conductor.ConductorSchedulable(
             onStarted: (state, ctxState) =>
             {
@@ -111,11 +113,11 @@ public class Projectile : MonoBehaviour, IAttackRequester
         UIManager.Instance.IncrementParryTracker();
         if (coyoteTimer > 0)
         {
-            Debug.Log($"Note deflected after impact at +{coyoteTimer} beats");
+            //Debug.Log($"Note deflected after impact at +{coyoteTimer} beats");
         }
         else
         {
-            Debug.Log($"Note deflected by ongoing slash");
+            //Debug.Log($"Note deflected by ongoing slash");
         }
         
         //---------------------------------------
