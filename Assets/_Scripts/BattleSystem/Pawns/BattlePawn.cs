@@ -128,13 +128,13 @@ public class BattlePawn : Conductable
     {
         IsStaggered = true;
         OnStagger();
-        // TODO: Play Stagger Animation
+        _pawnSprite.Animator.Play("stagger");
         // TODO: Notify BattleManager to broadcast this BattlePawn's stagger
         yield return new WaitForSeconds(_data.StaggerDuration);
         //_currSP = _data.SP;
         //UIManager.Instance.UpdateSP(this);
         IsStaggered = false;
         OnUnstagger();
-        // TODO: Play StaggerRecovery Animation
+        _pawnSprite.Animator.Play("recover");
     }
 }
