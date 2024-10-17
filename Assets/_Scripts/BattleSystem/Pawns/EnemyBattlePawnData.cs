@@ -10,6 +10,6 @@ public class EnemyBattlePawnData : BattlePawnData
     [SerializeField] private int _staggerHealth;
     public int BPM => _bpm;
     public float SPB => 60f / _bpm;
-    public int StaggerHealth => _staggerHealth;
+    public int StaggerHealth => _staggerHealth; // Can be overwritten by EnemyStageData
     public FMODUnity.EventReference fmodEvent;
 }

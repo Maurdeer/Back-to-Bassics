@@ -1,7 +1,7 @@
 
 
 
-// holds health thresholds for stages, dialogue between stages, indices of attacks, perhaps?
+// holds health thresholds for stages, dialogue between stages, attacks
 
 
 using UnityEngine;
@@ -13,7 +13,7 @@ public class EnemyStageData : ScriptableObject {
     // indices of attacks in enemyActionSequences
     [SerializeField] private TimelineAsset[] _enemyActionSequences;
     [SerializeField] private int _beatsPerDecision;
-    [SerializeField] private int _staggerArmor;
+    [SerializeField] private int _staggerHealth;
     [SerializeField] private string _dialogueNode;
 
     // future: add dialogue, bpm changes?
@@ -21,5 +21,5 @@ public class EnemyStageData : ScriptableObject {
     public float HealthThreshold => _healthThreshold;
     public TimelineAsset[] EnemyActionSequences => _enemyActionSequences;
     public int BeatsPerDecision => _beatsPerDecision;
-    public int StaggerArmor => _staggerArmor;
+    public int StaggerHealth => _staggerHealth;
 }

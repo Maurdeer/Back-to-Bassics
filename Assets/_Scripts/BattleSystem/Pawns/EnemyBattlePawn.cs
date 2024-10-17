@@ -26,8 +26,9 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     public event Action OnEnemyStaggerEvent;
     public TimelineAsset IntroCutscene;
     
-    public int CurrentStaggerHealth { get; set; }
-    public int StaggerArmor; // reduces stagger damage taken from attacks
+    public int currentStaggerHealth { get; set; }
+    public int maxStaggerHealth;
+
     // References
     private PlayableDirector _director;
     public PlayableDirector Director => _director;
@@ -56,7 +57,8 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" must have a PlayableDirector");
             return;
         }
-        CurrentStaggerHealth = EnemyData.StaggerHealth;
+        currentStaggerHealth = EnemyData.StaggerHealth;
+        maxStaggerHealth = currentStaggerHealth;
         base.Awake();
     }
     public EA GetEnemyAction<EA>(int idx = 0) where EA : EnemyAction
@@ -99,14 +101,12 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             Debug.LogError("EnemyData is not assigned.");
             return;
         }
-        //Debug.Log("curr stagger health: " + CurrentStaggerHealth);
-        staggerDamage -= StaggerArmor;
         if (staggerDamage < 0) return;
-        CurrentStaggerHealth -= staggerDamage;
-        if (CurrentStaggerHealth <= 0)
+        currentStaggerHealth -= staggerDamage;
+        if (currentStaggerHealth <= 0)
         {
             Stagger();
-            CurrentStaggerHealth = EnemyData.StaggerHealth;
+            currentStaggerHealth = maxStaggerHealth;
         }
     }
     public Coroutine PlayIntroCutscene()

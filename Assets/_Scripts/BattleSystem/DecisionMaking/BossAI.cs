@@ -25,8 +25,6 @@ public class BossAI : Conductable
 
         _lastAction = -1;
         _currentStage = 0;
-        _beatsPerDecision =  _enemyStages[_currentStage].BeatsPerDecision;
-        _enemyBattlePawn.StaggerArmor = _enemyStages[_currentStage].StaggerArmor;
     }
 
     private void Start()
@@ -77,7 +75,7 @@ public class BossAI : Conductable
         _lastAction = idx;
 
         // may want to abstract enemy actions away from just timelines in the future?
-        _enemyBattlePawn.CurrentStaggerHealth = _enemyBattlePawn.EnemyData.StaggerHealth;
+        _enemyBattlePawn.currentStaggerHealth = _enemyBattlePawn.maxStaggerHealth;
         _enemyBattlePawn.esm.Transition<Attacking>();
         _enemyBattlePawn.Director.playableAsset = actions[idx];
         _enemyBattlePawn.Director.Play();
@@ -92,12 +90,13 @@ public class BossAI : Conductable
 
         {
             _currentStage++;
-            //Debug.Log($"Phase: {_currentStage}");
+            // Debug.Log($"Phase: {_currentStage}");
             _beatsPerDecision = _enemyStages[_currentStage].BeatsPerDecision;
             Conductor.Instance.ChangeMusicPhase(_currentStage + 1);
             _enemyBattlePawn.UnStagger();
             _enemyBattlePawn.psm.Transition<Distant>();
-            _enemyBattlePawn.StaggerArmor = _enemyStages[_currentStage].StaggerArmor;
+            _enemyBattlePawn.maxStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
+            _enemyBattlePawn.currentStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
             if (DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode))
             {
                 //Debug.Log("Dialogue is running");
