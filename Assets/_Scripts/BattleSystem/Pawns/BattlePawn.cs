@@ -13,10 +13,12 @@ public class BattlePawn : Conductable
     public BattlePawnData Data => _data;
     protected Animator _pawnAnimator;
     protected PawnSprite _pawnSprite;
+    protected ParticleSystem _paperShredBurst;
 
     [Header("Battle Pawn Data")]
     [SerializeField] protected int _currHP;
     public int HP => _currHP;
+    public int MaxHP => _data.HP;
 
     #region BattlePawn Boolean States
     public bool IsDead { get; private set; }
@@ -30,18 +32,28 @@ public class BattlePawn : Conductable
     public event Action OnExitBattle;
     public event Action OnDamage;
 
+    // Extra
+    private Coroutine selfStaggerInstance;
+
     #region Unity Messages
     protected virtual void Awake()
     {
-        _currHP = _data.HP;
+        _currHP = MaxHP;
         _pawnAnimator = GetComponent<Animator>();
         _pawnSprite = GetComponentInChildren<PawnSprite>();
+        _paperShredBurst = GetComponentInChildren<ParticleSystem>();
     }
     #endregion
     #region Modification Methods
     public virtual void Damage(int amount)
     {
         if (IsDead) return;
+        // Could make this more variable
+        if (amount > 0)
+        {
+            _paperShredBurst.Play();
+            _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
+        }
         _currHP -= amount;
         UIManager.Instance.UpdateHP(this);
         OnDamage?.Invoke();
@@ -59,7 +71,7 @@ public class BattlePawn : Conductable
     }
     public virtual void Heal(int amount)
     {
-        if (_currHP < _data.HP)
+        if (_currHP < MaxHP)
         {
             _currHP += amount;
             UIManager.Instance.UpdateHP(this);
@@ -67,7 +79,16 @@ public class BattlePawn : Conductable
     }
     public virtual void Stagger()
     {
-        StartCoroutine(StaggerSelf());
+        selfStaggerInstance = StartCoroutine(StaggerSelf());
+    }
+    public virtual void UnStagger()
+    {
+        if (selfStaggerInstance == null) return;
+
+        StopCoroutine(selfStaggerInstance);
+        IsStaggered = false;
+        OnUnstagger();
+        _pawnSprite.Animator.Play("recover");
     }
     public virtual void ApplyStatusAilment<SA>() 
         where SA : StatusAilment

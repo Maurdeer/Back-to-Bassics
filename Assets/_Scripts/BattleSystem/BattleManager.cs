@@ -42,6 +42,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         GameManager.Instance.PC.DisableControl();
         yield return PlayerEngageCurrentEnemy();
+        yield return Enemy.PlayIntroCutscene();
         Player.EnterBattle();
         Enemy.EnterBattle();
         AudioManager.Instance.SetAmbienceVolume(0.1f);

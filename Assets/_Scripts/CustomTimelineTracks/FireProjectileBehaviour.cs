@@ -22,7 +22,7 @@ public class FireProjectileBehaviour : PlayableBehaviour
             Debug.LogError($"{this} Node did not shoot a projectile");
             return;
         }
-        Vector3 firePosition = -DirectionHelper.GetVectorFromDirection(fireDirection)*fireDistance;
+        Vector3 firePosition = DirectionHelper.GetVectorFromDirection(fireDirection)*fireDistance;
         FireProjectileNode node;
         node.useDefault = useDefault;
         node.projRef = projectileRef;

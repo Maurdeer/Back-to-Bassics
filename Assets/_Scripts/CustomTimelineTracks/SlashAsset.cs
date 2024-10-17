@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using static Unity.Burst.Intrinsics.X86;
 
 public class SlashAsset : PlayableAsset
 {
@@ -22,6 +25,7 @@ public class SlashAsset : PlayableAsset
 public class SlashAssetEditor : Editor
 {
     private readonly string[] directions = { "North", "South", "East", "West"};
+
     public override void OnInspectorGUI()
     {
         SlashAsset sa = target as SlashAsset;
@@ -44,6 +48,8 @@ public class SlashAssetEditor : Editor
             sa.template.node.dodgeDirections[i] = dodgeDirection ? (Direction)(i + 1) : Direction.None; 
         }
         EditorGUI.indentLevel--;
+        EditorUtility.SetDirty(sa);
     }
 }
 #endif
+

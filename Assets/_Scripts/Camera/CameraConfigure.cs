@@ -34,7 +34,7 @@ public class CameraConfigure : Singleton<CameraConfigure>
         curr = targetCamera;
         //savedPriority = curr.Priority;
         curr.Priority = 10;
-        Debug.Log($"Curr: {curr}, Prev: {prev}");
+        //Debug.Log($"Curr: {curr}, Prev: {prev}");
     }
     public void SwitchBackToPrev()
     {

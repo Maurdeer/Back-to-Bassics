@@ -62,7 +62,7 @@ public class Conductor : Singleton<Conductor>
     // public event Action OnHalfBeat;
     // public event Action OnFullBeat;
     public event Action OnFullBeat = delegate { };
-    // public event Action OnFirstBeat;
+    public event Action OnFirstBeat = delegate { };
     // public event Action OnLastBeat;
 
     public event Action<SerializedTempoMarker> OnTempoChange = delegate { };
@@ -113,6 +113,10 @@ public class Conductor : Singleton<Conductor>
         }
         
         ctx = null;
+    }
+    public void ChangeMusicPhase(int phase)
+    {
+        ctx.fmodInstance.setParameterByName("Phase", phase);
     }
 
     // AT: Run this after the regular update so that all events are definitely triggered within the same interval,
@@ -246,10 +250,10 @@ public class Conductor : Singleton<Conductor>
 
         internal Conductor _parent;
         
-        public readonly Action<ConductorSchedulableState, ConductorContextState> OnUpdate;
-        public readonly Action<ConductorSchedulableState, ConductorContextState> OnStarted;
-        public readonly Action<ConductorSchedulableState, ConductorContextState> OnCompleted;
-        public readonly Action<ConductorSchedulableState> OnAborted;
+        public Action<ConductorSchedulableState, ConductorContextState> OnUpdate;
+        public Action<ConductorSchedulableState, ConductorContextState> OnStarted;
+        public Action<ConductorSchedulableState, ConductorContextState> OnCompleted;
+        public Action<ConductorSchedulableState> OnAborted;
 
         public ConductorSchedulable(
             Action<ConductorSchedulableState, ConductorContextState> onUpdate = null, 
@@ -546,7 +550,6 @@ public class Conductor : Singleton<Conductor>
                             ctxObj.currentState.spb = prevMarker.msPerBeat / 1E3f;
                             ctxObj.OnTempoChange();
                         }
-
                         ctxObj.elapsedWholeBeats += 1;
                         // ctxObj.parent.masterChannelGroup.getDSPClock(out var dspClock, out var parentDSP);
                         // ctxObj.lastBeatDsp = dspClock;
@@ -630,27 +633,31 @@ public static class ConductorExtensions
     {
         director.timeUpdateMode = DirectorUpdateMode.Manual;
         director.Play();
-        var schedulable = new Conductor.ConductorSchedulable(
-            onStarted: (state, ctxState) =>
+        var schedulable = new Conductor.ConductorSchedulable();
+        schedulable.OnStarted = (state, ctxState) =>
+        {
+            director.time = 0;
+            director.Evaluate();
+        };
+        schedulable.OnUpdate = (state, ctxState) =>
+        {
+            if (director.state != PlayState.Playing)
             {
-                director.time = 0;
+                schedulable.SelfAbort();
+                return;
+            }
+            director.time = ctxState.ElapsedBeat - state._scheduledStartBeat;
+            if (director.time > 0)
+            {
                 director.Evaluate();
-            },
-            onUpdate: (state, ctxState) =>
-            {
-                director.time = ctxState.ElapsedBeat - state._scheduledStartBeat;
-                if (director.time >= 0)
-                {
-                    director.Evaluate();
-                }
-            },
-            onCompleted: (state, ctxState) =>
-            {
-                director.Stop();
-            });
-
+            }
+        };
+        schedulable.OnCompleted = (state, ctxState) =>
+        {
+            director.Stop();
+        };
         var startTime = Conductor.Instance.SnapToCurrentBeat(Conductor.BeatFraction.full);
-        Conductor.Instance.ScheduleActionAsap((float) director.duration, startTime, schedulable, forceStart: true);
+        Conductor.Instance.ScheduleActionAsap((float) director.duration, startTime, schedulable, forceStart: false);
 
         return schedulable;
     }

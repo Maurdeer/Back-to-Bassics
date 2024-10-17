@@ -6,16 +6,20 @@ public class Projectile : MonoBehaviour, IAttackRequester
 {
     [Header("Projectile Specs")]
     [SerializeField] private int _dmg;
+    [SerializeField] private int _staggerDamage;
     private float _speed;
     private Rigidbody _rb;
     public bool isDestroyed { get; private set; }
     private PlayerBattlePawn _hitPlayerPawn;
+    private EnemyBattlePawn _targetEnemy;
     public float AttackDamage => _dmg;
     public float AttackLurch => _dmg;
+    private Vector3 _initialScale;
     #region Unity Messages
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _initialScale = transform.localScale;
         Destroy();
     }
     #endregion
@@ -33,7 +37,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
     {
         var originalLocation = transform.position;
         _slashDirection = -lifetimeDisplacement;
-
+        transform.localScale = _initialScale;
         var schedulable = new Conductor.ConductorSchedulable(
             onStarted: (state, ctxState) =>
             {
@@ -109,14 +113,15 @@ public class Projectile : MonoBehaviour, IAttackRequester
         UIManager.Instance.IncrementParryTracker();
         if (coyoteTimer > 0)
         {
-            Debug.Log($"Note deflected after impact at +{coyoteTimer} beats");
+            //Debug.Log($"Note deflected after impact at +{coyoteTimer} beats");
         }
         else
         {
-            Debug.Log($"Note deflected by ongoing slash");
+            //Debug.Log($"Note deflected by ongoing slash");
         }
         
         //---------------------------------------
+        _targetEnemy?.StaggerDamage(_staggerDamage);
         Destroy();
         return true;
     }
@@ -138,5 +143,10 @@ public class Projectile : MonoBehaviour, IAttackRequester
         isDestroyed = true;
         _hitPlayerPawn = null;
         gameObject.SetActive(false);
+    }
+    public void SetTargetEnemy(EnemyBattlePawn targetEnemy)
+    {
+        _targetEnemy = targetEnemy;
+        _targetEnemy.OnEnemyStaggerEvent += Destroy;
     }
 }

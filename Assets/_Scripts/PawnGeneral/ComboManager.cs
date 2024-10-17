@@ -67,8 +67,16 @@ public class ComboManager : MonoBehaviour
     }
     private IEnumerator DelayComboReset()
     {
-        // Give the player 2 beat of time
-        yield return new WaitForSeconds(0.8f);
+        // Give the player 1 beat of time
+        if (Conductor.Instance.IsPlaying)
+        {
+            yield return new WaitForSeconds(Conductor.Instance.spb);
+        }
+        else
+        {
+            yield return new WaitForSeconds(2f);
+        }
+        
         UIManager.Instance.ComboDisplay.HideCombo();
         _currComboString = "";
     }
