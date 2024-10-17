@@ -13,9 +13,12 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 {
     [Header("Player References")]
     [SerializeField] private PlayerWeaponData _weaponData;
+    public Transform playerCollider;
+    [Header("Player Effects")]
     [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private VisualEffect _slashEffect;
-    public Transform playerCollider;
+    [SerializeField] private ParticleSystem _deflectEffect;
+    
     private PlayerTraversalPawn _traversalPawn;
     public PlayerWeaponData WeaponData => _weaponData;
     public Vector2 SlashDirection { get; private set; }
@@ -244,6 +247,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         {
             deflected = true;
             AudioManager.Instance.PlayOnShotSound(WeaponData.slashHitSound, transform.position);
+            _deflectEffect.Play();
             _comboManager.CurrComboMeterAmount += 1;
             return true;
         }
