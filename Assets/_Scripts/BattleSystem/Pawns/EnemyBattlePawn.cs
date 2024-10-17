@@ -28,6 +28,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     
     public int currentStaggerHealth { get; set; }
     public int maxStaggerHealth;
+    public bool interruptable; // Staggers interrupt attacks, rather than occurring at end of attack
 
     // References
     private PlayableDirector _director;
@@ -59,6 +60,13 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         }
         currentStaggerHealth = EnemyData.StaggerHealth;
         maxStaggerHealth = currentStaggerHealth;
+
+        _director.stopped += (PlayableDirector pd) => {
+            if (currentStaggerHealth <= 0) {
+                Stagger();
+                currentStaggerHealth = maxStaggerHealth;
+            }
+        };
         base.Awake();
     }
     public EA GetEnemyAction<EA>(int idx = 0) where EA : EnemyAction
@@ -101,12 +109,13 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             Debug.LogError("EnemyData is not assigned.");
             return;
         }
-        if (staggerDamage < 0) return;
+        if (staggerDamage < 0 || currentStaggerHealth <= 0) return;
         currentStaggerHealth -= staggerDamage;
-        if (currentStaggerHealth <= 0)
-        {
-            Stagger();
-            currentStaggerHealth = maxStaggerHealth;
+        if (currentStaggerHealth <= 0) {
+            if (interruptable) {
+                Stagger();
+                currentStaggerHealth = maxStaggerHealth;
+            }
         }
     }
     public Coroutine PlayIntroCutscene()
@@ -183,11 +192,12 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         }
     }
     // This could get used or not, was intended for random choices :p
-    //public void OnActionComplete()
-    //{
+    public void OnActionComplete()
+    {
     //    OnEnemyActionComplete?.Invoke();
-    //    if (esm.IsOnState<Dead>() || esm.IsOnState<Stagger>()) return;
-    //    esm.Transition<Idle>();
-    //}
+        Debug.LogError("hiiiiiii");
+       if (esm.IsOnState<Dead>() || esm.IsOnState<Stagger>()) return;
+       esm.Transition<Idle>();
+    }
     #endregion
 }

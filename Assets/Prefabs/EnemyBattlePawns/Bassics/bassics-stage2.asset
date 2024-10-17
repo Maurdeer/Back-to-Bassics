@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: bassics-stage2
   m_EditorClassIdentifier: 
   _healthThreshold: 0.9
-  _enemyActionSequences:
-  - {fileID: 11400000, guid: 0995f9fefe54b534f85a121bc1bde168, type: 2}
-  - {fileID: 11400000, guid: d79574ff93d181d44b730d1dffe5531a, type: 2}
+  _enemyAttackPatterns:
+  - {fileID: 11400000, guid: e5604ae753a65ad47befb3c280705c5f, type: 2}
+  - {fileID: 11400000, guid: c3f66b064c92fde478b5e21ab98864c2, type: 2}
   _beatsPerDecision: 4
-  _staggerHealth: 15
+  _staggerHealth: 25
   _dialogueNode: bassics-battle_phase2

@@ -66,7 +66,7 @@ public class BossAI : Conductable
             return;
         }
             
-        TimelineAsset[] actions = _enemyStages[_currentStage].EnemyActionSequences;
+        EnemyAttackPattern[] actions = _enemyStages[_currentStage].EnemyAttackPatterns;
         
         int idx = Random.Range(0, actions != null ? actions.Length : 0);
         if (idx == _lastAction)
@@ -75,9 +75,10 @@ public class BossAI : Conductable
         _lastAction = idx;
 
         // may want to abstract enemy actions away from just timelines in the future?
+        _enemyBattlePawn.interruptable = actions[idx].Interruptable;
         _enemyBattlePawn.currentStaggerHealth = _enemyBattlePawn.maxStaggerHealth;
         _enemyBattlePawn.esm.Transition<Attacking>();
-        _enemyBattlePawn.Director.playableAsset = actions[idx];
+        _enemyBattlePawn.Director.playableAsset = actions[idx].ActionSequence;
         _enemyBattlePawn.Director.Play();
         var handle = _enemyBattlePawn.Director.ScheduleToBeat();
 
