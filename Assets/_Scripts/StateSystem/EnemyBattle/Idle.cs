@@ -18,8 +18,6 @@ public partial class EnemyStateMachine
         }
         public override bool AttackRequestHandler(IAttackRequester requester)
         {
-            // Honestly could include the player too
-            Input.EnemySprite.Animator.Play("damaged");
             return true;
         }
     }

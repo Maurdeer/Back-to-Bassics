@@ -52,6 +52,7 @@ public class BattlePawn : Conductable
         if (amount > 0)
         {
             _paperShredBurst.Play();
+            _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
         }
         _currHP -= amount;
         UIManager.Instance.UpdateHP(this);
@@ -87,6 +88,7 @@ public class BattlePawn : Conductable
         StopCoroutine(selfStaggerInstance);
         IsStaggered = false;
         OnUnstagger();
+        _pawnSprite.Animator.Play("recover");
     }
     public virtual void ApplyStatusAilment<SA>() 
         where SA : StatusAilment
