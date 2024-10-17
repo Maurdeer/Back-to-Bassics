@@ -50,7 +50,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         parentPawnSprite.FaceDirection(new Vector3(-_currNode.slashVector.x, 0, -1));
         parentPawnSprite.Animator.SetFloat("x_slashDir", _currNode.slashVector.x);
         parentPawnSprite.Animator.SetFloat("y_slashDir", _currNode.slashVector.y);
-        float syncedAnimationTime = (_currNode.slashLengthInBeats - 1) * Conductor.Instance.spb;
+        float syncedAnimationTime = (_currNode.slashLengthInBeats - 2) * Conductor.Instance.spb;
         if (parentPawn.psm.IsOnState<Distant>())
         {
             //parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
