@@ -8,6 +8,8 @@ public class PauseMenuCode : MonoBehaviour
     public static bool GamePaused = false;
 
     public GameObject pauseMenuPanel;
+    public GameObject settingsMenuPanel;
+
 
     public void TogglePause()
     {
@@ -33,7 +35,18 @@ public class PauseMenuCode : MonoBehaviour
 
     public void LoadSettings ()
     {
+        pauseMenuPanel.SetActive(false);
+
+        settingsMenuPanel.SetActive(true);
+
         Debug.Log("Loading settings");
+    }
+
+    public void BackToPauseMenu()
+    {
+        settingsMenuPanel.SetActive(false);
+
+        pauseMenuPanel.SetActive(true);
     }
 
     public void ExitGame ()
