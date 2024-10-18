@@ -42,7 +42,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void RunDialogueNode(string node)
     {
-        GameManager.Instance.GSM.Transition<GameStateMachine.Dialogue>();
+        //GameManager.Instance.GSM.Transition<GameStateMachine.Dialogue>();
         customDialogueRunner.StartDialogue(node);
     }
 
