@@ -14,6 +14,6 @@ public class DialogueBehaviour : PlayableBehaviour
         base.OnBehaviourPlay(playable, info);
         if (_performed) return;
         _performed = true;
-        DialogueManager.Instance.RunDialogueNode(startNode);
+        DialogueManager.Instance?.RunDialogueNode(startNode);
     }
 }

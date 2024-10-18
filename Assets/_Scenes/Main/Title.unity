@@ -1225,6 +1225,7 @@ GameObject:
   - component: {fileID: 919710340}
   - component: {fileID: 919710339}
   - component: {fileID: 919710338}
+  - component: {fileID: 919710341}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1306,6 +1307,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &919710341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919710337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1 &1000596447
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,6 +1722,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6ff0dc72d7698a4c9d9116a3c5de186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnFirstTime:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1141389992
 Transform:
   m_ObjectHideFlags: 0
@@ -1953,11 +2001,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe7d93a9116f1462eae07e8aaa277672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstSelected: {fileID: 345478441}
-  saveSlotsMenu: {fileID: 0}
-  newGameButton: {fileID: 345478441}
-  continueGameButton: {fileID: 1838061008}
-  loadGameButton: {fileID: 698584610}
 --- !u!114 &1472814527
 MonoBehaviour:
   m_ObjectHideFlags: 0
