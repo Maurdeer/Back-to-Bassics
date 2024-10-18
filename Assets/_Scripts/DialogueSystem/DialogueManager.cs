@@ -47,7 +47,11 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void RunDialogueNode(string node)
     {
-        //GameManager.Instance.GSM.Transition<GameStateMachine.Dialogue>();
+        // Add soon when you can interface dialogue
+        //if (GameManager.Instance.GSM.IsOnState<GameStateMachine.WorldTraversal>())
+        //{
+        //    GameManager.Instance.GSM.Transition<GameStateMachine.Dialogue>();
+        //}
         if (customDialogueRunner.IsDialogueRunning)
         {
             customDialogueRunner.Stop();
@@ -58,7 +62,10 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void OnDialogueComplete()
     {
-        GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
+        if (GameManager.Instance.GSM.IsOnState<GameStateMachine.Dialogue>())
+        {
+            GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
+        }
     }
 
     public void VoiceByte()

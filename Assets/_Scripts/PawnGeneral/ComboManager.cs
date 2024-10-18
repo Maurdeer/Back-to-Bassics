@@ -67,10 +67,10 @@ public class ComboManager : MonoBehaviour
     }
     private IEnumerator DelayComboReset()
     {
-        // Give the player 1 beat of time
+        // Give the player 2 beat of time
         if (Conductor.Instance.IsPlaying)
         {
-            yield return new WaitForSeconds(Conductor.Instance.spb);
+            yield return new WaitForSeconds(2 * Conductor.Instance.spb);
         }
         else
         {
