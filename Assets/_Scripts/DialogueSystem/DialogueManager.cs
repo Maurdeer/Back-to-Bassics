@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
 using Cinemachine;
+using FMODUnity;
+using FMOD.Studio;
+
 public class DialogueManager : Singleton<DialogueManager>
 {
     // Reference to the existing Dialogue Runner in the scene
@@ -10,6 +13,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public List<DialogueViewBase> availableDialogueViews; // Renamed from dialogueViews to avoid ambiguity
     private DialogueViewBase activeDialogueView; // Current active dialogue view
     public bool IsDialogueRunning => customDialogueRunner.IsDialogueRunning;
+    private EventInstance voiceByteInstance;
 
     private void Awake()
     {
@@ -38,13 +42,34 @@ public class DialogueManager : Singleton<DialogueManager>
 
         // Set up the view switching command handler
         customDialogueRunner.AddCommandHandler<string>("setView", SetDialogueView);
+        voiceByteInstance = AudioManager.Instance.CreateInstance(FMODEvents.Instance.bassicsBlub);
     }
 
-    public bool RunDialogueNode(string node)
+    public void RunDialogueNode(string node)
     {
         //GameManager.Instance.GSM.Transition<GameStateMachine.Dialogue>();
+        if (customDialogueRunner.IsDialogueRunning)
+        {
+            customDialogueRunner.Stop();
+        }
         customDialogueRunner.StartDialogue(node);
-        return customDialogueRunner.IsDialogueRunning;
+        //return customDialogueRunner.IsDialogueRunning;
+    }
+
+    public void OnDialogueComplete()
+    {
+        GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
+    }
+
+    public void VoiceByte()
+    {
+        PLAYBACK_STATE playbackState;
+        voiceByteInstance.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+        {
+            voiceByteInstance.start();
+        }
+        //voiceByteInstance.start();
     }
 
     // This method handles the Yarn command to switch dialogue views

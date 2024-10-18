@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using static EnemyStateMachine;
@@ -18,7 +19,8 @@ public class BossAI : Conductable
     // references
     private EnemyBattlePawn _enemyBattlePawn;
     private float _decisionTime;
-    
+    private bool staggeredBefore;
+    [SerializeField] private UnityEvent firstTimeStagger;
     private void Awake()
     {
         _enemyBattlePawn = GetComponent<EnemyBattlePawn>();
@@ -36,8 +38,16 @@ public class BossAI : Conductable
         { 
             if (_enemyBattlePawn.esm.IsOnState<Idle>() && _enemyBattlePawn.psm.IsOnState<Center>() && _currentStage > 0)
             {
-                // _enemyBattlePawn.psm.Transition<Distant>();
-                _enemyBattlePawn.esm.Transition<Block>();
+                _enemyBattlePawn.psm.Transition<Distant>();
+                //_enemyBattlePawn.esm.Transition<Block>();
+            }
+        };
+        _enemyBattlePawn.OnEnemyStaggerEvent += delegate
+        {
+            if (!staggeredBefore)
+            {
+                staggeredBefore = true;
+                firstTimeStagger.Invoke();
             }
         };
     }
@@ -98,14 +108,7 @@ public class BossAI : Conductable
             _enemyBattlePawn.psm.Transition<Distant>();
             _enemyBattlePawn.maxStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
             _enemyBattlePawn.currentStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
-            if (DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode))
-            {
-                //Debug.Log("Dialogue is running");
-            }
-            else
-            {
-                //Debug.Log("Dialogue is not running");
-            }
+            DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode);
             OnEnemyStageTransition?.Invoke();
         }
     }

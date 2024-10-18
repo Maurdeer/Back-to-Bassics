@@ -16,6 +16,7 @@ public class CameraConfigure : Singleton<CameraConfigure>
     private void Start()
     {
         curr = GetComponent<CinemachineBrain>().ActiveVirtualCamera as CinemachineVirtualCamera;
+        if (curr == null) curr = firstVirtualCamera;
         // This shouldn't be needed please!!!
         if (curr == null)
         {

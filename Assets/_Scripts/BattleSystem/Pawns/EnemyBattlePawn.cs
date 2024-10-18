@@ -25,6 +25,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     // Events
     public event Action OnEnemyStaggerEvent;
     public TimelineAsset IntroCutscene;
+    public TimelineAsset OutroCutscene;
     
     public int currentStaggerHealth { get; set; }
     public int maxStaggerHealth;

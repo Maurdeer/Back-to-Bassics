@@ -63,6 +63,7 @@ public class BattlePawn : Conductable
             _currHP = 0;
             IsDead = true;
             // Handling of Death animation and battlemanger Broadcast happen in OnDeath()
+            UnStagger();
             BattleManager.Instance.OnPawnDeath(this);
             OnPawnDeath?.Invoke();
             onPawnDefeat?.Invoke();
@@ -79,7 +80,12 @@ public class BattlePawn : Conductable
     }
     public virtual void Stagger()
     {
-        selfStaggerInstance = StartCoroutine(StaggerSelf());
+        StaggerFor(_data.StaggerDuration);
+    }
+    public virtual void StaggerFor(float duration)
+    {
+        if (selfStaggerInstance != null) StopCoroutine(selfStaggerInstance);
+        selfStaggerInstance = StartCoroutine(StaggerSelf(duration));
     }
     public virtual void UnStagger()
     {
@@ -126,13 +132,13 @@ public class BattlePawn : Conductable
         // TODO: Things that occur on battle pawn after unstaggering
     }
     #endregion
-    protected virtual IEnumerator StaggerSelf()
+    protected virtual IEnumerator StaggerSelf(float duration)
     {
         IsStaggered = true;
         OnStagger();
         _pawnSprite.Animator.Play("stagger");
         // TODO: Notify BattleManager to broadcast this BattlePawn's stagger
-        yield return new WaitForSeconds(_data.StaggerDuration);
+        yield return new WaitForSeconds(duration);
         //_currSP = _data.SP;
         //UIManager.Instance.UpdateSP(this);
         IsStaggered = false;

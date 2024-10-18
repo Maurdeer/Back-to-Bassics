@@ -1,17 +1,27 @@
-﻿title: Bassics
+﻿title: bassics_intro_1
 tags:
 ---
+<<setView "BassicsDialogueBubble">>
 Bassics: You're finally awake.  
 Bassics: Does the poncho fit well?
 Bassics: ...You're curious about the mountain?
 Bassics: That's a long journey ahead of you.
+Bassics: You can't go up there without being a little prepared.
+Bassics: Find yourself something to fight with, then come back to me. 
 ===
-title: Bassics_proud
+title: bassics_intro_2
 tags:
-position: 6,150
 ---
-Bassics: Good!
-Bassics: You are ready.
+<<setView "BassicsDialogueBubble">>
+Bassics: Find yourself something to fight with.
+Bassics: Then come back to me.
+===
+title: bassics_proud
+tags:
+---
+<<setView "BassicsDialogueBubble">>
+Bassics: Ooof.
+Bassics: You've fought well dear poncho!
 Bassics: The forest awaits you!
 ===
 title: bassics_intro_cutscene
@@ -20,15 +30,4 @@ tags:
 <<setView "BassicsDialogueBubble">>
 Bassics: You can face the real world yet
 Bassics: You need to face me first!
-===
-
-
-title: shrimp_and_bass
-tags:
----
-<<setView "BassicsDialogueBubble">>
-Bassics: "Tell me once more..."
-Bassics: "You fry rice?"
-<<setView "SmallFryDialogueBubble">>
-Small Fry: "Why else do you think its called Shrimp fried rice?"
 ===

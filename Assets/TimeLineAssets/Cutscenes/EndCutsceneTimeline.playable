@@ -64,6 +64,98 @@ MonoBehaviour:
   VirtualCamera:
     exposedName: 1122afa3d1af1d6408cc60d13a1c425a
     defaultValue: {fileID: 0}
+--- !u!114 &-4249863972489062315
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ea2ab4eca3dfda4a833c191ce1feb26, type: 3}
+  m_Name: Dialogue Track
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_AnimClip: {fileID: 0}
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_Curves: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips:
+  - m_Version: 1
+    m_Start: 0
+    m_ClipIn: 0
+    m_Asset: {fileID: 7936419630172037821}
+    m_Duration: 5
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: -4249863972489062315}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: DialogueAsset
+  m_Markers:
+    m_Objects: []
 --- !u!114 &-3915014800414136409
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -284,6 +376,7 @@ MonoBehaviour:
   - {fileID: 386036701357133810}
   - {fileID: -3770390674132934184}
   - {fileID: -3915014800414136409}
+  - {fileID: -4249863972489062315}
   m_FixedDuration: 0
   m_EditorSettings:
     m_Framerate: 60
@@ -537,6 +630,20 @@ MonoBehaviour:
   VirtualCamera:
     exposedName: c060e3db3c0810e4d815fee5f7c00fe6
     defaultValue: {fileID: 0}
+--- !u!114 &7936419630172037821
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95e779e6fa90fc84e947fe48dc92525f, type: 3}
+  m_Name: DialogueAsset
+  m_EditorClassIdentifier: 
+  template:
+    startNode: bassics_proud
 --- !u!114 &8501584673802894528
 MonoBehaviour:
   m_ObjectHideFlags: 1
