@@ -76,7 +76,7 @@ public class FireProjectileAction : EnemyAction
         Projectile proj = objRef.GetComponent<Projectile>();
         proj.SetTargetEnemy(parentPawn);
         proj.transform.position = BattleManager.Instance.Player.playerCollider.position + node.relativeSpawnPosition;
-        Debug.Log($"{proj}: {proj.transform.position}");
+        // Debug.Log($"{proj}: {proj.transform.position}");
         proj.Fire(BattleManager.Instance.Player.playerCollider.position - proj.transform.position, node.duration);
 
    
