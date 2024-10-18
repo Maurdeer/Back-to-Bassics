@@ -110,10 +110,6 @@ public class Projectile : MonoBehaviour, IAttackRequester
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
-        Debug.Log("Deflect requested");
-        if (player == null) {
-            Debug.LogError("nullplayer");
-        }
         // Did receiver deflect in correct direction?
         if (player == null
             || !DirectionHelper.MaxAngleBetweenVectors(_slashDirection, player.SlashDirection, 5f))
@@ -123,7 +119,6 @@ public class Projectile : MonoBehaviour, IAttackRequester
 
         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementParryTracker();
-        Debug.Log("atk parried");
         if (coyoteTimer > 0)
         {
             //Debug.Log($"Note deflected after impact at +{coyoteTimer} beats");
