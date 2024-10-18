@@ -62,7 +62,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         maxStaggerHealth = currentStaggerHealth;
 
         _director.stopped += (PlayableDirector pd) => {
-            if (currentStaggerHealth <= 0) {
+            if (currentStaggerHealth <= 0 && !IsStaggered) {
                 Stagger();
                 currentStaggerHealth = maxStaggerHealth;
             }
@@ -113,6 +113,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         currentStaggerHealth -= staggerDamage;
         if (currentStaggerHealth <= 0) {
             if (interruptable) {
+                Debug.Log("Regular Stagger");
                 Stagger();
                 currentStaggerHealth = maxStaggerHealth;
             }

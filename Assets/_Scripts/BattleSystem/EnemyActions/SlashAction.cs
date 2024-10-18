@@ -73,20 +73,8 @@ public class SlashAction : EnemyAction, IAttackRequester
         yield return new WaitForSeconds(Conductor.Instance.spb);
         //yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
         // Hit Moment
-        
-        if (BattleManager.Instance.Player.ReceiveAttackRequest(this))
-        {
-            Debug.Log("Slash Hit!");
-        }
-        else
-        {
-            Debug.Log("Slash Parry!");
-            if (parentPawn is EnemyBattlePawn enemyPawn)
-            {
-                enemyPawn.StaggerDamage(_staggerDamage);
-            }
-        }
-        yield return new WaitForSeconds(Conductor.Instance.spb);
+
+        BattleManager.Instance.Player.ReceiveAttackRequest(this);
     }
     
     public void OnAttackMaterialize(IAttackReceiver receiver)
@@ -128,9 +116,9 @@ public class SlashAction : EnemyAction, IAttackRequester
         //---------------------------------------
 
         parentPawnSprite.Animator.Play($"{slashAnimationName}_deflected");
-        if (_currNode.staggersParent)
+        if (_currNode.staggersParent && parentPawn is EnemyBattlePawn enemyPawn)
         {
-            parentPawn.Stagger();
+            enemyPawn.StaggerDamage(_staggerDamage);
         }
         return true;
     }
