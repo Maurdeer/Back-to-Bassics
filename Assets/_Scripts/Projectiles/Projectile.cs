@@ -20,6 +20,9 @@ public class Projectile : MonoBehaviour, IAttackRequester
     {
         _rb = GetComponent<Rigidbody>();
         _initialScale = transform.localScale;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _meshRenderer = GetComponent<MeshRenderer>();
+        _burstEffect = GetComponent<ParticleSystem>();
         Destroy();
     }
     #endregion
@@ -27,6 +30,9 @@ public class Projectile : MonoBehaviour, IAttackRequester
     [SerializeField] private EventReference playOnMiss;
     private float coyoteTimer = 0;
     private Vector3 _slashDirection;
+    private ParticleSystem _burstEffect;
+    private SpriteRenderer _spriteRenderer;
+    private MeshRenderer _meshRenderer;
     
     /// <summary>
     /// Spawn a projectile with a predetermined offset
@@ -43,6 +49,8 @@ public class Projectile : MonoBehaviour, IAttackRequester
             {
                 isDestroyed = false;
                 gameObject.SetActive(true);
+                if (_spriteRenderer != null) _spriteRenderer.enabled = true;
+                if (_meshRenderer != null) _meshRenderer.enabled = true;
             },
             onUpdate: (state, ctxState) =>
             {
@@ -67,7 +75,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
 
     //    // Inefficent as heck, but does the job
     //    isDestroyed = false;
-    //    gameObject.SetActive(true);
+    //    _spriteRenderer.enabled = true;
     //}
     private void OnTriggerEnter(Collider collision)
     {
@@ -147,7 +155,10 @@ public class Projectile : MonoBehaviour, IAttackRequester
     {
         isDestroyed = true;
         _hitPlayerPawn = null;
+        _burstEffect?.Play();
         gameObject.SetActive(false);
+        if (_spriteRenderer != null) _spriteRenderer.enabled = false;
+        if (_meshRenderer != null) _meshRenderer.enabled = false;
     }
     public void SetTargetEnemy(EnemyBattlePawn targetEnemy)
     {
