@@ -28,7 +28,8 @@ public class FireProjectileAssetEditor : Editor
             fpa.template.projectileRef = EditorGUILayout.ObjectField("Projectile Prefab", fpa.template.projectileRef, typeof(GameObject), false) as GameObject;  
         }
         fpa.template.fireDirection = (Direction)EditorGUILayout.EnumPopup("Slash Direction", fpa.template.fireDirection);
-        fpa.template.fireDistance = EditorGUILayout.FloatField("Fire Distance", fpa.template.fireDistance); 
+        fpa.template.fireDistance = EditorGUILayout.FloatField("Fire Distance", fpa.template.fireDistance);
+        EditorUtility.SetDirty(fpa);
     }
 }
 #endif

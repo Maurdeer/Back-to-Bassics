@@ -9,14 +9,14 @@ public class DialogueManager : Singleton<DialogueManager>
     public DialogueRunner customDialogueRunner; // Renamed from dialogueRunner to avoid ambiguity
     public List<DialogueViewBase> availableDialogueViews; // Renamed from dialogueViews to avoid ambiguity
     private DialogueViewBase activeDialogueView; // Current active dialogue view
+    public bool IsDialogueRunning => customDialogueRunner.IsDialogueRunning;
 
     private void Awake()
     {
-        Debug.Log("1");
         bool wasInitialized = InitializeSingleton(this);
         if (!wasInitialized)
         {
-            Debug.LogError("Failed");
+            Debug.LogError("Dialogue System Already Initialized!");
         }
     }
 
@@ -40,16 +40,17 @@ public class DialogueManager : Singleton<DialogueManager>
         customDialogueRunner.AddCommandHandler<string>("setView", SetDialogueView);
     }
 
-    public void RunDialogueNode(string node)
+    public bool RunDialogueNode(string node)
     {
         //GameManager.Instance.GSM.Transition<GameStateMachine.Dialogue>();
         customDialogueRunner.StartDialogue(node);
+        return customDialogueRunner.IsDialogueRunning;
     }
 
     // This method handles the Yarn command to switch dialogue views
     public IEnumerator SetDialogueView(string viewType)
     {
-        Debug.Log($"Switching to view: {viewType}");
+        //Debug.Log($"Switching to view: {viewType}");
         activeDialogueView = null;
         // Loop through dialogue views and find the matching one
         int i = 0;
@@ -62,7 +63,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
                 // Swaps the dialogue view 
                 customDialogueRunner.SetDialogueViews(new DialogueViewBase[] { view });
-                Debug.Log($"Dialogue View Set to: {viewType}");
+                //Debug.Log($"Dialogue View Set to: {viewType}");
                 break;
             }
             i++;

@@ -14,6 +14,8 @@ public class SlashAction : EnemyAction, IAttackRequester
     public float minSlashTillHitDuration => (preHitClip.length + broadcastClip.length);
     public float minSlashTillHitInBeats => minSlashTillHitDuration / parentPawn.EnemyData.SPB;
     private SlashNode _currNode;
+    //Amount of stagger damage towards enemy of successful deflect.
+    private int _staggerDamage = 50;
     public void Broadcast(Direction direction)
     {
         Vector2 slashDirection = DirectionHelper.GetVectorFromDirection(direction);
@@ -41,23 +43,23 @@ public class SlashAction : EnemyAction, IAttackRequester
     {
         // Slash Initialization
         _currNode = node;
-
+        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         // Broadcast
         // Direction setup
         // The y value here is facing forward
-        if (parentPawn.psm.IsOnState<Distant>())
-        {
-            parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
-            parentPawn.psm.Transition<Center>();
-            yield return new WaitForSeconds(Conductor.Instance.spb);
-        } 
         parentPawnSprite.FaceDirection(new Vector3(-_currNode.slashVector.x, 0, -1));
         parentPawnSprite.Animator.SetFloat("x_slashDir", _currNode.slashVector.x);
         parentPawnSprite.Animator.SetFloat("y_slashDir", _currNode.slashVector.y);
-        float syncedAnimationTime = (_currNode.slashLengthInBeats - 1) * Conductor.Instance.spb;
-        parentPawnSprite.Animator.SetFloat("speed", broadcastClip.length / syncedAnimationTime);
+        float syncedAnimationTime = (_currNode.slashLengthInBeats - 2) * Conductor.Instance.spb;
+        if (parentPawn.psm.IsOnState<Distant>())
+        {
+            //parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
+            parentPawn.psm.Transition<Center>();
+            yield return new WaitForSeconds(Conductor.Instance.spb);
+            syncedAnimationTime -= Conductor.Instance.spb;
+        }
+        parentPawnSprite.Animator.SetFloat("speed", 1 / syncedAnimationTime);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_broadcast");
-        Debug.Log("Broadcast");
         //float broadcastHoldTime = (_currNode.slashLengthInBeats * parentPawn.EnemyData.SPB) - minSlashTillHitDuration;
         yield return new WaitForSeconds(syncedAnimationTime);
 
@@ -66,24 +68,13 @@ public class SlashAction : EnemyAction, IAttackRequester
         //if (beats == 0) beats = 1;
         //float syncedAnimationTime = beats * Conductor.Instance.spb;
         //parentPawnSprite.Animator.SetFloat("speed", preHitClip.length / syncedAnimationTime);
-        parentPawnSprite.Animator.SetFloat("speed", preHitClip.length / Conductor.Instance.spb);
+        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_prehit");
-        Debug.Log("Prehit");
         yield return new WaitForSeconds(Conductor.Instance.spb);
         //yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
         // Hit Moment
-        Debug.Log("Hitting");
+
         BattleManager.Instance.Player.ReceiveAttackRequest(this);
-        yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_posthit") ||
-        parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_deflected"));
-        if (parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_posthit"))
-        {
-            yield return new WaitForSeconds(postHitClip.length);
-        }
-        else
-        {
-            yield return new WaitForSeconds(deflectedClip.length);
-        }
     }
     
     public void OnAttackMaterialize(IAttackReceiver receiver)
@@ -98,7 +89,7 @@ public class SlashAction : EnemyAction, IAttackRequester
 
     public float GetDeflectionCoyoteTime()
     {
-        return 0.5f;
+        return Conductor.BeatFraction.sixteenth;
     }
 
     public bool OnRequestBlock(IAttackReceiver receiver)
@@ -116,18 +107,18 @@ public class SlashAction : EnemyAction, IAttackRequester
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
-        if (player == null 
-            || !DirectionHelper.MaxAngleBetweenVectors(-_currNode.slashVector, player.SlashDirection, 5f)) 
-                return false; 
+        if (player == null
+            || !DirectionHelper.MaxAngleBetweenVectors(-_currNode.slashVector, player.SlashDirection, 5f))
+            return false;
 
         // (TEMP) DEBUG UI Tracker -------
         UIManager.Instance.IncrementParryTracker();
         //---------------------------------------
 
         parentPawnSprite.Animator.Play($"{slashAnimationName}_deflected");
-        if (_currNode.staggersParent)
+        if (_currNode.staggersParent && parentPawn is EnemyBattlePawn enemyPawn)
         {
-            parentPawn.Stagger();
+            enemyPawn.StaggerDamage(_staggerDamage);
         }
         return true;
     }
@@ -138,6 +129,11 @@ public class SlashAction : EnemyAction, IAttackRequester
 
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
         return true;
+    }
+
+    protected override void OnStopAction()
+    {
+        StopAllCoroutines();
     }
 }
 

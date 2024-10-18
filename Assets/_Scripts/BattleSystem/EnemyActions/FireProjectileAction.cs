@@ -14,13 +14,16 @@ public class FireProjectileAction : EnemyAction
 
     private int idx;
     private GameObject fabSelection;
-    
+    //amount of built stagger on successful deflect
+    private int _staggerDamage = 15;
+
     /// <summary>
     /// 
     /// </summary>
     /// <param name="proj">Reference to Projectile to Fire</param>
     /// <param name="speed">In Beats</param>
     /// <param name="position"> Relative to player</param>
+    
     public void FireProjectileAtPlayer(FireProjectileNode node)
     {
         // Source of the projectile
@@ -71,13 +74,28 @@ public class FireProjectileAction : EnemyAction
             objRef = Pooler.Instance.Pool(fabSelection);
         }
         Projectile proj = objRef.GetComponent<Projectile>();
+        proj.SetTargetEnemy(parentPawn);
         proj.transform.position = BattleManager.Instance.Player.playerCollider.position + node.relativeSpawnPosition;
+        // Debug.Log($"{proj}: {proj.transform.position}");
         proj.Fire(BattleManager.Instance.Player.playerCollider.position - proj.transform.position, node.duration);
+
+   
+
+        //EnemyBattlePawn targetEnemy = parentPawnSprite.GetComponent<EnemyBattlePawn>();
+        //if (targetEnemy != null)
+        //{
+        //    proj.SetTargetEnemy(targetEnemy);
+        //}
+        //else
+        //{
+        //    Debug.LogError("Failed to get EnemyBattlePawn from parentPawnSprite.");
+        //}
 
         // This Only talors to bassics, not in general
         parentPawnSprite.FaceDirection(new Vector3(-node.relativeSpawnPosition.x, 0, -1));
         //parentPawnSprite.Animator.SetFloat("x_slashDir", -node.relativeSpawnPosition.x);
-        parentPawnSprite.Animator.Play(animationName);  
+        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
+        parentPawnSprite.Animator.Play(animationName);
     }
 }
 
