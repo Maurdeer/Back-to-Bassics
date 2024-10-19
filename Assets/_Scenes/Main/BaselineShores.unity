@@ -6584,7 +6584,7 @@ GameObject:
   - component: {fileID: 425030374}
   - component: {fileID: 425030373}
   - component: {fileID: 425030372}
-  - component: {fileID: 425030371}
+  - component: {fileID: 425030375}
   m_Layer: 0
   m_Name: RepeatBassics
   m_TagString: Untagged
@@ -6607,37 +6607,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 211015889}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &425030371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 425030369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 864979429d9f45c42ac73d8b22a113e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroyOnEnter: 0
-  onEnter:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5837939568742862896}
-        m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
-        m_MethodName: RunDialogueNode
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: bassics_intro_2
-          m_BoolArgument: 0
-        m_CallState: 2
-  onExit:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &425030372
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6657,8 +6626,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8.794861, y: 1.6276951, z: 7.988884}
-  m_Center: {x: 0.17227173, y: 0.31384754, z: 2.494442}
+  m_Size: {x: 3.390686, y: 1.6276951, z: 3.0753098}
+  m_Center: {x: 0.22189331, y: 0.31384754, z: 3.9004707}
 --- !u!23 &425030373
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6709,6 +6678,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 425030369}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &425030375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425030369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b754c9741f608f4db4d9c33c3aaa720, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeName: bassics_intro_2
 --- !u!1 &463493465
 GameObject:
   m_ObjectHideFlags: 0
@@ -7008,7 +6990,7 @@ Transform:
   m_GameObject: {fileID: 485622522}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 327.39, y: 20, z: 103.55}
+  m_LocalPosition: {x: 327.39, y: 20, z: 102.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13257,7 +13239,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7912546383943920819, guid: b9588ce8c811a26498bcce02b7c519fb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 338.67
+      value: 339.67
       objectReference: {fileID: 0}
     - target: {fileID: 7912546383943920819, guid: b9588ce8c811a26498bcce02b7c519fb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13265,7 +13247,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7912546383943920819, guid: b9588ce8c811a26498bcce02b7c519fb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 106.96
+      value: 105.96
       objectReference: {fileID: 0}
     - target: {fileID: 7912546383943920819, guid: b9588ce8c811a26498bcce02b7c519fb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -21762,7 +21744,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1208815987
 Transform:
   m_ObjectHideFlags: 0
@@ -21772,7 +21754,7 @@ Transform:
   m_GameObject: {fileID: 1208815985}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 347.53, y: 20.337, z: 99.02}
+  m_LocalPosition: {x: 319.84, y: 20.337, z: 106}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21876,7 +21858,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1438454853}
+      - m_Target: {fileID: 425030369}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -21886,7 +21868,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
   onExit:
     m_PersistentCalls:
@@ -22543,6 +22525,8 @@ PlayableDirector:
     value: {fileID: 567947075}
   - key: {fileID: -7345625518963300220, guid: cc2c0869fe7d22f468bcd2a635f47a8e, type: 2}
     value: {fileID: 6089455526035220939}
+  - key: {fileID: 1042458433340185877, guid: cc2c0869fe7d22f468bcd2a635f47a8e, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References:
     - 0bbc4ebe5c4ac034a82257318e969823: {fileID: 0}
@@ -22965,7 +22949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 1806b1f392e676c44afd35d2cee8bf1d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.63
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 1806b1f392e676c44afd35d2cee8bf1d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -22973,7 +22957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 1806b1f392e676c44afd35d2cee8bf1d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.37
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 1806b1f392e676c44afd35d2cee8bf1d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -26742,7 +26726,9 @@ PlayableDirector:
   - key: {fileID: 7992706466173329954, guid: 6f757b94ade534144a6b1a390e5e4c82, type: 2}
     value: {fileID: 351956003530717179}
   - key: {fileID: 2233657092759265754, guid: 6f757b94ade534144a6b1a390e5e4c82, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 1208815985}
+  - key: {fileID: 1613354970084572447, guid: 6f757b94ade534144a6b1a390e5e4c82, type: 2}
+    value: {fileID: 425030369}
   m_ExposedReferences:
     m_References:
     - 0bbc4ebe5c4ac034a82257318e969823: {fileID: 0}
