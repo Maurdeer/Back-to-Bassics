@@ -1,13 +1,14 @@
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
-using UnityEngine;
+#endif
 using UnityEngine.Timeline;
 
 [TrackClipType(typeof(SlashAsset))]
-//[TrackClipType(typeof(BroadcastAsset))] --> no need anymore
 [TrackBindingType(typeof(SlashAction))]
 public class SlashTrack : TrackAsset
 {
+
+#if UNITY_EDITOR
     // TODO: Using the CreateTrackMixer method, you can limit the length that someone can make a clip in each track.
     protected override void OnCreateClip(TimelineClip clip)
     {
@@ -30,5 +31,5 @@ public class SlashTrack : TrackAsset
     //        duration = action.minSlashTillHitInBeats;
     //    }
     //}
-}
 #endif
+}

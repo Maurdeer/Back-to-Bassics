@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{610e3508-0fe3-4f66-b982-658fda3a8506}">
+		<property name="name">
+			<value>Phase</value>
+		</property>
+		<relationship name="folder">
+			<destination>{915f8dd5-10b2-430a-9448-3e9fc557559e}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{beb3d76c-15b4-4d17-9dbd-f9d08c718789}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{beb3d76c-15b4-4d17-9dbd-f9d08c718789}">
+		<property name="parameterType">
+			<value>1</value>
+		</property>
+		<property name="minimum">
+			<value>1</value>
+		</property>
+		<property name="maximum">
+			<value>5</value>
+		</property>
+		<property name="initialValue">
+			<value>2</value>
+		</property>
+	</object>
+</objects>

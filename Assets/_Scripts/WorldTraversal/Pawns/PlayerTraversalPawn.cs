@@ -54,7 +54,7 @@ public class PlayerTraversalPawn : TraversalPawn
     {
         if (other.TryGetComponent(out Interactable interactable))
         {
-            // TODO: Display some pop up UI here for interaction
+            UIManager.Instance.ShowInteractableUI();
             currInteractable = interactable;
         }
     }
@@ -62,7 +62,7 @@ public class PlayerTraversalPawn : TraversalPawn
     {
         if (other.TryGetComponent(out Interactable interactable) && currInteractable == interactable)
         {
-            // TODO: Hide the UI after poncho is away from interactable
+            UIManager.Instance.HideInteractableUI();
             currInteractable = null;
         }
     }

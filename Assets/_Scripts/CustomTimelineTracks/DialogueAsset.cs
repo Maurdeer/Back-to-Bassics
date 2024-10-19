@@ -1,18 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
-public class DialogueAsset : MonoBehaviour
+public class DialogueAsset : PlayableAsset
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public DialogueBehaviour template;
 
-    // Update is called once per frame
-    void Update()
+    public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
     {
-        
+        var playable = ScriptPlayable<DialogueBehaviour>.Create(graph, template);
+        return playable;
     }
 }
