@@ -48,9 +48,21 @@ public abstract class TraversalPawn : MonoBehaviour
         {
             // TODO: This section right here is what is causing the floating of our character, see if you
             // Can change this where gravity is applied and the character isn't going to try to fly.
-            // You might need to use the rigidbody component in order to manipulate their kinetic movement.
+            // You might need to use the rigidbody component in order to manipulate their kinetic movement
+            
+
             transform.position = Vector3.MoveTowards(transform.position, destinationTarget, speed * Time.fixedDeltaTime);
-            if (transform.position == destinationTarget) movingToDestination = false;
+            if (transform.position == destinationTarget)
+            {
+                movingToDestination = false;
+                _pawnSprite.Animator.SetBool("moving", false);
+            }
+            else
+            {
+                Vector3 direction = destinationTarget - transform.position;
+                _pawnSprite.Animator.SetBool("moving", true);
+                _pawnSprite.FaceDirection(direction);
+            }
         }
     }
 
