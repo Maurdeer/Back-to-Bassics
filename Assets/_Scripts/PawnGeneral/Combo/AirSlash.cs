@@ -5,15 +5,17 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Combo/AirSlash"), System.Serializable]
 public class AirSlash : Combo
 {
-    int i = 0;
-
     [SerializeField] private int damage;
     public int Damage => damage;
     public override void InBattle()
     {
         BattleManager.Instance.Enemy.Damage(damage);
-        Debug.Log("This combo hit " + i);
-        i++;
+
+        if(StrId.Equals("nN")) 
+        {
+            BattleManager.Instance.Enemy.GetComponentInChildren<PawnSprite>().Animator.Play("Jump");
+        }
+        //Read string to check for combo, depending, force or finish animation
     }
     public override void InTraversal()
     {
