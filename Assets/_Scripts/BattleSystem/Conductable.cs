@@ -33,4 +33,9 @@ public abstract class Conductable : MonoBehaviour
         Conductor.Instance.OnFullBeat -= OnFullBeat;
         // Conductor.Instance.OnLastBeat -= OnLastBeat;
     }
+
+    protected void OnDestroy()
+    {
+        Disable();
+    }
 }
