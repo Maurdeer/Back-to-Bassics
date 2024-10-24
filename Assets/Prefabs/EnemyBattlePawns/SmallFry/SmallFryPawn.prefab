@@ -430,6 +430,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slashAnimationName: slash
+  inverseFacingDirection: 1
   broadcastClip: {fileID: 7400000, guid: 8ba2ca4d74de4d34c959b793bfa87b6e, type: 2}
   preHitClip: {fileID: 7400000, guid: 3f315a64912e07645a97916c5d7603dc, type: 2}
   postHitClip: {fileID: 7400000, guid: d00332dc08ccf324d9b8a66e7d57a17e, type: 2}
@@ -5823,6 +5824,7 @@ GameObject:
   - component: {fileID: 4498121219706470439}
   - component: {fileID: 4420657953686889104}
   - component: {fileID: 5036610044109524904}
+  - component: {fileID: 6047845122093056984}
   m_Layer: 0
   m_Name: SmallFryPawn
   m_TagString: Untagged
@@ -5847,6 +5849,7 @@ Transform:
   - {fileID: 5009162900855862886}
   - {fileID: 1092929752416962015}
   - {fileID: 5090294006250702672}
+  - {fileID: 5711522923399470802}
   - {fileID: 3632154329678698217}
   - {fileID: 7041877840566715990}
   m_Father: {fileID: 0}
@@ -5871,7 +5874,11 @@ MonoBehaviour:
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 3632154329678698217}
-  <battleCam>k__BackingField: {fileID: 0}
+  <battleCam>k__BackingField: {fileID: 2269625340103178891}
+  IntroCutscene: {fileID: 0}
+  OutroCutscene: {fileID: 0}
+  maxStaggerHealth: 0
+  interruptable: 0
 --- !u!114 &84929611984010602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5905,7 +5912,7 @@ PlayableDirector:
   m_GameObject: {fileID: 8123077407089530165}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 11d4efc082ecd284fb4f1b6d30b1b11e, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: dba8e8cfe8446e04da9ef63398ca33ad, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1

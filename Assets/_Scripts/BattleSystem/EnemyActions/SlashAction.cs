@@ -8,6 +8,9 @@ public class SlashAction : EnemyAction, IAttackRequester
 {
     [Header("Slash Action")]
     [SerializeField] private string slashAnimationName;
+    [SerializeField] private bool inverseFacingDirection = true;
+
+    [Header("Slash Animations")]
     [SerializeField] private AnimationClip broadcastClip;
     [SerializeField] private AnimationClip preHitClip;
     [SerializeField] private AnimationClip postHitClip;
@@ -47,7 +50,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         // Broadcast
         // Direction setup
         // The y value here is facing forward
-        parentPawnSprite.FaceDirection(new Vector3(-_currNode.slashVector.x, 0, -1));
+        parentPawnSprite.FaceDirection(new Vector3((inverseFacingDirection ? 1 : -1) * _currNode.slashVector.x, 0, -1));
         parentPawnSprite.Animator.SetFloat("x_slashDir", _currNode.slashVector.x);
         parentPawnSprite.Animator.SetFloat("y_slashDir", _currNode.slashVector.y);
         float syncedAnimationTime = (_currNode.slashLengthInBeats - 1) * Conductor.Instance.spb;
