@@ -29,6 +29,6 @@ public class LightFade : MonoBehaviour
             yield return new WaitForSeconds(time);
             l.intensity -= fadeintensity;
         }
-        
+        Destroy(this.gameObject);
     }
 }
