@@ -108,11 +108,7 @@ public class BossAI : Conductable
             _enemyBattlePawn.psm.Transition<Distant>();
             _enemyBattlePawn.maxStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
             _enemyBattlePawn.currentStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
-            if (_enemyStages[_currentStage].DialogueNode.Trim() != "")
-            {
-                DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode);
-            }
-            
+            DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode);
             OnEnemyStageTransition?.Invoke();
         }
     }

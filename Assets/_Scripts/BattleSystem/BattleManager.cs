@@ -42,15 +42,18 @@ public class BattleManager : Singleton<BattleManager>
     {
         GameManager.Instance.PC.DisableControl();
         yield return PlayerEngageCurrentEnemy();
+        yield return Enemy.PlayIntroCutscene();
         Player.EnterBattle();
         Enemy.EnterBattle();
+        AudioManager.Instance.SetAmbienceVolume(0.1f);
+        CameraConfigure.Instance.SwitchToCamera(Enemy.battleCam);
         for (float i = battleDelay; i > 0; i--)
         {
             UIManager.Instance.UpdateCenterText(i.ToString());
             yield return new WaitForSeconds(1f);
         }
         UIManager.Instance.UpdateCenterText("Battle!");
-        Conductor.Instance.BeginConducting(Enemy.EnemyData.SPB);
+        Conductor.Instance.BeginConducting(Enemy);
         GameManager.Instance.GSM.Transition<GameStateMachine.Battle>();
         Player.StartBattle();
         Enemy.StartBattle();
@@ -63,6 +66,7 @@ public class BattleManager : Singleton<BattleManager>
         // The problem with this is that the player can still input stuff while transitioning.
         yield return PlayerEngageCurrentEnemy();
         Enemy.EnterBattle();
+        CameraConfigure.Instance.SwitchToCamera(Enemy.battleCam);
         //for (float i = battleDelay; i > 0; i--)
         //{
         //    UIManager.Instance.UpdateCenterText(i.ToString());
@@ -72,7 +76,7 @@ public class BattleManager : Singleton<BattleManager>
         yield return new WaitForSeconds(1f);
         Enemy.StartBattle();
         UIManager.Instance.UpdateCenterText("");
-        Conductor.Instance.BeginConducting(Enemy.EnemyData.SPB);
+        Conductor.Instance.BeginConducting(Enemy);
         IsBattleActive = true;
     }
     public void OnPawnDeath(BattlePawn pawn) 
@@ -94,6 +98,7 @@ public class BattleManager : Singleton<BattleManager>
     }
     private void OnEnemyDeath()
     {
+        CameraConfigure.Instance.SwitchBackToPrev();
         if (enemyBattlePawns.Count > 0)
         {
             // TODO: Multiple Enemy Logic
