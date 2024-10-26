@@ -12,8 +12,6 @@ public class SlashAction : EnemyAction, IAttackRequester
     [Header("Slash Animations")]
     [SerializeField] private AnimationClip broadcastClip;
     [SerializeField] private AnimationClip preHitClip;
-    [SerializeField] private AnimationClip postHitClip;
-    [SerializeField] private AnimationClip deflectedClip;
     public float minSlashTillHitDuration => (preHitClip.length + broadcastClip.length);
     public float minSlashTillHitInBeats => minSlashTillHitDuration / parentPawn.EnemyData.SPB;
     private SlashNode _currNode;
