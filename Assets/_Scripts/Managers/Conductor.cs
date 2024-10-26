@@ -555,8 +555,15 @@ public class Conductor : Singleton<Conductor>
                         // ctxObj.lastBeatDsp = dspClock;
                         ctxObj.elapsedSinceLastBeat = 0.0f;
                         
-                        ctxObj.OnBeat();
-                        
+                        try
+                        {
+                            ctxObj.OnBeat();
+                        }
+                        catch(Exception e)
+                        {
+                            ctxHandle.Free();
+                            Debug.LogError($"Conductor Broke due to exception on beat: \"{e}\"");
+                        }
                         break;
                     }
                     case FMOD.Studio.EVENT_CALLBACK_TYPE.DESTROYED:
