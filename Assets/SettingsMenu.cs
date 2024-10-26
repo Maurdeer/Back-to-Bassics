@@ -11,23 +11,26 @@ public class SettingsMenu : MonoBehaviour
 
     public Toggle fullscreenToggle;
     
-    Resolution[] resolutions;
+    Resolution[] customResolutions = new Resolution[]
+    {
+        new Resolution { width = 1920, height = 1080 },
+        new Resolution { width = 1280, height = 720 },
+        new Resolution { width = 1600, height = 900 }
+    };
 
     void Start ()
     {
-        resolutions = Screen.resolutions;
-
         resolutionDropdown.ClearOptions();
 
         int currentResolutionIndex = 0;
         List<string> options = new List<string>();
 
-        for (int i = 0; i < resolutions.Length; i++)
+        for (int i = 0; i < customResolutions.Length; i++)
         {
-            string option = resolutions[i].width + "x" + resolutions[i].height;
+            string option = customResolutions[i].width + "x" + customResolutions[i].height;
             options.Add(option);
 
-            if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
+            if (customResolutions[i].width == Screen.currentResolution.width && customResolutions[i].height == Screen.currentResolution.height)
             {
                 currentResolutionIndex = i;
             }
@@ -38,7 +41,7 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropdown.RefreshShownValue();
 
         resolutionDropdown.onValueChanged.AddListener(delegate {
-        setResolution(resolutionDropdown.value);
+            setResolution(resolutionDropdown.value);
         });
 
         fullscreenToggle.isOn = Screen.fullScreen;
@@ -48,13 +51,17 @@ public class SettingsMenu : MonoBehaviour
 
     public void setResolution (int resolutionIndex)
     {
-        Resolution resolution = resolutions[resolutionIndex];
+        Resolution resolution = customResolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
     public void setFullScreen (bool isFullScreen) 
     {
         Screen.fullScreen = isFullScreen;
+            if (!isFullScreen)
+            {
+                Screen.SetResolution(1280, 720, false);
+            }
     }
 
 }

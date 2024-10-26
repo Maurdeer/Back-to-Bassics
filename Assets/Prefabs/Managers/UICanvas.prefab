@@ -836,7 +836,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 600 x 400
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3127,9 +3127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 772d403e22cbef14b89270d508739995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settingsMenuPanel: {fileID: 0}
-  resolutionDropdown: {fileID: 0}
-  fullscreenToggle: {fileID: 0}
+  settingsMenuPanel: {fileID: 8349202736413650880}
+  resolutionDropdown: {fileID: 290085655935829406}
+  fullscreenToggle: {fileID: 6928999745836336606}
 --- !u!1 &3082854065912462563
 GameObject:
   m_ObjectHideFlags: 0
@@ -3462,7 +3462,7 @@ GameObject:
   - component: {fileID: 8486129416513861325}
   - component: {fileID: 9038687260360199476}
   - component: {fileID: 5639894319473840731}
-  - component: {fileID: 677338293737515107}
+  - component: {fileID: 290085655935829406}
   m_Layer: 5
   m_Name: ResolutionDropdown
   m_TagString: Untagged
@@ -3530,7 +3530,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &677338293737515107
+--- !u!114 &290085655935829406
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3539,7 +3539,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3552258011038240056}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d0b652f32a2cc243917e4028fa0f046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -3572,19 +3572,14 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 5639894319473840731}
   m_Template: {fileID: 5936897486328282666}
-  m_CaptionText: {fileID: 6726997411756240180}
+  m_CaptionText: {fileID: 0}
   m_CaptionImage: {fileID: 0}
-  m_Placeholder: {fileID: 0}
-  m_ItemText: {fileID: 5449199100438970164}
+  m_ItemText: {fileID: 0}
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: 1920x108
-      m_Image: {fileID: 0}
-    - m_Text: 1420 x 960
-      m_Image: {fileID: 0}
-    - m_Text: 1024 x 800
+    - m_Text: 
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3592,7 +3587,7 @@ MonoBehaviour:
       - m_Target: {fileID: 3205058145187709141}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
         m_MethodName: setResolution
-        m_Mode: 0
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8588,7 +8583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7660377, g: 0.7660377, b: 0.7660377, a: 0.9607843}
+  m_Color: {r: 0.7660377, g: 0.7660377, b: 0.7660377, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
