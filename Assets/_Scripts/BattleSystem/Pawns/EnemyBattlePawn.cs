@@ -126,11 +126,18 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     }
     private IEnumerator Cutscene()
     {
-        _director.playableAsset = IntroCutscene;
-        _director.timeUpdateMode = DirectorUpdateMode.GameTime;
-        _director.Play();
-        _director.playableGraph.GetRootPlayable(0).SetSpeed(1);
-        yield return new WaitUntil(() => _director.state != PlayState.Playing);
+        if (IntroCutscene == null)
+        {
+            yield return null;
+        }
+        else
+        {
+            _director.playableAsset = IntroCutscene;
+            _director.timeUpdateMode = DirectorUpdateMode.GameTime;
+            _director.Play();
+            _director.playableGraph.GetRootPlayable(0).SetSpeed(1);
+            yield return new WaitUntil(() => _director.state != PlayState.Playing);
+        } 
     }
     #region IAttackReceiver Methods
     public virtual bool ReceiveAttackRequest(IAttackRequester requester)
