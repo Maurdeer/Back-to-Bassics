@@ -10,13 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebca2f589a529e545aaf5c099703c5e4, type: 3}
-  m_Name: bassics-stage3
+  m_Name: kingsal_stage_1
   m_EditorClassIdentifier: 
   _healthThreshold: 1
   _enemyAttackPatterns:
-  - {fileID: 11400000, guid: cd6d4dd646b977e46b66e1a78fc8ec26, type: 2}
-  - {fileID: 11400000, guid: 6932d1dc3024c4b4ea0883c0373ade02, type: 2}
-  - {fileID: 11400000, guid: c2ff4b0553a59c34385a4aade3a219ad, type: 2}
-  _beatsPerDecision: 4
-  _staggerHealth: 80
-  _dialogueNode: bassics-battle_phase3
+  - {fileID: 11400000, guid: f470a497dbaa7254487aa971dd7391d3, type: 2}
+  _beatsPerDecision: 120
+  _staggerHealth: 6
+  _dialogueNode: 

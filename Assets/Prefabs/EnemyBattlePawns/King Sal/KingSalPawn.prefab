@@ -5722,7 +5722,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a4a76b7b4021a41bd0832c08f8b851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyStages: []
+  _enemyStages:
+  - {fileID: 0}
   firstTimeStagger:
     m_PersistentCalls:
       m_Calls: []
@@ -5747,12 +5748,14 @@ PlayableDirector:
   m_GameObject: {fileID: 4999856665150672825}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 0}
+  m_PlayableAsset: {fileID: 11400000, guid: f495d71374998604eb7dec11e0808ed6, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
-  m_SceneBindings: []
+  m_SceneBindings:
+  - key: {fileID: -2913096133354648926, guid: f495d71374998604eb7dec11e0808ed6, type: 2}
+    value: {fileID: 8953189125102002042}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &5132814882481283367
