@@ -317,6 +317,9 @@ public class Conductor : Singleton<Conductor>
 
         internal PriorityQueue<ConductorSchedulable, float> scheduled = new();
         internal List<(ConductorSchedulable, float)> transaction = new();
+
+        private bool onFullBeat = false;
+        private bool onTempoChange = false;
         
         public ConductorContext(Conductor parent, EnemyBattlePawn pawn)
         {
@@ -352,11 +355,23 @@ public class Conductor : Singleton<Conductor>
         internal void Start()
         {
             fmodInstance.start();
-            OnTempoChange();
+            parent.OnTempoChange?.Invoke(lastMarker);
         }
 
         internal void Tick()
         {
+            if (onFullBeat)
+            {
+                onFullBeat = false;
+                parent.OnFullBeat?.Invoke();
+            }
+
+            if (onTempoChange)
+            {
+                onTempoChange = false;
+                parent.OnTempoChange?.Invoke(lastMarker);
+            }
+            
             // TODO: look into duplicate entries issue...
             currentState.ElapsedBeat = elapsedWholeBeats + ElapsedBeatSinceLastBeat();
 
@@ -500,16 +515,6 @@ public class Conductor : Singleton<Conductor>
             beatCallback = new EVENT_CALLBACK(BeatEventCallback);
             fmodInstance.setCallback(beatCallback, EVENT_CALLBACK_TYPE.TIMELINE_BEAT);
         }
-
-        private void OnBeat()
-        {
-            parent.OnFullBeat?.Invoke();
-        }
-
-        private void OnTempoChange()
-        {
-            parent.OnTempoChange?.Invoke(lastMarker);
-        }
         
         [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
         static FMOD.RESULT BeatEventCallback(FMOD.Studio.EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)
@@ -533,6 +538,8 @@ public class Conductor : Singleton<Conductor>
                 {
                     case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
                     {
+                        ctxObj.onFullBeat = true;
+                        
                         var parameter = (FMOD.Studio.TIMELINE_BEAT_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_BEAT_PROPERTIES));
                         ctxObj.lastBeatProperties = parameter;
 
@@ -546,24 +553,13 @@ public class Conductor : Singleton<Conductor>
 
                         if (shouldInvokeOnTempoChange)
                         {
+                            ctxObj.onTempoChange = true;
                             ctxObj.currentState.bpm = prevMarker.tempoBpm;
                             ctxObj.currentState.spb = prevMarker.msPerBeat / 1E3f;
-                            ctxObj.OnTempoChange();
                         }
                         ctxObj.elapsedWholeBeats += 1;
-                        // ctxObj.parent.masterChannelGroup.getDSPClock(out var dspClock, out var parentDSP);
-                        // ctxObj.lastBeatDsp = dspClock;
                         ctxObj.elapsedSinceLastBeat = 0.0f;
                         
-                        try
-                        {
-                            ctxObj.OnBeat();
-                        }
-                        catch(Exception e)
-                        {
-                            ctxHandle.Free();
-                            Debug.LogError($"Conductor Broke due to exception on beat: \"{e}\"");
-                        }
                         break;
                     }
                     case FMOD.Studio.EVENT_CALLBACK_TYPE.DESTROYED:
