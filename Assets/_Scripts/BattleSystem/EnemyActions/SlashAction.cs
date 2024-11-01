@@ -1,20 +1,23 @@
 using System;
 using System.Collections;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using static PositionStateMachine;
 public class SlashAction : EnemyAction, IAttackRequester
 {
     [Header("Slash Action")]
     [SerializeField] private string slashAnimationName;
+    [SerializeField] private bool inverseFacingDirection = true;
+
+    [Header("Slash Animations")]
     [SerializeField] private AnimationClip broadcastClip;
     [SerializeField] private AnimationClip preHitClip;
-    [SerializeField] private AnimationClip postHitClip;
-    [SerializeField] private AnimationClip deflectedClip;
+    [SerializeField] private ParticleSystem indicatorSpark;
     public float minSlashTillHitDuration => (preHitClip.length + broadcastClip.length);
     public float minSlashTillHitInBeats => minSlashTillHitDuration / parentPawn.EnemyData.SPB;
     private SlashNode _currNode;
+    //Amount of stagger damage towards enemy of successful deflect.
+    private int _staggerDamage = 50;
     public void Broadcast(Direction direction)
     {
         Vector2 slashDirection = DirectionHelper.GetVectorFromDirection(direction);
@@ -25,7 +28,8 @@ public class SlashAction : EnemyAction, IAttackRequester
         parentPawnSprite.Animator.SetFloat("y_slashDir", slashDirection.y);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_broadcast");
 
-        // (Ryan) Maybe it shouldn't be here
+        // (Ryan) Transition Maybe shouldn't be here
+        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         parentPawn.psm.Transition<Center>();
     }
     public void Slash(SlashNode node)
@@ -35,56 +39,63 @@ public class SlashAction : EnemyAction, IAttackRequester
             Debug.LogError("Timeline asset slash is not long enough.");
             return;
         }
-        // (Ryan) Nor here :p
-        parentPawn.psm.Transition<Center>();
         StartCoroutine(SlashThread(node));
     }
     private IEnumerator SlashThread(SlashNode node)
     {
         // Slash Initialization
         _currNode = node;
-
+        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         // Broadcast
         // Direction setup
         // The y value here is facing forward
-        parentPawnSprite.FaceDirection(new Vector3(-_currNode.slashVector.x, 0, -1));
+        float prehitBeats = 0.5f;
+        float posthitBeats = 0.5f;
+        parentPawnSprite.FaceDirection(new Vector3((inverseFacingDirection ? 1 : -1) * _currNode.slashVector.x, 0, -1));
         parentPawnSprite.Animator.SetFloat("x_slashDir", _currNode.slashVector.x);
         parentPawnSprite.Animator.SetFloat("y_slashDir", _currNode.slashVector.y);
-        float syncedAnimationTime = (_currNode.slashLengthInBeats - 1) * Conductor.Instance.spb;
-        parentPawnSprite.Animator.SetFloat("speed", broadcastClip.length / syncedAnimationTime);
+        float syncedAnimationTime = (_currNode.slashLengthInBeats - prehitBeats - posthitBeats) * Conductor.Instance.spb;
+        if (parentPawn.psm.IsOnState<Distant>())
+        {
+            //parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
+            parentPawn.psm.Transition<Center>();
+            yield return new WaitForSeconds(Conductor.Instance.spb);
+            syncedAnimationTime -= Conductor.Instance.spb;
+        }
+        parentPawnSprite.Animator.SetFloat("speed", 1 / syncedAnimationTime);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_broadcast");
-        Debug.Log("Broadcast");
         //float broadcastHoldTime = (_currNode.slashLengthInBeats * parentPawn.EnemyData.SPB) - minSlashTillHitDuration;
         yield return new WaitForSeconds(syncedAnimationTime);
-
         // Animation Before Hit -> Setup animation speed
         //int beats = Mathf.RoundToInt(preHitClip.length / Conductor.Instance.spb);
         //if (beats == 0) beats = 1;
         //float syncedAnimationTime = beats * Conductor.Instance.spb;
         //parentPawnSprite.Animator.SetFloat("speed", preHitClip.length / syncedAnimationTime);
-        parentPawnSprite.Animator.SetFloat("speed", preHitClip.length / Conductor.Instance.spb);
+        float prehitSeconds = prehitBeats * Conductor.Instance.spb;
+        parentPawnSprite.Animator.SetFloat("speed", 1 / prehitSeconds);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_prehit");
-        Debug.Log("Prehit");
-        yield return new WaitForSeconds(Conductor.Instance.spb);
+        yield return new WaitForSeconds(prehitSeconds);
         //yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
         // Hit Moment
-        Debug.Log("Hitting");
-        if (BattleManager.Instance.Player.ReceiveAttackRequest(this))
-        {
-            PerformSlashOnPlayer();
-            BattleManager.Instance.Player.CompleteAttackRequest(this);
-        }
-        yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_posthit") ||
-        parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_deflected"));
-        if (parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName($"{slashAnimationName}_posthit"))
-        {
-            yield return new WaitForSeconds(postHitClip.length);
-        }
-        else
-        {
-            yield return new WaitForSeconds(deflectedClip.length);
-        }
+        parentPawnSprite.Animator.SetFloat("speed", 1 / (posthitBeats * Conductor.Instance.spb));
+        BattleManager.Instance.Player.ReceiveAttackRequest(this);
     }
+    
+    public void OnAttackMaterialize(IAttackReceiver receiver)
+    {
+        // (TEMP) DEBUG UI Tracker -------
+        UIManager.Instance.IncrementMissTracker();
+        //---------------------------------------
+
+        parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
+        BattleManager.Instance.Player.Damage(_currNode.dmg);
+    }
+
+    public float GetDeflectionCoyoteTime()
+    {
+        return Conductor.BeatFraction.sixteenth;
+    }
+
     public bool OnRequestBlock(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
@@ -94,27 +105,25 @@ public class SlashAction : EnemyAction, IAttackRequester
         //---------------------------------------
 
         //parentPawnSprite.Animator.SetTrigger("blocked");
-
-        receiver.CompleteAttackRequest(this);
         return true;
     }
+    
     public bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
-        if (player == null 
-            || !DirectionHelper.MaxAngleBetweenVectors(-_currNode.slashVector, player.SlashDirection, 5f)) 
-                return false; 
+        if (player == null
+            || !DirectionHelper.MaxAngleBetweenVectors(-_currNode.slashVector, player.SlashDirection, 5f))
+            return false;
 
         // (TEMP) DEBUG UI Tracker -------
         UIManager.Instance.IncrementParryTracker();
         //---------------------------------------
 
         parentPawnSprite.Animator.Play($"{slashAnimationName}_deflected");
-        if (_currNode.staggersParent)
+        if (_currNode.staggersParent && parentPawn is EnemyBattlePawn enemyPawn)
         {
-            parentPawn.Stagger();
+            enemyPawn.StaggerDamage(_staggerDamage);
         }
-        receiver.CompleteAttackRequest(this);
         return true;
     }
     public bool OnRequestDodge(IAttackReceiver receiver)
@@ -123,17 +132,12 @@ public class SlashAction : EnemyAction, IAttackRequester
         if (player == null || !_currNode.dodgeDirections.Contains(player.DodgeDirection)) return false;
 
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
-        receiver.CompleteAttackRequest(this);
         return true;
     }
-    private void PerformSlashOnPlayer()
-    {
-        // (TEMP) DEBUG UI Tracker -------
-        UIManager.Instance.IncrementMissTracker();
-        //---------------------------------------
 
-        parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
-        BattleManager.Instance.Player.Damage(_currNode.dmg);
+    protected override void OnStopAction()
+    {
+        StopAllCoroutines();
     }
 }
 

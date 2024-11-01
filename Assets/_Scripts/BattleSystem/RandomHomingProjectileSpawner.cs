@@ -31,9 +31,9 @@ public class RandomHomingProjectileSpawner : Conductable
             );
         // Thank you Physics 1
         Vector3 r = _target.position - (Vector3)spawnLocation;
-        Vector3 v = r / (_beatsToReachTarget * Conductor.Instance.spb);
+        // Vector3 v = r / (_beatsToReachTarget * Conductor.Instance.spb);
         Pooler.Instance.Spawn(_projectileRef, spawnLocation).GetComponent<Projectile>();
-        proj.Fire(v);
+        proj.Fire(r, _beatsToReachTarget);
 
         _currCooldown = Conductor.Instance.Beat + _spawnRateInBeats;
     }

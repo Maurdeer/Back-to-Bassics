@@ -1,26 +1,35 @@
-﻿title: Bassics
+﻿title: bassics_intro_1
 tags:
 ---
+<<setView "BassicsDialogueBubble">>
 Bassics: You're finally awake.  
 Bassics: Does the poncho fit well?
 Bassics: ...You're curious about the mountain?
 Bassics: That's a long journey ahead of you.
+Bassics: You can't go up there without being a little prepared.
+Bassics: Find yourself something to fight with, then come back to me. 
 ===
-title: Bassics_proud
-tags:
-position: 6,150
----
-Bassics: Good!
-Bassics: You are ready.
-Bassics: The forest awaits you!
-===
-
-
-title: Start
+title: bassics_intro_2
 tags:
 ---
 <<setView "BassicsDialogueBubble">>
-Bassics: "Hello"
-<<setView "SmallFryDialogueBubble">>
-Small Fry: "Hi!"
+Bassics: Find yourself something to fight with.
+Bassics: Then come back to me.
+===
+title: bassics_proud
+tags:
+---
+<<setView "BassicsDialogueBubble">>
+Bassics: Ooof.
+Bassics: You've fought well dear poncho!
+Bassics: Maybe you could even beat...
+Bassics: Nevermind, the forest awaits you!
+===
+title: bassics_intro_cutscene
+tags:
+---
+<<setView "BassicsDialogueBubble">>
+Bassics: That should do for now.
+Bassics: But you can't go out there until I know you are ready.
+Bassics: Prove to me you can hold your own!
 ===
