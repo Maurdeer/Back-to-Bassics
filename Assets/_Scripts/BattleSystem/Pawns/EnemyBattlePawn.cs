@@ -26,7 +26,9 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     public event Action OnEnemyStaggerEvent;
     public TimelineAsset IntroCutscene;
     public TimelineAsset OutroCutscene;
-    
+
+    public GameObject FloatingTextPrefab;
+
     public int currentStaggerHealth { get; set; }
     public int maxStaggerHealth;
     public bool interruptable; // Staggers interrupt attacks, rather than occurring at end of attack
@@ -153,8 +155,14 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     #region BattlePawn Overrides
     public override void Damage(int amount)
     {
+        //Debug.Log($"Damage received: {amount}");
+        if (amount != 0)
+        {
+            ShowFloatingText(amount);
+
+        }
         amount = esm.CurrState.OnDamage(amount);
-        base.Damage(amount);  
+        base.Damage(amount);
     }
     //public override void Lurch(float amount)
     //{
@@ -163,6 +171,13 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //    base.Lurch(amount);
     //}
 
+    void ShowFloatingText(int amount)
+    {
+        // Debug.Log($"Instantiating Floating Text with amount: {amount}");
+        Vector3 randomPosition = transform.position + new Vector3(UnityEngine.Random.Range(-2f, 2f), UnityEngine.Random.Range(4f, 5f), -1f);
+        var go = Instantiate(FloatingTextPrefab, randomPosition, Quaternion.identity, transform);
+        go.GetComponent<TextMesh>().text = amount.ToString();
+    }
     protected override void OnStagger()
     {
         if (esm.IsOnState<Dead>()) return;
