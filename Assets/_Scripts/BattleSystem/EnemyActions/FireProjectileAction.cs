@@ -8,6 +8,7 @@ public class FireProjectileAction : EnemyAction
     [Header("Fire Projectile Action")]
     [SerializeField, Range(1, 100)] private int projectilePoolAmount;
     [SerializeField] private string animationName;
+    [SerializeField] private bool performAnimationBeforeFire;
     [Header("Default Projectile Settings")]
     [SerializeField] private FirePatternChoice firePattern;
     [SerializeField] private GameObject[] projectileFabs;
@@ -23,10 +24,33 @@ public class FireProjectileAction : EnemyAction
     /// <param name="proj">Reference to Projectile to Fire</param>
     /// <param name="speed">In Beats</param>
     /// <param name="position"> Relative to player</param>
-    
+    private void Start()
+    {
+        if (!parentPawnSprite.Animator.HasState(0, Animator.StringToHash(animationName)))
+        {
+            Debug.LogError($"Animation State \"{animationName}\" for FireProjectileAction does not exist.");
+        }
+    }
     public void FireProjectileAtPlayer(FireProjectileNode node)
     {
-        // Source of the projectile
+
+        if (performAnimationBeforeFire)
+        {
+            StartCoroutine(AnimateBeforeFire(node));
+            return;
+        }
+
+        LaunchProjectile(node);
+        AnimateProjectileLaunch(node); 
+    }
+    private void AnimateProjectileLaunch(FireProjectileNode node)
+    {
+        parentPawnSprite.FaceDirection(new Vector3(-node.relativeSpawnPosition.x, 0, -1));
+        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
+        parentPawnSprite.Animator.Play(animationName);
+    }
+    private void LaunchProjectile(FireProjectileNode node)
+    {
         GameObject objRef = null;
         if (node.useDefault)
         {
@@ -66,7 +90,7 @@ public class FireProjectileAction : EnemyAction
                 Debug.LogError($"Projectile Asset Node has no reference to a projectile prefab.");
                 return;
             }
-        } 
+        }
         objRef = Pooler.Instance.Pool(fabSelection);
         if (objRef == null)
         {
@@ -78,24 +102,13 @@ public class FireProjectileAction : EnemyAction
         proj.transform.position = BattleManager.Instance.Player.playerCollider.position + node.relativeSpawnPosition;
         // Debug.Log($"{proj}: {proj.transform.position}");
         proj.Fire(BattleManager.Instance.Player.playerCollider.position - proj.transform.position, node.duration);
+    }
 
-   
-
-        //EnemyBattlePawn targetEnemy = parentPawnSprite.GetComponent<EnemyBattlePawn>();
-        //if (targetEnemy != null)
-        //{
-        //    proj.SetTargetEnemy(targetEnemy);
-        //}
-        //else
-        //{
-        //    Debug.LogError("Failed to get EnemyBattlePawn from parentPawnSprite.");
-        //}
-
-        // This Only talors to bassics, not in general
-        parentPawnSprite.FaceDirection(new Vector3(-node.relativeSpawnPosition.x, 0, -1));
-        //parentPawnSprite.Animator.SetFloat("x_slashDir", -node.relativeSpawnPosition.x);
-        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
-        parentPawnSprite.Animator.Play(animationName);
+    private IEnumerator AnimateBeforeFire(FireProjectileNode node)
+    {
+        AnimateProjectileLaunch(node);
+        yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_battle"));
+        LaunchProjectile(node);
     }
 }
 
