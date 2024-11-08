@@ -6047,7 +6047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slashAnimationName: slash
-  inverseFacingDirection: 1
+  inverseFacingDirection: 0
   broadcastClip: {fileID: 7400000, guid: d69baf4e82a064132ac03cf5d3c6eb48, type: 2}
   preHitClip: {fileID: 7400000, guid: 1e2f99bb55c5f51488d6e33fb0c3b970, type: 2}
   indicatorSpark: {fileID: 0}
@@ -12086,6 +12086,7 @@ MonoBehaviour:
   <battleCam>k__BackingField: {fileID: 530538101871512614}
   IntroCutscene: {fileID: 0}
   OutroCutscene: {fileID: 0}
+  FloatingTextPrefab: {fileID: 0}
   maxStaggerHealth: 0
   interruptable: 0
 --- !u!114 &84929611984010602
@@ -12121,7 +12122,7 @@ PlayableDirector:
   m_GameObject: {fileID: 8123077407089530165}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: dba8e8cfe8446e04da9ef63398ca33ad, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: a3828bf885dfa904e8472f943ca7e29c, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -12139,6 +12140,8 @@ PlayableDirector:
     value: {fileID: 1096942763180917178}
   - key: {fileID: 4895411523328887043, guid: 85449c0f3be86c2458e54d30b72d4ecb, type: 2}
     value: {fileID: 1096942763180917178}
+  - key: {fileID: 5558430060885815239, guid: a3828bf885dfa904e8472f943ca7e29c, type: 2}
+    value: {fileID: 5030671761028901456}
   m_ExposedReferences:
     m_References: []
 --- !u!210 &5036610044109524904
