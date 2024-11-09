@@ -14,6 +14,7 @@ public class BattlePawn : Conductable
     protected Animator _pawnAnimator;
     protected PawnSprite _pawnSprite;
     protected ParticleSystem _paperShredBurst;
+    protected ParticleSystem _staggerVFX;
 
     [Header("Battle Pawn Data")]
     [SerializeField] protected int _currHP;
@@ -41,7 +42,8 @@ public class BattlePawn : Conductable
         _currHP = MaxHP;
         _pawnAnimator = GetComponent<Animator>();
         _pawnSprite = GetComponentInChildren<PawnSprite>();
-        _paperShredBurst = GetComponentInChildren<ParticleSystem>();
+        _paperShredBurst = GameObject.Find("ShreddedPaperParticles").GetComponent<ParticleSystem>();
+        _staggerVFX = GameObject.Find("StaggerVFX").GetComponent<ParticleSystem>();
     }
     #endregion
     #region Modification Methods
@@ -51,7 +53,7 @@ public class BattlePawn : Conductable
         // Could make this more variable
         if (amount > 0)
         {
-            _paperShredBurst.Play();
+            _paperShredBurst?.Play();
             _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
         }
         _currHP -= amount;
@@ -92,6 +94,8 @@ public class BattlePawn : Conductable
         if (selfStaggerInstance == null) return;
 
         StopCoroutine(selfStaggerInstance);
+        _staggerVFX?.Stop();
+        _staggerVFX?.Clear();
         IsStaggered = false;
         OnUnstagger();
         _pawnSprite.Animator.Play("recover");
@@ -137,8 +141,11 @@ public class BattlePawn : Conductable
         IsStaggered = true;
         OnStagger();
         _pawnSprite.Animator.Play("stagger");
+        _staggerVFX?.Play();
         // TODO: Notify BattleManager to broadcast this BattlePawn's stagger
         yield return new WaitForSeconds(duration);
+        _staggerVFX?.Stop();
+        _staggerVFX?.Clear();
         //_currSP = _data.SP;
         //UIManager.Instance.UpdateSP(this);
         IsStaggered = false;
