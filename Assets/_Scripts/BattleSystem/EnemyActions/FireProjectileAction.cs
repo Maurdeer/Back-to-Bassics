@@ -45,7 +45,7 @@ public class FireProjectileAction : EnemyAction
     }
     private void AnimateProjectileLaunch(FireProjectileNode node)
     {
-        parentPawnSprite.FaceDirection(new Vector3(-node.relativeSpawnPosition.x, 0, -1));
+        parentPawnSprite.FaceDirection(new Vector3(node.relativeSpawnPosition.x, 0, -1));
         parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         parentPawnSprite.Animator.Play(animationName);
     }
