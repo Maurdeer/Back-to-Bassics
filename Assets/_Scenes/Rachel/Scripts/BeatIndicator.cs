@@ -19,7 +19,6 @@ public class BeatIndicator : Conductable
 
     protected override void OnFullBeat()
     {
-        Debug.Log("beat");
         elapsedTime = 0f;
 
         halfSpb = Conductor.Instance.spb / 2f;
