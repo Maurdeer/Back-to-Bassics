@@ -10,7 +10,6 @@ public class Projectile : MonoBehaviour, IAttackRequester
     private float _speed;
     private Rigidbody _rb;
     public bool isDestroyed { get; private set; }
-    private PlayerBattlePawn _hitPlayerPawn;
     private EnemyBattlePawn _targetEnemy;
     public float AttackDamage => _dmg;
     public float AttackLurch => _dmg;
@@ -23,7 +22,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _meshRenderer = GetComponent<MeshRenderer>();
         _burstEffect = GetComponent<ParticleSystem>();
-        Destroy();
+        Reset();
     }
     #endregion
 
@@ -58,42 +57,25 @@ public class Projectile : MonoBehaviour, IAttackRequester
                 // _rb.position = originalLocation + lifetimeDisplacement * state._elapsedProgressCount;
                 // _rb.velocity = lifetimeDisplacement / ctxState.spb; // current SPB at the update
             },
-            onCompleted: (state, ctxState) => { },
-            onAborted: (state) => { Destroy(); }
+            onCompleted: (state, ctxState) =>
+            {
+                BattleManager.Instance.Player.ReceiveAttackRequest(this);
+            },
+            onAborted: (state) => { 
+                Reset();
+            }
         );
         
         Conductor.Instance.ScheduleActionAsap(duration, Conductor.Instance.Beat, schedulable, forceStart: true);
-    }
-    /// <summary>
-    /// Spawn Projectile based on conductor's rule speed
-    /// </summary>
-    /// <param name="position"></param>
-    /// <param name="dir"></param>
-    //public void Fire(Direction dir)
-    //{
-    //    _rb.velocity = _speed * DirectionHelper.GetVectorFromDirection(dir);
-
-    //    // Inefficent as heck, but does the job
-    //    isDestroyed = false;
-    //    _spriteRenderer.enabled = true;
-    //}
-    private void OnTriggerEnter(Collider collision)
-    {
-        _hitPlayerPawn = collision.GetComponent<PlayerBattlePawn>();
-        if (_hitPlayerPawn == null) _hitPlayerPawn = collision.GetComponentInParent<PlayerBattlePawn>();
-        if (_hitPlayerPawn == null) return;
-        _hitPlayerPawn.ReceiveAttackRequest(this);
     }
 
     public void OnAttackMaterialize(IAttackReceiver receiver)
     {
         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementMissTracker();
-        //---------------------------------------
-        if (_hitPlayerPawn == null) {Debug.LogError("PLAYER NULL");Destroy();return;}
-        _hitPlayerPawn.Damage(_dmg);
+        BattleManager.Instance.Player.Damage(_dmg);
         FMODUnity.RuntimeManager.PlayOneShot(playOnMiss);
-        Destroy();
+        Reset();
     }
 
     public float GetDeflectionCoyoteTime()
@@ -114,6 +96,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
         if (player == null
             || !DirectionHelper.MaxAngleBetweenVectors(_slashDirection, player.SlashDirection, 5f))
         {
+            Reset();
             return false;
         }
 
@@ -127,29 +110,30 @@ public class Projectile : MonoBehaviour, IAttackRequester
         {
             //Debug.Log($"Note deflected by ongoing slash");
         }
-        
+
         //---------------------------------------
         _targetEnemy?.StaggerDamage(_staggerDamage);
-        Destroy();
+        Reset();
+
         return true;
     }
     public bool OnRequestBlock(IAttackReceiver receiver)
     {
-        // (TEMP) Manual DEBUG UI Tracker -------
+         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementBlockTracker();
         //---------------------------------------
-        Destroy();
+        Reset();
+
         return true;
     }
     public bool OnRequestDodge(IAttackReceiver receiver) 
     {
-        Destroy();
+        Reset();
         return true;
     }
-    public void Destroy()
+    public void Reset()
     {
         isDestroyed = true;
-        _hitPlayerPawn = null;
         _burstEffect?.Play();
         gameObject.SetActive(false);
         if (_spriteRenderer != null) _spriteRenderer.enabled = false;
@@ -158,6 +142,6 @@ public class Projectile : MonoBehaviour, IAttackRequester
     public void SetTargetEnemy(EnemyBattlePawn targetEnemy)
     {
         _targetEnemy = targetEnemy;
-        _targetEnemy.OnEnemyStaggerEvent += Destroy;
+        _targetEnemy.OnEnemyStaggerEvent += Reset;
     }
 }
