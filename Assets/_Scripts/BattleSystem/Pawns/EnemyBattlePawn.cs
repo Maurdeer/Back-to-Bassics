@@ -13,20 +13,24 @@ using UnityEngine.Timeline;
 /// </summary>
 public class EnemyBattlePawn : BattlePawn, IAttackReceiver
 {
-    [field: Header("Enemy References")]
+    [field: Header("Required Enemy References")]
     [field: SerializeField] public EnemyStateMachine esm { get; private set; }
     [field: SerializeField] public PositionStateMachine psm { get; private set; }
     //[SerializeField] private ParticleSystem _particleSystem;
     [field: SerializeField] public Transform targetFightingLocation { get; private set; }
     [field: SerializeField] public CinemachineVirtualCamera battleCam { get; private set; }
+    [SerializeField] private GameObject FloatingTextPrefab;
     //reference to director for stagger implementation
     public EnemyBattlePawnData EnemyData => (EnemyBattlePawnData)Data;
     private Dictionary<Type, List<EnemyAction>> _enemyActions = new Dictionary<Type, List<EnemyAction>>();
-    // Events
-    public event Action OnEnemyStaggerEvent;
-    public TimelineAsset IntroCutscene;
-    public TimelineAsset OutroCutscene;
-    
+
+    [field: Header("Events")]
+    [SerializeField] public event Action OnEnemyStaggerEvent;
+    [field: SerializeField] public TimelineAsset IntroCutscene { get; private set; }
+    [field: SerializeField] public TimelineAsset OutroCutscene { get; private set; }
+
+
+
     public int currentStaggerHealth { get; set; }
     public int maxStaggerHealth;
     public bool interruptable; // Staggers interrupt attacks, rather than occurring at end of attack
@@ -57,6 +61,11 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         if (_director == null)
         {
             Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" must have a PlayableDirector");
+            return;
+        }
+        if (FloatingTextPrefab == null)
+        {
+            Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" must have a FloatingText Prefab!");
             return;
         }
         currentStaggerHealth = EnemyData.StaggerHealth;
@@ -153,8 +162,14 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     #region BattlePawn Overrides
     public override void Damage(int amount)
     {
+        //Debug.Log($"Damage received: {amount}");
+        if (amount != 0)
+        {
+            ShowFloatingText(amount);
+
+        }
         amount = esm.CurrState.OnDamage(amount);
-        base.Damage(amount);  
+        base.Damage(amount);
     }
     //public override void Lurch(float amount)
     //{
@@ -163,6 +178,13 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //    base.Lurch(amount);
     //}
 
+    void ShowFloatingText(int amount)
+    {
+        // Debug.Log($"Instantiating Floating Text with amount: {amount}");
+        Vector3 randomPosition = transform.position + new Vector3(UnityEngine.Random.Range(-2f, 2f), UnityEngine.Random.Range(4f, 5f), -1f);
+        var go = Instantiate(FloatingTextPrefab, randomPosition, Quaternion.identity, transform);
+        go.GetComponent<TextMesh>().text = amount.ToString();
+    }
     protected override void OnStagger()
     {
         if (esm.IsOnState<Dead>()) return;
