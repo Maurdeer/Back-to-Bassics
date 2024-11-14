@@ -23,20 +23,18 @@ public class CoverScreenAction : EnemyAction
     /// </summary>
     protected override void OnStartAction()
     {
-        if (screenCoverInstance == null) {
-            numOfBeats = maxNumOfBeats;
-            screenCoverInstance = Instantiate(screenCoverPrefab);
-            screenCoverInstance.transform.SetParent(UIManager.Instance.transform, false);
-            screenCoverInstance.transform.localScale = initialScale;
-            screenCoverImage = screenCoverInstance.GetComponent<Image>();
-            if (screenCoverImage == null)
-            {
-                Debug.LogError("Screen cover does not have an Image component.");
-                return;
-            }
-            StartCoroutine(ScaleUp());
-            Conductor.Instance.OnFullBeat += UpdateBeat;
+        numOfBeats = maxNumOfBeats;
+        screenCoverInstance = Instantiate(screenCoverPrefab);
+        screenCoverInstance.transform.SetParent(UIManager.Instance.transform, false);
+        screenCoverInstance.transform.localScale = initialScale;
+        screenCoverImage = screenCoverInstance.GetComponent<Image>();
+        if (screenCoverImage == null)
+        {
+            Debug.LogError("Screen cover does not have an Image component.");
+            return;
         }
+        StartCoroutine(ScaleUp());
+        Conductor.Instance.OnFullBeat += UpdateBeat;
     }
 
     /// <summary>
@@ -69,7 +67,7 @@ public class CoverScreenAction : EnemyAction
     /// <summary>
     /// Fades out image by decreasing alpha
     /// </summary>
-        private IEnumerator FadeOut()
+    private IEnumerator FadeOut()
     {
         isFadingOut = true;
         float elapsedTime = 0f;
