@@ -63,6 +63,7 @@ public class ComboManager : MonoBehaviour
             StopCoroutine(_comboReseter);
             return;
         }
+        Debug.Log("CurrCombo: " + _currComboString);
         UIManager.Instance.ComboDisplay.ValidCombo();
     }
     private IEnumerator DelayComboReset()
