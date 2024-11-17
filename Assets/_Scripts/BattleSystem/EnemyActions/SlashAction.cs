@@ -7,7 +7,7 @@ public class SlashAction : EnemyAction, IAttackRequester
 {
     [Header("Slash Action")]
     [SerializeField] private string slashAnimationName;
-    [SerializeField] private bool inverseFacingDirection = true;
+    [SerializeField] private bool inverseFacingDirection = false;
 
     [Header("Slash Animations")]
     [SerializeField] private AnimationClip broadcastClip;
