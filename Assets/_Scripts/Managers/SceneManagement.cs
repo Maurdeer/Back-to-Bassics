@@ -40,14 +40,9 @@ public class SceneManagement : MonoBehaviour
         loadingScreen.SetActive(true);
         canvasScreen.alpha = 1.0f;
         fadeIn = true;
+        loadText.SetText("loading...100%");
 
-
-        fadingIn();
-        loadText.SetText("");
-        loadingScreen.SetActive(false);
-        loadSceneParent.SetActive(false);
-
-
+        StartCoroutine(fadingIn(10f));
     }
     public void ChangeScene(string scene)
     {
@@ -76,17 +71,10 @@ public class SceneManagement : MonoBehaviour
 
     IEnumerator LoadSceneAsynchronously(string scene)
     {
-
-        yield return new WaitForSeconds(1);
-        AsyncOperation operation = SceneManager.LoadSceneAsync(scene);
-        //SceneManager.LoadScene(scene);
         loadingScreen.SetActive(true);
         fadeOut = true;
-
-
-        fadingOut();
-
-        
+        yield return fadingOut(10f);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(scene); 
 
         while (!operation.isDone)
         {
@@ -98,16 +86,9 @@ public class SceneManagement : MonoBehaviour
             yield return null;
 
         }
-        fadingIn();
-
-        loadText.SetText("");
-        loadingScreen.SetActive(false);
-        loadSceneParent.SetActive(false);
-
-
     }
 
-    void fadingIn()
+    private IEnumerator fadingIn(float speed)
     {
 
         while (fadeIn)
@@ -117,13 +98,16 @@ public class SceneManagement : MonoBehaviour
             {
                 fadeIn = false;
                 fadeOut = true;
+                loadText.SetText("");
+                loadingScreen.SetActive(false);
+                loadSceneParent.SetActive(false);
                 canvasScreen.alpha = 0;
-
             }
+            yield return new WaitForSeconds(1 / (speed * 10));
         }
     }
 
-    void fadingOut()
+    private IEnumerator fadingOut(float speed)
     {
         while (fadeOut)
         {
@@ -135,9 +119,8 @@ public class SceneManagement : MonoBehaviour
                 fadeIn = true;
                 canvasScreen.alpha = 1;
             }
+            yield return new WaitForSeconds(1 / (speed * 10));
         }
         
     }
-
-
 }
