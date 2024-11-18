@@ -773,8 +773,8 @@ GameObject:
   - component: {fileID: 6757703160721079755}
   - component: {fileID: 9072350795508998758}
   - component: {fileID: 4677417291862444604}
-  - component: {fileID: 5125261406916202024}
   - component: {fileID: 2340527165043333837}
+  - component: {fileID: 7825168605647424095}
   m_Layer: 0
   m_Name: TurboTopPawn
   m_TagString: Untagged
@@ -874,18 +874,6 @@ PlayableDirector:
     value: {fileID: 4120296559865554346}
   m_ExposedReferences:
     m_References: []
---- !u!114 &5125261406916202024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4095286020021042877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2c3a588bf0f7e5468c67609e4e6bb77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!210 &2340527165043333837
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -898,6 +886,23 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 1
+--- !u!114 &7825168605647424095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4095286020021042877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56a4a76b7b4021a41bd0832c08f8b851, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyStages: []
+  useDistanceOverBlock: 0
+  firstTimeStagger:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4729415839684254913
 GameObject:
   m_ObjectHideFlags: 0
