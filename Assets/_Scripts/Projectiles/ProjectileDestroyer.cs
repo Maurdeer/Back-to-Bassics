@@ -7,11 +7,11 @@ public class ProjectileDestroyer : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        other.GetComponent<Projectile>()?.Destroy();
+        other.GetComponent<Projectile>()?.Reset();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        collision.gameObject.GetComponent<Projectile>().Destroy();
+        collision.gameObject.GetComponent<Projectile>().Reset();
     }
 }

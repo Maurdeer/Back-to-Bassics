@@ -11,11 +11,12 @@ public class BossAI : Conductable
 {
     [Header("Config")]
     [SerializeField] private EnemyStageData[] _enemyStages;
+    [SerializeField] private bool useDistanceOverBlock;
     private int _lastAction; // prevents using same attack twice in a row
     private int _currentStage;
     public event System.Action OnEnemyStageTransition;
     private int _beatsPerDecision;
-    
+
     // references
     private EnemyBattlePawn _enemyBattlePawn;
     private float _decisionTime;
@@ -24,6 +25,11 @@ public class BossAI : Conductable
     private void Awake()
     {
         _enemyBattlePawn = GetComponent<EnemyBattlePawn>();
+
+        if (_enemyStages == null || _enemyStages.Length == 0)
+        {
+            Debug.LogError($"EnemyBattlePawn {_enemyBattlePawn.Data.Name} must contain at least 1 battle stage");
+        }
 
         _lastAction = -1;
         _currentStage = 0;
@@ -35,11 +41,15 @@ public class BossAI : Conductable
         _enemyBattlePawn.OnEnterBattle += Enable;
         _enemyBattlePawn.OnExitBattle += Disable;
         _enemyBattlePawn.OnDamage += delegate
-        { 
-            if (_enemyBattlePawn.esm.IsOnState<Idle>() && _enemyBattlePawn.psm.IsOnState<Center>() && _currentStage > 0)
+        {
+            if (_currentStage <= 0) return;
+            if (useDistanceOverBlock && _enemyBattlePawn.psm.IsOnState<Center>() && _enemyBattlePawn.esm.IsOnState<Idle>())
             {
                 _enemyBattlePawn.psm.Transition<Distant>();
-                //_enemyBattlePawn.esm.Transition<Block>();
+            }
+            else if (!useDistanceOverBlock && _enemyBattlePawn.esm.IsOnState<Idle>())
+            {
+                _enemyBattlePawn.esm.Transition<Block>();
             }
         };
         _enemyBattlePawn.OnEnemyStaggerEvent += delegate
@@ -108,7 +118,10 @@ public class BossAI : Conductable
             _enemyBattlePawn.psm.Transition<Distant>();
             _enemyBattlePawn.maxStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
             _enemyBattlePawn.currentStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
-            DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode);
+            if (_enemyStages[_currentStage].DialogueNode.Trim() != "")
+            {
+                DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode);
+            }
             OnEnemyStageTransition?.Invoke();
         }
     }

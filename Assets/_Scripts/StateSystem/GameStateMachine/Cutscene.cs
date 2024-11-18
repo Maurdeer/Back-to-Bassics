@@ -9,7 +9,6 @@ public partial class GameStateMachine
         public override void Enter(GameStateInput i)
         {
             GameManager.Instance.PC.SwitchToCutsceneActions();
-            
         }
         public override void Exit(GameStateInput i)
         {
