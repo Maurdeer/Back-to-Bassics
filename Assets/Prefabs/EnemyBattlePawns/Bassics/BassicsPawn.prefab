@@ -5347,6 +5347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePoolAmount: 20
   animationName: music
+  performAnimationBeforeFire: 0
   firePattern: 1
   projectileFabs:
   - {fileID: 7447668936119333177, guid: d9778582e6e969147a1ea75ec9da21e8, type: 3}
@@ -5417,6 +5418,7 @@ MonoBehaviour:
   <battleCam>k__BackingField: {fileID: 813613764684687572}
   IntroCutscene: {fileID: 11400000, guid: b17bac583eaa5bd4a98f29244c2c1f01, type: 2}
   OutroCutscene: {fileID: 0}
+  FloatingTextPrefab: {fileID: 0}
   maxStaggerHealth: 0
   interruptable: 0
 --- !u!114 &1337638542897606784
@@ -5568,6 +5570,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d9e399babefb47f41bc6ab76fcf9cf65, type: 2}
   - {fileID: 11400000, guid: b20da1e55bbff9249b505ca8e9ddb9b6, type: 2}
   - {fileID: 11400000, guid: a6b1bc212cb8c214f9927bcedc3cf890, type: 2}
+  useDistanceOverBlock: 1
   firstTimeStagger:
     m_PersistentCalls:
       m_Calls: []
@@ -10840,7 +10843,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slashAnimationName: slash
-  inverseFacingDirection: 1
+  inverseFacingDirection: 0
   broadcastClip: {fileID: 7400000, guid: 8ba2ca4d74de4d34c959b793bfa87b6e, type: 2}
   preHitClip: {fileID: 7400000, guid: 3f315a64912e07645a97916c5d7603dc, type: 2}
   indicatorSpark: {fileID: 4678491436342915619}
