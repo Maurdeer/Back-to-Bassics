@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,11 +13,21 @@ public class ComboDisplay : MonoBehaviour
         ResetCombo();
         _animator = GetComponent<Animator>();
     }
+
+    private void RollCombo()
+    {
+        for (int i = 1; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).SetSiblingIndex(i - 1);
+        }
+    }
+
     public void AddCombo(char combo) 
     {
-        if (_curridx == 0)
+        if (_curridx == 4)
         {
-            ResetCombo();
+            RollCombo();
+            _curridx = 3;
         }
         Transform child = transform.GetChild(_curridx);
         switch (combo)
@@ -59,7 +70,7 @@ public class ComboDisplay : MonoBehaviour
         child.GetComponent<Image>().color = Color.white;
         child.gameObject.SetActive(true);
         _animator.Play("FadeIn");
-        _curridx = (_curridx + 1) % transform.childCount;
+        _curridx = Mathf.Min(_curridx + 1, 4);
     }
     public void ValidCombo()
     {
@@ -83,5 +94,16 @@ public class ComboDisplay : MonoBehaviour
         {
             child.GetComponent<Image>().color = Color.red;
         }
+        StartCoroutine(DelayResetCombo());
+    }
+
+    private IEnumerator DelayResetCombo()
+    {
+        //waits for animation to finish before resetting
+        yield return new WaitForSeconds(.19f);
+
+        ResetCombo();
+        Debug.Log("coroutine done");
+
     }
 }
