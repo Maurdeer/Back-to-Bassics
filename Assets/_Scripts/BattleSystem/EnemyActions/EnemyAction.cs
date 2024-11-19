@@ -26,12 +26,14 @@ public abstract class EnemyAction : Conductable
     }
     public void StartAction()
     {
+        if (IsActive) return;
         IsActive = true;
         Enable();
         OnStartAction();
     }
     public void StopAction()
     {
+        if (!IsActive) return;
         IsActive = false;
         Disable();
         OnStopAction();

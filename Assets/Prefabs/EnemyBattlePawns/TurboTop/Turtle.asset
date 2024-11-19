@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b5622965f2c0d4e8ca37115d55f0be, type: 3}
   m_Name: Turtle
   m_EditorClassIdentifier: 
-  _name: Turtle
+  _name: Turbo Top
   _hp: 50
-  staggerDuration: 0
+  staggerDuration: 4
   _lore: 
-  _blockingReduction: 0
-  _confuseResistance: 0
-  _poisonResistance: 0
-  _bpm: 0
+  _bpm: 120
+  _staggerHealth: 5
+  fmodEvent:
+    Guid:
+      Data1: 51648333
+      Data2: 1198838007
+      Data3: 728070021
+      Data4: -1664396516
+    Path: event:/Music/Bassics

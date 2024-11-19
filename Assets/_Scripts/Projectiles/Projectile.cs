@@ -32,6 +32,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
     private ParticleSystem _burstEffect;
     private SpriteRenderer _spriteRenderer;
     private MeshRenderer _meshRenderer;
+    private Conductor.ConductorSchedulable activeScheduable;
     
     /// <summary>
     /// Spawn a projectile with a predetermined offset
@@ -43,7 +44,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
         var originalLocation = transform.position;
         _slashDirection = -lifetimeDisplacement;
         transform.localScale = _initialScale;
-        var schedulable = new Conductor.ConductorSchedulable(
+        activeScheduable = new Conductor.ConductorSchedulable(
             onStarted: (state, ctxState) =>
             {
                 isDestroyed = false;
@@ -62,11 +63,11 @@ public class Projectile : MonoBehaviour, IAttackRequester
                 BattleManager.Instance.Player.ReceiveAttackRequest(this);
             },
             onAborted: (state) => { 
-                Reset();
+
             }
         );
         
-        Conductor.Instance.ScheduleActionAsap(duration, Conductor.Instance.Beat, schedulable, forceStart: true);
+        Conductor.Instance.ScheduleActionAsap(duration, Conductor.Instance.Beat, activeScheduable, forceStart: true);
     }
 
     public void OnAttackMaterialize(IAttackReceiver receiver)
@@ -135,6 +136,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
     {
         isDestroyed = true;
         _burstEffect?.Play();
+        activeScheduable?.SelfAbort();
         gameObject.SetActive(false);
         if (_spriteRenderer != null) _spriteRenderer.enabled = false;
         if (_meshRenderer != null) _meshRenderer.enabled = false;

@@ -48,6 +48,7 @@ MonoBehaviour:
   inverseFacingDirection: 1
   broadcastClip: {fileID: 7400000, guid: 8ba2ca4d74de4d34c959b793bfa87b6e, type: 2}
   preHitClip: {fileID: 7400000, guid: 3f315a64912e07645a97916c5d7603dc, type: 2}
+  indicatorSpark: {fileID: 0}
 --- !u!1 &609037484889805167
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePoolAmount: 20
   animationName: music
+  performAnimationBeforeFire: 0
   firePattern: 1
   projectileFabs:
   - {fileID: 7447668936119333177, guid: d9778582e6e969147a1ea75ec9da21e8, type: 3}
@@ -278,6 +280,7 @@ MonoBehaviour:
   <battleCam>k__BackingField: {fileID: 8946955744688541431}
   IntroCutscene: {fileID: 0}
   OutroCutscene: {fileID: 0}
+  FloatingTextPrefab: {fileID: 7298091450208674678, guid: 52ed510f10a693c4a80fb35040e3675c, type: 3}
   maxStaggerHealth: 0
   interruptable: 0
 --- !u!114 &638310922996435274
