@@ -1356,56 +1356,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b95a906b2664084d8e0971334d9c190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1638626555
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1638626556}
-  - component: {fileID: 1638626557}
-  m_Layer: 5
-  m_Name: Left Spawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1638626556
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1638626555}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1542912011}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -400, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1638626557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1638626555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45f75624f3bbeac47859e3670f8d5ca9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isRight: 0
-  line: {fileID: 3762153570623721803, guid: 4b85225bf15484447b1d9cf3ef9d2efe, type: 3}
 --- !u!114 &1790877112 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1961778708237596147, guid: 7b97d5f2a17c0fd47bf2284508e93a29, type: 3}
@@ -1520,10 +1470,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7440612902971082405, guid: cdda41d1312c0fa449a5ab560b372250, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6882416928573291449, guid: cdda41d1312c0fa449a5ab560b372250, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1638626556}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdda41d1312c0fa449a5ab560b372250, type: 3}
 --- !u!1001 &1817403689

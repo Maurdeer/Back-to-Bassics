@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -8919447293208331507}
   - component: {fileID: 7275023079780252837}
   m_Layer: 0
-  m_Name: Line
+  m_Name: RightLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 125, y: 355}
+  m_SizeDelta: {x: 196, y: 330}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5878321863054903590
 MonoBehaviour:
@@ -149,7 +149,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 80, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -160,5 +160,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 8, y: 300}
   m_EdgeRadius: 0

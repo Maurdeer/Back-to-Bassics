@@ -10,7 +10,7 @@ public class IndicatorLine : MonoBehaviour
     private float spd = 50f;
     private float originalX;
 
-    private void Start()
+    public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         originalX = transform.position.x;
@@ -18,7 +18,7 @@ public class IndicatorLine : MonoBehaviour
 
     void Update()
     {
-        spd = (Math.Abs(originalX) - 400f) * Conductor.Instance.spb;
+        spd = (Math.Abs(originalX) + (isRight ? -1 : 1) * 400f) * Conductor.Instance.spb;
 
         rb.velocity = new Vector3((isRight ? -1 : 1) * spd, 0, 0);
     }
