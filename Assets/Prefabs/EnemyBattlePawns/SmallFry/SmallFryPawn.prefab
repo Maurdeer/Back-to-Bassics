@@ -6049,7 +6049,7 @@ MonoBehaviour:
   slashAnimationName: slash
   inverseFacingDirection: 0
   broadcastClip: {fileID: 7400000, guid: d69baf4e82a064132ac03cf5d3c6eb48, type: 2}
-  preHitClip: {fileID: 7400000, guid: 1e2f99bb55c5f51488d6e33fb0c3b970, type: 2}
+  preHitClip: {fileID: 7400000, guid: 588b1d38850f743cb87b169c8419579a, type: 2}
   indicatorSpark: {fileID: 0}
 --- !u!1 &5431806863635908229
 GameObject:
@@ -6567,7 +6567,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePoolAmount: 20
   animationName: fire
-  performAnimationBeforeFire: 1
+  performAnimationBeforeFire: 0
   firePattern: 1
   projectileFabs:
   - {fileID: 780471231599009027, guid: 1b3a9b4deef5bac43a0dc2de35a3ff90, type: 3}
@@ -12084,9 +12084,9 @@ MonoBehaviour:
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 3632154329678698217}
   <battleCam>k__BackingField: {fileID: 530538101871512614}
-  IntroCutscene: {fileID: 0}
-  OutroCutscene: {fileID: 0}
-  FloatingTextPrefab: {fileID: 0}
+  FloatingTextPrefab: {fileID: 7298091450208674678, guid: 52ed510f10a693c4a80fb35040e3675c, type: 3}
+  <IntroCutscene>k__BackingField: {fileID: 0}
+  <OutroCutscene>k__BackingField: {fileID: 0}
   maxStaggerHealth: 0
   interruptable: 0
 --- !u!114 &84929611984010602
@@ -12122,7 +12122,7 @@ PlayableDirector:
   m_GameObject: {fileID: 8123077407089530165}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: a3828bf885dfa904e8472f943ca7e29c, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 85449c0f3be86c2458e54d30b72d4ecb, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1

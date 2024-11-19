@@ -270,7 +270,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     public void OnAttackMaterialize(IAttackReceiver receiver)
     {
         EnemyBattlePawn enemy = receiver as EnemyBattlePawn;
-        if (enemy != null) 
+        if (enemy != null)
         {
             enemy.Damage(_weaponData.Dmg);
             updateCombo(true);
