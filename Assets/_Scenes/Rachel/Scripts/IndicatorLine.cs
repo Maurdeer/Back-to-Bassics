@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class IndicatorLine : MonoBehaviour
@@ -6,6 +7,7 @@ public class IndicatorLine : MonoBehaviour
     [NonSerialized] public bool isRight;
 
     private Rigidbody2D rb;
+    private CanvasGroup canvasGroup;
 
     private float spd = 50f;
     private float originalX;
@@ -13,6 +15,11 @@ public class IndicatorLine : MonoBehaviour
     public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        canvasGroup = GetComponent<CanvasGroup>();
+
+        canvasGroup.alpha = 0; // Start fully transparent
+        StartCoroutine(FadeIn());
+
         originalX = transform.position.x;
     }
 
@@ -29,5 +36,20 @@ public class IndicatorLine : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator FadeIn()
+    {
+        float elapsedTime = 0;
+        float timer = Conductor.Instance.spb * 0.75f;
+
+        while (elapsedTime < timer)
+        {
+            elapsedTime += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Clamp01(elapsedTime / timer);
+            yield return null;
+        }
+
+        canvasGroup.alpha = 1;
     }
 }
