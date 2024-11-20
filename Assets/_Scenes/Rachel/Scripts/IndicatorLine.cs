@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class IndicatorLine : MonoBehaviour
 {
+    [SerializeField][Range(0, 1f)] private float fadeDuration = 0.75f;
+
     [NonSerialized] public bool isRight;
 
     private Rigidbody2D rb;
@@ -41,7 +43,7 @@ public class IndicatorLine : MonoBehaviour
     private IEnumerator FadeIn()
     {
         float elapsedTime = 0;
-        float timer = Conductor.Instance.spb * 0.75f;
+        float timer = Conductor.Instance.spb * fadeDuration;
 
         while (elapsedTime < timer)
         {
