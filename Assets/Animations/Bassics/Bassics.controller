@@ -438,6 +438,12 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -6534284208938104729}
     m_Position: {x: 390, y: -150, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -3159820840228109725}
+    m_Position: {x: 425, y: -85, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 9065787660818338609}
+    m_Position: {x: 460, y: -20, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -845,6 +851,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &-3159820840228109725
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: bassics_standby_back_east
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: cfa8b134946a8b14cac0a1200fd73ef1, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!206 &-3132695665830365797
 BlendTree:
   m_ObjectHideFlags: 1
@@ -854,7 +886,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: eca1cfbb12af9de44ae5edfe893ea76a, type: 2}
+    m_Motion: {fileID: 7400000, guid: a458c241117ec7b479485e1b28142e03, type: 2}
     m_Threshold: -0.1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -862,7 +894,7 @@ BlendTree:
     m_DirectBlendParameter: x_faceDir
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: a458c241117ec7b479485e1b28142e03, type: 2}
+    m_Motion: {fileID: 7400000, guid: eca1cfbb12af9de44ae5edfe893ea76a, type: 2}
     m_Threshold: 0.1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -1179,7 +1211,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: bf91a2381bf92e647ba4cd4606cb81b7, type: 2}
+    m_Motion: {fileID: 7400000, guid: 4372dd1027638bf4f81c4899ca4c5f0c, type: 2}
     m_Threshold: -0.1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -1187,7 +1219,7 @@ BlendTree:
     m_DirectBlendParameter: x_faceDir
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 4372dd1027638bf4f81c4899ca4c5f0c, type: 2}
+    m_Motion: {fileID: 7400000, guid: bf91a2381bf92e647ba4cd4606cb81b7, type: 2}
     m_Threshold: 0.1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -1783,7 +1815,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 348758234f58d7649aa71c73f8808b44, type: 2}
+    m_Motion: {fileID: 7400000, guid: 9fb4e0e0df2f9634b9675d8ae3c311e1, type: 2}
     m_Threshold: -0.1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -1791,7 +1823,7 @@ BlendTree:
     m_DirectBlendParameter: x_faceDir
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 9fb4e0e0df2f9634b9675d8ae3c311e1, type: 2}
+    m_Motion: {fileID: 7400000, guid: 348758234f58d7649aa71c73f8808b44, type: 2}
     m_Threshold: 0.1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -1836,7 +1868,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: a44b1526b89ae50458dc73bb49d5baa3, type: 2}
+    m_Motion: {fileID: 7400000, guid: 7dfa9f3e56a449d4bb61f1aa7343cde3, type: 2}
     m_Threshold: -0.1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -1844,7 +1876,7 @@ BlendTree:
     m_DirectBlendParameter: x_faceDir
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 7dfa9f3e56a449d4bb61f1aa7343cde3, type: 2}
+    m_Motion: {fileID: 7400000, guid: a44b1526b89ae50458dc73bb49d5baa3, type: 2}
     m_Threshold: 0.1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -2494,6 +2526,32 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &9065787660818338609
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: bassics_standby_front_east
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: ea2069cb1c71fe54ba3f17f102fbec77, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &9183405909876047309
 AnimatorState:
   serializedVersion: 6
