@@ -5277,7 +5277,19 @@ MonoBehaviour:
   useTypewriterEffect: 1
   onCharacterTyped:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5642884798581242194}
+        m_TargetAssemblyTypeName: EnemyBattlePawn, Assembly-CSharp
+        m_MethodName: VoiceByte
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPauseStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -5416,9 +5428,9 @@ MonoBehaviour:
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 8599476617418693142}
   <battleCam>k__BackingField: {fileID: 813613764684687572}
-  IntroCutscene: {fileID: 11400000, guid: b17bac583eaa5bd4a98f29244c2c1f01, type: 2}
-  OutroCutscene: {fileID: 0}
   FloatingTextPrefab: {fileID: 7298091450208674678, guid: 52ed510f10a693c4a80fb35040e3675c, type: 3}
+  <IntroCutscene>k__BackingField: {fileID: 0}
+  <OutroCutscene>k__BackingField: {fileID: 0}
   maxStaggerHealth: 0
   interruptable: 0
 --- !u!114 &1337638542897606784

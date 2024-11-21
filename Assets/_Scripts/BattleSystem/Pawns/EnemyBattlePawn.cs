@@ -7,6 +7,8 @@ using Cinemachine;
 using System.Collections;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using FMOD.Studio;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Manipulate by an external class, not within the class!!
@@ -29,14 +31,13 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     [field: SerializeField] public TimelineAsset IntroCutscene { get; private set; }
     [field: SerializeField] public TimelineAsset OutroCutscene { get; private set; }
 
-
-
     public int currentStaggerHealth { get; set; }
     public int maxStaggerHealth;
     public bool interruptable; // Staggers interrupt attacks, rather than occurring at end of attack
 
     // References
     private PlayableDirector _director;
+    private EventInstance voiceByteInstance;
     public PlayableDirector Director => _director;
     protected override void Awake()
     { 
@@ -77,6 +78,11 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
                 currentStaggerHealth = maxStaggerHealth;
             }
         };
+        if (!EnemyData.voiceByte.IsNull)
+        {
+            voiceByteInstance = AudioManager.Instance.CreateInstance(EnemyData.voiceByte);
+        }
+        
         base.Awake();
     }
     public EA GetEnemyAction<EA>(int idx = 0) where EA : EnemyAction
@@ -231,4 +237,16 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
        esm.Transition<Idle>();
     }
     #endregion
+
+    public void VoiceByte()
+    {
+        if (voiceByteInstance.IsUnityNull()) return;
+
+        PLAYBACK_STATE playbackState;
+        voiceByteInstance.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+        {
+            voiceByteInstance.start();
+        }
+    }
 }

@@ -18,7 +18,7 @@ public class SceneManagement : MonoBehaviour
     private CanvasGroup canvasScreen;
     private bool fadeIn = false;
     private bool fadeOut = false;
-    public float timeToFade;
+    [Range(1, 20f)] public float timeToFade = 10f;
 
 
 
