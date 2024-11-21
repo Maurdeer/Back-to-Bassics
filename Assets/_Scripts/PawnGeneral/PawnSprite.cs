@@ -13,12 +13,12 @@ public class PawnSprite : MonoBehaviour
     protected virtual void Awake()
     {
         _animator = GetComponent<Animator>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        //_spriteRenderer = GetComponent<SpriteRenderer>();
         _facingDirection = new Vector3(_animator.GetFloat("x_faceDir"), 0, _animator.GetFloat("z_faceDir"));
     }
     protected virtual void Start()
     {
-        _spriteRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+        //_spriteRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
     }
     public void FaceDirection(Vector3 direction)
     {

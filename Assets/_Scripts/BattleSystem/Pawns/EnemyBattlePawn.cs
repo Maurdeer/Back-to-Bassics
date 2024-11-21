@@ -8,6 +8,7 @@ using System.Collections;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using FMOD.Studio;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Manipulate by an external class, not within the class!!
@@ -77,7 +78,11 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
                 currentStaggerHealth = maxStaggerHealth;
             }
         };
-        voiceByteInstance = AudioManager.Instance.CreateInstance(EnemyData.voiceByte);
+        if (!EnemyData.voiceByte.IsNull)
+        {
+            voiceByteInstance = AudioManager.Instance.CreateInstance(EnemyData.voiceByte);
+        }
+        
         base.Awake();
     }
     public EA GetEnemyAction<EA>(int idx = 0) where EA : EnemyAction
@@ -235,6 +240,8 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
 
     public void VoiceByte()
     {
+        if (voiceByteInstance.IsUnityNull()) return;
+
         PLAYBACK_STATE playbackState;
         voiceByteInstance.getPlaybackState(out playbackState);
         if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
