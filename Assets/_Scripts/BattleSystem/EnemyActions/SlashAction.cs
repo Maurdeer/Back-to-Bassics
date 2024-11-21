@@ -9,12 +9,12 @@ public class SlashAction : EnemyAction, IAttackRequester
     [SerializeField] private string slashAnimationName;
     [SerializeField] private bool inverseFacingDirection = false;
 
-    [Header("Slash Animations")]
-    [SerializeField] private AnimationClip broadcastClip;
-    [SerializeField] private AnimationClip preHitClip;
+    [Header("Slash References")]
+    //[SerializeField] private AnimationClip broadcastClip;
+    //[SerializeField] private AnimationClip preHitClip;
     [SerializeField] private ParticleSystem indicatorSpark;
-    public float minSlashTillHitDuration => (preHitClip.length + broadcastClip.length);
-    public float minSlashTillHitInBeats => minSlashTillHitDuration / parentPawn.EnemyData.SPB;
+    //public float minSlashTillHitDuration => (preHitClip.length + broadcastClip.length);
+    //public float minSlashTillHitInBeats => minSlashTillHitDuration / parentPawn.EnemyData.SPB;
     private SlashNode _currNode;
     //Amount of stagger damage towards enemy of successful deflect.
     private int _staggerDamage = 50;
