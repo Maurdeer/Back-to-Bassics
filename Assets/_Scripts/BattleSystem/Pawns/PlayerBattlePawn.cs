@@ -86,13 +86,13 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 
         if (slashHandle != null)
         {
-            if (slashCancelCounter > 0) // <-- tweak here for number of cancels allowed
+            if (slashCancelCounter > 1) // <-- tweak here for number of cancels allowed
             {
-                Debug.LogWarning("Ran out of cancels");
+                //Debug.LogWarning("Ran out of cancels");
                 return;
             }
             
-            Debug.Log($"Cancel previous slash");
+            //Debug.Log($"Cancel previous slash");
             slashHandle.SelfAbort();
             slashCancelCounter += 1;
         }
@@ -270,7 +270,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     public void OnAttackMaterialize(IAttackReceiver receiver)
     {
         EnemyBattlePawn enemy = receiver as EnemyBattlePawn;
-        if (enemy != null) 
+        if (enemy != null)
         {
             enemy.Damage(_weaponData.Dmg);
             updateCombo(true);

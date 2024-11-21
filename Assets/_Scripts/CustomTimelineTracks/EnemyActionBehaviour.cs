@@ -7,6 +7,7 @@ public class EnemyActionBehaviour : PlayableBehaviour
 {
     private bool _performed;
     private EnemyAction _cachedActionRef;
+
     public override void OnBehaviourPlay(Playable playable, FrameData info)
     {
         base.OnBehaviourPlay(playable, info);
@@ -18,6 +19,7 @@ public class EnemyActionBehaviour : PlayableBehaviour
             // Debug Error
             return;
         }
+
         _cachedActionRef.StartAction();
     }
 }

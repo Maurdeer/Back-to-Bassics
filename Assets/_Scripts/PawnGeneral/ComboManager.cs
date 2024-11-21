@@ -45,7 +45,7 @@ public class ComboManager : MonoBehaviour
     {
         if (_currComboString.Length >= 4)
         {
-            _currComboString = "";
+            _currComboString = _currComboString.Substring(1);
         }
         
         _currComboString += combo;
@@ -63,6 +63,7 @@ public class ComboManager : MonoBehaviour
             StopCoroutine(_comboReseter);
             return;
         }
+        Debug.Log("CurrCombo: " + _currComboString);
         UIManager.Instance.ComboDisplay.ValidCombo();
     }
     private IEnumerator DelayComboReset()
