@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class IndicatorLineSpawner : Conductable
 {
+    [SerializeField] private bool isRight;
     [SerializeField] private GameObject line;
 
     private void Start()
@@ -11,6 +12,7 @@ public class IndicatorLineSpawner : Conductable
 
     protected override void OnFullBeat()
     {
-        Instantiate(line, transform);
+        IndicatorLine indicatorLine = Instantiate(line, transform).GetComponent<IndicatorLine>();
+        indicatorLine.isRight = isRight;
     }
 }
