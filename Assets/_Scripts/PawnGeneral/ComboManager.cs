@@ -45,7 +45,7 @@ public class ComboManager : MonoBehaviour
     {
         if (_currComboString.Length >= 4)
         {
-            _currComboString = "";
+            _currComboString = _currComboString.Substring(1);
         }
         
         _currComboString += combo;

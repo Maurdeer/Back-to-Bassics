@@ -43,14 +43,8 @@ public class BossAI : Conductable
         _enemyBattlePawn.OnDamage += delegate
         {
             if (_currentStage <= 0) return;
-            if (useDistanceOverBlock && _enemyBattlePawn.psm.IsOnState<Center>() && _enemyBattlePawn.esm.IsOnState<Idle>())
-            {
-                _enemyBattlePawn.psm.Transition<Distant>();
-            }
-            else if (!useDistanceOverBlock && _enemyBattlePawn.esm.IsOnState<Idle>())
-            {
-                _enemyBattlePawn.esm.Transition<Block>();
-            }
+            if (!_enemyBattlePawn.esm.IsOnState<Idle>()) return;
+            PreventPlayerAttack();
         };
         _enemyBattlePawn.OnEnemyStaggerEvent += delegate
         {
@@ -115,7 +109,7 @@ public class BossAI : Conductable
             _beatsPerDecision = _enemyStages[_currentStage].BeatsPerDecision;
             Conductor.Instance.ChangeMusicPhase(_currentStage + 1);
             _enemyBattlePawn.UnStagger();
-            _enemyBattlePawn.psm.Transition<Distant>();
+            PreventPlayerAttack();
             _enemyBattlePawn.maxStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
             _enemyBattlePawn.currentStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
             if (_enemyStages[_currentStage].DialogueNode.Trim() != "")
@@ -123,6 +117,18 @@ public class BossAI : Conductable
                 DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode);
             }
             OnEnemyStageTransition?.Invoke();
+        }
+    }
+
+    private void PreventPlayerAttack()
+    {
+        if (useDistanceOverBlock && _enemyBattlePawn.psm.IsOnState<Center>())
+        {
+            _enemyBattlePawn.psm.Transition<Distant>();
+        }
+        else if (!useDistanceOverBlock)
+        {
+            _enemyBattlePawn.esm.Transition<Block>();
         }
     }
 }

@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,4 +13,5 @@ public class EnemyBattlePawnData : BattlePawnData
     public float SPB => 60f / _bpm;
     public int StaggerHealth => _staggerHealth; // Can be overwritten by EnemyStageData
     public FMODUnity.EventReference fmodEvent;
+    public FMODUnity.EventReference voiceByte;
 }
