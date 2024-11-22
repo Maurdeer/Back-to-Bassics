@@ -11,7 +11,7 @@ public class AirSlash : Combo
     {
         BattleManager.Instance.Enemy.Damage(damage);
 
-        if(StrId.Equals("nN")) 
+        if(StrId.Equals("Nn")) 
         {
             BattleManager.Instance.Enemy.GetComponentInChildren<PawnSprite>().Animator.Play("Jump");
         }
