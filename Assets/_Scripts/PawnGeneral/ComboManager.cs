@@ -45,7 +45,7 @@ public class ComboManager : MonoBehaviour
     {
         if (_currComboString.Length >= 4)
         {
-            _currComboString = "";
+            _currComboString = _currComboString.Substring(1);
         }
         
         _currComboString += combo;
@@ -63,12 +63,21 @@ public class ComboManager : MonoBehaviour
             StopCoroutine(_comboReseter);
             return;
         }
+        Debug.Log("CurrCombo: " + _currComboString);
         UIManager.Instance.ComboDisplay.ValidCombo();
     }
     private IEnumerator DelayComboReset()
     {
         // Give the player 2 beat of time
-        yield return new WaitForSeconds(0.8f);
+        if (Conductor.Instance.IsPlaying)
+        {
+            yield return new WaitForSeconds(2 * Conductor.Instance.spb);
+        }
+        else
+        {
+            yield return new WaitForSeconds(2f);
+        }
+        
         UIManager.Instance.ComboDisplay.HideCombo();
         _currComboString = "";
     }

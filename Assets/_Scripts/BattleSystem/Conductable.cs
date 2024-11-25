@@ -17,7 +17,7 @@ public abstract class Conductable : MonoBehaviour
     {
         if (_conductableEnabled) return;
         _conductableEnabled = true;
-        // Conductor.Instance.OnFirstBeat += OnFirstBeat;
+        Conductor.Instance.OnFirstBeat += OnFirstBeat;
         // Conductor.Instance.OnQuarterBeat += OnQuarterBeat;
         // Conductor.Instance.OnHalfBeat += OnHalfBeat;
         Conductor.Instance.OnFullBeat += OnFullBeat;
@@ -27,10 +27,15 @@ public abstract class Conductable : MonoBehaviour
     {
         if (!_conductableEnabled) return;
         _conductableEnabled = false;
-        // Conductor.Instance.OnFirstBeat -= OnFirstBeat;
+        Conductor.Instance.OnFirstBeat -= OnFirstBeat;
         // Conductor.Instance.OnQuarterBeat -= OnQuarterBeat;
         // Conductor.Instance.OnHalfBeat -= OnHalfBeat;
         Conductor.Instance.OnFullBeat -= OnFullBeat;
         // Conductor.Instance.OnLastBeat -= OnLastBeat;
+    }
+
+    protected void OnDestroy()
+    {
+        Disable();
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 using static EnemyStateMachine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 /// <summary>
 /// Playable Battle Pawn
@@ -13,9 +14,12 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 {
     [Header("Player References")]
     [SerializeField] private PlayerWeaponData _weaponData;
+    public Transform playerCollider;
+    [Header("Player Effects")]
     [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private VisualEffect _slashEffect;
-    public Transform playerCollider;
+    [SerializeField] private ParticleSystem _deflectEffect;
+    
     private PlayerTraversalPawn _traversalPawn;
     public PlayerWeaponData WeaponData => _weaponData;
     public Vector2 SlashDirection { get; private set; }
@@ -82,13 +86,13 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 
         if (slashHandle != null)
         {
-            if (slashCancelCounter > 0) // <-- tweak here for number of cancels allowed
+            if (slashCancelCounter > 1) // <-- tweak here for number of cancels allowed
             {
-                Debug.LogWarning("Ran out of cancels");
+                //Debug.LogWarning("Ran out of cancels");
                 return;
             }
             
-            Debug.Log($"Cancel previous slash");
+            //Debug.Log($"Cancel previous slash");
             slashHandle.SelfAbort();
             slashCancelCounter += 1;
         }
@@ -111,8 +115,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 AudioManager.Instance.PlayOnShotSound(WeaponData.slashAirSound, transform.position);
                 SlashDirection = direction;
                 SlashDirection.Normalize();
-
-                BattleManager.Instance.Enemy.ReceiveAttackRequest(this);
+       
                 attacking = true;
                 deflectionWindow = true;
 
@@ -127,6 +130,11 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
             {
                 deflectionWindow = false;
                 attacking = false;
+                if (!deflected && BattleManager.Instance.Enemy.ReceiveAttackRequest(this))
+                {
+                    BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
+                    updateCombo(true);
+                }
                 _pawnAnimator.Play($"SlashEnd");
                 deflected = false;
                 slashHandle = null;
@@ -195,11 +203,11 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     //    if (!blocking && !attacking) base.RecoverSP(amount);
     //}ikjm,,k
     #region IAttackReceiver Methods
-    public void ReceiveAttackRequest(IAttackRequester requester)
+    public bool ReceiveAttackRequest(IAttackRequester requester)
     {
         if (TryDodgeAttack(requester))
         {
-            return;
+            return false;
         }
         
         // Place this requester in the ActiveRequester set (currently disallow two different attacks from the same requester)
@@ -235,6 +243,8 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
             requester.GetDeflectionCoyoteTime(), Conductor.Instance.Beat, handle, true);
         
         ActiveAttacks.Add(requester);
+
+        return true;
     }
     #endregion
 
@@ -244,6 +254,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         {
             deflected = true;
             AudioManager.Instance.PlayOnShotSound(WeaponData.slashHitSound, transform.position);
+            _deflectEffect.Play();
             _comboManager.CurrComboMeterAmount += 1;
             return true;
         }
@@ -258,9 +269,13 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 
     public void OnAttackMaterialize(IAttackReceiver receiver)
     {
-        BattleManager.Instance.Enemy.Damage(_weaponData.Dmg);
-        updateCombo(true);
-        BattleManager.Instance.Enemy.CompleteAttackRequest(this);
+        EnemyBattlePawn enemy = receiver as EnemyBattlePawn;
+        if (enemy != null)
+        {
+            enemy.Damage(_weaponData.Dmg);
+            updateCombo(true);
+            enemy.CompleteAttackRequest(this);
+        }
     }
 
     public float GetDeflectionCoyoteTime()

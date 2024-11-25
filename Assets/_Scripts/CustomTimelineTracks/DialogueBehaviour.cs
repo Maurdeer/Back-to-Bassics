@@ -8,9 +8,12 @@ using UnityEngine.Playables;
 public class DialogueBehaviour : PlayableBehaviour
 {
     public string startNode;
+    private bool _performed;
     public override void OnBehaviourPlay(Playable playable, FrameData info)
     {
         base.OnBehaviourPlay(playable, info);
-        
+        if (_performed) return;
+        _performed = true;
+        DialogueManager.Instance?.RunDialogueNode(startNode);
     }
 }

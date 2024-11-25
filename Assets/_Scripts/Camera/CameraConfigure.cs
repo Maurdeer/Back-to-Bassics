@@ -8,6 +8,7 @@ public class CameraConfigure : Singleton<CameraConfigure>
     [SerializeField] private CinemachineVirtualCamera firstVirtualCamera;
     private CinemachineVirtualCamera curr;
     private CinemachineVirtualCamera prev;
+    public CinemachineVirtualCamera CurrentVirtualCamera => curr;
     #region Unity Messages
     private void Awake()
     {
@@ -16,6 +17,7 @@ public class CameraConfigure : Singleton<CameraConfigure>
     private void Start()
     {
         curr = GetComponent<CinemachineBrain>().ActiveVirtualCamera as CinemachineVirtualCamera;
+        if (curr == null) curr = firstVirtualCamera;
         // This shouldn't be needed please!!!
         if (curr == null)
         {
@@ -34,7 +36,7 @@ public class CameraConfigure : Singleton<CameraConfigure>
         curr = targetCamera;
         //savedPriority = curr.Priority;
         curr.Priority = 10;
-        Debug.Log($"Curr: {curr}, Prev: {prev}");
+        //Debug.Log($"Curr: {curr}, Prev: {prev}");
     }
     public void SwitchBackToPrev()
     {
