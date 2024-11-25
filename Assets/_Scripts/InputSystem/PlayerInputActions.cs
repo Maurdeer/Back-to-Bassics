@@ -1013,7 +1013,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""b6af71bc-c0c7-4c46-8433-38691815f5fd"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Advance"",
                     ""type"": ""Button"",
                     ""id"": ""45550d4e-d452-4798-b095-01b1aa4e972e"",
                     ""expectedControlType"": ""Button"",
@@ -1026,11 +1026,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""0046fb09-b103-4373-ad00-55578a37d217"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/anyKey"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Advance"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1107,7 +1107,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
-        m_Dialogue_Newaction = m_Dialogue.FindAction("New action", throwIfNotFound: true);
+        m_Dialogue_Advance = m_Dialogue.FindAction("Advance", throwIfNotFound: true);
         // Cutscene
         m_Cutscene = asset.FindActionMap("Cutscene", throwIfNotFound: true);
         m_Cutscene_Newaction = m_Cutscene.FindAction("New action", throwIfNotFound: true);
@@ -1358,12 +1358,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Dialogue
     private readonly InputActionMap m_Dialogue;
     private List<IDialogueActions> m_DialogueActionsCallbackInterfaces = new List<IDialogueActions>();
-    private readonly InputAction m_Dialogue_Newaction;
+    private readonly InputAction m_Dialogue_Advance;
     public struct DialogueActions
     {
         private @PlayerInputActions m_Wrapper;
         public DialogueActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_Dialogue_Newaction;
+        public InputAction @Advance => m_Wrapper.m_Dialogue_Advance;
         public InputActionMap Get() { return m_Wrapper.m_Dialogue; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1373,16 +1373,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_DialogueActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_DialogueActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @Advance.started += instance.OnAdvance;
+            @Advance.performed += instance.OnAdvance;
+            @Advance.canceled += instance.OnAdvance;
         }
 
         private void UnregisterCallbacks(IDialogueActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @Advance.started -= instance.OnAdvance;
+            @Advance.performed -= instance.OnAdvance;
+            @Advance.canceled -= instance.OnAdvance;
         }
 
         public void RemoveCallbacks(IDialogueActions instance)
@@ -1484,7 +1484,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     }
     public interface IDialogueActions
     {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnAdvance(InputAction.CallbackContext context);
     }
     public interface ICutsceneActions
     {
