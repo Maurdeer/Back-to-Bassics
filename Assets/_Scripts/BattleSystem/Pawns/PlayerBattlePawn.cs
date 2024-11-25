@@ -120,10 +120,10 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 deflectionWindow = true;
 
                 // as soon as deflection window starts, clear all dodge-able attacks, considering all of them as "deflected"
-                if (ActiveAttacks.Count > 0)
-                {
-                    ActiveAttacks.RemoveWhere(TryDodgeAttack);
-                }
+                //if (ActiveAttacks.Count > 0)
+                //{
+                //    ActiveAttacks.RemoveWhere(TryDodgeAttack);
+                //}
             },
             onUpdate: (state, contextState) => { },
             onCompleted: (state, contextState) =>
