@@ -14,6 +14,7 @@ public class DialogueManager : Singleton<DialogueManager>
     private DialogueViewBase activeDialogueView; // Current active dialogue view
     public bool IsDialogueRunning => customDialogueRunner.IsDialogueRunning;
     private EventInstance voiceByteInstance;
+    private CinemachineVirtualCamera initialVirtualCam;
 
     private void Awake()
     {
@@ -42,29 +43,35 @@ public class DialogueManager : Singleton<DialogueManager>
 
         // Set up the view switching command handler
         customDialogueRunner.AddCommandHandler<string>("setView", SetDialogueView);
+        customDialogueRunner.AddCommandHandler<string>("setCamera", SetCamera);
         voiceByteInstance = AudioManager.Instance.CreateInstance(FMODEvents.Instance.bassicsBlub);
     }
 
     public void RunDialogueNode(string node)
     {
         // Add soon when you can interface dialogue
-        //if (GameManager.Instance.GSM.IsOnState<GameStateMachine.WorldTraversal>())
-        //{
-        //    GameManager.Instance.GSM.Transition<GameStateMachine.Dialogue>();
-        //}
+        if (GameManager.Instance.GSM.IsOnState<GameStateMachine.WorldTraversal>())
+        {
+            GameManager.Instance.GSM.Transition<GameStateMachine.Dialogue>();
+        }
         if (customDialogueRunner.IsDialogueRunning)
         {
             customDialogueRunner.Stop();
         }
         customDialogueRunner.StartDialogue(node);
-        //return customDialogueRunner.IsDialogueRunning;
+        StartCoroutine(OnDialogueComplete());
     }
 
-    public void OnDialogueComplete()
+    private IEnumerator OnDialogueComplete()
     {
+        yield return new WaitUntil(() => !customDialogueRunner.IsDialogueRunning);
         if (GameManager.Instance.GSM.IsOnState<GameStateMachine.Dialogue>())
         {
             GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
+        }
+        if (initialVirtualCam != null)
+        {
+            CameraConfigure.Instance.SwitchToCamera(initialVirtualCam);
         }
     }
 
@@ -108,6 +115,19 @@ public class DialogueManager : Singleton<DialogueManager>
         }
 
         // Required for the IEnumerator return type, even if we aren't waiting for anything
+        yield break;
+    }
+
+    public IEnumerator SetCamera(string cameraName)
+    {
+        if (initialVirtualCam != null) initialVirtualCam = CameraConfigure.Instance.CurrentVirtualCamera;
+        CinemachineVirtualCamera camera = GameObject.Find(cameraName).GetComponent<CinemachineVirtualCamera>();
+        if (camera == null)
+        {
+            Debug.LogWarning($"No camera found for: {cameraName}");
+            yield break;
+        }
+        CameraConfigure.Instance.SwitchToCamera(camera);
         yield break;
     }
 

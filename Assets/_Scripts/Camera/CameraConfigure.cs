@@ -8,6 +8,7 @@ public class CameraConfigure : Singleton<CameraConfigure>
     [SerializeField] private CinemachineVirtualCamera firstVirtualCamera;
     private CinemachineVirtualCamera curr;
     private CinemachineVirtualCamera prev;
+    public CinemachineVirtualCamera CurrentVirtualCamera => curr;
     #region Unity Messages
     private void Awake()
     {
