@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [DisallowMultipleComponent]
 public class PlayerController : MonoBehaviour, IDataPersistence
@@ -108,13 +109,35 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        //get player transform and assign it to data's player position
-        this.transform.position = data.playerPosition;
+        //change the player's position to match the saved data's player position
+
+        //if the playerPosition dict has the scene in it already
+        if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
+        {
+            //update the position value for this scene
+            this.transform.position = data.playerPosition[SceneManager.GetActiveScene().name]; 
+        }
+        else
+        {
+            //uh oh something went wrong
+            Debug.Log("No saved data for the current scene.");
+        }
     }
 
     public void SaveData(GameData data)
     {
-        //change the player's position to match the saved data's player position
-        data.playerPosition = this.transform.position;
+        //get player transform and assign it to data's player position
+
+        //if the scene is already in the playerPosition dict
+        if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
+        {
+            //save the current position as the value for the scene key
+            data.playerPosition[SceneManager.GetActiveScene().name] = this.transform.position;
+        }
+        else //if the scene isn't already in there
+        {
+            //add the current scene & transform to the dict as a key-value pair
+            data.playerPosition.Add(SceneManager.GetActiveScene().name, this.transform.position);
+        }
     }
 }
