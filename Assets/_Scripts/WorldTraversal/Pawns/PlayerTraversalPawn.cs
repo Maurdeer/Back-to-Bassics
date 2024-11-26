@@ -52,14 +52,32 @@ public class PlayerTraversalPawn : TraversalPawn
     }
     private void OnTriggerEnter(Collider other)
     {
+        ReliableOnTriggerExit.NotifyTriggerEnter(other, gameObject, OnTriggerExit);
         if (other.TryGetComponent(out Interactable interactable))
         {
             UIManager.Instance.ShowInteractableUI();
             currInteractable = interactable;
         }
     }
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.TryGetComponent(out Interactable interactable))
+    //    {
+    //        if (interactable != currInteractable)
+    //        {
+    //            UIManager.Instance.ShowInteractableUI();
+    //            currInteractable = interactable;
+    //        }
+    //    } 
+    //    else
+    //    {
+    //        currInteractable = null;
+    //        UIManager.Instance.HideInteractableUI();
+    //    }
+    //}
     private void OnTriggerExit(Collider other)
     {
+        ReliableOnTriggerExit.NotifyTriggerExit(other, gameObject);
         if (other.TryGetComponent(out Interactable interactable) && currInteractable == interactable)
         {
             UIManager.Instance.HideInteractableUI();
