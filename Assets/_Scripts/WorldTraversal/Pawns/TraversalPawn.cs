@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 using FMOD.Studio;
 
 [DisallowMultipleComponent]
-public abstract class TraversalPawn : MonoBehaviour
+public class TraversalPawn : MonoBehaviour
 {
     [Header("Traversal Pawn Specs")]
     [SerializeField] private float speed;
