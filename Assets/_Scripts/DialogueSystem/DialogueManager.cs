@@ -44,6 +44,8 @@ public class DialogueManager : Singleton<DialogueManager>
         // Set up the view switching command handler
         customDialogueRunner.AddCommandHandler<string>("setView", SetDialogueView);
         customDialogueRunner.AddCommandHandler<string>("setCamera", SetCamera);
+        customDialogueRunner.AddCommandHandler<GameObject, GameObject>("move", MoveToLocation);
+        customDialogueRunner.AddCommandHandler<string, int>("zoom", CameraAdjustment);
         voiceByteInstance = AudioManager.Instance.CreateInstance(FMODEvents.Instance.bassicsBlub);
     }
 
@@ -129,6 +131,29 @@ public class DialogueManager : Singleton<DialogueManager>
         }
         CameraConfigure.Instance.SwitchToCamera(camera);
         yield break;
+    }
+
+    // Function that can be called in yarn files to move TraversalPawns around to set locations.
+    public IEnumerator MoveToLocation(GameObject pawn, GameObject targetLocation)
+    {
+        TraversalPawn traversal = pawn.GetComponent<TraversalPawn>();
+        if (traversal == null) {
+            Debug.LogWarning($"{pawn.name} is not a Traversal Pawn and cannot move");
+        }
+        traversal.MoveToDestination(targetLocation.transform.position);
+        yield break;
+    }
+
+    // Function that allows for Camera Zom in or out
+    // THis does not actually work as is right now; it will accurately change the current FOV but that has no impact on the actual zoom of the camera.
+    public IEnumerator CameraAdjustment(string cameraName, int zoomFactor) {
+        CinemachineVirtualCamera camera = GameObject.Find(cameraName).GetComponent<CinemachineVirtualCamera>();
+        if (camera == null)
+        {
+            Debug.LogWarning($"No camera found for: {cameraName}");
+            yield break;
+        }
+        camera.m_Lens.FieldOfView += zoomFactor;
     }
 
     // This method displays the actual dialogue line using the active view
