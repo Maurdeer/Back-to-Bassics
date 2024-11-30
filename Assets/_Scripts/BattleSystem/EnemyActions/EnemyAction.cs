@@ -10,6 +10,9 @@ public abstract class EnemyAction : Conductable
     protected EnemyBattlePawn parentPawn;
     protected PawnSprite parentPawnSprite;
     public bool IsActive { get; protected set; }
+
+    // Very Hacky But is very useful
+    public float timelineDurationInBeats;
     private void Awake()
     {
         IsActive = false;

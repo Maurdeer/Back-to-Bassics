@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static EnemyStateMachine;
+using Cinemachine;
 
 public class RotationAction : EnemyAction
 {
@@ -23,6 +24,7 @@ public class RotationAction : EnemyAction
     //     }
     // }
     [SerializeField] private Spinning spin;
+    [SerializeField] private CinemachineVirtualCamera spinCamera;
 
 
     protected override void OnStartAction() {  
@@ -30,20 +32,26 @@ public class RotationAction : EnemyAction
     }
 
     private IEnumerator DoTheThing() {
+        float spinDuration = (timelineDurationInBeats * Conductor.Instance.spb) - 4.5f;
+        parentPawnSprite.Animator.SetFloat("speed", 5f / 4f);
         parentPawnSprite.Animator.Play($"TurboTopEnterSpinAction");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.8f);
         parentPawnSprite.Animator.Play($"rise");
+        CameraConfigure.Instance.SwitchToCamera(spinCamera);
+        yield return new WaitForSeconds(0.8f);
         parentPawnSprite.Animator.Play("TurboTopRevealSword");
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.8f);
         spin.enabled = true;
         spin.speed = spin.minSpeed;
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(spinDuration);
+        // Segment
         spin.Finish();
         yield return new WaitUntil(() => spin.gameObject.transform.rotation.eulerAngles == Vector3.zero);
         parentPawnSprite.Animator.Play("TurboTopHideSword");
         parentPawnSprite.Animator.Play($"lower");
-        
-        yield return new WaitForSeconds(1f);
+
+        CameraConfigure.Instance.SwitchBackToPrev();
+        yield return new WaitForSeconds(0.8f);
         StopAction();
     }
 
@@ -54,4 +62,5 @@ public class RotationAction : EnemyAction
         spin.Reset();
         spin.enabled = false;
     }
+    //private IEnumerator
 }

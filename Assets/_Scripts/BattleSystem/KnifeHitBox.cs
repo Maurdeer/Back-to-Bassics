@@ -5,10 +5,10 @@ using UnityEngine;
 public class KnifeHitBox : MonoBehaviour, IAttackRequester
 {
     [SerializeField] private int damage;
-    [field: SerializeField] public int health { get; private set; }
     [SerializeField] private Spinning spinner;
     private float resetSpeed = 0f;
     [SerializeField] private float fakeOutChance = 0.2f;
+    private Conductor.ConductorSchedulable activeScheduable;
 
     public void OnAttackMaterialize(IAttackReceiver receiver)
     {
@@ -38,40 +38,33 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
 
         // Did player deflect in correct direction?
         if (player == null 
-            || !DirectionHelper.MaxAngleBetweenVectors(spinner.ccw ? Vector2.left : Vector2.right, player.SlashDirection, 5f)) 
+            || !DirectionHelper.MaxAngleBetweenVectors(spinner.ccw ? Vector2.right : Vector2.left, player.SlashDirection, 5f)) 
             return false;
 
         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementParryTracker();
-        //---------------------------------------
-        health -= 1;
-        if (health <= 0)
+        //--------------------------------------- 
+
+        // Limit max speed of spinner
+        //if (spinner.speed < spinner.maxSpeed)
+        //{
+        //    spinner.speed += resetSpeed;
+        //    spinner.speed = Mathf.Min(spinner.speed, spinner.maxSpeed);
+        //}
+        // Randomize fake out chance
+        float rand = Random.Range(0f, 1f);
+        if (rand <= fakeOutChance)
         {
-            Destroy(gameObject);
+            spinner.FakeOut(resetSpeed);
         }
         else
         {
-            // Limit max speed of spinner
-            if (spinner.speed < spinner.maxSpeed) 
-            {
-                spinner.speed += resetSpeed;
-                spinner.speed = Mathf.Min(spinner.speed, spinner.maxSpeed);
-            }
-            // Randomize fake out chance
-            float rand = Random.Range(0f, 1f);
-            if (rand <= fakeOutChance)
-            {
-                spinner.FakeOut(resetSpeed);
-            }
-            else
-            {
-                spinner.ChangeDirection(resetSpeed);
-            }
-
+            spinner.ChangeDirection(resetSpeed);
         }
         resetSpeed += 0.2f;
+
         // (TEMP)----------- This is dumb IK---------------------
-        BattleManager.Instance.Enemy.Damage(1);
+        BattleManager.Instance.Enemy.StaggerDamage(1);
         //-------------------------------------------------------
         return true;
     }
@@ -95,7 +88,7 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
     {
         if (other.gameObject.TryGetComponent(out PlayerBattlePawn pawn))
         {
-            pawn.ReceiveAttackRequest(this);
+            BattleManager.Instance.Player.ReceiveAttackRequest(this);
         }
     }
 }
