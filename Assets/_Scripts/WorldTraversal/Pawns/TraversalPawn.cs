@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 using FMOD.Studio;
 
 [DisallowMultipleComponent]
-public abstract class TraversalPawn : MonoBehaviour
+public class TraversalPawn : MonoBehaviour
 {
     [Header("Traversal Pawn Specs")]
     [SerializeField] private float speed;
@@ -52,6 +52,7 @@ public abstract class TraversalPawn : MonoBehaviour
             
 
             transform.position = Vector3.MoveTowards(transform.position, destinationTarget, speed * Time.fixedDeltaTime);
+            _rb.AddForce(new Vector3(0, -100, 0));
             if (transform.position == destinationTarget)
             {
                 movingToDestination = false;

@@ -33,7 +33,10 @@ public class Spinning : MonoBehaviour
         {
             speedUp = maxSpeed;
         }
-        Quaternion rotateTo = transform.rotation * Quaternion.AngleAxis((ccw ? -1 : 1) * 90, Vector3.up);
+        // Modifying this portion in order to rotate by z
+        // Changing from Vector3.up to Vector3.Forward
+
+        Quaternion rotateTo = (transform.rotation) * Quaternion.AngleAxis((ccw ? -1 : 1) * 90, Vector3.forward);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotateTo, Time.deltaTime * speedUp);
         // Fake out attack
         if (fakeOut)
@@ -72,5 +75,12 @@ public class Spinning : MonoBehaviour
         initialRotation = transform.rotation;
         speedUp = newSpeedUp;
         ccw = !ccw;
+    }
+
+    // Done for TurboTop to reset everything back to the way it was...
+    // Probably not the best implementation, but M4 go brrrrr
+    public void Reset() {
+        transform.rotation = Quaternion.identity;
+        speed = 0;
     }
 }

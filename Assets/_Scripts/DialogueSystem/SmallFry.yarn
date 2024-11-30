@@ -1,7 +1,31 @@
-﻿title: small_fry
+﻿title: small_fry_1
 tags:
 ---
-<<setView "SmallFryDialogueBubble">>
-Small Fry: What's with that look?
-Small Fry: Never seen a shrimp fry rice?
+<<setView "SmallFryAuto">>
+<<setCamera "SmallFryCam">>
+<<move "SmallFryPawn" "SmallFryDialogue1Location">>
+Small Fry: NOOOO!!! MY RICE!!!!
+<<setView "SmallFryManual">>
+Small Fry: I wasn't finished with that!
+Small Fry: My glorious recipe! Two years worth of work! Down the drain!
+Small Fry: It was almost perfect!
+Small Fry: I suppose it's my fault...
+Small Fry: I shouldn't have left such delectable food unattended!
+Small Fry: But now that you've eaten my recipe...
+Small Fry: What do you thinK?
+Small Fry: Isn't it...
+Small Fry: Shrimply the best?
+Small Fry: One-in-a-krillion?
+Small Fry: The best shrimp fried rice you've ever had?
+<<setCamera "PonchoCam">>
+===
+title: small_fry_2
+tags:
+---
+<<setView "SmallFryManual">>
+<<setCamera "SmallFryCam">>
+Small Fry: Wow... I feel dizzy...
+Small Fry: That fired rice really energized you...
+Small Fry: So really, I'm the winner here...heh.
+Small Fry: Haha! I'm the best!
 ===
