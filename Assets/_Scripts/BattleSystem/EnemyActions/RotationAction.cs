@@ -30,15 +30,20 @@ public class RotationAction : EnemyAction
     }
 
     private IEnumerator DoTheThing() {
-        parentPawnSprite.Animator.Play($"TurboTopEnterSpinEast");
-        yield return new WaitForSeconds(1f);
-        
-        parentPawnSprite.Animator.Play("TurboTopEnterSpinAttack");
+        parentPawnSprite.Animator.Play($"TurboTopEnterSpinAction");
         yield return new WaitForSeconds(1f);
         spin.enabled = true;
         spin.speed = spin.minSpeed;
+        parentPawnSprite.Animator.Play($"rise");
+        yield return new WaitForSeconds(2f);
+        parentPawnSprite.Animator.Play("TurboTopRevealSword");
+        yield return new WaitForSeconds(1f);
         yield return new WaitForSeconds(4f);
-        parentPawnSprite.Animator.Play("TurboTopExitSpinAttack");
+        parentPawnSprite.Animator.Play("TurboTopHideSword");
+
+        // TODO: Make it where the spinning ends on turbo top facing right up again
+        // 0 degrees rot basically then we will lower him and end his action!
+        parentPawnSprite.Animator.Play($"lower");
         yield return new WaitForSeconds(1f);
         StopAction();
     }
@@ -46,7 +51,7 @@ public class RotationAction : EnemyAction
     protected override void OnStopAction()
     {
         parentPawnSprite.FaceDirection(Vector3.zero);
-        parentPawnSprite.Animator.Play("TurboTopExitSpinWest");
+        parentPawnSprite.Animator.Play("TurboTopExitSpinAction");
         spin.Reset();
         spin.enabled = false;
     }
