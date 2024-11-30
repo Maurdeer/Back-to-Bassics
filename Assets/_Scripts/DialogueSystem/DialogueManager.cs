@@ -46,6 +46,7 @@ public class DialogueManager : Singleton<DialogueManager>
         customDialogueRunner.AddCommandHandler<string>("setCamera", SetCamera);
         customDialogueRunner.AddCommandHandler<GameObject, GameObject>("move", MoveToLocation);
         customDialogueRunner.AddCommandHandler<string, int>("zoom", CameraAdjustment);
+        customDialogueRunner.AddCommandHandler<GameObject, string>("play", PlayAnimation);
         voiceByteInstance = AudioManager.Instance.CreateInstance(FMODEvents.Instance.bassicsBlub);
     }
 
@@ -117,6 +118,12 @@ public class DialogueManager : Singleton<DialogueManager>
         }
 
         // Required for the IEnumerator return type, even if we aren't waiting for anything
+        yield break;
+    }
+
+    public IEnumerator PlayAnimation(GameObject pawn, string animation)
+    {
+        // TODO: Import Unity Animation, add animators to necessary targets, and play animations from Yarn Spinner at appropriate times.
         yield break;
     }
 

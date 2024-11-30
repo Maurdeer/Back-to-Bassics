@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf1b5b3af5cdce94e97e84dc9915db14, type: 3}
-  m_Name: SlashExample_TTAP
+  m_Script: {fileID: 11500000, guid: ebca2f589a529e545aaf5c099703c5e4, type: 3}
+  m_Name: TurboTopStages
   m_EditorClassIdentifier: 
-  _interruptable: 0
-  _actionSequence: {fileID: 11400000, guid: 6eda9696c46c3574aaef33609e3903cd, type: 2}
+  _healthThreshold: 100
+  _enemyAttackPatterns: []
+  _beatsPerDecision: 0
+  _staggerHealth: 0
+  _dialogueNode: 
