@@ -191,16 +191,16 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         var go = Instantiate(FloatingTextPrefab, randomPosition, Quaternion.identity, transform);
         go.GetComponent<TextMesh>().text = amount.ToString();
     }
-    protected override void OnStagger()
+    protected override List<Coroutine> OnStagger()
     {
-        if (esm.IsOnState<Dead>()) return;
+        if (esm.IsOnState<Dead>()) return null;
         base.OnStagger();
         // Staggered Animation (Paper Crumple)
         psm.Transition<Center>();
         esm.Transition<Stagger>();
         _director.Stop();
         OnEnemyStaggerEvent?.Invoke();
-        StopAllEnemyActions();
+        return StopAllEnemyActions();
         //_particleSystem?.Play();
     }
     protected override void OnUnstagger()
@@ -218,15 +218,18 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         StopAllEnemyActions();
         //_particleSystem?.Stop();
     }
-    protected void StopAllEnemyActions()
+    protected List<Coroutine> StopAllEnemyActions()
     {
+        List<Coroutine> stopActionThreads = new List<Coroutine>();
         foreach (List<EnemyAction> list in _enemyActions.Values)
         {
             foreach (EnemyAction action in list)
             {
-                action.StopAction();
+                stopActionThreads.Add(action.StopAction());
             }
         }
+
+        return stopActionThreads;
     }
     // This could get used or not, was intended for random choices :p
     public void OnActionComplete()

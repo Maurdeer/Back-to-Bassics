@@ -138,9 +138,10 @@ public class NondeflectableAction : EnemyAction, IAttackRequester
         return true;
     }
 
-    protected override void OnStopAction()
+    protected override Coroutine OnStopAction()
     {
         StopAllCoroutines();
+        return null;
     }
 }
 

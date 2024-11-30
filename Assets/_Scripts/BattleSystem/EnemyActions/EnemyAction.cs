@@ -24,7 +24,6 @@ public abstract class EnemyAction : Conductable
             return;
         }
         parentPawn.AddEnemyAction(this);
-        parentPawn.OnEnemyStaggerEvent += StopAction;
         //Debug.Log($"Enemy Action \"{gameObject.name}\" is type: {GetType()}");
     }
     public void StartAction()
@@ -34,13 +33,13 @@ public abstract class EnemyAction : Conductable
         Enable();
         OnStartAction();
     }
-    public void StopAction()
+    public Coroutine StopAction()
     {
-        if (!IsActive) return;
+        if (!IsActive) return null;
         IsActive = false;
         Disable();
-        OnStopAction();
+        return OnStopAction();
     }
     protected virtual void OnStartAction() { }
-    protected virtual void OnStopAction() { }
+    protected virtual Coroutine OnStopAction() { return null; }
 }

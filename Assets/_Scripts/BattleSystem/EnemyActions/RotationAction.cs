@@ -25,14 +25,19 @@ public class RotationAction : EnemyAction
     // }
     [SerializeField] private Spinning spin;
     [SerializeField] private CinemachineVirtualCamera spinCamera;
+    private Coroutine activeSpinThread;
 
-
-    protected override void OnStartAction() {  
-        StartCoroutine(DoTheThing());
+    protected override void OnStartAction() {
+        if (activeSpinThread != null)
+        {
+            Debug.LogError("Attempting to start spin action even though it is already active");
+            return;
+        }
+        activeSpinThread = StartCoroutine(SpinThread());
     }
-
-    private IEnumerator DoTheThing() {
-        float spinDuration = (timelineDurationInBeats * Conductor.Instance.spb) - 4.5f;
+    
+    private IEnumerator SpinThread() {
+        float spinDuration = (timelineDurationInBeats * Conductor.Instance.spb) - 5f;
         parentPawnSprite.Animator.SetFloat("speed", 5f / 4f);
         parentPawnSprite.Animator.Play($"TurboTopEnterSpinAction");
         yield return new WaitForSeconds(0.8f);
@@ -44,7 +49,20 @@ public class RotationAction : EnemyAction
         spin.enabled = true;
         spin.speed = spin.minSpeed;
         yield return new WaitForSeconds(spinDuration);
-        // Segment
+        
+        StopAction();
+    }
+    protected override Coroutine OnStopAction()
+    {
+        return StartCoroutine(StopSpinThread());  
+    }
+    private IEnumerator StopSpinThread()
+    {
+        if (activeSpinThread != null)
+        {
+            StopCoroutine(activeSpinThread);
+            activeSpinThread = null;
+        }
         spin.Finish();
         yield return new WaitUntil(() => spin.gameObject.transform.rotation.eulerAngles == Vector3.zero);
         parentPawnSprite.Animator.Play("TurboTopHideSword");
@@ -52,15 +70,10 @@ public class RotationAction : EnemyAction
 
         CameraConfigure.Instance.SwitchBackToPrev();
         yield return new WaitForSeconds(0.8f);
-        StopAction();
-    }
-
-    protected override void OnStopAction()
-    {
-        parentPawnSprite.FaceDirection(Vector3.zero);
+        //parentPawnSprite.FaceDirection(Vector3.zero);
         parentPawnSprite.Animator.Play("TurboTopExitSpinAction");
+        yield return new WaitForSeconds(0.8f);
         spin.Reset();
         spin.enabled = false;
     }
-    //private IEnumerator
 }

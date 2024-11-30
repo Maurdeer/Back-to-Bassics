@@ -40,13 +40,10 @@ public class CoverScreenAction : EnemyAction
     /// <summary>
     /// Fade out screen cover
     /// </summary>
-    protected override void OnStopAction()
+    protected override Coroutine OnStopAction()
     {
-        if (!isFadingOut)
-        {
-            StartCoroutine(FadeOut());
-        }
         Conductor.Instance.OnFullBeat -= UpdateBeat;
+        return !isFadingOut ? StartCoroutine(FadeOut()) : null;
     }
 
     /// <summary>

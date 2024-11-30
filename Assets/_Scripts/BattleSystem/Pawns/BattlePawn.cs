@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Threading;
+
 [DisallowMultipleComponent]
 public class BattlePawn : Conductable
 {
@@ -123,9 +125,10 @@ public class BattlePawn : Conductable
         OnExitBattle?.Invoke();
     }
     #region BattlePawn Messages
-    protected virtual void OnStagger()
+    protected virtual List<Coroutine> OnStagger()
     {
         // TODO: Things that occur on battle pawn stagger
+        return null;
     }
     protected virtual void OnDeath()
     {
@@ -139,7 +142,11 @@ public class BattlePawn : Conductable
     protected virtual IEnumerator StaggerSelf(float duration)
     {
         IsStaggered = true;
-        OnStagger();
+        List<Coroutine> completionThreads = OnStagger();
+        foreach(Coroutine thread in completionThreads)
+        {
+            yield return thread;
+        }
         _pawnSprite.Animator.Play("stagger");
         _staggerVFX?.Play();
         // TODO: Notify BattleManager to broadcast this BattlePawn's stagger
