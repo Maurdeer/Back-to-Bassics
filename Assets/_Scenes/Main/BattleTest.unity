@@ -5411,7 +5411,7 @@ GameObject:
   - component: {fileID: 862101280}
   - component: {fileID: 862101279}
   m_Layer: 0
-  m_Name: EventTrigger
+  m_Name: KingSalTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5426,11 +5426,11 @@ Transform:
   m_GameObject: {fileID: 862101277}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -5.08}
+  m_LocalPosition: {x: -0, y: -0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1950839500}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &862101279
 MonoBehaviour:
@@ -6448,39 +6448,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 767082411293138291, guid: 8ed2fc1cf06a2e54082475a8acdfc35e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 767082411293138291, guid: 8ed2fc1cf06a2e54082475a8acdfc35e, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 767082411293138291, guid: 8ed2fc1cf06a2e54082475a8acdfc35e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 4.9768
       objectReference: {fileID: 0}
     - target: {fileID: 4095286020021042877, guid: 8ed2fc1cf06a2e54082475a8acdfc35e, type: 3}
       propertyPath: m_Name
       value: TurboTopPawn
       objectReference: {fileID: 0}
+    - target: {fileID: 4095286020021042877, guid: 8ed2fc1cf06a2e54082475a8acdfc35e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6354521946123713583, guid: 8ed2fc1cf06a2e54082475a8acdfc35e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6354521946123713583, guid: 8ed2fc1cf06a2e54082475a8acdfc35e, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6354521946123713583, guid: 8ed2fc1cf06a2e54082475a8acdfc35e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 9.9536
       objectReference: {fileID: 0}
     - target: {fileID: 6354521946123713583, guid: 8ed2fc1cf06a2e54082475a8acdfc35e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 4.9768
       objectReference: {fileID: 0}
     - target: {fileID: 6354521946123713583, guid: 8ed2fc1cf06a2e54082475a8acdfc35e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -4.278799
       objectReference: {fileID: 0}
     - target: {fileID: 8514043373142664286, guid: 8ed2fc1cf06a2e54082475a8acdfc35e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11532,23 +11536,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2628161225509723874, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2628161225509723874, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2628161225509723874, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 4.9768
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4999856665150672825, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: m_Name
       value: KingSalPawn
-      objectReference: {fileID: 0}
-    - target: {fileID: 4999856665150672825, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5798671807794288456, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11590,36 +11590,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6455533350248220364, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
-      propertyPath: _enemyStages.Array.size
+    - target: {fileID: 8725074685705339553, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8725074685705339553, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8725074685705339553, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8725074685705339553, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 9.9536
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8725074685705339553, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 4.9768
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8725074685705339553, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -4.278799
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 5798671807794288456, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 862101278}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
 --- !u!4 &1950839500 stripped
@@ -21848,7 +21841,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2072723680
 Transform:
   m_ObjectHideFlags: 0
@@ -22248,6 +22241,7 @@ SceneRoots:
   - {fileID: 590853431}
   - {fileID: 2079121127}
   - {fileID: 2072723680}
+  - {fileID: 862101278}
   - {fileID: 1410852044}
   - {fileID: 1972739203}
   - {fileID: 1941604390}

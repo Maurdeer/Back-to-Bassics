@@ -5511,7 +5511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slashAnimationName: slash
-  inverseFacingDirection: 1
+  inverseFacingDirection: 0
   indicatorSpark: {fileID: 0}
 --- !u!1 &4778990362827030389
 GameObject:
@@ -5681,7 +5681,7 @@ MonoBehaviour:
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 1651033693196524078}
   <battleCam>k__BackingField: {fileID: 8437978959896095199}
-  FloatingTextPrefab: {fileID: 0}
+  FloatingTextPrefab: {fileID: 7298091450208674678, guid: 52ed510f10a693c4a80fb35040e3675c, type: 3}
   <IntroCutscene>k__BackingField: {fileID: 0}
   <OutroCutscene>k__BackingField: {fileID: 0}
   maxStaggerHealth: 0
@@ -5723,7 +5723,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyStages:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: f32537f6245ee2142808d3d6a12f93f0, type: 2}
   useDistanceOverBlock: 0
   firstTimeStagger:
     m_PersistentCalls:
@@ -5838,7 +5838,7 @@ Animator:
   m_GameObject: {fileID: 6062826761704002174}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3fc7f3d1c74b2074f8baa1b5ea9ab257, type: 2}
+  m_Controller: {fileID: 9100000, guid: 52f1d033e984916469a5b884320ba1b2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5992,7 +5992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePoolAmount: 20
-  animationName: music
+  animationName: fire
   performAnimationBeforeFire: 0
   firePattern: 1
   projectileFabs:
