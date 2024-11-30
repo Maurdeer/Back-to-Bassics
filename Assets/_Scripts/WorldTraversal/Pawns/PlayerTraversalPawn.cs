@@ -13,6 +13,7 @@ public class PlayerTraversalPawn : TraversalPawn
     private PlayerBattlePawn _battlePawn;
     private ComboManager _comboManager;
     private bool attacking;
+    public bool spinSlashing { get; set; }
     private Interactable currInteractable;
     protected override void Awake()
     {
@@ -57,6 +58,14 @@ public class PlayerTraversalPawn : TraversalPawn
         {
             UIManager.Instance.ShowInteractableUI();
             currInteractable = interactable;
+        }
+        //Spin Combo
+        if (other.TryGetComponent(out DestructibleObject destructible) && spinSlashing)
+        {
+            destructible.destroySelf();
+        } else
+        {
+            spinSlashing = false; // Can't destroy stop spinning
         }
     }
     //private void OnTriggerStay(Collider other)
