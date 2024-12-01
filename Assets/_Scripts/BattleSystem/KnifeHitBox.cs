@@ -29,7 +29,7 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
 
     public float GetDeflectionCoyoteTime()
     {
-        return 0.5f;
+        return 0.25f;
     }
 
     public bool OnRequestDeflect(IAttackReceiver receiver)
@@ -88,7 +88,7 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
     {
         if (other.gameObject.TryGetComponent(out PlayerBattlePawn pawn))
         {
-            BattleManager.Instance.Player.ReceiveAttackRequest(this);
+            pawn.ReceiveAttackRequest(this);
         }
     }
 }

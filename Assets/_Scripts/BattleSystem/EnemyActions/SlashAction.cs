@@ -8,6 +8,7 @@ public class SlashAction : EnemyAction, IAttackRequester
     [Header("Slash Action")]
     [SerializeField] private string slashAnimationName;
     [SerializeField] private bool inverseFacingDirection = false;
+    [SerializeField] private int _staggerDamage = 5;
 
     [Header("Slash References")]
     //[SerializeField] private AnimationClip broadcastClip;
@@ -17,7 +18,7 @@ public class SlashAction : EnemyAction, IAttackRequester
     //public float minSlashTillHitInBeats => minSlashTillHitDuration / parentPawn.EnemyData.SPB;
     private SlashNode _currNode;
     //Amount of stagger damage towards enemy of successful deflect.
-    private int _staggerDamage = 50;
+    
     public void Broadcast(Direction direction)
     {
         Vector2 slashDirection = DirectionHelper.GetVectorFromDirection(direction);

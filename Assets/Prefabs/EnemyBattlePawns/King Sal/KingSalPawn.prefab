@@ -5407,6 +5407,52 @@ MonoBehaviour:
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1
+--- !u!1 &3369789837025408985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9009874540369882015}
+  - component: {fileID: 7998147405068883441}
+  m_Layer: 0
+  m_Name: SummonSubortinate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9009874540369882015
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3369789837025408985}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3684823079573804144}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7998147405068883441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3369789837025408985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd463da6985a00948826d1670f4fe231, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timelineDurationInBeats: 1
+  _subortinatePrefabRef: {fileID: 1417911782453582160, guid: e92691a8443d13840b2d417d2ab58a9f, type: 3}
 --- !u!1 &4142156145447947518
 GameObject:
   m_ObjectHideFlags: 0
@@ -5557,6 +5603,7 @@ MonoBehaviour:
   timelineDurationInBeats: 0
   slashAnimationName: slash
   inverseFacingDirection: 0
+  _staggerDamage: 5
   indicatorSpark: {fileID: 0}
 --- !u!1 &4778990362827030389
 GameObject:
@@ -5729,7 +5776,7 @@ MonoBehaviour:
   FloatingTextPrefab: {fileID: 7298091450208674678, guid: 52ed510f10a693c4a80fb35040e3675c, type: 3}
   <IntroCutscene>k__BackingField: {fileID: 0}
   <OutroCutscene>k__BackingField: {fileID: 0}
-  maxStaggerHealth: 0
+  maxStaggerHealth: 10
   interruptable: 0
 --- !u!114 &9015069501282787790
 MonoBehaviour:
@@ -5794,7 +5841,7 @@ PlayableDirector:
   m_GameObject: {fileID: 4999856665150672825}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: f495d71374998604eb7dec11e0808ed6, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: ac423f01f744ade4483ebccb1058c1da, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -5802,6 +5849,8 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: -2913096133354648926, guid: f495d71374998604eb7dec11e0808ed6, type: 2}
     value: {fileID: 8953189125102002042}
+  - key: {fileID: -3051052126417114862, guid: ac423f01f744ade4483ebccb1058c1da, type: 2}
+    value: {fileID: 7998147405068883441}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &5132814882481283367
@@ -5835,6 +5884,7 @@ Transform:
   m_Children:
   - {fileID: 2649866085227129878}
   - {fileID: 1890555279525635504}
+  - {fileID: 9009874540369882015}
   m_Father: {fileID: 5798671807794288456}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6062826761704002174
