@@ -64,16 +64,17 @@ public class RotationAction : EnemyAction
             activeSpinThread = null;
         }
         spin.Finish();
+
         yield return new WaitUntil(() => spin.gameObject.transform.rotation.eulerAngles == Vector3.zero);
         parentPawnSprite.Animator.Play("TurboTopHideSword");
         parentPawnSprite.Animator.Play($"lower");
-
+        
         CameraConfigure.Instance.SwitchBackToPrev();
         yield return new WaitForSeconds(0.8f);
-        //parentPawnSprite.FaceDirection(Vector3.zero);
         parentPawnSprite.Animator.Play("TurboTopExitSpinAction");
         yield return new WaitForSeconds(0.8f);
         spin.Reset();
         spin.enabled = false;
+
     }
 }

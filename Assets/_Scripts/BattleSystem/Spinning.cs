@@ -92,7 +92,6 @@ public class Spinning : MonoBehaviour
     // Done for TurboTop to reset everything back to the way it was...
     // Probably not the best implementation, but M4 go brrrrr
     public void Reset() {
-        transform.rotation = Quaternion.identity;
         speed = 0;
         finishSpinning = false;
     }
