@@ -70,11 +70,9 @@ public class BattlePawn : Conductable
     }
     public virtual void Heal(int amount)
     {
-        if (_currHP < MaxHP)
-        {
-            _currHP += amount;
-            UIManager.Instance.UpdateHP(this);
-        }
+        _currHP += amount;
+        if (_currHP > MaxHP) _currHP = MaxHP;
+        UIManager.Instance.UpdateHP(this);
     }
     public virtual void Stagger()
     {
