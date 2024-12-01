@@ -30,6 +30,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     public bool deflectionWindow { get; private set; }
     public bool dodging { get; set; }
     private ComboManager _comboManager;
+    public ComboManager ComboManager => _comboManager;
     // private Coroutine attackingThread;
 
     private HashSet<IAttackRequester> ActiveAttacks = new();

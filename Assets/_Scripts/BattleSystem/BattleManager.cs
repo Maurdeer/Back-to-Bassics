@@ -43,6 +43,11 @@ public class BattleManager : Singleton<BattleManager>
         GameManager.Instance.PC.DisableControl();
         yield return PlayerEngageCurrentEnemy();
         yield return Enemy.PlayIntroCutscene();
+
+        // Reset Player Health and Combo
+        Player.Heal(Player.MaxHP);
+        Player.ComboManager.CurrComboMeterAmount = 0;
+
         Player.EnterBattle();
         Enemy.EnterBattle();
         AudioManager.Instance.SetAmbienceVolume(0.1f);
