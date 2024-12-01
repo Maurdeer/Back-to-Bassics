@@ -168,6 +168,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     #region BattlePawn Overrides
     public override void Damage(int amount)
     {
+        if (IsDead) return;
         //Debug.Log($"Damage received: {amount}");
         if (amount != 0)
         {
@@ -175,6 +176,12 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
 
         }
         amount = esm.CurrState.OnDamage(amount);
+        // Could make this more variable
+        if (amount > 0)
+        {
+            _paperShredBurst?.Play();
+            _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
+        }
         base.Damage(amount);
     }
     //public override void Lurch(float amount)

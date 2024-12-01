@@ -68,8 +68,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     {
         dodging = true;
         _pawnSprite.Animator.Play("dodge_" + directionAnimation);
-        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f 
-        && _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle"));
+        yield return new WaitForSeconds(1f);
         dodging = false;
     }
     
@@ -83,7 +82,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     /// <param name="slashDirection"></param>
     public void Slash(Vector2 direction)
     {
-        if (IsDead) return;
+        if (IsDead || dodging) return;
 
         if (slashHandle != null)
         {
@@ -299,4 +298,20 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         return true;
     }
     #endregion
+
+    public override void Damage(int amount)
+    {
+        if (IsDead) return;
+        // Could make this more variable
+        if (amount > 0)
+        {
+            _paperShredBurst?.Play();
+
+            if (!dodging)
+            {
+                _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
+            }
+        }
+        base.Damage(amount);
+    }
 }

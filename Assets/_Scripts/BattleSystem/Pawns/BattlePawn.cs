@@ -24,19 +24,19 @@ public class BattlePawn : Conductable
     public int MaxHP => _data.HP;
 
     #region BattlePawn Boolean States
-    public bool IsDead { get; private set; }
-    public bool IsStaggered { get; private set; }
+    public bool IsDead { get; protected set; }
+    public bool IsStaggered { get; protected set; }
     #endregion
 
     // events
-    [SerializeField] private UnityEvent onPawnDefeat;
+    [SerializeField] protected UnityEvent onPawnDefeat;
     public event Action OnPawnDeath;
     public event Action OnEnterBattle;
     public event Action OnExitBattle;
     public event Action OnDamage;
 
     // Extra
-    private Coroutine selfStaggerInstance;
+    protected Coroutine selfStaggerInstance;
 
     #region Unity Messages
     protected virtual void Awake()
@@ -45,19 +45,13 @@ public class BattlePawn : Conductable
         _pawnAnimator = GetComponent<Animator>();
         _pawnSprite = GetComponentInChildren<PawnSprite>();
         _paperShredBurst = GameObject.Find("ShreddedPaperParticles").GetComponent<ParticleSystem>();
-        _staggerVFX = GameObject.Find("StaggerVFX").GetComponent<ParticleSystem>();
+        _staggerVFX = transform.Find("StaggerVFX")?.GetComponent<ParticleSystem>();
     }
     #endregion
     #region Modification Methods
     public virtual void Damage(int amount)
     {
         if (IsDead) return;
-        // Could make this more variable
-        if (amount > 0)
-        {
-            _paperShredBurst?.Play();
-            _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
-        }
         _currHP -= amount;
         UIManager.Instance.UpdateHP(this);
         OnDamage?.Invoke();
