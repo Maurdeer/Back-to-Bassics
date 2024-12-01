@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -12,7 +13,7 @@ public abstract class EnemyAction : Conductable
     public bool IsActive { get; protected set; }
 
     // Very Hacky But is very useful
-    public float timelineDurationInBeats;
+    [HideInInspector] public float timelineDurationInBeats;
     private void Awake()
     {
         IsActive = false;
