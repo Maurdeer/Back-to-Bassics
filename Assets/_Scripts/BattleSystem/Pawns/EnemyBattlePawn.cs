@@ -9,6 +9,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using FMOD.Studio;
 using Unity.VisualScripting;
+using FMODUnity;
 
 /// <summary>
 /// Manipulate by an external class, not within the class!!
@@ -80,7 +81,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         };
         if (!EnemyData.voiceByte.IsNull)
         {
-            voiceByteInstance = AudioManager.Instance.CreateInstance(EnemyData.voiceByte);
+            voiceByteInstance = RuntimeManager.CreateInstance(EnemyData.voiceByte);
         }
         
         base.Awake();
