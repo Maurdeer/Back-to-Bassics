@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebca2f589a529e545aaf5c099703c5e4, type: 3}
-  m_Name: 1_KSSTG
+  m_Name: 3_KSSTG
   m_EditorClassIdentifier: 
-  _healthThreshold: 1
+  _healthThreshold: 0.4
   _enemyAttackPatterns:
-  - {fileID: 11400000, guid: f470a497dbaa7254487aa971dd7391d3, type: 2}
+  - {fileID: 11400000, guid: 370bc9b6b19a44d40bb4d590cc2db50e, type: 2}
+  - {fileID: 11400000, guid: d0b5c1350baa07a4488309318f7db679, type: 2}
   _beatsPerDecision: 4
-  _staggerHealth: 10
+  _staggerHealth: 20
   _dialogueNode: 
