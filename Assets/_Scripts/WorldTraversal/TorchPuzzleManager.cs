@@ -10,6 +10,7 @@ public class TorchPuzzleManager : MonoBehaviour
     [SerializeField] private float durationMove;
     [SerializeField] private float amountMove;
     [SerializeField] private Vector3 direction;
+    [SerializeField] private UnityEvent onComplete;
     private bool complete = false;
 
     void Awake()
@@ -53,6 +54,7 @@ public class TorchPuzzleManager : MonoBehaviour
         obstacle.transform.position = endPosition;
         //TurnOffTorches();
         //complete = false; // Reset complete if you want to allow the puzzle to be re-triggered later
+        onComplete.Invoke();
     }
 
     private void TurnOffTorches()

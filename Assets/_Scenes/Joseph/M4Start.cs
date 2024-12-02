@@ -8,7 +8,8 @@ public class M4Start : MonoBehaviour
     private static M4Start instance;
     private GameObject poncho;
     // 1 - gotStick, 2 - bassicsBeaten, 3 - smallFryBeaten, 4 - turboTopMeet, 5 - turboTopBeaten, 6 - kingSalMeet, 7 - kingSalBeaten;
-    [SerializeField] private bool[] truthArray = new bool[7];  
+    [SerializeField] private bool[] truthArray = new bool[7];
+    [SerializeField] private Combo sizzle;  
     // [SerializeField] public bool gotStick;
     // [SerializeField] public bool bassicsBeaten;
     // [SerializeField] public bool smallFryBeaten;
@@ -64,9 +65,10 @@ public class M4Start : MonoBehaviour
         }
         if (truthArray[0]) {
             GameObject.Find("IntroCutscene")?.SetActive(false);
-            // GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
+            // GameManager.Instance.GSM.Transition<GameStateMachie.WorldTraversal>();
+            GameObject.Find("Interactable").transform.position = poncho.transform.position;
+            GameObject.Find("Fry1")?.SetActive(false);
             GameObject.Find("BassicsIntro (1)")?.SetActive(false);
-            poncho.transform.position = GameObject.Find("Interactable").transform.position;
         }
         if (truthArray[1]) {
             GameObject bassicsFightTrigger = GameObject.Find("BassicIntroTriggers");
@@ -77,6 +79,16 @@ public class M4Start : MonoBehaviour
             }
             
             GameObject.Find("BassicsPostFight(1)")?.SetActive(true);
+        }
+        if (truthArray[2]) {
+            poncho.GetComponent<ComboManager>().AddCombo(sizzle);
+        }
+        if (truthArray[3]) {
+            GameObject.Find("TorchPuzzleCube")?.SetActive(false);
+            GameObject.Find("SmallFryPost2")?.SetActive(false);
+        }
+        if (truthArray[4]) {
+            GameObject.Find("TurboChillTop")?.SetActive(true);
         }
     }
 

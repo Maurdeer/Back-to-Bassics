@@ -73,6 +73,13 @@ Small Fry: Isn't it...
 Small Fry: Shrimply the best?
 Small Fry: One-in-a-krillion?
 Small Fry: The best shrimp fried rice you've ever had?
+Small Fry: ...It was dry?
+Small Fry: Dry?
+Small Fry: DRY.
+Small Fry: Hahaha. You think you know better than me?
+Small Fry: You're trying to tell ME how to do MY job?
+Small Fry: You IDIOT SANDWICH! I'd like to see you fry some rice!
+Small Fry: I'M GOING TO KRILL YOU!
 <<setCamera "PonchoCam">>
 ===
 title: small_fry_2
@@ -84,10 +91,30 @@ Small Fry: Wow... I feel dizzy...
 Small Fry: That fired rice really energized you...
 Small Fry: So really, I'm the winner here...heh.
 Small Fry: Haha! I'm the best!
+<<setCamera "PonchoCam">>
 ===
 title: small_fry_3
 tags:
 ---
+<<teleport "SmallFryPawn" "SmallFryTPLocation2">>
 <<setView "SmallFryManual">>
 <<setCamera "SmallFryCam">>
+<<move "SmallFryPawn" "SmallFryDialogue1Location2">>
+Small Fry: Can't get through?
+Small Fry: Hmmm. Seems like you don't really know how to cook after all!
+Small Fry: But as master, I'll teach you a little trick. 
+Small Fry: If you try swinging your stick around South, West, South, East.
+Small Fry: Then you can set those sticks on fire and get through!
+Small Fry: ...Or set them on fire by spinning really fast, but who would do that?
+<<setCamera "PonchoCam">>
+===
+title: small_fry_4
+tags:
+---
+<<setView "SmallFryManual">>
+<<setCamera "SmallFryCam">>
+Small Fry: Try swinging your stick around South, West, South, East.
+Small Fry: That's sure to get you through!
+Small Fry: My years of experience don't lie!
+<<setCamera "PonchoCam">>
 ===
