@@ -17,6 +17,7 @@ public class BattlePawn : Conductable
     protected PawnSprite _pawnSprite;
     protected ParticleSystem _paperShredBurst;
     protected ParticleSystem _staggerVFX;
+    public PawnSprite PawnSprite => _pawnSprite;
 
     [Header("Battle Pawn Data")]
     [SerializeField] protected int _currHP;

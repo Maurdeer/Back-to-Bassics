@@ -12,6 +12,7 @@ public class ComboGaugeBar : MonoBehaviour
     [Header("UI Elements")] 
     [SerializeField] private RectTransform bar;
     [SerializeField] private TextMeshProUGUI gaugeText;
+    [SerializeField] private GameObject ultimateComboPanel;
 
     private void Start()
     {
@@ -22,6 +23,16 @@ public class ComboGaugeBar : MonoBehaviour
         float fill = curr / max;
         float height = fill * upperBound + (1 - fill) * lowerBound;
         bar.anchoredPosition = new Vector2(bar.anchoredPosition.x, height);
-        gaugeText.text = $"{curr}/{max}";
+        if (fill == 1)
+        {
+            gaugeText.text = $"ULTIMATE\r\nREADY";
+            gaugeText.color = new Color(229, 49, 130, 255);
+        }
+        else
+        {
+            gaugeText.text = $"{curr}/{max}";
+            gaugeText.color = new Color(9, 174, 217, 255);
+        }
+        
     }
 }
