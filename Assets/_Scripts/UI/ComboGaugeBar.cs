@@ -26,12 +26,12 @@ public class ComboGaugeBar : MonoBehaviour
         if (fill == 1)
         {
             gaugeText.text = $"ULTIMATE\r\nREADY";
-            gaugeText.color = new Color(229, 49, 130, 255);
+            gaugeText.color = new Color32(229, 49, 130, 255);
         }
         else
         {
             gaugeText.text = $"{curr}/{max}";
-            gaugeText.color = new Color(9, 174, 217, 255);
+            gaugeText.color = new Color32(9, 174, 217, 255);
         }
         
     }

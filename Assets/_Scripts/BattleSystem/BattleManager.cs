@@ -33,10 +33,10 @@ public class BattleManager : Singleton<BattleManager>
     {
         IsBattleActive = false;
         Conductor.Instance.StopConducting();
+        GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
         Player.ExitBattle();
         Enemy.ExitBattle();
         // Instead of directly to world traversal, need a win screen of some kind
-        GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
     }
     private IEnumerator IntializeBattle()
     {
