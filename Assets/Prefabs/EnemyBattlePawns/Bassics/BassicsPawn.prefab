@@ -5720,7 +5720,19 @@ MonoBehaviour:
   _currHP: 0
   onPawnDefeat:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 8599476617418693142}
@@ -11282,6 +11294,9 @@ MonoBehaviour:
   timelineDurationInBeats: 0
   slashAnimationName: slash
   inverseFacingDirection: 0
+  _staggerDamage: 5
+  prehitBeats: 0.5
+  posthitBeats: 0.5
   indicatorSpark: {fileID: 4678491436342915619}
 --- !u!1 &7555501292400778520
 GameObject:
