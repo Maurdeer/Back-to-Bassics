@@ -6,7 +6,7 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
 {
     [SerializeField] private int damage;
     [SerializeField] private Spinning spinner;
-    private float resetSpeed = 0f;
+    public float resetSpeed = 0f;
     [SerializeField] private float fakeOutChance = 0.2f;
     private Conductor.ConductorSchedulable activeScheduable;
 
@@ -46,20 +46,20 @@ public class KnifeHitBox : MonoBehaviour, IAttackRequester
         //--------------------------------------- 
 
         // Limit max speed of spinner
-        //if (spinner.speed < spinner.maxSpeed)
-        //{
-        //    spinner.speed += resetSpeed;
-        //    spinner.speed = Mathf.Min(spinner.speed, spinner.maxSpeed);
-        //}
+        if (spinner.speed < spinner.maxSpeed)
+        {
+            spinner.speed += resetSpeed;
+            spinner.speed = Mathf.Min(spinner.speed, spinner.maxSpeed);
+        }
         // Randomize fake out chance
         float rand = Random.Range(0f, 1f);
         if (rand <= fakeOutChance)
         {
-            spinner.FakeOut(resetSpeed);
+            spinner.FakeOut(spinner.minSpeed + resetSpeed);
         }
         else
         {
-            spinner.ChangeDirection(resetSpeed);
+            spinner.ChangeDirection(spinner.minSpeed + resetSpeed);
         }
         resetSpeed += 0.2f;
 

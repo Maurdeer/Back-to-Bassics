@@ -24,7 +24,10 @@ public class RotationAction : EnemyAction
     //     }
     // }
     [SerializeField] private Spinning spin;
+    [SerializeField] private KnifeHitBox hitBox;
     [SerializeField] private CinemachineVirtualCamera spinCamera;
+    [SerializeField] private float minSpeed;
+    [SerializeField] private float maxSpeed;
     private Coroutine activeSpinThread;
 
     protected override void OnStartAction() {
@@ -33,6 +36,8 @@ public class RotationAction : EnemyAction
             Debug.LogError("Attempting to start spin action even though it is already active");
             return;
         }
+        spin.minSpeed = minSpeed;
+        spin.maxSpeed = maxSpeed;
         activeSpinThread = StartCoroutine(SpinThread());
     }
     
@@ -54,6 +59,7 @@ public class RotationAction : EnemyAction
     }
     protected override Coroutine OnStopAction()
     {
+        hitBox.resetSpeed = 0;
         return StartCoroutine(StopSpinThread());  
     }
     private IEnumerator StopSpinThread()
