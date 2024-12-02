@@ -267,6 +267,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   loadSceneParent: {fileID: 2090365482673708288}
+  loadingScreen: {fileID: 5668980687730757648}
+  loadText: {fileID: 3593603439940845740}
+  canvasScreen: {fileID: 2085852107257493944}
   timeToFade: 5
 --- !u!1 &3766089042885366368
 GameObject:
@@ -1024,9 +1027,30 @@ PrefabInstance:
       addedObject: {fileID: 3378845628636746094}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2454462b606f34428189b8de7b9092e, type: 3}
+--- !u!225 &2085852107257493944 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 1100605475668091569, guid: b2454462b606f34428189b8de7b9092e, type: 3}
+  m_PrefabInstance: {fileID: 1419845175003241225}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2090365482673708288 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1060094123867883017, guid: b2454462b606f34428189b8de7b9092e, type: 3}
+  m_PrefabInstance: {fileID: 1419845175003241225}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3593603439940845740 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2480153947840781221, guid: b2454462b606f34428189b8de7b9092e, type: 3}
+  m_PrefabInstance: {fileID: 1419845175003241225}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &5668980687730757648 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6708127380095044377, guid: b2454462b606f34428189b8de7b9092e, type: 3}
   m_PrefabInstance: {fileID: 1419845175003241225}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &7689661165320846389 stripped

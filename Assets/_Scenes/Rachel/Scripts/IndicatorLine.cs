@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class IndicatorLine : MonoBehaviour
+public class IndicatorLine : Conductable
 {
     [SerializeField][Range(0, 1f)] private float fadeDuration = 0.75f;
 
@@ -27,8 +27,17 @@ public class IndicatorLine : MonoBehaviour
 
     void Update()
     {
-        spd = (Math.Abs(originalX) + (isRight ? -1 : 1) * 400f) * Conductor.Instance.spb;
-
+        try
+        {
+            spd = (Math.Abs(originalX) + (isRight ? -1 : 1) * 400f) * Conductor.Instance.spb;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+            Destroy(gameObject);
+        }
+        
+        
         rb.velocity = new Vector3((isRight ? -1 : 1) * spd, 0, 0);
     }
 
@@ -43,7 +52,17 @@ public class IndicatorLine : MonoBehaviour
     private IEnumerator FadeIn()
     {
         float elapsedTime = 0;
-        float timer = Conductor.Instance.spb * fadeDuration;
+        float timer = 1f;
+        try
+        {
+            timer = Conductor.Instance.spb * fadeDuration;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+            Destroy(gameObject);
+        }
+        
 
         while (elapsedTime < timer)
         {

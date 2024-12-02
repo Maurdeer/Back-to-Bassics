@@ -31,6 +31,11 @@ public class CameraConfigure : Singleton<CameraConfigure>
     public void SwitchToCamera(CinemachineVirtualCamera targetCamera)
     {
         //curr.Priority = savedPriority;
+        if (targetCamera == null)
+        {
+            Debug.LogWarning("Target Camera is Null");
+            return;
+        }
         if (curr != null) curr.Priority = 1;
         prev = curr;
         curr = targetCamera;
@@ -40,6 +45,11 @@ public class CameraConfigure : Singleton<CameraConfigure>
     }
     public void SwitchBackToPrev()
     {
+        if (prev == null)
+        {
+            Debug.LogWarning("Previous Camera is Null");
+            return;
+        }
         SwitchToCamera(prev);
     }
 }
