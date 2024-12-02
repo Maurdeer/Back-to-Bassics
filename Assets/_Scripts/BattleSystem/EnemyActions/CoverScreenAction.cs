@@ -59,8 +59,10 @@ public class CoverScreenAction : EnemyAction
     /// </summary>
     private IEnumerator ScaleUp()
     {
+        float duration = (timelineDurationInBeats - 1) * Conductor.Instance.spb;
+        parentPawnSprite.Animator.SetFloat("speed", 1 / duration);
         parentPawnSprite.Animator.Play("cover_screen");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(duration);
         screenCoverInstance.SetActive(true);
         float elapsedTime = 0f;
         while (elapsedTime < scaleDuration)

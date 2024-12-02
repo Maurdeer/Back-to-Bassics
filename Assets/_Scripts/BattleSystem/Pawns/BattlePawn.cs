@@ -97,6 +97,7 @@ public class BattlePawn : Conductable
     public virtual void ApplyStatusAilment<SA>() 
         where SA : StatusAilment
     {
+        if (gameObject.GetComponent<SA>() != null) return;
         gameObject.AddComponent<SA>();
     }
     #endregion

@@ -70,7 +70,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
         Conductor.Instance.ScheduleActionAsap(duration, Conductor.Instance.Beat, activeScheduable, forceStart: true);
     }
 
-    public void OnAttackMaterialize(IAttackReceiver receiver)
+    public virtual void OnAttackMaterialize(IAttackReceiver receiver)
     {
         // (TEMP) Manual DEBUG UI Tracker -------
         UIManager.Instance.IncrementMissTracker();

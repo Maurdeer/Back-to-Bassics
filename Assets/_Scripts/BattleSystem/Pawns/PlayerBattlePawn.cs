@@ -12,6 +12,8 @@ using static UnityEngine.EventSystems.EventTrigger;
 [RequireComponent(typeof(PlayerController), typeof(PlayerTraversalPawn))]
 public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 {
+    [Header("Player Specifications")]
+    [SerializeField] private int deflectsTillHeal = 3;
     [Header("Player References")]
     [SerializeField] private PlayerWeaponData _weaponData;
     public Transform playerCollider;
@@ -34,6 +36,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     // private Coroutine attackingThread;
 
     private HashSet<IAttackRequester> ActiveAttacks = new();
+    private int currDeflectsTillHeal;
     
     protected override void Awake()
     {
@@ -41,6 +44,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         _traversalPawn = GetComponent<PlayerTraversalPawn>();
         _comboManager = GetComponent<ComboManager>();
         SlashDirection = Vector2.zero;
+        currDeflectsTillHeal = deflectsTillHeal;
     }
     // This will start a battle
     public void EngageEnemy(EnemyBattlePawn enemy)
@@ -256,6 +260,10 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
             AudioManager.Instance.PlayOnShotSound(WeaponData.slashHitSound, transform.position);
             _deflectEffect.Play();
             _comboManager.CurrComboMeterAmount += 1;
+            if (--currDeflectsTillHeal <= 0)
+            {
+                Heal(1);
+            }
             return true;
         }
         if (dodging && requester.OnRequestDodge(this))
@@ -306,7 +314,8 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         if (amount > 0)
         {
             _paperShredBurst?.Play();
-
+            // Reset Deflects Till Heal
+            currDeflectsTillHeal = deflectsTillHeal;
             if (!dodging)
             {
                 _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebca2f589a529e545aaf5c099703c5e4, type: 3}
+  m_Name: 2-SFSTG
+  m_EditorClassIdentifier: 
+  _healthThreshold: 0.8
+  _enemyAttackPatterns:
+  - {fileID: 11400000, guid: 5f9da5dcbedbd4541826e0af4859846f, type: 2}
+  - {fileID: 11400000, guid: 5dd28b1b90bfa5a4e9bf7e91340f0705, type: 2}
+  - {fileID: 11400000, guid: 09ff503d58adc0e448688abc7e301002, type: 2}
+  - {fileID: 11400000, guid: 744fb57188917674190fbb5672ea8edc, type: 2}
+  - {fileID: 11400000, guid: e5161c639fe8f2340b3e6bd526e01a4f, type: 2}
+  _beatsPerDecision: 3
+  _staggerHealth: 15
+  _dialogueNode: 

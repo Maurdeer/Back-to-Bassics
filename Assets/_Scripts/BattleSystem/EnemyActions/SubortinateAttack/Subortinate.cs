@@ -142,12 +142,18 @@ public class Subortinate : Conductable, IAttackRequester
 
     bool IAttackRequester.OnRequestBlock(IAttackReceiver receiver)
     {
+        StartCoroutine(GobackThread());
         return true;
     }
 
     bool IAttackRequester.OnRequestDodge(IAttackReceiver receiver)
     {
         StartCoroutine(GobackThread());
+        if ((facingWest && BattleManager.Instance.Player.DodgeDirection == Direction.East)
+            || BattleManager.Instance.Player.DodgeDirection == Direction.West)
+        {
+            return false;
+        }
         return true;
     }
 
