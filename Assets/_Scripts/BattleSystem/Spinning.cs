@@ -39,8 +39,9 @@ public class Spinning : MonoBehaviour
         Quaternion rotateTo = Quaternion.identity;
         if (!finishSpinning) {
             rotateTo = (transform.rotation) * Quaternion.AngleAxis((ccw ? -1 : 1) * 90, Vector3.forward);
+        } else {
+            speedUp *= 2;
         }
-        
         transform.rotation = Quaternion.Lerp(transform.rotation, rotateTo, Time.deltaTime * speedUp);
         if (finishSpinning && Quaternion.Angle(transform.rotation, Quaternion.identity) < 1f) {
             transform.rotation = Quaternion.identity;

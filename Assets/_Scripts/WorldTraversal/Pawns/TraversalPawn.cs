@@ -52,7 +52,7 @@ public class TraversalPawn : MonoBehaviour
             
 
             transform.position = Vector3.MoveTowards(transform.position, destinationTarget, speed * Time.fixedDeltaTime);
-            _rb.AddForce(new Vector3(0, -100, 0));
+            // _rb.AddForce(new Vector3(0, -100, 0));
             if (transform.position == destinationTarget)
             {
                 movingToDestination = false;
@@ -70,15 +70,18 @@ public class TraversalPawn : MonoBehaviour
     // X is Right and Left, Z is Forward and Backward 
     public virtual void Move(Vector3 direction)
     {
-        direction.Normalize();
-        Vector3 move = transform.rotation * direction * speed;
-        _rb.velocity = new Vector3(move.x, _rb.velocity.y, move.z);
-        //_rb.AddForce(move - _rb.velocity);
-        //_rb.MovePosition(transform.position + move * Time.deltaTime);
-        //_characterController.Move(transform.rotation * direction * speed * Time.deltaTime);
-        isMoving = direction != Vector3.zero;
-        _pawnSprite.Animator.SetBool("moving", isMoving);
-        _pawnSprite.FaceDirection(direction);
+        if (!movingToDestination) {
+            direction.Normalize();
+            Vector3 move = transform.rotation * direction * speed;
+            _rb.velocity = new Vector3(move.x, _rb.velocity.y, move.z);
+            //_rb.AddForce(move - _rb.velocity);
+            //_rb.MovePosition(transform.position + move * Time.deltaTime);
+            //_characterController.Move(transform.rotation * direction * speed * Time.deltaTime);
+            isMoving = direction != Vector3.zero;
+            _pawnSprite.Animator.SetBool("moving", isMoving);
+            _pawnSprite.FaceDirection(direction);
+        }
+        
     }
     public void MoveToDestination(Vector3 destination)
     {
