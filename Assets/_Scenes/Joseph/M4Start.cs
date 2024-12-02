@@ -20,34 +20,73 @@ public class M4Start : MonoBehaviour
                             
 
     void Awake() {
-        if (instance == null) {
+        if (SceneManager.GetActiveScene().name == "Title")
+        {
+            if (instance != null)
+            {
+                Destroy(instance.gameObject);
+            }
             instance = this;
             DontDestroyOnLoad(this.gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
-            return;
-        } else {
-            Destroy(this.gameObject);
         }
+        else
+        {
+            if (instance == null)
+            {
+                instance = this;
+                DontDestroyOnLoad(this.gameObject);
+                SceneManager.sceneLoaded += OnSceneLoaded;
+                return;
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
+        }     
+    }
+    private int idx;
+    public void SetTruthIndex(int idx)
+    {
+        this.idx = idx;
+    }
+    public void SetBool(bool value)
+    {
+        truthArray[idx] = value;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         poncho = GameObject.Find("PlayerPoncho");
+        // hacky but so that we don't do any questionable things
+        if (scene.name == "Title")
+        {  
+            return;
+        }
         if (truthArray[0]) {
-            GameObject.Find("IntroCutscene").active = false;
+            GameObject.Find("IntroCutscene")?.SetActive(false);
             // GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
-            GameObject.Find("BassicsIntro (1)").active = false;
+            GameObject.Find("BassicsIntro (1)")?.SetActive(false);
             poncho.transform.position = GameObject.Find("Interactable").transform.position;
         }
         if (truthArray[1]) {
             GameObject bassicsFightTrigger = GameObject.Find("BassicIntroTriggers");
-            bassicsFightTrigger.active = false;
-            poncho.transform.position = bassicsFightTrigger.transform.position;
-            GameObject.Find("BassicsPostFight(1)").active = true;
+            if (bassicsFightTrigger)
+            {
+                bassicsFightTrigger?.SetActive(false);
+                poncho.transform.position = bassicsFightTrigger.transform.position;
+            }
+            
+            GameObject.Find("BassicsPostFight(1)")?.SetActive(true);
         }
     }
 
     public void statusUpdate(int n) {
         truthArray[n] = true;
+    }
+
+    public void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
 }
