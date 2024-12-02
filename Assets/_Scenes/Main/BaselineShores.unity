@@ -37067,11 +37067,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1480171986}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a094a41c544f5a4fad6dfe96ee8d8fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 864979429d9f45c42ac73d8b22a113e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nodeName: turbotop_1
-  onDialogueComplete:
+  destroyOnEnter: 0
+  onEnter:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1407629108}
@@ -37086,8 +37086,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  targetLocation: {fileID: 926288120}
-  repeat: 0
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1486609294
 PrefabInstance:
   m_ObjectHideFlags: 0
