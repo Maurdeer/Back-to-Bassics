@@ -350,8 +350,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1992734217}
   - {fileID: 1472814525}
+  - {fileID: 1992734217}
   - {fileID: 1105747155}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1727,6 +1727,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   loadSceneParent: {fileID: 1992734216}
+  loadingScreen: {fileID: 1787222733}
+  loadText: {fileID: 1336213752}
+  canvasScreen: {fileID: 1787222734}
   timeToFade: 10
 --- !u!4 &1141389992
 Transform:
@@ -1952,6 +1955,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1277846464}
   m_CullTransparentMesh: 1
+--- !u!114 &1336213752 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4524434595313576582, guid: 9fd39748f5a826c4085e4d36ff59141e, type: 3}
+  m_PrefabInstance: {fileID: 1992734215}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1472814524
 GameObject:
   m_ObjectHideFlags: 0
@@ -2253,6 +2267,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1677263752}
   m_CullTransparentMesh: 1
+--- !u!1 &1787222733 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4735902130858195514, guid: 9fd39748f5a826c4085e4d36ff59141e, type: 3}
+  m_PrefabInstance: {fileID: 1992734215}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1787222734 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 1434222156001678226, guid: 9fd39748f5a826c4085e4d36ff59141e, type: 3}
+  m_PrefabInstance: {fileID: 1992734215}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1838061007
 GameObject:
   m_ObjectHideFlags: 0
