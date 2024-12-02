@@ -147,6 +147,7 @@ public class Subortinate : Conductable, IAttackRequester
 
     bool IAttackRequester.OnRequestDodge(IAttackReceiver receiver)
     {
+        StartCoroutine(GobackThread());
         return true;
     }
 
