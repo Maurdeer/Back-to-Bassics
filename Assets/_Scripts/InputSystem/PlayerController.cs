@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
         _playerinput.actions["Dodge"].performed += OnDodge;
         _playerinput.actions["Jump"].performed += OnDodge;
         _playerinput.actions["Slash"].performed += OnBattleSlash;
+        _playerinput.actions["Pause"].performed += OnPauseAction;
 
         // Input World Traversal Actions
         // This might just have to keep updating on fixed update tbh

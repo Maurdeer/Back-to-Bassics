@@ -62,6 +62,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""35fdd531-2ca0-4604-b101-fe7c27b2b32a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -524,6 +533,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Controller"",
                     ""action"": ""Block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1da12096-d37e-4944-a0b2-339aca9d09d4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1096,6 +1116,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerBattlePawn_Slash = m_PlayerBattlePawn.FindAction("Slash", throwIfNotFound: true);
         m_PlayerBattlePawn_Jump = m_PlayerBattlePawn.FindAction("Jump", throwIfNotFound: true);
         m_PlayerBattlePawn_Block = m_PlayerBattlePawn.FindAction("Block", throwIfNotFound: true);
+        m_PlayerBattlePawn_Pause = m_PlayerBattlePawn.FindAction("Pause", throwIfNotFound: true);
         // PlayerTraversalPawn
         m_PlayerTraversalPawn = asset.FindActionMap("PlayerTraversalPawn", throwIfNotFound: true);
         m_PlayerTraversalPawn_Move = m_PlayerTraversalPawn.FindAction("Move", throwIfNotFound: true);
@@ -1176,6 +1197,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerBattlePawn_Slash;
     private readonly InputAction m_PlayerBattlePawn_Jump;
     private readonly InputAction m_PlayerBattlePawn_Block;
+    private readonly InputAction m_PlayerBattlePawn_Pause;
     public struct PlayerBattlePawnActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1184,6 +1206,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Slash => m_Wrapper.m_PlayerBattlePawn_Slash;
         public InputAction @Jump => m_Wrapper.m_PlayerBattlePawn_Jump;
         public InputAction @Block => m_Wrapper.m_PlayerBattlePawn_Block;
+        public InputAction @Pause => m_Wrapper.m_PlayerBattlePawn_Pause;
         public InputActionMap Get() { return m_Wrapper.m_PlayerBattlePawn; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1205,6 +1228,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Block.started += instance.OnBlock;
             @Block.performed += instance.OnBlock;
             @Block.canceled += instance.OnBlock;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerBattlePawnActions instance)
@@ -1221,6 +1247,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Block.started -= instance.OnBlock;
             @Block.performed -= instance.OnBlock;
             @Block.canceled -= instance.OnBlock;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerBattlePawnActions instance)
@@ -1470,6 +1499,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSlash(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IPlayerTraversalPawnActions
     {

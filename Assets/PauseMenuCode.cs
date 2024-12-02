@@ -28,7 +28,15 @@ public class PauseMenuCode : MonoBehaviour
     public void Resume()
     {
         pauseMenuPanel.SetActive(false);
-        GameManager.Instance.GSM.Transition<WorldTraversal>();
+        if (GameManager.Instance.GSM.PrevState.GetType() == typeof(Battle))
+        {
+            GameManager.Instance.GSM.Transition<Battle>();
+        } 
+        else
+        { 
+            GameManager.Instance.GSM.Transition<WorldTraversal>();
+        }
+        
     }
 
     public void LoadSettings ()

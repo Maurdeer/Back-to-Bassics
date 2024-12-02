@@ -68,6 +68,19 @@ public class Conductor : Singleton<Conductor>
     public event Action<SerializedTempoMarker> OnTempoChange = delegate { };
 
     private Dictionary<string, SerializedTempoMarker[]> _parsedEvents;
+    private bool paused = false;
+    public void PauseCondcutor()
+    {
+        if (paused) return;
+        ctx.fmodInstance.setPaused(true);
+        paused = true;
+    }
+    public void ResumeConductor()
+    {
+        if (!paused) return;
+        ctx.fmodInstance.setPaused(false);
+        paused = false;
+    }
     
     public void Awake()
     {
@@ -123,7 +136,7 @@ public class Conductor : Singleton<Conductor>
     // instead of in-between regular updates
     public void LateUpdate()
     {
-        if (ctx == null)
+        if (ctx == null || paused)
         {
             return;
         }
