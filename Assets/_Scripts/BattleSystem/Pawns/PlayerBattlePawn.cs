@@ -33,7 +33,6 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     public bool dodging { get; set; }
     private ComboManager _comboManager;
     public ComboManager ComboManager => _comboManager;
-    // private Coroutine attackingThread;
 
     private HashSet<IAttackRequester> ActiveAttacks = new();
     private int currDeflectsTillHeal;
@@ -57,11 +56,6 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         if (IsDead) return;
         AnimatorStateInfo animatorState = _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
         if (!animatorState.IsName("idle")) return;
-        // (Past Ryan 1) Figure out a way to make the dodging false later
-        // (Past Ryan 2) I'm sorry future ryan, but I have figured it out through very scuffed means
-        // Check a file called OnDodgeEnd.cs
-        // (Ryan) This really sucky
-        // Merge to one state called Open
         DodgeDirection = DirectionHelper.GetVectorDirection(direction);
         updateCombo(false);
 
@@ -92,11 +86,9 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         {
             if (slashCancelCounter > 1) // <-- tweak here for number of cancels allowed
             {
-                //Debug.LogWarning("Ran out of cancels");
                 return;
             }
             
-            //Debug.Log($"Cancel previous slash");
             slashHandle.SelfAbort();
             slashCancelCounter += 1;
         }
@@ -196,16 +188,6 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         }
     }
     #endregion
-    /// <summary>
-    /// Player cannot recover sp while blocking -> Could be brought further upward, in case we have items that use this method...
-    /// </summary>
-    /// <param name="amount"></param>
-    //public override void RecoverSP(float amount)
-    //{
-    //    // Technically inefficent due to second method call, but good for readablity and modularity!
-    //    // o7 sp
-    //    if (!blocking && !attacking) base.RecoverSP(amount);
-    //}ikjm,,k
     #region IAttackReceiver Methods
     public bool ReceiveAttackRequest(IAttackRequester requester)
     {
@@ -252,7 +234,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     }
     #endregion
 
-    bool TryDodgeAttack(IAttackRequester requester)
+    private bool TryDodgeAttack(IAttackRequester requester)
     {
         if (/*!deflected && */ deflectionWindow && requester.OnRequestDeflect(this))
         {

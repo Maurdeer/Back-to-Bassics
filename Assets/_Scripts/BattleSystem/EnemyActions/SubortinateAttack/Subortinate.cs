@@ -5,13 +5,14 @@ using TMPro;
 using UnityEngine;
 using static GameStateMachine;
 
-public class Subortinate : Conductable, IAttackRequester
+public class Subortinate : Conductable
 {
-    [SerializeField] private Animator _spriteAnimator;
     [SerializeField] private int decisionTimeInBeats = 4;
     [SerializeField] private float speed = 5f;
     [SerializeField] private int health = 3;
-    [SerializeField] private int damage = 2;
+    [Header("References")]
+    [SerializeField] private DeflectableHitBox hitBox;
+    [SerializeField] private Animator _spriteAnimator;
     private SubortinateState state;
     private Coroutine activeThread;
     private int currDecisionTime;
@@ -21,6 +22,11 @@ public class Subortinate : Conductable, IAttackRequester
     {
         _spriteAnimator = GetComponentInChildren<Animator>();
         currDecisionTime = decisionTimeInBeats;
+        hitBox.OnHit += OnHit;
+        hitBox.OnDeflect += OnDeflect;
+        hitBox.DeflectCheck += DeflectCheckEvent;
+        hitBox.DodgeCheck += DodgeCheckEvent;
+        hitBox.OnTriggered += () => StopCoroutine(activeThread);
     }
     public void Summon(Vector3 startingPosition, Direction direction)
     {
@@ -80,10 +86,9 @@ public class Subortinate : Conductable, IAttackRequester
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.fixedDeltaTime * speed);
             yield return new WaitForFixedUpdate();
         }
-        transform.position = targetPosition;
+        transform.position = targetPosition;     
     }
-
-    private IEnumerator GobackThread()
+    private IEnumerator GoBack()
     {
         while (Vector3.Distance(transform.position, startingPosition) > 0f)
         {
@@ -94,7 +99,6 @@ public class Subortinate : Conductable, IAttackRequester
         state = SubortinateState.idle;
         _spriteAnimator.Play("idle");
     }
-
     private IEnumerator MoveIntoPosition()
     {
         while (Vector3.Distance(transform.position, startingPosition) > 0f)
@@ -105,66 +109,43 @@ public class Subortinate : Conductable, IAttackRequester
         transform.position = startingPosition;
     }
 
-    void IAttackRequester.OnAttackMaterialize(IAttackReceiver receiver)
+    #region HitBox Methods
+    private void OnDeflect(IAttackReceiver receiver)
     {
-        if (receiver is not PlayerBattlePawn pawn)
+        _spriteAnimator.Play("deflected");
+        if (--health <= 0)
         {
-            return;
+            Destroy(gameObject);
         }
-        StartCoroutine(GobackThread());
-        pawn.Damage(damage);
-    }
-
-    float IAttackRequester.GetDeflectionCoyoteTime()
-    {
-        return 0.2f;
-    }
-
-    bool IAttackRequester.OnRequestDeflect(IAttackReceiver receiver)
-    {
-        if ((facingWest && BattleManager.Instance.Player.SlashDirection == Vector2.right)
-            || BattleManager.Instance.Player.SlashDirection == Vector2.left)
+        else
         {
-            _spriteAnimator.Play("deflected");
-            if (--health <= 0)
-            {
-                Destroy(gameObject);
-            }
-            else
-            {
-                StartCoroutine(GobackThread());
-            }
-            
-            return true;
-        }
-        return false;
+            StartCoroutine(GoBack());
+        }     
     }
-
-    bool IAttackRequester.OnRequestBlock(IAttackReceiver receiver)
+    private void OnHit(IAttackReceiver receiver)
     {
-        StartCoroutine(GobackThread());
-        return true;
+        StartCoroutine(GoBack());
     }
-
-    bool IAttackRequester.OnRequestDodge(IAttackReceiver receiver)
+    private bool DeflectCheckEvent(IAttackReceiver receiver)
     {
-        StartCoroutine(GobackThread());
-        if ((facingWest && BattleManager.Instance.Player.DodgeDirection == Direction.East)
-            || BattleManager.Instance.Player.DodgeDirection == Direction.West)
-        {
-            return false;
-        }
-        return true;
+        return (facingWest && BattleManager.Instance.Player.SlashDirection == Vector2.right)
+            || BattleManager.Instance.Player.SlashDirection == Vector2.left;
     }
-
-    private void OnTriggerEnter(Collider other)
+    private bool DodgeCheckEvent(IAttackReceiver receiver)
     {
-        if (other.gameObject.TryGetComponent(out PlayerBattlePawn pawn))
-        {
-            pawn.ReceiveAttackRequest(this);
-            StopCoroutine(activeThread);
-        }
+        StartCoroutine(GoBack());
+        return (!facingWest || BattleManager.Instance.Player.DodgeDirection != Direction.East)
+            && BattleManager.Instance.Player.DodgeDirection != Direction.West;
     }
+    #endregion
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.TryGetComponent(out PlayerBattlePawn pawn))
+    //    {
+    //        pawn.ReceiveAttackRequest(this);
+    //        StopCoroutine(activeThread);
+    //    }
+    //}
 }
 
 public enum SubortinateState

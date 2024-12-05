@@ -6,41 +6,61 @@ using Cinemachine;
 
 public class RotationAction : EnemyAction
 {
-    //[SerializeField] private GameObject knifeFab;
-    // [SerializeField] private Spinning[] spinners;
-    // protected override void OnStartAction()
-    // {
-    //     parentPawn.esm.Transition<Attacking>();
-    //     foreach (Spinning spinner in spinners)
-    //     {
-    //         if (spinner != null) spinner.speed = spinner.minSpeed;
-    //     }
-    // }
-    // protected override void OnStopAction()
-    // {
-    //     foreach (Spinning spinner in spinners)
-    //     {
-    //         if (spinner != null) spinner.speed = 0f;
-    //     }
-    // }
-    [SerializeField] private Spinning spin;
-    [SerializeField] private KnifeHitBox hitBox;
-    [SerializeField] private CinemachineVirtualCamera spinCamera;
+    [Header("Rotation Action Specifics")]
     [SerializeField] private float minSpeed;
     [SerializeField] private float maxSpeed;
-    private Coroutine activeSpinThread;
+    [SerializeField] private bool canFakeOut;
+    [SerializeField] private float fakeOutChance = 0.2f;
+    [Header("References")]
+    [SerializeField] private Spinning spinner;
+    [SerializeField] private DeflectableHitBox hitBox;
+    [SerializeField] private CinemachineVirtualCamera spinCamera;
 
+    #region Technical
+    private Coroutine activeSpinThread;
+    private float resetSpeed = 0f;
+    #endregion
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (spinner == null)
+        {
+            Debug.LogError($"Rotation Action must reference spinner");
+            return;
+        }
+        if (hitBox == null)
+        {
+            Debug.LogError($"Rotation Action must reference hitBox");
+            return;
+        }
+    }
     protected override void OnStartAction() {
         if (activeSpinThread != null)
         {
             Debug.LogError("Attempting to start spin action even though it is already active");
             return;
         }
-        spin.minSpeed = minSpeed;
-        spin.maxSpeed = maxSpeed;
+        spinner.minSpeed = minSpeed;
+        spinner.maxSpeed = maxSpeed;
+
+        // Subscribe to Events
+        hitBox.OnHit += OnHit;
+        hitBox.OnDeflect += OnDeflect;
+        hitBox.DeflectCheck += DeflectCheckEvent;
+        hitBox.DodgeCheck += DodgeCheckEvent;
+
         activeSpinThread = StartCoroutine(SpinThread());
     }
-    
+    protected override Coroutine OnStopAction()
+    {
+        hitBox.OnHit -= OnHit;
+        hitBox.OnDeflect -= OnDeflect;
+        hitBox.DeflectCheck -= DeflectCheckEvent;
+        hitBox.DodgeCheck -= DodgeCheckEvent;
+        resetSpeed = 0;
+        return StartCoroutine(StopSpinThread());
+    }
     private IEnumerator SpinThread() {
         float spinDuration = (timelineDurationInBeats * Conductor.Instance.spb) - 5f;
         parentPawnSprite.Animator.SetFloat("speed", 5f / 4f);
@@ -51,16 +71,11 @@ public class RotationAction : EnemyAction
         yield return new WaitForSeconds(0.8f);
         parentPawnSprite.Animator.Play("TurboTopRevealSword");
         yield return new WaitForSeconds(0.8f);
-        spin.enabled = true;
-        spin.speed = spin.minSpeed;
+        spinner.enabled = true;
+        spinner.speed = spinner.minSpeed;
         yield return new WaitForSeconds(spinDuration);
         
         StopAction();
-    }
-    protected override Coroutine OnStopAction()
-    {
-        hitBox.resetSpeed = 0;
-        return StartCoroutine(StopSpinThread());  
     }
     private IEnumerator StopSpinThread()
     {
@@ -69,9 +84,9 @@ public class RotationAction : EnemyAction
             StopCoroutine(activeSpinThread);
             activeSpinThread = null;
         }
-        spin.Finish();
+        spinner.Finish();
 
-        yield return new WaitUntil(() => spin.gameObject.transform.rotation.eulerAngles == Vector3.zero);
+        yield return new WaitUntil(() => spinner.gameObject.transform.rotation.eulerAngles == Vector3.zero);
         parentPawnSprite.Animator.Play("TurboTopHideSword");
         parentPawnSprite.Animator.Play($"lower");
         
@@ -79,8 +94,53 @@ public class RotationAction : EnemyAction
         yield return new WaitForSeconds(0.8f);
         parentPawnSprite.Animator.Play("TurboTopExitSpinAction");
         yield return new WaitForSeconds(0.8f);
-        spin.Reset();
-        spin.enabled = false;
+        spinner.Reset();
+        spinner.enabled = false;
+    }
+    // HitBox Related Methods
+    private void OnHit(IAttackReceiver receiver)
+    {
+        // Decrease spinner speed if player is hit
+        if (spinner.speed > spinner.minSpeed)
+        {
+            spinner.speed /= 2;
+            spinner.speed = Mathf.Max(spinner.speed, spinner.minSpeed);
+            spinner.ReduceSpeed(spinner.speed / 2);
+            resetSpeed = spinner.speed / 2;
+        }
+    }
+    private void OnDeflect(IAttackReceiver receiver)
+    {
+        // Limit max speed of spinner
+        if (spinner.speed < spinner.maxSpeed)
+        {
+            spinner.speed += resetSpeed;
+            spinner.speed = Mathf.Min(spinner.speed, spinner.maxSpeed);
+        }
+        // Randomize fake out chance
+        float rand = UnityEngine.Random.Range(0f, 1f);
+        if (canFakeOut && rand <= fakeOutChance)
+        {
+            spinner.FakeOut(spinner.minSpeed + resetSpeed);
+        }
+        else
+        {
+            spinner.ChangeDirection(spinner.minSpeed + resetSpeed);
+        }
+        resetSpeed += 0.2f;
 
+        // (TEMP)----------- This is dumb IK---------------------
+        BattleManager.Instance.Enemy.StaggerDamage(1);
+        //-------------------------------------------------------
+    }
+    private bool DeflectCheckEvent(IAttackReceiver receiver)
+    {
+        PlayerBattlePawn player = receiver as PlayerBattlePawn;
+        return player != null
+        && DirectionHelper.MaxAngleBetweenVectors(spinner.ccw ? Vector2.right : Vector2.left, player.SlashDirection, 5f);
+    }
+    private bool DodgeCheckEvent(IAttackReceiver receiver)
+    {
+        return true;
     }
 }

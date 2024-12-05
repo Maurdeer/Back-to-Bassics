@@ -130,7 +130,6 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         currentStaggerHealth -= staggerDamage;
         if (currentStaggerHealth <= 0) {
             if (interruptable) {
-                Debug.Log("Regular Stagger");
                 Stagger();
                 currentStaggerHealth = maxStaggerHealth;
             }

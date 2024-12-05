@@ -197,11 +197,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 120
-  spin: {fileID: 2551730394793636455}
-  hitBox: {fileID: 1981365018343645859}
-  spinCamera: {fileID: 6090893088226219683}
   minSpeed: 6
   maxSpeed: 16
+  canFakeOut: 1
+  fakeOutChance: 0.2
+  spinner: {fileID: 2551730394793636455}
+  hitBox: {fileID: 1981365018343645859}
+  spinCamera: {fileID: 6090893088226219683}
 --- !u!1 &838543599394703419
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +216,7 @@ GameObject:
   - component: {fileID: 5136180470923341999}
   - component: {fileID: 5892676215090111007}
   - component: {fileID: 8965157131771633539}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,11 +384,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 120
-  spin: {fileID: 2551730394793636455}
-  hitBox: {fileID: 1981365018343645859}
-  spinCamera: {fileID: 6090893088226219683}
   minSpeed: 2
   maxSpeed: 5
+  canFakeOut: 0
+  fakeOutChance: 0.2
+  spinner: {fileID: 2551730394793636455}
+  hitBox: {fileID: 1981365018343645859}
+  spinCamera: {fileID: 6090893088226219683}
 --- !u!1 &1441262429516442126
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,7 +402,7 @@ GameObject:
   - component: {fileID: 767082411293138291}
   - component: {fileID: 1810680244239019238}
   - component: {fileID: 1468865419296787179}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5524,7 +5528,7 @@ GameObject:
   - component: {fileID: 669385597802849903}
   - component: {fileID: 6894786426181440923}
   - component: {fileID: 3368022857786080023}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TurboTopManual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5756,6 +5760,8 @@ MonoBehaviour:
   slashAnimationName: slash
   inverseFacingDirection: 0
   _staggerDamage: 5
+  prehitBeats: 0.5
+  posthitBeats: 0.5
   indicatorSpark: {fileID: 0}
 --- !u!1 &2677732869461301427
 GameObject:
@@ -5802,11 +5808,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 120
-  spin: {fileID: 2551730394793636455}
-  hitBox: {fileID: 1981365018343645859}
-  spinCamera: {fileID: 6090893088226219683}
   minSpeed: 4
   maxSpeed: 10
+  canFakeOut: 1
+  fakeOutChance: 0.2
+  spinner: {fileID: 2551730394793636455}
+  hitBox: {fileID: 1981365018343645859}
+  spinCamera: {fileID: 6090893088226219683}
 --- !u!1 &2875592871770529580
 GameObject:
   m_ObjectHideFlags: 0
@@ -5849,7 +5857,7 @@ GameObject:
   - component: {fileID: 22367130333345877}
   - component: {fileID: 2519054141847764002}
   - component: {fileID: 4993713585414967200}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6648,10 +6656,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412cc711185390548aa272745987f07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
-  spinner: {fileID: 7741238043298341659}
-  resetSpeed: 0
-  fakeOutChance: 0.2
+  _damage: 0
+  _deflectionCoyoteTime: 0.25
 --- !u!1 &6049803077617759701
 GameObject:
   m_ObjectHideFlags: 0
@@ -11893,7 +11899,7 @@ GameObject:
   - component: {fileID: 8848752123223628263}
   - component: {fileID: 4803442671980162121}
   m_Layer: 0
-  m_Name: Turbo
+  m_Name: TurboRotationAction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11927,11 +11933,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 5
-  spin: {fileID: 2551730394793636455}
-  hitBox: {fileID: 1981365018343645859}
-  spinCamera: {fileID: 6090893088226219683}
   minSpeed: 8
   maxSpeed: 18
+  canFakeOut: 1
+  fakeOutChance: 0.2
+  spinner: {fileID: 2551730394793636455}
+  hitBox: {fileID: 1981365018343645859}
+  spinCamera: {fileID: 6090893088226219683}
 --- !u!1 &8402174835606263792
 GameObject:
   m_ObjectHideFlags: 0
@@ -11944,7 +11952,7 @@ GameObject:
   - component: {fileID: 3165576424539407974}
   - component: {fileID: 6016711226934593570}
   - component: {fileID: 9019557686605592792}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TurboTopAuto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12068,7 +12076,7 @@ GameObject:
   - component: {fileID: 1556355417918920790}
   - component: {fileID: 1522519491293340856}
   - component: {fileID: 9019426632408861223}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12357,10 +12365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412cc711185390548aa272745987f07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
-  spinner: {fileID: 2551730394793636455}
-  resetSpeed: 0
-  fakeOutChance: 0.2
+  _damage: 1
+  _deflectionCoyoteTime: 0.25
 --- !u!1001 &4775230472212233167
 PrefabInstance:
   m_ObjectHideFlags: 0
