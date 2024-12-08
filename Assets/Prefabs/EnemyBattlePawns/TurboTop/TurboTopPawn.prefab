@@ -199,8 +199,9 @@ MonoBehaviour:
   timelineDurationInBeats: 120
   minSpeed: 6
   maxSpeed: 16
-  canFakeOut: 1
   fakeOutChance: 0.2
+  spinSpeedIncreasePerHit: 0.2
+  reduceSpeedOnHit: 1
   spinner: {fileID: 2551730394793636455}
   hitBox: {fileID: 1981365018343645859}
   spinCamera: {fileID: 6090893088226219683}
@@ -386,8 +387,9 @@ MonoBehaviour:
   timelineDurationInBeats: 120
   minSpeed: 2
   maxSpeed: 5
-  canFakeOut: 0
-  fakeOutChance: 0.2
+  fakeOutChance: -1
+  spinSpeedIncreasePerHit: 0.2
+  reduceSpeedOnHit: 1
   spinner: {fileID: 2551730394793636455}
   hitBox: {fileID: 1981365018343645859}
   spinCamera: {fileID: 6090893088226219683}
@@ -5810,8 +5812,9 @@ MonoBehaviour:
   timelineDurationInBeats: 120
   minSpeed: 4
   maxSpeed: 10
-  canFakeOut: 1
   fakeOutChance: 0.2
+  spinSpeedIncreasePerHit: 0.2
+  reduceSpeedOnHit: 1
   spinner: {fileID: 2551730394793636455}
   hitBox: {fileID: 1981365018343645859}
   spinCamera: {fileID: 6090893088226219683}
@@ -6013,6 +6016,7 @@ Transform:
   - {fileID: 7544233063128425385}
   - {fileID: 2108276045005637918}
   - {fileID: 8848752123223628263}
+  - {fileID: 2549515214008738953}
   - {fileID: 8106583751678165668}
   m_Father: {fileID: 8514043373142664286}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6200,7 +6204,7 @@ PlayableDirector:
   m_GameObject: {fileID: 4095286020021042877}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 70c8ab9c31b3f9847b28b2c8bddee64a, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: d9cc9fd98d9eace44b34b076cd6cd177, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -6232,6 +6236,8 @@ PlayableDirector:
     value: {fileID: 8108347471285882684}
   - key: {fileID: 6941544029944998643, guid: 70c8ab9c31b3f9847b28b2c8bddee64a, type: 2}
     value: {fileID: 4803442671980162121}
+  - key: {fileID: 559974135727733058, guid: d9cc9fd98d9eace44b34b076cd6cd177, type: 2}
+    value: {fileID: 1563351687039702102}
   m_ExposedReferences:
     m_References:
     - 11d5700dc97baf0449d8251e39b85f73: {fileID: 6682162959560621637}
@@ -11935,8 +11941,9 @@ MonoBehaviour:
   timelineDurationInBeats: 5
   minSpeed: 8
   maxSpeed: 18
-  canFakeOut: 1
   fakeOutChance: 0.2
+  spinSpeedIncreasePerHit: 0.2
+  reduceSpeedOnHit: 1
   spinner: {fileID: 2551730394793636455}
   hitBox: {fileID: 1981365018343645859}
   spinCamera: {fileID: 6090893088226219683}
@@ -12167,6 +12174,59 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &8891459454507745849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2549515214008738953}
+  - component: {fileID: 1563351687039702102}
+  m_Layer: 0
+  m_Name: InfiniteSpinAction
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2549515214008738953
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8891459454507745849}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8183781759787433158}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1563351687039702102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8891459454507745849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f8294a8d3e8c3438cea906399e64ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timelineDurationInBeats: 40000
+  minSpeed: 2
+  maxSpeed: 100
+  fakeOutChance: -1
+  spinSpeedIncreasePerHit: 0.05
+  reduceSpeedOnHit: 0
+  spinner: {fileID: 2551730394793636455}
+  hitBox: {fileID: 1981365018343645859}
+  spinCamera: {fileID: 6090893088226219683}
 --- !u!1001 &477233935595394349
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12318,8 +12378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32e41efaeb493184db44801193057725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSpeed: 4
-  maxSpeed: 8
+  minSpeed: 2
+  maxSpeed: 100
   speed: 0
   ccw: 0
 --- !u!4 &1274711897139653875 stripped

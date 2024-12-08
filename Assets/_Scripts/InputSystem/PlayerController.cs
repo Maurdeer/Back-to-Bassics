@@ -9,12 +9,16 @@ public class PlayerController : MonoBehaviour
     private PlayerTraversalPawn _traversalpawn;
     public PlayerTraversalPawn TraversalPawn => _traversalpawn;
     public PlayerBattlePawn BattlePawn => _battlepawn;
+    private static bool initialized = false;
     private void Awake()
     {
         // References
         _playerinput = GetComponent<PlayerInput>();
         _battlepawn = GetComponent<PlayerBattlePawn>();
         _traversalpawn = GetComponent<PlayerTraversalPawn>();
+
+        if (initialized) return;
+        initialized = true;
 
         // Input Battle Actions
         _playerinput.SwitchCurrentActionMap("PlayerBattlePawn");
@@ -31,8 +35,8 @@ public class PlayerController : MonoBehaviour
         _playerinput.actions["Pause"].performed += OnPauseAction;
 
         // Input UI
-        //_playerinput.SwitchCurrentActionMap("UI");
-
+        _playerinput.SwitchCurrentActionMap("UI");
+        _playerinput.actions["Pause"].performed += OnPauseAction;
         // Input Dialogue
         //_playerinput.SwitchCurrentActionMap("Dialogue");
 

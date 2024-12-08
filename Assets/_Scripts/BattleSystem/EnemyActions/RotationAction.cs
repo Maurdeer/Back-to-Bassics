@@ -9,8 +9,9 @@ public class RotationAction : EnemyAction
     [Header("Rotation Action Specifics")]
     [SerializeField] private float minSpeed;
     [SerializeField] private float maxSpeed;
-    [SerializeField] private bool canFakeOut;
     [SerializeField] private float fakeOutChance = 0.2f;
+    [SerializeField] private float spinSpeedIncreasePerHit = 0.2f;
+    [SerializeField] private bool reduceSpeedOnHit = true;
     [Header("References")]
     [SerializeField] private Spinning spinner;
     [SerializeField] private DeflectableHitBox hitBox;
@@ -101,7 +102,7 @@ public class RotationAction : EnemyAction
     private void OnHit(IAttackReceiver receiver)
     {
         // Decrease spinner speed if player is hit
-        if (spinner.speed > spinner.minSpeed)
+        if (reduceSpeedOnHit && spinner.speed > spinner.minSpeed)
         {
             spinner.speed /= 2;
             spinner.speed = Mathf.Max(spinner.speed, spinner.minSpeed);
@@ -119,7 +120,7 @@ public class RotationAction : EnemyAction
         }
         // Randomize fake out chance
         float rand = UnityEngine.Random.Range(0f, 1f);
-        if (canFakeOut && rand <= fakeOutChance)
+        if (rand <= fakeOutChance)
         {
             spinner.FakeOut(spinner.minSpeed + resetSpeed);
         }
@@ -127,7 +128,7 @@ public class RotationAction : EnemyAction
         {
             spinner.ChangeDirection(spinner.minSpeed + resetSpeed);
         }
-        resetSpeed += 0.2f;
+        resetSpeed += spinSpeedIncreasePerHit;
 
         // (TEMP)----------- This is dumb IK---------------------
         BattleManager.Instance.Enemy.StaggerDamage(1);

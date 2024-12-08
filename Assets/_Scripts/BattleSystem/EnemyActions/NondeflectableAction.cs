@@ -8,6 +8,7 @@ public class NondeflectableAction : EnemyAction, IAttackRequester
     [Header("Nondeflectable Action")]
     [SerializeField] private int damage = 4;
     [SerializeField] private string attackAnimationName;
+    [SerializeField, Range(0,1)] private float prehitFraction = 0.6f;
     [Header("Doge Directions")]
     [SerializeField] private bool east;
     [SerializeField] private bool west;
@@ -61,11 +62,15 @@ public class NondeflectableAction : EnemyAction, IAttackRequester
 
     private IEnumerator SlashThread()
     {
-        float attackDuration = timelineDurationInBeats * Conductor.Instance.spb;
+        float attackDuration = (timelineDurationInBeats * prehitFraction) * Conductor.Instance.spb;
         parentPawnSprite.Animator.SetFloat("speed", 1 / attackDuration);
-        parentPawnSprite.Animator.Play($"{attackAnimationName}");
+        parentPawnSprite.Animator.Play($"{attackAnimationName}_prehit");
         yield return new WaitForSeconds(attackDuration);
         BattleManager.Instance.Player.ReceiveAttackRequest(this);
+        float postDuration = (timelineDurationInBeats * (1 - prehitFraction)) * Conductor.Instance.spb;
+        parentPawnSprite.Animator.SetFloat("speed", 1 / postDuration);
+        parentPawnSprite.Animator.Play($"{attackAnimationName}_posthit");
+        yield return new WaitForSeconds(postDuration);
         parentPawnSprite.Animator.Play("idle_battle");
         StopAction();
     }

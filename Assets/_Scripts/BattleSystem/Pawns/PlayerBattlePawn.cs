@@ -225,10 +225,12 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 }
             });
         
-        Conductor.Instance.ScheduleActionAsap(
+        if (Conductor.Instance.IsPlaying)
+        {
+            Conductor.Instance.ScheduleActionAsap(
             requester.GetDeflectionCoyoteTime(), Conductor.Instance.Beat, handle, true);
-        
-        ActiveAttacks.Add(requester);
+            ActiveAttacks.Add(requester);
+        } 
 
         return true;
     }

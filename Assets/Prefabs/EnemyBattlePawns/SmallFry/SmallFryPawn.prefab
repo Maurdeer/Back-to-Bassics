@@ -11310,6 +11310,8 @@ MonoBehaviour:
   slashAnimationName: slash
   inverseFacingDirection: 0
   _staggerDamage: 5
+  prehitBeats: 0.5
+  posthitBeats: 0.5
   indicatorSpark: {fileID: 0}
 --- !u!1 &5312930719320210289
 GameObject:
@@ -12454,7 +12456,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 5
   damage: 4
-  attackAnimationName: sandwich
+  attackAnimationName: sandwhich
+  prehitFraction: 0.6
   east: 0
   west: 0
   south: 1
@@ -17619,7 +17622,7 @@ PlayableDirector:
   m_GameObject: {fileID: 8123077407089530165}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 0d704b2195361344cac0f7610af9d46f, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 7a820986f157fa742bc25d22be9ce68a, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -17693,6 +17696,8 @@ PlayableDirector:
     value: {fileID: 1096942763180917178}
   - key: {fileID: 1836019810019185959, guid: 0d704b2195361344cac0f7610af9d46f, type: 2}
     value: {fileID: 1096942763180917178}
+  - key: {fileID: -7942916648545167176, guid: 7a820986f157fa742bc25d22be9ce68a, type: 2}
+    value: {fileID: 6837358583449407589}
   m_ExposedReferences:
     m_References: []
 --- !u!210 &5036610044109524904
