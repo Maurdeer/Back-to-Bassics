@@ -13,9 +13,9 @@ public class SceneManagement : MonoBehaviour
 
     //screen loading
     public GameObject loadSceneParent;
-    private GameObject loadingScreen;
-    private TMP_Text loadText;
-    private CanvasGroup canvasScreen;
+    public GameObject loadingScreen;
+    public TMP_Text loadText;
+    public CanvasGroup canvasScreen;
     private bool fadeIn = false;
     private bool fadeOut = false;
     [Range(1, 20f)] public float timeToFade = 10f;
@@ -30,11 +30,11 @@ public class SceneManagement : MonoBehaviour
             reloaded = false;
         }
 
-        loadText = loadSceneParent.transform.Find("LoadText").GetComponent<TMPro.TextMeshProUGUI>();
+        // loadText = loadSceneParent.GetComponentInChildren<TMPro.TextMeshProUGUI>(true);
         
 
-        loadingScreen = loadSceneParent.transform.Find("Panel").gameObject;
-        canvasScreen = loadingScreen.GetComponent<CanvasGroup>();
+        // loadingScreen = loadSceneParent.transform.Find("Panel").gameObject;
+        // canvasScreen = loadingScreen.GetComponent<CanvasGroup>();
 
         loadSceneParent.SetActive(true);
         loadingScreen.SetActive(true);
@@ -46,6 +46,7 @@ public class SceneManagement : MonoBehaviour
     }
     public void ChangeScene(string scene)
     {
+        Debug.Log("Change Scene Invoked!");
         if (SceneManager.GetActiveScene().name == scene) 
         {
             reloaded = true;

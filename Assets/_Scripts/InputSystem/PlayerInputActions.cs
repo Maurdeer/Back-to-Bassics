@@ -62,6 +62,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""35fdd531-2ca0-4604-b101-fe7c27b2b32a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -526,6 +535,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Block"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1da12096-d37e-4944-a0b2-339aca9d09d4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a6710f2b-2f0d-4499-bb67-32525e347503"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -977,6 +1008,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4db7d7dd-8a33-4f0b-b86b-26a71aa9924c"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -985,7 +1027,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""e323619d-706f-4146-b3fa-8f350ac52f9a"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""372c559b-f4cd-456f-90c2-6b78fc47e9dd"",
                     ""expectedControlType"": ""Button"",
@@ -998,11 +1040,22 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c4d28e2b-971c-4242-93c1-6fcdf8bbd7d5"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4bdd065f-dfec-4e4a-937c-0f6359c4ebce"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1013,7 +1066,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""b6af71bc-c0c7-4c46-8433-38691815f5fd"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Advance"",
                     ""type"": ""Button"",
                     ""id"": ""45550d4e-d452-4798-b095-01b1aa4e972e"",
                     ""expectedControlType"": ""Button"",
@@ -1026,11 +1079,22 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""0046fb09-b103-4373-ad00-55578a37d217"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/anyKey"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Advance"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""46e5a3c0-6102-4805-b51a-0d605c44f1c9"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Advance"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1041,7 +1105,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""3a8a9b0a-6a3d-4038-aa60-9fc600c34509"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Skip"",
                     ""type"": ""Button"",
                     ""id"": ""daee6296-fd93-430b-8bba-b101fab15951"",
                     ""expectedControlType"": ""Button"",
@@ -1054,11 +1118,22 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6cd15cd0-c332-4720-8bce-7a5553f7cab2"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Skip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11bf87ba-5295-4376-a4aa-978858440fe8"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Skip"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1096,6 +1171,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerBattlePawn_Slash = m_PlayerBattlePawn.FindAction("Slash", throwIfNotFound: true);
         m_PlayerBattlePawn_Jump = m_PlayerBattlePawn.FindAction("Jump", throwIfNotFound: true);
         m_PlayerBattlePawn_Block = m_PlayerBattlePawn.FindAction("Block", throwIfNotFound: true);
+        m_PlayerBattlePawn_Pause = m_PlayerBattlePawn.FindAction("Pause", throwIfNotFound: true);
         // PlayerTraversalPawn
         m_PlayerTraversalPawn = asset.FindActionMap("PlayerTraversalPawn", throwIfNotFound: true);
         m_PlayerTraversalPawn_Move = m_PlayerTraversalPawn.FindAction("Move", throwIfNotFound: true);
@@ -1104,13 +1180,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerTraversalPawn_Pause = m_PlayerTraversalPawn.FindAction("Pause", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
+        m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
-        m_Dialogue_Newaction = m_Dialogue.FindAction("New action", throwIfNotFound: true);
+        m_Dialogue_Advance = m_Dialogue.FindAction("Advance", throwIfNotFound: true);
         // Cutscene
         m_Cutscene = asset.FindActionMap("Cutscene", throwIfNotFound: true);
-        m_Cutscene_Newaction = m_Cutscene.FindAction("New action", throwIfNotFound: true);
+        m_Cutscene_Skip = m_Cutscene.FindAction("Skip", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1176,6 +1252,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerBattlePawn_Slash;
     private readonly InputAction m_PlayerBattlePawn_Jump;
     private readonly InputAction m_PlayerBattlePawn_Block;
+    private readonly InputAction m_PlayerBattlePawn_Pause;
     public struct PlayerBattlePawnActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1184,6 +1261,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Slash => m_Wrapper.m_PlayerBattlePawn_Slash;
         public InputAction @Jump => m_Wrapper.m_PlayerBattlePawn_Jump;
         public InputAction @Block => m_Wrapper.m_PlayerBattlePawn_Block;
+        public InputAction @Pause => m_Wrapper.m_PlayerBattlePawn_Pause;
         public InputActionMap Get() { return m_Wrapper.m_PlayerBattlePawn; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1205,6 +1283,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Block.started += instance.OnBlock;
             @Block.performed += instance.OnBlock;
             @Block.canceled += instance.OnBlock;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerBattlePawnActions instance)
@@ -1221,6 +1302,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Block.started -= instance.OnBlock;
             @Block.performed -= instance.OnBlock;
             @Block.canceled -= instance.OnBlock;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerBattlePawnActions instance)
@@ -1312,12 +1396,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-    private readonly InputAction m_UI_Newaction;
+    private readonly InputAction m_UI_Pause;
     public struct UIActions
     {
         private @PlayerInputActions m_Wrapper;
         public UIActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_UI_Newaction;
+        public InputAction @Pause => m_Wrapper.m_UI_Pause;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1327,16 +1411,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1358,12 +1442,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Dialogue
     private readonly InputActionMap m_Dialogue;
     private List<IDialogueActions> m_DialogueActionsCallbackInterfaces = new List<IDialogueActions>();
-    private readonly InputAction m_Dialogue_Newaction;
+    private readonly InputAction m_Dialogue_Advance;
     public struct DialogueActions
     {
         private @PlayerInputActions m_Wrapper;
         public DialogueActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_Dialogue_Newaction;
+        public InputAction @Advance => m_Wrapper.m_Dialogue_Advance;
         public InputActionMap Get() { return m_Wrapper.m_Dialogue; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1373,16 +1457,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_DialogueActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_DialogueActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @Advance.started += instance.OnAdvance;
+            @Advance.performed += instance.OnAdvance;
+            @Advance.canceled += instance.OnAdvance;
         }
 
         private void UnregisterCallbacks(IDialogueActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @Advance.started -= instance.OnAdvance;
+            @Advance.performed -= instance.OnAdvance;
+            @Advance.canceled -= instance.OnAdvance;
         }
 
         public void RemoveCallbacks(IDialogueActions instance)
@@ -1404,12 +1488,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Cutscene
     private readonly InputActionMap m_Cutscene;
     private List<ICutsceneActions> m_CutsceneActionsCallbackInterfaces = new List<ICutsceneActions>();
-    private readonly InputAction m_Cutscene_Newaction;
+    private readonly InputAction m_Cutscene_Skip;
     public struct CutsceneActions
     {
         private @PlayerInputActions m_Wrapper;
         public CutsceneActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_Cutscene_Newaction;
+        public InputAction @Skip => m_Wrapper.m_Cutscene_Skip;
         public InputActionMap Get() { return m_Wrapper.m_Cutscene; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1419,16 +1503,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_CutsceneActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_CutsceneActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @Skip.started += instance.OnSkip;
+            @Skip.performed += instance.OnSkip;
+            @Skip.canceled += instance.OnSkip;
         }
 
         private void UnregisterCallbacks(ICutsceneActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @Skip.started -= instance.OnSkip;
+            @Skip.performed -= instance.OnSkip;
+            @Skip.canceled -= instance.OnSkip;
         }
 
         public void RemoveCallbacks(ICutsceneActions instance)
@@ -1470,6 +1554,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSlash(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IPlayerTraversalPawnActions
     {
@@ -1480,14 +1565,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     }
     public interface IUIActions
     {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IDialogueActions
     {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnAdvance(InputAction.CallbackContext context);
     }
     public interface ICutsceneActions
     {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnSkip(InputAction.CallbackContext context);
     }
 }

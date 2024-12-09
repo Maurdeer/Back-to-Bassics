@@ -8,12 +8,13 @@ public class CoverScreenAction : EnemyAction
     [Header("Cover Screen Action")]
     [SerializeField] private GameObject screenCoverPrefab;
     [SerializeField] private int maxNumOfBeats = 4;
-    [SerializeField] private Vector3 initialScale = new Vector3(0.1f, 0.1f, 0.1f);
+    [SerializeField] private Vector3 initialScale = new Vector3(0.3f, 0.3f, 0.3f);
     [SerializeField] private Vector3 targetScale = new Vector3(0.8f, 0.8f, 0.8f);
     [SerializeField] private float scaleDuration = 0.5f;
     [SerializeField] private float fadeDuration = 0.5f;
 
     private int numOfBeats = 4;
+    private GameObject prevInstance;
     private GameObject screenCoverInstance;
     private Image screenCoverImage;
     private bool isFadingOut = false;
@@ -23,8 +24,15 @@ public class CoverScreenAction : EnemyAction
     /// </summary>
     protected override void OnStartAction()
     {
+        if (screenCoverInstance != null)
+        {
+            prevInstance = screenCoverInstance;
+            StopAllCoroutines();
+            isFadingOut = false;
+        }
         numOfBeats = maxNumOfBeats;
         screenCoverInstance = Instantiate(screenCoverPrefab);
+        screenCoverInstance.SetActive(false);
         screenCoverInstance.transform.SetParent(UIManager.Instance.transform, false);
         screenCoverInstance.transform.localScale = initialScale;
         screenCoverImage = screenCoverInstance.GetComponent<Image>();
@@ -40,13 +48,10 @@ public class CoverScreenAction : EnemyAction
     /// <summary>
     /// Fade out screen cover
     /// </summary>
-    protected override void OnStopAction()
+    protected override Coroutine OnStopAction()
     {
-        if (!isFadingOut)
-        {
-            StartCoroutine(FadeOut());
-        }
         Conductor.Instance.OnFullBeat -= UpdateBeat;
+        return !isFadingOut ? StartCoroutine(FadeOut()) : null;
     }
 
     /// <summary>
@@ -54,6 +59,11 @@ public class CoverScreenAction : EnemyAction
     /// </summary>
     private IEnumerator ScaleUp()
     {
+        float duration = (timelineDurationInBeats - 1) * Conductor.Instance.spb;
+        parentPawnSprite.Animator.SetFloat("speed", 1 / duration);
+        parentPawnSprite.Animator.Play("cover_screen");
+        yield return new WaitForSeconds(duration);
+        screenCoverInstance.SetActive(true);
         float elapsedTime = 0f;
         while (elapsedTime < scaleDuration)
         {
@@ -62,6 +72,10 @@ public class CoverScreenAction : EnemyAction
             yield return null;
         }
         screenCoverInstance.transform.localScale = targetScale;
+        if (prevInstance != null)
+        {
+            Destroy(prevInstance);
+        }
     }
 
     /// <summary>

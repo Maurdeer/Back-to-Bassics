@@ -12,6 +12,8 @@ using static UnityEngine.EventSystems.EventTrigger;
 [RequireComponent(typeof(PlayerController), typeof(PlayerTraversalPawn))]
 public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 {
+    [Header("Player Specifications")]
+    [SerializeField] private int deflectsTillHeal = 3;
     [Header("Player References")]
     [SerializeField] private PlayerWeaponData _weaponData;
     public Transform playerCollider;
@@ -30,9 +32,10 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     public bool deflectionWindow { get; private set; }
     public bool dodging { get; set; }
     private ComboManager _comboManager;
-    // private Coroutine attackingThread;
+    public ComboManager ComboManager => _comboManager;
 
     private HashSet<IAttackRequester> ActiveAttacks = new();
+    private int currDeflectsTillHeal;
     
     protected override void Awake()
     {
@@ -40,6 +43,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         _traversalPawn = GetComponent<PlayerTraversalPawn>();
         _comboManager = GetComponent<ComboManager>();
         SlashDirection = Vector2.zero;
+        currDeflectsTillHeal = deflectsTillHeal;
     }
     // This will start a battle
     public void EngageEnemy(EnemyBattlePawn enemy)
@@ -52,11 +56,6 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         if (IsDead) return;
         AnimatorStateInfo animatorState = _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
         if (!animatorState.IsName("idle")) return;
-        // (Past Ryan 1) Figure out a way to make the dodging false later
-        // (Past Ryan 2) I'm sorry future ryan, but I have figured it out through very scuffed means
-        // Check a file called OnDodgeEnd.cs
-        // (Ryan) This really sucky
-        // Merge to one state called Open
         DodgeDirection = DirectionHelper.GetVectorDirection(direction);
         updateCombo(false);
 
@@ -67,8 +66,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     {
         dodging = true;
         _pawnSprite.Animator.Play("dodge_" + directionAnimation);
-        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f 
-        && _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle"));
+        yield return new WaitForSeconds(1f);
         dodging = false;
     }
     
@@ -82,17 +80,15 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     /// <param name="slashDirection"></param>
     public void Slash(Vector2 direction)
     {
-        if (IsDead) return;
+        if (IsDead || dodging) return;
 
         if (slashHandle != null)
         {
             if (slashCancelCounter > 1) // <-- tweak here for number of cancels allowed
             {
-                //Debug.LogWarning("Ran out of cancels");
                 return;
             }
             
-            //Debug.Log($"Cancel previous slash");
             slashHandle.SelfAbort();
             slashCancelCounter += 1;
         }
@@ -120,10 +116,10 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 deflectionWindow = true;
 
                 // as soon as deflection window starts, clear all dodge-able attacks, considering all of them as "deflected"
-                if (ActiveAttacks.Count > 0)
-                {
-                    ActiveAttacks.RemoveWhere(TryDodgeAttack);
-                }
+                //if (ActiveAttacks.Count > 0)
+                //{
+                //    ActiveAttacks.RemoveWhere(TryDodgeAttack);
+                //}
             },
             onUpdate: (state, contextState) => { },
             onCompleted: (state, contextState) =>
@@ -192,16 +188,6 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         }
     }
     #endregion
-    /// <summary>
-    /// Player cannot recover sp while blocking -> Could be brought further upward, in case we have items that use this method...
-    /// </summary>
-    /// <param name="amount"></param>
-    //public override void RecoverSP(float amount)
-    //{
-    //    // Technically inefficent due to second method call, but good for readablity and modularity!
-    //    // o7 sp
-    //    if (!blocking && !attacking) base.RecoverSP(amount);
-    //}ikjm,,k
     #region IAttackReceiver Methods
     public bool ReceiveAttackRequest(IAttackRequester requester)
     {
@@ -239,16 +225,18 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 }
             });
         
-        Conductor.Instance.ScheduleActionAsap(
+        if (Conductor.Instance.IsPlaying)
+        {
+            Conductor.Instance.ScheduleActionAsap(
             requester.GetDeflectionCoyoteTime(), Conductor.Instance.Beat, handle, true);
-        
-        ActiveAttacks.Add(requester);
+            ActiveAttacks.Add(requester);
+        } 
 
         return true;
     }
     #endregion
 
-    bool TryDodgeAttack(IAttackRequester requester)
+    private bool TryDodgeAttack(IAttackRequester requester)
     {
         if (/*!deflected && */ deflectionWindow && requester.OnRequestDeflect(this))
         {
@@ -256,6 +244,10 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
             AudioManager.Instance.PlayOnShotSound(WeaponData.slashHitSound, transform.position);
             _deflectEffect.Play();
             _comboManager.CurrComboMeterAmount += 1;
+            if (--currDeflectsTillHeal <= 0)
+            {
+                Heal(1);
+            }
             return true;
         }
         if (dodging && requester.OnRequestDodge(this))
@@ -298,4 +290,21 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         return true;
     }
     #endregion
+
+    public override void Damage(int amount)
+    {
+        if (IsDead) return;
+        // Could make this more variable
+        if (amount > 0)
+        {
+            _paperShredBurst?.Play();
+            // Reset Deflects Till Heal
+            currDeflectsTillHeal = deflectsTillHeal;
+            if (!dodging)
+            {
+                _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
+            }
+        }
+        base.Damage(amount);
+    }
 }

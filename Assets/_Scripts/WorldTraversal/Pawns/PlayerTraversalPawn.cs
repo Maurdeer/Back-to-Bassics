@@ -13,6 +13,7 @@ public class PlayerTraversalPawn : TraversalPawn
     private PlayerBattlePawn _battlePawn;
     private ComboManager _comboManager;
     private bool attacking;
+    public bool spinSlashing { get; set; }
     private Interactable currInteractable;
     protected override void Awake()
     {
@@ -52,14 +53,40 @@ public class PlayerTraversalPawn : TraversalPawn
     }
     private void OnTriggerEnter(Collider other)
     {
+        ReliableOnTriggerExit.NotifyTriggerEnter(other, gameObject, OnTriggerExit);
         if (other.TryGetComponent(out Interactable interactable))
         {
             UIManager.Instance.ShowInteractableUI();
             currInteractable = interactable;
         }
+        //Spin Combo
+        if (other.TryGetComponent(out DestructibleObject destructible) && spinSlashing)
+        {
+            destructible.destroySelf();
+        } else
+        {
+            spinSlashing = false; // Can't destroy stop spinning
+        }
     }
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.TryGetComponent(out Interactable interactable))
+    //    {
+    //        if (interactable != currInteractable)
+    //        {
+    //            UIManager.Instance.ShowInteractableUI();
+    //            currInteractable = interactable;
+    //        }
+    //    } 
+    //    else
+    //    {
+    //        currInteractable = null;
+    //        UIManager.Instance.HideInteractableUI();
+    //    }
+    //}
     private void OnTriggerExit(Collider other)
     {
+        ReliableOnTriggerExit.NotifyTriggerExit(other, gameObject);
         if (other.TryGetComponent(out Interactable interactable) && currInteractable == interactable)
         {
             UIManager.Instance.HideInteractableUI();

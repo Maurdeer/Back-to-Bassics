@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Threading;
+
 [DisallowMultipleComponent]
 public class BattlePawn : Conductable
 {
@@ -15,6 +17,7 @@ public class BattlePawn : Conductable
     protected PawnSprite _pawnSprite;
     protected ParticleSystem _paperShredBurst;
     protected ParticleSystem _staggerVFX;
+    public PawnSprite PawnSprite => _pawnSprite;
 
     [Header("Battle Pawn Data")]
     [SerializeField] protected int _currHP;
@@ -22,19 +25,19 @@ public class BattlePawn : Conductable
     public int MaxHP => _data.HP;
 
     #region BattlePawn Boolean States
-    public bool IsDead { get; private set; }
-    public bool IsStaggered { get; private set; }
+    public bool IsDead { get; protected set; }
+    public bool IsStaggered { get; protected set; }
     #endregion
 
     // events
-    [SerializeField] private UnityEvent onPawnDefeat;
+    [SerializeField] protected UnityEvent onPawnDefeat;
     public event Action OnPawnDeath;
     public event Action OnEnterBattle;
     public event Action OnExitBattle;
     public event Action OnDamage;
 
     // Extra
-    private Coroutine selfStaggerInstance;
+    protected Coroutine selfStaggerInstance;
 
     #region Unity Messages
     protected virtual void Awake()
@@ -43,19 +46,13 @@ public class BattlePawn : Conductable
         _pawnAnimator = GetComponent<Animator>();
         _pawnSprite = GetComponentInChildren<PawnSprite>();
         _paperShredBurst = GameObject.Find("ShreddedPaperParticles").GetComponent<ParticleSystem>();
-        _staggerVFX = GameObject.Find("StaggerVFX").GetComponent<ParticleSystem>();
+        _staggerVFX = transform.Find("StaggerVFX")?.GetComponent<ParticleSystem>();
     }
     #endregion
     #region Modification Methods
     public virtual void Damage(int amount)
     {
         if (IsDead) return;
-        // Could make this more variable
-        if (amount > 0)
-        {
-            _paperShredBurst?.Play();
-            _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
-        }
         _currHP -= amount;
         UIManager.Instance.UpdateHP(this);
         OnDamage?.Invoke();
@@ -74,11 +71,9 @@ public class BattlePawn : Conductable
     }
     public virtual void Heal(int amount)
     {
-        if (_currHP < MaxHP)
-        {
-            _currHP += amount;
-            UIManager.Instance.UpdateHP(this);
-        }
+        _currHP += amount;
+        if (_currHP > MaxHP) _currHP = MaxHP;
+        UIManager.Instance.UpdateHP(this);
     }
     public virtual void Stagger()
     {
@@ -103,6 +98,7 @@ public class BattlePawn : Conductable
     public virtual void ApplyStatusAilment<SA>() 
         where SA : StatusAilment
     {
+        if (gameObject.GetComponent<SA>() != null) return;
         gameObject.AddComponent<SA>();
     }
     #endregion
@@ -123,9 +119,10 @@ public class BattlePawn : Conductable
         OnExitBattle?.Invoke();
     }
     #region BattlePawn Messages
-    protected virtual void OnStagger()
+    protected virtual List<Coroutine> OnStagger()
     {
         // TODO: Things that occur on battle pawn stagger
+        return null;
     }
     protected virtual void OnDeath()
     {
@@ -139,7 +136,11 @@ public class BattlePawn : Conductable
     protected virtual IEnumerator StaggerSelf(float duration)
     {
         IsStaggered = true;
-        OnStagger();
+        List<Coroutine> completionThreads = OnStagger();
+        foreach(Coroutine thread in completionThreads)
+        {
+            yield return thread;
+        }
         _pawnSprite.Animator.Play("stagger");
         _staggerVFX?.Play();
         // TODO: Notify BattleManager to broadcast this BattlePawn's stagger

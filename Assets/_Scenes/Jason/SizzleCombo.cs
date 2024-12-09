@@ -14,7 +14,7 @@ public class SizzleCombo : Combo
 
     public override void InBattle()
     {
-        BattleManager.Instance.Enemy.ApplyStatusAilment<BurnAliiment>(); //aliiment
+        BattleManager.Instance.Enemy.ApplyStatusAilment<BurnAilment>(); //ailment
         BattleManager.Instance.Enemy.Damage(damage);
     }
     public override void InTraversal()

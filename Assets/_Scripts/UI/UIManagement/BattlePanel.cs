@@ -67,6 +67,14 @@ public partial class UIManager
         _enemyHpBar.fillAmount = (float)pawn.HP / pawn.Data.HP;
         _enemyHpText.text = $"{pawn.HP}/{pawn.Data.HP}";
     }
+    public void SetPlayerHealthBarOnFire()
+    {
+        _playerHpBar.SetOnFire();
+    }
+    public void ExtinguishPlayerHealthBarOnFire()
+    {
+        _playerHpBar.ExstinguishFire();
+    }
     public void UpdateComboMeter(ComboManager manager)
     {
         _comboGaugeBar.UpdateGauge(manager.CurrComboMeterAmount, manager.MaxComboMeterAmount);

@@ -1,34 +1,60 @@
 ﻿title: bassics_intro_1
 tags:
 ---
-<<setView "BassicsDialogueBubble">>
+<<setView "BassicsManual">>
+<<setCamera "BassicsCam">>
 Bassics: You're finally awake.  
 Bassics: Does the poncho fit well?
+Bassics: ...Good. I was worried that it would be a bit big.
 Bassics: ...You're curious about the mountain?
 Bassics: That's a long journey ahead of you.
 Bassics: You can't go up there without being a little prepared.
 Bassics: Find yourself something to fight with, then come back to me. 
+<<setCamera "PonchoCam">>
 ===
 title: bassics_intro_2
 tags:
 ---
-<<setView "BassicsDialogueBubble">>
+<<setView "BassicsManual">>
+<<setCamera "BassicsCam">>
 Bassics: Find yourself something to fight with.
 Bassics: Then come back to me.
+<<setCamera "PonchoCam">>
+===
+title: bassics_intro_2.1
+tags:
+---
+<<setView "BassicsManual">>
+<<setCamera "BassicsCam">>
+Bassics: Hey! Don't go that far.
+<<move "PlayerPoncho" "SafeLocation">>
+<<setCamera "PonchoCam">>
+Bassics: It's dangerous out there.
+===
+title: bassics_intro_3
+tags:
+---
+<<setView "BassicsManual">>
+<<setCamera "BassicsCam">>
+Bassics: ...I see you've found a weapon.
+Bassics: You've made your determination clear. 
+Bassics: Very well then! Prepare to learn the bassics!
 ===
 title: bassics_proud
 tags:
 ---
-<<setView "BassicsDialogueBubble">>
+<<setView "BassicsManual">>
+<<setCamera "BassicsCam">>
 Bassics: Ooof.
 Bassics: You've fought well dear poncho!
 Bassics: Maybe you could even beat...
 Bassics: Nevermind, the forest awaits you!
+<<setCamera "PonchoCam">>
 ===
 title: bassics_intro_cutscene
 tags:
 ---
-<<setView "BassicsDialogueBubble">>
+<<setView "BassicsAuto">>
 Bassics: That should do for now.
 Bassics: But you can't go out there until I know you are ready.
 Bassics: Prove to me you can hold your own!
