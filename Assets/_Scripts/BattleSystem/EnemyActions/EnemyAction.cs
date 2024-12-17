@@ -14,7 +14,7 @@ public abstract class EnemyAction : Conductable
 
     // Very Hacky But is very useful
     [HideInInspector] public float timelineDurationInBeats;
-    private void Awake()
+    protected virtual void Awake()
     {
         IsActive = false;
         parentPawn = GetComponentInParent<EnemyBattlePawn>();

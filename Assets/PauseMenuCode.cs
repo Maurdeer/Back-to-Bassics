@@ -5,10 +5,7 @@ using static GameStateMachine;
 
 public class PauseMenuCode : MonoBehaviour
 {
-    public static bool GamePaused = false;
-
     public GameObject pauseMenuPanel;
-
     public void TogglePause()
     {
         if (GameManager.Instance.GSM.IsOnState<Pause>())

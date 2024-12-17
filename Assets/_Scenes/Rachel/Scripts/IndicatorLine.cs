@@ -33,7 +33,6 @@ public class IndicatorLine : Conductable
         }
         catch (Exception e)
         {
-            Debug.LogError(e);
             Destroy(gameObject);
         }
         
