@@ -33,6 +33,7 @@ public class TorchPuzzleManager : MonoBehaviour
         if (!complete)
         {
             complete = true;
+            onComplete.Invoke();
             StartCoroutine(MoveObstacleDown()); // Start moving the obstacle
         }
     }
@@ -49,12 +50,10 @@ public class TorchPuzzleManager : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null; // Wait until the next frame
         }
-
         // Ensure it reaches the final position
         obstacle.transform.position = endPosition;
         //TurnOffTorches();
         //complete = false; // Reset complete if you want to allow the puzzle to be re-triggered later
-        onComplete.Invoke();
     }
 
     private void TurnOffTorches()
