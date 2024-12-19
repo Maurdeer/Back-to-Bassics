@@ -33,16 +33,21 @@ public class BattleManager : Singleton<BattleManager>
     {
         IsBattleActive = false;
         Conductor.Instance.StopConducting();
+        GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
         Player.ExitBattle();
         Enemy.ExitBattle();
         // Instead of directly to world traversal, need a win screen of some kind
-        GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
     }
     private IEnumerator IntializeBattle()
     {
         GameManager.Instance.PC.DisableControl();
         yield return PlayerEngageCurrentEnemy();
         yield return Enemy.PlayIntroCutscene();
+
+        // Reset Player Health and Combo
+        Player.Heal(Player.MaxHP);
+        Player.ComboManager.CurrComboMeterAmount = 0;
+
         Player.EnterBattle();
         Enemy.EnterBattle();
         AudioManager.Instance.SetAmbienceVolume(0.1f);

@@ -1,7 +1,120 @@
-﻿title: small_fry
+﻿title: smallfry_intro_1
 tags:
 ---
-<<setView "SmallFryDialogueBubble">>
-Small Fry: What's with that look?
-Small Fry: Never seen a shrimp fry rice?
+<<setView "SmallFryManual">>
+<<setCamera "SmallFryCam">>
+Small Fry: Haaa... Haa...
+Small Fry: I'm so dizzy...
+Small Fry: ...What am I doing? Why, I'm trying to cook!
+Small Fry: I saw a fire near the shore, and I shrimply had to try it for myself!
+Small Fry: With this, I'm sure my fried rice will become truly perfect!
+Small Fry: But all this rock moving is really tiring...
+Small Fry: Do you mind helping me out?
+<<setCamera "PonchoCam">>
+===
+title: smallfry_intro_2
+tags: 
+---
+<<setView "SmallFryManual">>
+<<setCamera "SmallFryCam">>
+Small Fry: Whew... I still need to catch my breath...
+Small Fry: Hey! Help me out here!
+Small Fry: If you do, I'll give you a taste of the best rice around!
+<<setCamera "PonchoCam">>
+===
+title: smallfry_intro_2.1
+tags:
+---
+<<setView "SmallFryManual">>
+<<setCamera "SmallFryCam">>
+Small Fry: ...You need a weapon?
+Small Fry: I'll find you one then! I may be a chef, but I know a thing or two about danger!
+Small Fry: Just as soon as you help me move that rock over there.
+<<setCamera "PonchoCam">>
+===
+title: smallfry_intro_3
+tags:
+---
+<<setView "SmallFryManual">>
+<<setCamera "SmallFryCam">>
+Small Fry: Hmmmm... I'm not sure what's wrong.
+Small Fry: A fire should have started by now...
+Small Fry: ...A weapon? Right!
+Small Fry: Here you go! A fine stick for a helpful guy!
+<<teleport "Interactable" "StickTarget">>
+<<setCamera "PonchoCam">>
+===
+title: smallfry_intro_3.1
+tags:
+---
+<<setView "SmallFryManual">>
+<<setCamera "SmallFryCam">>
+Small Fry: Hmmmm... I'm not sure what's wrong.
+Small Fry: A fire should have started by now...
+<<setCamera "PonchoCam">>
+===
+title: small_fry_1
+tags:
+---
+<<teleport "SmallFryPawn" "SmallFryTPLocation">>
+<<setView "SmallFryAuto">>
+<<setCamera "SmallFryCam">>
+<<move "SmallFryPawn" "SmallFryDialogue1Location">>
+Small Fry: NOOOO!!! MY RICE!!!!
+<<setView "SmallFryManual">>
+Small Fry: I wasn't finished with that!
+Small Fry: My glorious recipe! Two years worth of work! Down the drain!
+Small Fry: It was almost perfect!
+Small Fry: I suppose it's my fault...
+Small Fry: I shouldn't have left such delectable food unattended!
+Small Fry: But now that you've eaten my recipe...
+Small Fry: What do you thinK?
+Small Fry: Isn't it...
+Small Fry: Shrimply the best?
+Small Fry: One-in-a-krillion?
+Small Fry: The best shrimp fried rice you've ever had?
+Small Fry: ...It was dry?
+Small Fry: Dry?
+Small Fry: DRY.
+Small Fry: Hahaha. You think you know better than me?
+Small Fry: You're trying to tell ME how to do MY job?
+Small Fry: You IDIOT SANDWICH! I'd like to see you fry some rice!
+Small Fry: I'M GOING TO KRILL YOU!
+<<setCamera "PonchoCam">>
+===
+title: small_fry_2
+tags:
+---
+<<setView "SmallFryManual">>
+<<setCamera "SmallFryCam">>
+Small Fry: Wow... I feel dizzy...
+Small Fry: That fired rice really energized you...
+Small Fry: So really, I'm the winner here...heh.
+Small Fry: Haha! I'm the best!
+<<setCamera "PonchoCam">>
+===
+title: small_fry_3
+tags:
+---
+<<teleport "SmallFryPawn" "SmallFryTPLocation2">>
+<<setView "SmallFryManual">>
+<<setCamera "SmallFryCam">>
+<<move "SmallFryPawn" "SmallFryDialogue1Location2">>
+Small Fry: Can't get through?
+Small Fry: Hmmm. Seems like you don't really know how to cook after all!
+Small Fry: But as master, I'll teach you a little trick. 
+Small Fry: If you try swinging your stick around South, West, South, East.
+Small Fry: Then you can set those sticks on fire and get through!
+Small Fry: ...Or set them on fire by spinning really fast, but who would do that?
+<<setCamera "PonchoCam">>
+===
+title: small_fry_4
+tags:
+---
+<<setView "SmallFryManual">>
+<<setCamera "SmallFryCam">>
+Small Fry: Try swinging your stick around South, West, South, East.
+Small Fry: That's sure to get you through!
+Small Fry: My years of experience don't lie!
+<<setCamera "PonchoCam">>
 ===

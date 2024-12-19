@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "35fdd531-2ca0-4604-b101-fe7c27b2b32a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -504,6 +513,28 @@
                     "action": "Block",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1da12096-d37e-4944-a0b2-339aca9d09d4",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a6710f2b-2f0d-4499-bb67-32525e347503",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -955,6 +986,17 @@
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4db7d7dd-8a33-4f0b-b86b-26a71aa9924c",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -963,7 +1005,7 @@
             "id": "e323619d-706f-4146-b3fa-8f350ac52f9a",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Pause",
                     "type": "Button",
                     "id": "372c559b-f4cd-456f-90c2-6b78fc47e9dd",
                     "expectedControlType": "Button",
@@ -976,11 +1018,22 @@
                 {
                     "name": "",
                     "id": "c4d28e2b-971c-4242-93c1-6fcdf8bbd7d5",
-                    "path": "",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "groups": "Keyboard",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4bdd065f-dfec-4e4a-937c-0f6359c4ebce",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -991,7 +1044,7 @@
             "id": "b6af71bc-c0c7-4c46-8433-38691815f5fd",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Advance",
                     "type": "Button",
                     "id": "45550d4e-d452-4798-b095-01b1aa4e972e",
                     "expectedControlType": "Button",
@@ -1004,11 +1057,22 @@
                 {
                     "name": "",
                     "id": "0046fb09-b103-4373-ad00-55578a37d217",
-                    "path": "",
+                    "path": "<Keyboard>/anyKey",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "groups": "Keyboard",
+                    "action": "Advance",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46e5a3c0-6102-4805-b51a-0d605c44f1c9",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Advance",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1019,7 +1083,7 @@
             "id": "3a8a9b0a-6a3d-4038-aa60-9fc600c34509",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Skip",
                     "type": "Button",
                     "id": "daee6296-fd93-430b-8bba-b101fab15951",
                     "expectedControlType": "Button",
@@ -1032,11 +1096,22 @@
                 {
                     "name": "",
                     "id": "6cd15cd0-c332-4720-8bce-7a5553f7cab2",
-                    "path": "",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "groups": "Keyboard",
+                    "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11bf87ba-5295-4376-a4aa-978858440fe8",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Skip",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

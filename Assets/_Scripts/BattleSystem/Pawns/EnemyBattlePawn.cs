@@ -7,32 +7,38 @@ using Cinemachine;
 using System.Collections;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using FMOD.Studio;
+using Unity.VisualScripting;
+using FMODUnity;
 
 /// <summary>
 /// Manipulate by an external class, not within the class!!
 /// </summary>
 public class EnemyBattlePawn : BattlePawn, IAttackReceiver
 {
-    [field: Header("Enemy References")]
+    [field: Header("Required Enemy References")]
     [field: SerializeField] public EnemyStateMachine esm { get; private set; }
     [field: SerializeField] public PositionStateMachine psm { get; private set; }
     //[SerializeField] private ParticleSystem _particleSystem;
     [field: SerializeField] public Transform targetFightingLocation { get; private set; }
     [field: SerializeField] public CinemachineVirtualCamera battleCam { get; private set; }
+    [SerializeField] private GameObject FloatingTextPrefab;
     //reference to director for stagger implementation
     public EnemyBattlePawnData EnemyData => (EnemyBattlePawnData)Data;
     private Dictionary<Type, List<EnemyAction>> _enemyActions = new Dictionary<Type, List<EnemyAction>>();
-    // Events
-    public event Action OnEnemyStaggerEvent;
-    public TimelineAsset IntroCutscene;
-    public TimelineAsset OutroCutscene;
-    
+
+    [field: Header("Events")]
+    [SerializeField] public event Action OnEnemyStaggerEvent;
+    [field: SerializeField] public TimelineAsset IntroCutscene { get; private set; }
+    [field: SerializeField] public TimelineAsset OutroCutscene { get; private set; }
+
     public int currentStaggerHealth { get; set; }
     public int maxStaggerHealth;
     public bool interruptable; // Staggers interrupt attacks, rather than occurring at end of attack
 
     // References
     private PlayableDirector _director;
+    private EventInstance voiceByteInstance;
     public PlayableDirector Director => _director;
     protected override void Awake()
     { 
@@ -59,6 +65,11 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" must have a PlayableDirector");
             return;
         }
+        if (FloatingTextPrefab == null)
+        {
+            Debug.LogError($"Enemy Battle Pawn \"{Data.name}\" must have a FloatingText Prefab!");
+            return;
+        }
         currentStaggerHealth = EnemyData.StaggerHealth;
         maxStaggerHealth = currentStaggerHealth;
 
@@ -68,6 +79,11 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
                 currentStaggerHealth = maxStaggerHealth;
             }
         };
+        if (!EnemyData.voiceByte.IsNull)
+        {
+            voiceByteInstance = RuntimeManager.CreateInstance(EnemyData.voiceByte);
+        }
+        
         base.Awake();
     }
     public EA GetEnemyAction<EA>(int idx = 0) where EA : EnemyAction
@@ -114,7 +130,6 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         currentStaggerHealth -= staggerDamage;
         if (currentStaggerHealth <= 0) {
             if (interruptable) {
-                Debug.Log("Regular Stagger");
                 Stagger();
                 currentStaggerHealth = maxStaggerHealth;
             }
@@ -126,11 +141,18 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     }
     private IEnumerator Cutscene()
     {
-        _director.playableAsset = IntroCutscene;
-        _director.timeUpdateMode = DirectorUpdateMode.GameTime;
-        _director.Play();
-        _director.playableGraph.GetRootPlayable(0).SetSpeed(1);
-        yield return new WaitUntil(() => _director.state != PlayState.Playing);
+        if (IntroCutscene == null)
+        {
+            yield return null;
+        }
+        else
+        {
+            _director.playableAsset = IntroCutscene;
+            _director.timeUpdateMode = DirectorUpdateMode.GameTime;
+            _director.Play();
+            _director.playableGraph.GetRootPlayable(0).SetSpeed(1);
+            yield return new WaitUntil(() => _director.state != PlayState.Playing);
+        } 
     }
     #region IAttackReceiver Methods
     public virtual bool ReceiveAttackRequest(IAttackRequester requester)
@@ -146,8 +168,21 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     #region BattlePawn Overrides
     public override void Damage(int amount)
     {
+        if (IsDead) return;
+        //Debug.Log($"Damage received: {amount}");
+        if (amount != 0)
+        {
+            ShowFloatingText(amount);
+
+        }
         amount = esm.CurrState.OnDamage(amount);
-        base.Damage(amount);  
+        // Could make this more variable
+        if (amount > 0)
+        {
+            _paperShredBurst?.Play();
+            _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
+        }
+        base.Damage(amount);
     }
     //public override void Lurch(float amount)
     //{
@@ -156,16 +191,23 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //    base.Lurch(amount);
     //}
 
-    protected override void OnStagger()
+    void ShowFloatingText(int amount)
     {
-        if (esm.IsOnState<Dead>()) return;
+        // Debug.Log($"Instantiating Floating Text with amount: {amount}");
+        Vector3 randomPosition = transform.position + new Vector3(UnityEngine.Random.Range(-2f, 2f), UnityEngine.Random.Range(4f, 5f), -1f);
+        var go = Instantiate(FloatingTextPrefab, randomPosition, Quaternion.identity, transform);
+        go.GetComponent<TextMesh>().text = amount.ToString();
+    }
+    protected override List<Coroutine> OnStagger()
+    {
+        if (esm.IsOnState<Dead>()) return null;
         base.OnStagger();
         // Staggered Animation (Paper Crumple)
         psm.Transition<Center>();
         esm.Transition<Stagger>();
         _director.Stop();
         OnEnemyStaggerEvent?.Invoke();
-        StopAllEnemyActions();
+        return StopAllEnemyActions();
         //_particleSystem?.Play();
     }
     protected override void OnUnstagger()
@@ -183,15 +225,18 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         StopAllEnemyActions();
         //_particleSystem?.Stop();
     }
-    protected void StopAllEnemyActions()
+    protected List<Coroutine> StopAllEnemyActions()
     {
+        List<Coroutine> stopActionThreads = new List<Coroutine>();
         foreach (List<EnemyAction> list in _enemyActions.Values)
         {
             foreach (EnemyAction action in list)
             {
-                action.StopAction();
+                stopActionThreads.Add(action.StopAction());
             }
         }
+
+        return stopActionThreads;
     }
     // This could get used or not, was intended for random choices :p
     public void OnActionComplete()
@@ -202,4 +247,16 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
        esm.Transition<Idle>();
     }
     #endregion
+
+    public void VoiceByte()
+    {
+        if (voiceByteInstance.IsUnityNull()) return;
+
+        PLAYBACK_STATE playbackState;
+        voiceByteInstance.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+        {
+            voiceByteInstance.start();
+        }
+    }
 }

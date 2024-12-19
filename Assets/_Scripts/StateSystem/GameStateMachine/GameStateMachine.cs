@@ -7,7 +7,7 @@ public partial class GameStateMachine : StateMachine<GameStateMachine, GameState
 {
     protected override void SetInitialState()
     {
-        CurrInput.PonchoCam = GameManager.Instance.PC.GetComponentInChildren<CinemachineVirtualCamera>();
+        CurrInput.PonchoCam = GameObject.Find("PonchoCam")?.GetComponent<CinemachineVirtualCamera>();
         BattleManager.Instance.Player = GameManager.Instance.PC.GetComponent<PlayerBattlePawn>();
         Transition<WorldTraversal>();
     }

@@ -14,6 +14,7 @@ public class DialogueManager : Singleton<DialogueManager>
     private DialogueViewBase activeDialogueView; // Current active dialogue view
     public bool IsDialogueRunning => customDialogueRunner.IsDialogueRunning;
     private EventInstance voiceByteInstance;
+    private CinemachineVirtualCamera initialVirtualCam;
 
     private void Awake()
     {
@@ -42,29 +43,39 @@ public class DialogueManager : Singleton<DialogueManager>
 
         // Set up the view switching command handler
         customDialogueRunner.AddCommandHandler<string>("setView", SetDialogueView);
+        customDialogueRunner.AddCommandHandler<string>("setCamera", SetCamera);
+        customDialogueRunner.AddCommandHandler<GameObject, GameObject>("move", MoveToLocation);
+        customDialogueRunner.AddCommandHandler<GameObject, GameObject, float>("teleport", TeleportToLocation);
+        customDialogueRunner.AddCommandHandler<string, int>("zoom", CameraAdjustment);
+        customDialogueRunner.AddCommandHandler<GameObject, string>("play", PlayAnimation);
         voiceByteInstance = AudioManager.Instance.CreateInstance(FMODEvents.Instance.bassicsBlub);
     }
 
     public void RunDialogueNode(string node)
     {
         // Add soon when you can interface dialogue
-        //if (GameManager.Instance.GSM.IsOnState<GameStateMachine.WorldTraversal>())
-        //{
-        //    GameManager.Instance.GSM.Transition<GameStateMachine.Dialogue>();
-        //}
+        if (GameManager.Instance.GSM.IsOnState<GameStateMachine.WorldTraversal>())
+        {
+            GameManager.Instance.GSM.Transition<GameStateMachine.Dialogue>();
+        }
         if (customDialogueRunner.IsDialogueRunning)
         {
             customDialogueRunner.Stop();
         }
         customDialogueRunner.StartDialogue(node);
-        //return customDialogueRunner.IsDialogueRunning;
+        StartCoroutine(OnDialogueComplete());
     }
 
-    public void OnDialogueComplete()
+    private IEnumerator OnDialogueComplete()
     {
+        yield return new WaitUntil(() => !customDialogueRunner.IsDialogueRunning);
         if (GameManager.Instance.GSM.IsOnState<GameStateMachine.Dialogue>())
         {
             GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
+        }
+        if (initialVirtualCam != null)
+        {
+            CameraConfigure.Instance.SwitchToCamera(initialVirtualCam);
         }
     }
 
@@ -109,6 +120,61 @@ public class DialogueManager : Singleton<DialogueManager>
 
         // Required for the IEnumerator return type, even if we aren't waiting for anything
         yield break;
+    }
+
+    public IEnumerator PlayAnimation(GameObject pawn, string animation)
+    {
+        // TODO: Import Unity Animation, add animators to necessary targets, and play animations from Yarn Spinner at appropriate times.
+        yield break;
+    }
+
+    public IEnumerator SetCamera(string cameraName)
+    {
+        if (initialVirtualCam != null) initialVirtualCam = CameraConfigure.Instance.CurrentVirtualCamera;
+        CinemachineVirtualCamera camera = GameObject.Find(cameraName).GetComponent<CinemachineVirtualCamera>();
+        if (camera == null)
+        {
+            Debug.LogWarning($"No camera found for: {cameraName}");
+            yield break;
+        }
+        CameraConfigure.Instance.SwitchToCamera(camera);
+        yield break;
+    }
+
+    // Function that can be called in yarn files to move TraversalPawns around to set locations.
+    public IEnumerator MoveToLocation(GameObject pawn, GameObject targetLocation)
+    {
+        TraversalPawn traversal = pawn.GetComponent<TraversalPawn>();
+        if (traversal == null) {
+            Debug.LogWarning($"{pawn.name} is not a Traversal Pawn and cannot move");
+        }
+        if (targetLocation == null) {
+            Debug.LogWarning($"{targetLocation.name} does not exist and cannot be moved towards.");
+        }
+        traversal.MoveToDestination(targetLocation.transform.position);
+        yield break;
+    }
+
+    // Function that can be used to immediately move gameobjects away
+    public IEnumerator TeleportToLocation(GameObject pawn, GameObject targetLocation, float delay = 0f)
+    {
+        yield return new WaitForSeconds(delay);
+        if (targetLocation == null) {
+            Debug.LogWarning($"{targetLocation.name} does not exist and cannot be teleported to.");
+        }
+        pawn.transform.position = targetLocation.transform.position;
+    }
+
+    // Function that allows for Camera Zom in or out
+    // THis does not actually work as is right now; it will accurately change the current FOV but that has no impact on the actual zoom of the camera.
+    public IEnumerator CameraAdjustment(string cameraName, int zoomFactor) {
+        CinemachineVirtualCamera camera = GameObject.Find(cameraName).GetComponent<CinemachineVirtualCamera>();
+        if (camera == null)
+        {
+            Debug.LogWarning($"No camera found for: {cameraName}");
+            yield break;
+        }
+        camera.m_Lens.FieldOfView += zoomFactor;
     }
 
     // This method displays the actual dialogue line using the active view

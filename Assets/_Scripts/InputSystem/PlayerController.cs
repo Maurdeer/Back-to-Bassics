@@ -17,11 +17,15 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         _battlepawn = GetComponent<PlayerBattlePawn>();
         _traversalpawn = GetComponent<PlayerTraversalPawn>();
 
+        // Reset Player Input
+        _playerinput.actions = new PlayerInputActions().asset;
+
         // Input Battle Actions
         _playerinput.SwitchCurrentActionMap("PlayerBattlePawn");
         _playerinput.actions["Dodge"].performed += OnDodge;
         _playerinput.actions["Jump"].performed += OnDodge;
         _playerinput.actions["Slash"].performed += OnBattleSlash;
+        _playerinput.actions["Pause"].performed += OnPauseAction;
 
         // Input World Traversal Actions
         // This might just have to keep updating on fixed update tbh
@@ -31,8 +35,8 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         _playerinput.actions["Pause"].performed += OnPauseAction;
 
         // Input UI
-        //_playerinput.SwitchCurrentActionMap("UI");
-
+        _playerinput.SwitchCurrentActionMap("UI");
+        _playerinput.actions["Pause"].performed += OnPauseAction;
         // Input Dialogue
         //_playerinput.SwitchCurrentActionMap("Dialogue");
 

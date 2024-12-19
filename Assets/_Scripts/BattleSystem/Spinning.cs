@@ -13,6 +13,7 @@ public class Spinning : MonoBehaviour
     private float halfMaxSpeed;
     private bool fakeOut;
     private Quaternion initialRotation;
+    private bool finishSpinning = false;
 
     private void Start()
     {
@@ -33,8 +34,20 @@ public class Spinning : MonoBehaviour
         {
             speedUp = maxSpeed;
         }
-        Quaternion rotateTo = transform.rotation * Quaternion.AngleAxis((ccw ? -1 : 1) * 90, Vector3.up);
+        // Modifying this portion in order to rotate by z
+        // Changing from Vector3.up to Vector3.Forward
+        Quaternion rotateTo = Quaternion.identity;
+        if (!finishSpinning) {
+            rotateTo = (transform.rotation) * Quaternion.AngleAxis((ccw ? -1 : 1) * 90, Vector3.forward);
+        } else {
+            speedUp *= 2;
+        }
         transform.rotation = Quaternion.Lerp(transform.rotation, rotateTo, Time.deltaTime * speedUp);
+        if (finishSpinning && Quaternion.Angle(transform.rotation, Quaternion.identity) < 1f) {
+            transform.rotation = Quaternion.identity;
+            speed = 0;
+            finishSpinning = false;
+        }
         // Fake out attack
         if (fakeOut)
         {
@@ -72,5 +85,15 @@ public class Spinning : MonoBehaviour
         initialRotation = transform.rotation;
         speedUp = newSpeedUp;
         ccw = !ccw;
+    }
+
+    public void Finish() {
+        finishSpinning = true;
+    }
+    // Done for TurboTop to reset everything back to the way it was...
+    // Probably not the best implementation, but M4 go brrrrr
+    public void Reset() {
+        speed = 0;
+        finishSpinning = false;
     }
 }

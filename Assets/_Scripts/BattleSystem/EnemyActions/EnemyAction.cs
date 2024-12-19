@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -10,7 +11,10 @@ public abstract class EnemyAction : Conductable
     protected EnemyBattlePawn parentPawn;
     protected PawnSprite parentPawnSprite;
     public bool IsActive { get; protected set; }
-    private void Awake()
+
+    // Very Hacky But is very useful
+    [HideInInspector] public float timelineDurationInBeats;
+    protected virtual void Awake()
     {
         IsActive = false;
         parentPawn = GetComponentInParent<EnemyBattlePawn>();
@@ -21,21 +25,22 @@ public abstract class EnemyAction : Conductable
             return;
         }
         parentPawn.AddEnemyAction(this);
-        parentPawn.OnEnemyStaggerEvent += StopAction;
         //Debug.Log($"Enemy Action \"{gameObject.name}\" is type: {GetType()}");
     }
     public void StartAction()
     {
+        if (IsActive) return;
         IsActive = true;
         Enable();
         OnStartAction();
     }
-    public void StopAction()
+    public Coroutine StopAction()
     {
+        if (!IsActive) return null;
         IsActive = false;
         Disable();
-        OnStopAction();
+        return OnStopAction();
     }
     protected virtual void OnStartAction() { }
-    protected virtual void OnStopAction() { }
+    protected virtual Coroutine OnStopAction() { return null; }
 }

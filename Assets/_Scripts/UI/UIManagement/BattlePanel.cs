@@ -13,12 +13,10 @@ public partial class UIManager
     [SerializeField] private TextMeshProUGUI beatTracker;
     [SerializeField] private TextMeshProUGUI centerText;
     [SerializeField] private Animator battlePanelAnimator;
-    [SerializeField] private Image _playerHpBar;
-    [SerializeField] private TextMeshProUGUI _playerHpText;
+    [SerializeField] private HealthBar _playerHpBar;
     [SerializeField] private Image _enemyHpBar;
     [SerializeField] private TextMeshProUGUI _enemyHpText;
-    [SerializeField] private Image _comboMeterBar;
-    [SerializeField] private TextMeshProUGUI _comboMeterText;
+    [SerializeField] private ComboGaugeBar _comboGaugeBar;
     public ComboDisplay ComboDisplay;
     int parryCount;
     int blockCount;
@@ -61,8 +59,7 @@ public partial class UIManager
         if (pawn is PlayerBattlePawn)
         {
             // Player Pawn
-            _playerHpBar.fillAmount = (float)pawn.HP / pawn.Data.HP;
-            _playerHpText.text = $"{pawn.HP}/{pawn.Data.HP}";
+            _playerHpBar.UpdateHealth(pawn.HP, pawn.Data.HP);
             return;
         }
 
@@ -70,11 +67,17 @@ public partial class UIManager
         _enemyHpBar.fillAmount = (float)pawn.HP / pawn.Data.HP;
         _enemyHpText.text = $"{pawn.HP}/{pawn.Data.HP}";
     }
+    public void SetPlayerHealthBarOnFire()
+    {
+        _playerHpBar.SetOnFire();
+    }
+    public void ExtinguishPlayerHealthBarOnFire()
+    {
+        _playerHpBar.ExstinguishFire();
+    }
     public void UpdateComboMeter(ComboManager manager)
     {
-        // Combo Meter Update
-        _comboMeterBar.fillAmount = (float)manager.CurrComboMeterAmount / manager.MaxComboMeterAmount;
-        _comboMeterText.text = $"{manager.CurrComboMeterAmount}/{manager.MaxComboMeterAmount}";
+        _comboGaugeBar.UpdateGauge(manager.CurrComboMeterAmount, manager.MaxComboMeterAmount);
     }
     public void ShowBattlePanel()
     {
