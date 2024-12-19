@@ -148,6 +148,9 @@ public class DialogueManager : Singleton<DialogueManager>
         if (traversal == null) {
             Debug.LogWarning($"{pawn.name} is not a Traversal Pawn and cannot move");
         }
+        if (targetLocation == null) {
+            Debug.LogWarning($"{targetLocation.name} does not exist and cannot be moved towards.");
+        }
         traversal.MoveToDestination(targetLocation.transform.position);
         yield break;
     }
@@ -156,6 +159,9 @@ public class DialogueManager : Singleton<DialogueManager>
     public IEnumerator TeleportToLocation(GameObject pawn, GameObject targetLocation, float delay = 0f)
     {
         yield return new WaitForSeconds(delay);
+        if (targetLocation == null) {
+            Debug.LogWarning($"{targetLocation.name} does not exist and cannot be teleported to.");
+        }
         pawn.transform.position = targetLocation.transform.position;
     }
 
