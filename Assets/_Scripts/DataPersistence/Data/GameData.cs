@@ -11,7 +11,7 @@ public class GameData
     public SerializableDictionary<string, Combo> combosUnlocked;
 
     // Example Event Bools
-    public bool introCutscenePlayed;
+    public bool[] truthArray;
 
     //example of how to save a dictionary; potentially useful for collectibles
     //and even which bosses have been defeated. Make sure to give each a unique
@@ -29,7 +29,7 @@ public class GameData
         combosUnlocked = new SerializableDictionary<string, Combo>();
 
         // Event Pools Set
-        introCutscenePlayed = false;
+        truthArray = new bool[7];
 
         //Debug.Log("New save created.");
     }

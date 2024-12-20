@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using System;
 
 public class DataPersistenceManager : MonoBehaviour
 {
@@ -160,7 +161,14 @@ public class DataPersistenceManager : MonoBehaviour
         // pass the data to other scripts so they can update it
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
-            dataPersistenceObj.SaveData(gameData);
+            try
+            {
+                dataPersistenceObj.SaveData(gameData);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"Failed to save data: {e}");
+            }
         }
 
         // timestamp the data so we know when it was last saved
