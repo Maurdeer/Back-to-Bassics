@@ -73,6 +73,16 @@ public class DataPersistenceManager : MonoBehaviour
         this.selectedProfileId = newProfileId;
         // load the game, which will use that profile, updating our game data accordingly
         //LoadGame();
+
+        // load any saved data from a file via the datahandler
+        this.gameData = dataHandler.Load(selectedProfileId);
+
+        // if it can't find any data to load, don't continue
+        if (this.gameData == null)
+        {
+            Debug.Log("No game data found! A New Game needs to be started before data can be loaded.");
+            return;
+        }
     }
 
     public void DeleteProfileData(string profileId)
@@ -87,7 +97,7 @@ public class DataPersistenceManager : MonoBehaviour
 
     private void InitializeSelectedProfileId()
     {
-        this.selectedProfileId = dataHandler.GetMostRecentlyUpdatedProfileId();
+        ChangeSelectedProfileId(dataHandler.GetMostRecentlyUpdatedProfileId());
         if (overrideSelectedProfileId)
         {
             this.selectedProfileId = testSelectedProfileId;
@@ -99,6 +109,10 @@ public class DataPersistenceManager : MonoBehaviour
     {
         Debug.Log("Initializing new game...");
         this.gameData = new GameData();
+
+        // timestamp the data so we know when it was last saved
+        gameData.lastUpdated = System.DateTime.Now.ToBinary();
+
         dataHandler.Save(gameData, selectedProfileId);
     }
 
@@ -109,22 +123,6 @@ public class DataPersistenceManager : MonoBehaviour
         // return right away if data persistence is disabled
         if (disableDataPersistence)
         {
-            return;
-        }
-
-        // load any saved data from a file via the datahandler
-        this.gameData = dataHandler.Load(selectedProfileId);
-
-        // start a new game if the data is null and we're configured to initialize data for debugging purposes
-        if (this.gameData == null && initializeDataIfNull)
-        {
-            NewGame();
-        }
-
-        // if it can't find any data to load, don't continue
-        if (this.gameData == null)
-        {
-            Debug.Log("No game data found! A New Game needs to be started before data can be loaded.");
             return;
         }
 
