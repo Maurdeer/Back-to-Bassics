@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 
 
-public class SceneManagement : MonoBehaviour
+public class SceneManagement : Singleton<SceneManagement>, IDataPersistence
 {
     [SerializeField] private UnityEvent OnFirstTime;
     private static bool reloaded;
@@ -19,8 +19,12 @@ public class SceneManagement : MonoBehaviour
     private bool fadeIn = false;
     private bool fadeOut = false;
     [Range(1, 20f)] public float timeToFade = 10f;
+    private string transitionToSceneName;
 
-
+    private void Awake()
+    {
+        InitializeSingleton();
+    }
 
     private void Start()
     {
@@ -56,6 +60,7 @@ public class SceneManagement : MonoBehaviour
         loadSceneParent.SetActive(true);
         loadText.SetText("");
         loadingScreen.SetActive(false);
+
         StartCoroutine(LoadSceneAsynchronously(scene));
     }
     public void ReloadCurrentScene()
@@ -122,5 +127,15 @@ public class SceneManagement : MonoBehaviour
             yield return new WaitForSeconds(1 / (speed * 10));
         }
         
+    }
+
+    public void LoadData(GameData data)
+    {
+        // Nothing needs to happen here
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.currentScene = SceneManager.GetActiveScene().name;
     }
 }

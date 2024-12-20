@@ -33,7 +33,7 @@ public class SaveSlotsMenu : Menu
         if (isLoadingGame)
         {
             DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
-            SaveGameAndLoadScene();
+            DataPersistenceManager.instance.LoadGame();
         }
         // if new game, but the save slot has data
         else if (saveSlot.hasData)
@@ -44,7 +44,7 @@ public class SaveSlotsMenu : Menu
                 () => {
                     DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
                     DataPersistenceManager.instance.NewGame();
-                    SaveGameAndLoadScene();
+                    DataPersistenceManager.instance.LoadGame();
                 },
                 // function to execute if we select 'cancel'
                 () => {
@@ -57,16 +57,8 @@ public class SaveSlotsMenu : Menu
         {
             DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
             DataPersistenceManager.instance.NewGame();
-            SaveGameAndLoadScene();
+            DataPersistenceManager.instance.LoadGame();
         }
-    }
-
-    private void SaveGameAndLoadScene()
-    {
-        // save the game anytime before loading a new scene
-        DataPersistenceManager.instance.SaveGame();
-        // load the scene
-        SceneManager.LoadSceneAsync("Sophie");
     }
 
     public void OnClearClicked(SaveSlot saveSlot)

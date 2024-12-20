@@ -10,6 +10,9 @@ public class GameData
     public SerializableDictionary<string, Vector3> playerPosition;
     public SerializableDictionary<string, Combo> combosUnlocked;
 
+    // Example Event Bools
+    public bool introCutscenePlayed;
+
     //example of how to save a dictionary; potentially useful for collectibles
     //and even which bosses have been defeated. Make sure to give each a unique
     //string to use as its ID/key in the dictionary
@@ -24,6 +27,9 @@ public class GameData
         playerPosition.Add("", new Vector3(330.4f, 20, 79.89f));
         currentScene = "BaselineShores";
         combosUnlocked = new SerializableDictionary<string, Combo>();
+
+        // Event Pools Set
+        introCutscenePlayed = false;
 
         //Debug.Log("New save created.");
     }

@@ -10,7 +10,7 @@ public class Autosave : MonoBehaviour
     {
         if (other.gameObject.name == "PlayerPoncho")
         {
-            data.SaveGame();
+            DataPersistenceManager.instance.SaveGame();
             Debug.Log("Auto-saved Game");
         }
     }

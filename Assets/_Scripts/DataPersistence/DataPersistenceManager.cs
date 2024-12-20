@@ -61,9 +61,9 @@ public class DataPersistenceManager : MonoBehaviour
         // to ensure that all the data is saved.
         // Using OnSceneUnloaded doesn't work because it tries to save
         // after all the objects in the scene are destroyed
-
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
-        LoadGame();
+        if (scene.name == "Title") return;
+        UpdatePersistentData();
 
     }
 
@@ -72,7 +72,7 @@ public class DataPersistenceManager : MonoBehaviour
         // update the profile to use for saving and loading
         this.selectedProfileId = newProfileId;
         // load the game, which will use that profile, updating our game data accordingly
-        LoadGame();
+        //LoadGame();
     }
 
     public void DeleteProfileData(string profileId)
@@ -82,7 +82,7 @@ public class DataPersistenceManager : MonoBehaviour
         // initialize the selected profile id
         InitializeSelectedProfileId();
         // reload the game so that our data matches the newly selected profile id
-        LoadGame();
+        //LoadGame();
     }
 
     private void InitializeSelectedProfileId()
@@ -99,9 +99,7 @@ public class DataPersistenceManager : MonoBehaviour
     {
         Debug.Log("Initializing new game...");
         this.gameData = new GameData();
-        //this.dataPersistenceObjects = FindAllDataPersistenceObjects();
-        //this.gameData = new GameData();
-        //SaveGame();
+        dataHandler.Save(gameData, selectedProfileId);
     }
 
     public void LoadGame()
@@ -130,10 +128,18 @@ public class DataPersistenceManager : MonoBehaviour
             return;
         }
 
-        // push the data to all other scripts that need it
+        // Change scenes to fully load data
+        SceneManagement.Instance.ChangeScene(this.gameData.currentScene);
+    }
+
+    public void UpdatePersistentData()
+    {
+        // Should be loaded hopefully
+        if (this.gameData == null) return;
+
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
-            dataPersistenceObj.LoadData(gameData);
+            dataPersistenceObj.LoadData(this.gameData);
         }
     }
 
