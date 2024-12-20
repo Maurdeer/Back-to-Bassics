@@ -63,32 +63,71 @@ public class M4Start : MonoBehaviour
         {  
             return;
         }
+        Debug.Log("M4 Start Ready to Go!");
         if (truthArray[0]) {
-            GameObject.Find("IntroCutscene")?.SetActive(false);
+            Debug.Log("Stick confirmed to have been picked up!");
+
+            GameObject introCutscene = GameObject.Find("IntroCutscene");
+            if (introCutscene != null) {
+                Debug.Log("Found the intro cutscene and disabling it!");
+                introCutscene.SetActive(true);
+            } else {
+                Debug.Log("Didn't find an intro cutscene. That's strange...");
+            }
             // GameManager.Instance.GSM.Transition<GameStateMachie.WorldTraversal>();
-            GameObject.Find("Interactable").transform.position = poncho.transform.position;
-            GameObject.Find("Fry1")?.SetActive(false);
-            GameObject.Find("BassicsIntro (1)")?.SetActive(false);
+            GameObject stick = GameObject.Find("Interactable");
+            if (stick != null) {
+                Debug.Log("Found the stick!");
+                stick.transform.position = poncho.transform.position;
+            } else {
+                Debug.Log("Didn't find the stick. That's strange...");
+            }
+            GameObject fry1 = GameObject.Find("Fry1");
+            if (fry1 != null) {
+                Debug.Log("Found Small Fry's first set of quests! Disabled them.");
+                fry1.SetActive(false);
+            } else {
+                Debug.Log("Couldn't find Small Fry's first set of things. That's strange...");
+            }
+            GameObject bassicsScene1 = GameObject.Find("BassicsIntro (1)");
+            GameObject bassicsScene2 = GameObject.Find("BassicsIntro (3)");
+            Debug.Log(bassicsScene1.name);
+            Debug.Log(bassicsScene2.name);
+            if (bassicsScene1 != null) {
+                Debug.Log("Found the first scene and disabled it!");
+                bassicsScene1.SetActive(false);
+            }
+            if (bassicsScene2 != null) {
+                Debug.Log("Found the second scene and enabled it!");
+                bassicsScene2.SetActive(true);
+            }
         }
         if (truthArray[1]) {
-            GameObject bassicsFightTrigger = GameObject.Find("BassicIntroTriggers");
+            GameObject bassicsFightTrigger = GameObject.Find("BassicIntro Triggers");
             if (bassicsFightTrigger)
             {
                 bassicsFightTrigger?.SetActive(false);
                 poncho.transform.position = bassicsFightTrigger.transform.position;
             }
             
-            GameObject.Find("BassicsPostFight(1)")?.SetActive(true);
+            GameObject.Find("BassicsPostFight (1)")?.SetActive(true);
         }
         if (truthArray[2]) {
             poncho.GetComponent<ComboManager>().AddCombo(sizzle);
+            GameObject smallFry = GameObject.Find("SmallFryPawn");
+            smallFry.transform.position = GameObject.Find("SmallFryDialogue1Location").transform.position;
+            GameObject.Find("SmallFryPost")?.SetActive(true);
+            GameObject.Find("FriedRice")?.SetActive(false);
         }
         if (truthArray[3]) {
             GameObject.Find("TorchPuzzleCube")?.SetActive(false);
             GameObject.Find("SmallFryPost2")?.SetActive(false);
+            GameObject.Find("TurboTopPawn")?.SetActive(true);
         }
         if (truthArray[4]) {
-            GameObject.Find("TurboChillTop")?.SetActive(true);
+            GameObject.Find("TurboTopPost")?.SetActive(true);
+            GameObject.Find("KingSalPawn")?.SetActive(true);
+            GameObject.Find("FightKingSal")?.SetActive(true);
         }
     }
 

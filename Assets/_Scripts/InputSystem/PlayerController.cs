@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     private PlayerTraversalPawn _traversalpawn;
     public PlayerTraversalPawn TraversalPawn => _traversalpawn;
     public PlayerBattlePawn BattlePawn => _battlepawn;
-    private static bool initialized = false;
     private void Awake()
     {
         // References
@@ -17,8 +16,8 @@ public class PlayerController : MonoBehaviour
         _battlepawn = GetComponent<PlayerBattlePawn>();
         _traversalpawn = GetComponent<PlayerTraversalPawn>();
 
-        if (initialized) return;
-        initialized = true;
+        // Reset Player Input
+        _playerinput.actions = new PlayerInputActions().asset;
 
         // Input Battle Actions
         _playerinput.SwitchCurrentActionMap("PlayerBattlePawn");
