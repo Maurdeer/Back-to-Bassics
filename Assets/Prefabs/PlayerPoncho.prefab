@@ -5268,8 +5268,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6292754098507325895}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.014805576, y: -0.00000002979906, z: -4.412406e-10, w: 0.9998904}
-  m_LocalPosition: {x: 0, y: 4.66, z: -10.299999}
+  m_LocalRotation: {x: -0.014805608, y: -0.00000002979906, z: -4.4124157e-10, w: 0.9998904}
+  m_LocalPosition: {x: 0, y: 4.66, z: -10.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5448,6 +5448,7 @@ MonoBehaviour:
   onPawnDefeat:
     m_PersistentCalls:
       m_Calls: []
+  deflectsTillHeal: 3
   _weaponData: {fileID: 11400000, guid: a9fbfbcb976477e4e84d47f073bf3134, type: 2}
   playerCollider: {fileID: 636007206941130363}
   _particleSystem: {fileID: 0}
@@ -5498,6 +5499,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b542af4cb3d789248a18d81e2ef257c6, type: 2}
   - {fileID: 11400000, guid: 7af5c42f6ee476740a2dafd0cf604e58, type: 2}
   - {fileID: 11400000, guid: db9c929ae56fb9a47ac8a0518aba715d, type: 2}
+  - {fileID: 11400000, guid: 1a9831ecf4da4744f8378c77bb8f9723, type: 2}
   maxcomboMeterAmount: 100
   currComboMeterAmount: 0
 --- !u!54 &2940784301700036450

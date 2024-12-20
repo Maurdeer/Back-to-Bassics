@@ -45,7 +45,9 @@ public class DialogueManager : Singleton<DialogueManager>
         customDialogueRunner.AddCommandHandler<string>("setView", SetDialogueView);
         customDialogueRunner.AddCommandHandler<string>("setCamera", SetCamera);
         customDialogueRunner.AddCommandHandler<GameObject, GameObject>("move", MoveToLocation);
+        customDialogueRunner.AddCommandHandler<GameObject, GameObject, float>("teleport", TeleportToLocation);
         customDialogueRunner.AddCommandHandler<string, int>("zoom", CameraAdjustment);
+        customDialogueRunner.AddCommandHandler<GameObject, string>("play", PlayAnimation);
         voiceByteInstance = AudioManager.Instance.CreateInstance(FMODEvents.Instance.bassicsBlub);
     }
 
@@ -120,6 +122,12 @@ public class DialogueManager : Singleton<DialogueManager>
         yield break;
     }
 
+    public IEnumerator PlayAnimation(GameObject pawn, string animation)
+    {
+        // TODO: Import Unity Animation, add animators to necessary targets, and play animations from Yarn Spinner at appropriate times.
+        yield break;
+    }
+
     public IEnumerator SetCamera(string cameraName)
     {
         if (initialVirtualCam != null) initialVirtualCam = CameraConfigure.Instance.CurrentVirtualCamera;
@@ -142,6 +150,13 @@ public class DialogueManager : Singleton<DialogueManager>
         }
         traversal.MoveToDestination(targetLocation.transform.position);
         yield break;
+    }
+
+    // Function that can be used to immediately move gameobjects away
+    public IEnumerator TeleportToLocation(GameObject pawn, GameObject targetLocation, float delay = 0f)
+    {
+        yield return new WaitForSeconds(delay);
+        pawn.transform.position = targetLocation.transform.position;
     }
 
     // Function that allows for Camera Zom in or out

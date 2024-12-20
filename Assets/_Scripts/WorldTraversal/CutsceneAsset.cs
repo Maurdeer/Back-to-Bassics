@@ -17,6 +17,10 @@ public class CutsceneAsset : MonoBehaviour
 
     public void PlayCutscene()
     {
+        if (!gameObject.activeSelf)
+        {
+            return;
+        }
         director.Play();
         GameManager.Instance.GSM.Transition<Cutscene>();
         StartCoroutine(ReturnToPreviousState());

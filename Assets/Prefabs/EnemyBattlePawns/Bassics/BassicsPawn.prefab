@@ -219,12 +219,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2206843577511116136}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.1692891, y: -0.686543, z: -0.6865429, w: -0.1692891}
-  m_LocalPosition: {x: -0.04, y: -0.73, z: 0}
-  m_LocalScale: {x: 0.8167186, y: 0.81671876, z: 0.81671876}
+  m_LocalRotation: {x: 0.7071068, y: 0.000000029802322, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: 0.05038452, y: 4.2, z: 0}
+  m_LocalScale: {x: 0.7629329, y: 0.7629329, z: 0.7629329}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 77583932639807965}
+  m_Father: {fileID: 9019337329852402836}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!198 &2279942658573060325
 ParticleSystem:
@@ -5652,6 +5652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1be2721dfd1b374484d3c108adbbfc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timelineDurationInBeats: 0
   projectilePoolAmount: 20
   animationName: music
   performAnimationBeforeFire: 0
@@ -5693,6 +5694,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7452205812704544573}
   - {fileID: 4709798405054347741}
   - {fileID: 7307596539520488816}
   - {fileID: 2764501296762806243}
@@ -5718,7 +5720,19 @@ MonoBehaviour:
   _currHP: 0
   onPawnDefeat:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 8599476617418693142}
@@ -5880,7 +5894,31 @@ MonoBehaviour:
   useDistanceOverBlock: 1
   firstTimeStagger:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5642884798581242194}
+        m_TargetAssemblyTypeName: BattlePawn, Assembly-CSharp
+        m_MethodName: StaggerFor
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 12
+          m_StringArgument: bassics-battle_first-stagger
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
+        m_MethodName: RunDialogueNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 12
+          m_StringArgument: bassics-battle_first-stagger
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!210 &8694757469888071649
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -11045,7 +11083,7 @@ Transform:
   m_GameObject: {fileID: 6162650432267723590}
   serializedVersion: 2
   m_LocalRotation: {x: 0.14116044, y: -0, z: -0, w: 0.9899868}
-  m_LocalPosition: {x: 0, y: 7.6000004, z: -9.459999}
+  m_LocalPosition: {x: 0, y: 8.33, z: -10.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11253,8 +11291,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc54e90959d96154aab26c1f86371b61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timelineDurationInBeats: 0
   slashAnimationName: slash
   inverseFacingDirection: 0
+  _staggerDamage: 5
+  prehitBeats: 0.5
+  posthitBeats: 0.5
   indicatorSpark: {fileID: 4678491436342915619}
 --- !u!1 &7555501292400778520
 GameObject:
@@ -11778,19 +11820,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -6231879579257869752, guid: 47723ec2049420140b1e286e381c40f1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7452205812704544573}
     - targetCorrespondingSourceObject: {fileID: -2803426826614751967, guid: 47723ec2049420140b1e286e381c40f1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7803100024152613913}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 47723ec2049420140b1e286e381c40f1, type: 3}
---- !u!4 &77583932639807965 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -6231879579257869752, guid: 47723ec2049420140b1e286e381c40f1, type: 3}
-  m_PrefabInstance: {fileID: 2922916038550283157}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4593564613022390859 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7552582706839291426, guid: 47723ec2049420140b1e286e381c40f1, type: 3}

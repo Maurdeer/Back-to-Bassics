@@ -19,7 +19,7 @@ public class EnemyActionBehaviour : PlayableBehaviour
             // Debug Error
             return;
         }
-
+        _cachedActionRef.timelineDurationInBeats = (float)playable.GetDuration();
         _cachedActionRef.StartAction();
     }
 }
