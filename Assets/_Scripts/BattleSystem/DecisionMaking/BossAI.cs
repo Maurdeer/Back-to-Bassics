@@ -48,7 +48,9 @@ public class BossAI : Conductable
         };
         _enemyBattlePawn.OnEnemyStaggerEvent += delegate
         {
-            if (!staggeredBefore)
+            // (Joseph 1 / 11 / 2025) Modifying this to account for Bassic's behavior in the tutorial
+            // I want him to repeat his dialogue if he 
+            if (_currentStage == 0 && !staggeredBefore)
             {
                 staggeredBefore = true;
                 firstTimeStagger.Invoke();
@@ -70,6 +72,10 @@ public class BossAI : Conductable
             OnFirstBeat();
         }
         PhaseChange();
+
+        // (Joseph 1 / 11 / 2025) Was running into a stack overflow issue when calling firstStagger through checking enemy stages and making sure it was the first one.
+        // I'm going to try to make it so it's only called every beat, and if 
+        staggeredBefore = false;
 
         if (_enemyBattlePawn.Director.state == PlayState.Playing 
             || _enemyBattlePawn.IsDead || _enemyBattlePawn.IsStaggered || DialogueManager.Instance.IsDialogueRunning) return;

@@ -60,6 +60,7 @@ tags:
 <<setView "SmallFryAuto">>
 <<setCamera "SmallFryCam">>
 <<move "SmallFryPawn" "SmallFryDialogue1Location">>
+<<move "PlayerPoncho" "SmallFryDialogue1PlayerLocation">>
 Small Fry: NOOOO!!! MY RICE!!!!
 <<setView "SmallFryManual">>
 Small Fry: I wasn't finished with that!
@@ -96,6 +97,7 @@ Small Fry: Haha! I'm the best!
 title: small_fry_3
 tags:
 ---
+<<animate "SmallFryPawn" "idle">>
 <<teleport "SmallFryPawn" "SmallFryTPLocation2">>
 <<setView "SmallFryManual">>
 <<setCamera "SmallFryCam">>
