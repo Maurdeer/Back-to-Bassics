@@ -30,4 +30,10 @@ public class SummonSubortinate : EnemyAction
         StopAction();
     }
 
+    protected override void OnDestroy()
+    {
+        leftInstance?.Kill();
+        rightInstance?.Kill();
+    }
+
 }
