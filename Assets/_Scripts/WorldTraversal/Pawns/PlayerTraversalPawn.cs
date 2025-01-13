@@ -31,6 +31,9 @@ public class PlayerTraversalPawn : TraversalPawn
         if (attacking) return;
         _pawnSprite.FaceDirection(new Vector3(slashDirection.x, 0, 0));
         _pawnAnimator.Play($"Slash{DirectionHelper.GetVectorDirection(slashDirection)}");
+        // (Joseph 1 / 13 / 25) Made a visual change to make the slash vfx follow the slash direction. I think it's neat personally, can remove.
+        // Weird angle bugs where rotation of vfxgraph_slash is affected by something, making it not 90. I'm not sure what.
+        _slashEffect.transform.eulerAngles = new Vector3(0, (slashDirection.x == 0? _slashEffect.transform.eulerAngles.y : 90 * slashDirection.x), 90 * slashDirection.y); 
         _slashEffect.Play();
         AudioManager.Instance.PlayOnShotSound(slashSoundReference, transform.position);
         // Set the Slash Direction

@@ -106,11 +106,13 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 _pawnAnimator.StopPlayback();
                 _pawnAnimator.Play($"Slash{DirectionHelper.GetVectorDirection(direction)}", -1, 0);
                 _pawnAnimator.speed = contextState.spb;
-                _slashEffect.Play();
                 // Set the Slash Direction
                 AudioManager.Instance.PlayOnShotSound(WeaponData.slashAirSound, transform.position);
                 SlashDirection = direction;
                 SlashDirection.Normalize();
+
+                _slashEffect.transform.eulerAngles = new Vector3(0, (SlashDirection.x == 0? _slashEffect.transform.eulerAngles.y : 90 * SlashDirection.x), 90 * SlashDirection.y);
+                _slashEffect.Play();
        
                 attacking = true;
                 deflectionWindow = true;
