@@ -116,11 +116,14 @@ tags:
 <<move "SmallFryPawn" "SmallFryDialogue1Location2">>
 Small Fry: Can't get through?
 Small Fry: Hmmm. Seems like you don't really know how to cook after all!
-Small Fry: But as master, I'll teach you a little trick. 
+<<wait 1>>
+<<animate "SmallFryPawn" "enterbattle">>
+Small Fry: But as master, I'll teach you a little trick.
 <<setCamera "FireStickCam">>
 <<setView "FireStickManual">>
 Small Fry: If you try swinging your stick around South, West, South, East.
 Small Fry: Then you can set those sticks on fire and get through!
+<<animate "SmallFryPawn" "idle">>
 Small Fry: ...Or set them on fire by spinning really fast, but who would do that?
 <<setCamera "PonchoCam">>
 ===
@@ -131,6 +134,27 @@ tags:
 <<setCamera "SmallFryCam">>
 Small Fry: Try swinging your stick around South, West, South, East.
 Small Fry: That's sure to get you through!
+<<animate "SmallFryPawn" "enterbattle">>
+<<wait 1>>
 Small Fry: My years of experience don't lie!
+<<animate "SmallFryPawn" "idle">>
 <<setCamera "PonchoCam">>
+===
+title: small_fry_stg1
+tags:
+---
+<<setView "SmallFryAuto">>
+Small Fry: I'M GONNA KRILL YOU!
+===
+title: small_fry_stg2
+tags:
+---
+<<setView "SmallFryAuto">>
+Small Fry: YOU THINK YOU'RE BETTER THAN ME?
+===
+title: small_fry_stg3
+tags:
+---
+<<setView "SmallFryAuto">>
+Small Fry: THAT DOES IT! YOU'RE FIN-ISHED!
 ===

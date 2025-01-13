@@ -167,7 +167,7 @@ public class BattlePawn : Conductable
         _pawnSprite.Animator.Play("stagger");
         _staggerVFX?.Play();
         // TODO: Notify BattleManager to broadcast this BattlePawn's stagger
-        Debug.Log("StaggeredFor" + duration);
+        // Debug.Log("StaggeredFor" + duration);
         
         yield return new WaitForSeconds(duration);
         _staggerVFX?.Stop();

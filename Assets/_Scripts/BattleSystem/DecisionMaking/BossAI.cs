@@ -13,7 +13,7 @@ public class BossAI : Conductable
     [SerializeField] private EnemyStageData[] _enemyStages;
     [SerializeField] private bool useDistanceOverBlock;
     private int _lastAction; // prevents using same attack twice in a row
-    private int _currentStage;
+    protected int _currentStage;
     public event System.Action OnEnemyStageTransition;
     private int _beatsPerDecision;
 
@@ -104,7 +104,7 @@ public class BossAI : Conductable
 
         _decisionTime = _beatsPerDecision;
     }
-    protected void PhaseChange()
+    protected virtual void PhaseChange()
     {
         if (_currentStage + 1 < _enemyStages.Length &&
             _enemyStages[_currentStage + 1].HealthThreshold >= (float)_enemyBattlePawn.HP / _enemyBattlePawn.MaxHP)

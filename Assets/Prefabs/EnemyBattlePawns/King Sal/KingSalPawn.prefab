@@ -6026,9 +6026,9 @@ GameObject:
   - component: {fileID: 423797268895823708}
   - component: {fileID: 9015069501282787790}
   - component: {fileID: 1839872098697242518}
-  - component: {fileID: 6455533350248220364}
   - component: {fileID: 5485853761180358699}
   - component: {fileID: 6364750070387360343}
+  - component: {fileID: 5723573942927688174}
   m_Layer: 0
   m_Name: KingSalPawn
   m_TagString: Untagged
@@ -6117,26 +6117,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a33d29cff20dafb47b289da5d51c0eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6455533350248220364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4999856665150672825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56a4a76b7b4021a41bd0832c08f8b851, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemyStages:
-  - {fileID: 11400000, guid: f32537f6245ee2142808d3d6a12f93f0, type: 2}
-  - {fileID: 11400000, guid: de673c80f373a5048a38bd50f0b28924, type: 2}
-  - {fileID: 11400000, guid: 6536b85a9eed23c42afa7e06179937ce, type: 2}
-  useDistanceOverBlock: 0
-  firstTimeStagger:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!210 &5485853761180358699
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -6176,6 +6156,28 @@ PlayableDirector:
     value: {fileID: 8953189125102002042}
   m_ExposedReferences:
     m_References: []
+--- !u!114 &5723573942927688174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4999856665150672825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c30c8326580834f45aa354daf398f528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyStages:
+  - {fileID: 11400000, guid: f32537f6245ee2142808d3d6a12f93f0, type: 2}
+  - {fileID: 11400000, guid: de673c80f373a5048a38bd50f0b28924, type: 2}
+  - {fileID: 11400000, guid: 6536b85a9eed23c42afa7e06179937ce, type: 2}
+  useDistanceOverBlock: 0
+  firstTimeStagger:
+    m_PersistentCalls:
+      m_Calls: []
+  regularSubordinateSummon: {fileID: 7998147405068883441}
+  fastSubordinateSummon: {fileID: 570840864812863741}
 --- !u!1 &5132814882481283367
 GameObject:
   m_ObjectHideFlags: 0
