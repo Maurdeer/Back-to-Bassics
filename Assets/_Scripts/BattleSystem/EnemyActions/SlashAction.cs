@@ -49,7 +49,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         // Slash Initialization
         _currNode = node;
         parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
-        parentPawnSprite.FaceDirection(new Vector3((inverseFacingDirection ? 1 : -1) * _currNode.slashVector.x, 0, -1));
+        parentPawnSprite.FaceDirection(new Vector3((inverseFacingDirection ? -1 : 1) * _currNode.slashVector.x, 0, -1));
         parentPawnSprite.Animator.SetFloat("x_slashDir", _currNode.slashVector.x);
         parentPawnSprite.Animator.SetFloat("y_slashDir", _currNode.slashVector.y);
         float syncedAnimationTime = (_currNode.slashLengthInBeats - prehitBeats - posthitBeats) * Conductor.Instance.spb;
@@ -107,7 +107,7 @@ public class SlashAction : EnemyAction, IAttackRequester
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         if (player == null
-            || !DirectionHelper.MaxAngleBetweenVectors(-_currNode.slashVector, player.SlashDirection, 5f))
+            || !DirectionHelper.MaxAngleBetweenVectors(_currNode.slashVector, player.SlashDirection, 5f))
             return false;
 
         // (TEMP) DEBUG UI Tracker -------
