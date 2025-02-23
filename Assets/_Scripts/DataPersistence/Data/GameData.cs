@@ -19,12 +19,42 @@ public class GameData
     //public SerializableDictionary<string, bool> bossesDefeated;
     //public SerializableDictionary<string, bool> cutscenesPlayed;
 
+    // Achievements
+    public bool[] wreckconQuests;
+
     //values defined in this constructor are the values each save starts with
+    public GameData(GameDataIntialize initialData)
+    {
+        switch (initialData)
+        {
+            case GameDataIntialize.Wreckcon:
+                Wreckcon();
+                break;
+            default:
+                Default();
+                break;
+        }
+    }
     public GameData()
+    {
+        Default();
+    }
+    private void Wreckcon()
+    {
+        playerPosition = new SerializableDictionary<string, Vector3>();
+        playerPosition.Add("test", new Vector3(829.789978f, 100.028999f, 238.210007f));
+        currentScene = "test";
+        combosUnlocked = new SerializableDictionary<string, Combo>();
+
+        // Event Pools Set
+        truthArray = new bool[7];
+        wreckconQuests = new bool[16];
+    }
+    private void Default()
     {
         //Set player position at the start of the game
         playerPosition = new SerializableDictionary<string, Vector3>();
-        playerPosition.Add("", new Vector3(330.4f, 20, 79.89f));
+        playerPosition.Add("BaselineShores", new Vector3(330.4f, 20, 79.89f));
         currentScene = "BaselineShores";
         combosUnlocked = new SerializableDictionary<string, Combo>();
 
@@ -33,4 +63,10 @@ public class GameData
 
         //Debug.Log("New save created.");
     }
+}
+
+public enum GameDataIntialize
+{
+    Default=0,
+    Wreckcon
 }
