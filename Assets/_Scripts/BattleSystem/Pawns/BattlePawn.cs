@@ -38,6 +38,8 @@ public class BattlePawn : Conductable
 
     // Extra
     protected Coroutine selfStaggerInstance;
+    private int _maxRecordedDurationForStagger = 0; //(Joseph 1 / 13 / 25) Attempt at implementing staggerFor better
+    [SerializeField] private GameObject tutComboList; //(Joseph 1 / 13 / 25) Hacky Implementation, will try to fix later
 
     #region Unity Messages
     protected virtual void Awake()
@@ -81,7 +83,15 @@ public class BattlePawn : Conductable
     }
     public virtual void StaggerFor(float duration)
     {
-        if (selfStaggerInstance != null) StopCoroutine(selfStaggerInstance);
+        // (Joseph 1 / 12 / 25) Trying to address the issue of StaggerFor in BossAi being called and being useless
+        // Debug.Log("IsStaggered is " + IsStaggered);
+        // IsStaggered = true;
+        // Debug.Log("selfStaggerInstnace is null: " + (selfStaggerInstance == null));
+        if (selfStaggerInstance != null)  {
+            StopCoroutine(selfStaggerInstance);
+        } // (Joseph 1 / 12 / 25) I'm not sure this line is doing anything.
+        // It doesn't. In the context of the issue we're trying to address, both get called at around the same time and thus selfStaggerInstance is always null.
+        // if (IsStaggered) return; // (Joseph 1 / 12 / 25) This solution doesn't work because normal stagger is called first, meaning the second doesn't get registered.
         selfStaggerInstance = StartCoroutine(StaggerSelf(duration));
     }
     public virtual void UnStagger()
@@ -131,10 +141,23 @@ public class BattlePawn : Conductable
     protected virtual void OnUnstagger()
     {
         // TODO: Things that occur on battle pawn after unstaggering
+        if (tutComboList != null) {
+            _maxRecordedDurationForStagger += 1;
+            if (_maxRecordedDurationForStagger >= 1) {
+                tutComboList.SetActive(false);
+                _maxRecordedDurationForStagger = 0;
+            } 
+        }
+        
     }
     #endregion
     protected virtual IEnumerator StaggerSelf(float duration)
     {
+        // if (duration < _maxRecordedDurationForStagger) yield break;
+        // else {
+        //     Debug.Log("Duration");
+        //     _maxRecordedDurationForStagger = duration;
+        // }
         IsStaggered = true;
         List<Coroutine> completionThreads = OnStagger();
         foreach(Coroutine thread in completionThreads)
@@ -144,6 +167,8 @@ public class BattlePawn : Conductable
         _pawnSprite.Animator.Play("stagger");
         _staggerVFX?.Play();
         // TODO: Notify BattleManager to broadcast this BattlePawn's stagger
+        // Debug.Log("StaggeredFor" + duration);
+        
         yield return new WaitForSeconds(duration);
         _staggerVFX?.Stop();
         _staggerVFX?.Clear();

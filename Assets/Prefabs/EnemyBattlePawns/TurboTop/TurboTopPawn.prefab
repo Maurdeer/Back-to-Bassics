@@ -5427,7 +5427,7 @@ GameObject:
   - component: {fileID: 1246092619428968976}
   - component: {fileID: 4454362323332975206}
   - component: {fileID: 482482412944210382}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PawnCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6199,11 +6199,19 @@ MonoBehaviour:
   onPawnDefeat:
     m_PersistentCalls:
       m_Calls: []
+  tutComboList: {fileID: 0}
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 7955827430294983148}
   <battleCam>k__BackingField: {fileID: 6682162959560621637}
   FloatingTextPrefab: {fileID: 7298091450208674678, guid: 52ed510f10a693c4a80fb35040e3675c, type: 3}
+  <_staggerSFX>k__BackingField:
+    Guid:
+      Data1: 626277483
+      Data2: 1179491428
+      Data3: 1725835428
+      Data4: 1262564516
+    Path: event:/SFX/Combat/Stagger
   <IntroCutscene>k__BackingField: {fileID: 0}
   <OutroCutscene>k__BackingField: {fileID: 0}
   maxStaggerHealth: 0

@@ -13,7 +13,7 @@ public class BossAI : Conductable
     [SerializeField] private EnemyStageData[] _enemyStages;
     [SerializeField] private bool useDistanceOverBlock;
     private int _lastAction; // prevents using same attack twice in a row
-    private int _currentStage;
+    protected int _currentStage;
     public event System.Action OnEnemyStageTransition;
     private int _beatsPerDecision;
 
@@ -48,7 +48,9 @@ public class BossAI : Conductable
         };
         _enemyBattlePawn.OnEnemyStaggerEvent += delegate
         {
-            if (!staggeredBefore)
+            // (Joseph 1 / 11 / 2025) Modifying this to account for Bassic's behavior in the tutorial
+            // I want him to repeat his dialogue if he 
+            if (_currentStage == 0 && !staggeredBefore)
             {
                 staggeredBefore = true;
                 firstTimeStagger.Invoke();
@@ -70,6 +72,10 @@ public class BossAI : Conductable
             OnFirstBeat();
         }
         PhaseChange();
+
+        // (Joseph 1 / 11 / 2025) Was running into a stack overflow issue when calling firstStagger through checking enemy stages and making sure it was the first one.
+        // I'm going to try to make it so it's only called every beat, and if 
+        staggeredBefore = false;
 
         if (_enemyBattlePawn.Director.state == PlayState.Playing 
             || _enemyBattlePawn.IsDead || _enemyBattlePawn.IsStaggered || DialogueManager.Instance.IsDialogueRunning) return;
@@ -98,7 +104,7 @@ public class BossAI : Conductable
 
         _decisionTime = _beatsPerDecision;
     }
-    protected void PhaseChange()
+    protected virtual void PhaseChange()
     {
         if (_currentStage + 1 < _enemyStages.Length &&
             _enemyStages[_currentStage + 1].HealthThreshold >= (float)_enemyBattlePawn.HP / _enemyBattlePawn.MaxHP)

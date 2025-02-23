@@ -43,6 +43,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         // Set up the view switching command handler
         customDialogueRunner.AddCommandHandler<string>("setView", SetDialogueView);
+        customDialogueRunner.AddCommandHandler<GameObject, string>("animate", PlayAnimation);
         customDialogueRunner.AddCommandHandler<string>("setCamera", SetCamera);
         customDialogueRunner.AddCommandHandler<GameObject, GameObject>("move", MoveToLocation);
         customDialogueRunner.AddCommandHandler<GameObject, GameObject, float>("teleport", TeleportToLocation);
@@ -124,7 +125,11 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public IEnumerator PlayAnimation(GameObject pawn, string animation)
     {
-        // TODO: Import Unity Animation, add animators to necessary targets, and play animations from Yarn Spinner at appropriate times.
+        Animator pawnAnimator = pawn.GetComponentInChildren<Animator>();
+        if (pawnAnimator == null) {
+            Debug.LogWarning($"{pawn.name} does not have an animator.");
+        }
+        pawnAnimator.Play(animation);
         yield break;
     }
 

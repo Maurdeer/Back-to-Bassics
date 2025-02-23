@@ -1,3 +1,5 @@
+using FMOD.Studio;
+using FMODUnity;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +28,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //reference to director for stagger implementation
     public EnemyBattlePawnData EnemyData => (EnemyBattlePawnData)Data;
     private Dictionary<Type, List<EnemyAction>> _enemyActions = new Dictionary<Type, List<EnemyAction>>();
+    [field: SerializeField] public EventReference _staggerSFX { get; private set; }
 
     [field: Header("Events")]
     [SerializeField] public event Action OnEnemyStaggerEvent;
@@ -201,6 +204,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     protected override List<Coroutine> OnStagger()
     {
         if (esm.IsOnState<Dead>()) return null;
+        AudioManager.Instance.PlayOnShotSound(_staggerSFX, transform.position);
         base.OnStagger();
         // Staggered Animation (Paper Crumple)
         psm.Transition<Center>();

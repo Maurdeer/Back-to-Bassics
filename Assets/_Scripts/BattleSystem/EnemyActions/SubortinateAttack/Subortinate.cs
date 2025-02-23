@@ -37,7 +37,7 @@ public class Subortinate : Conductable
         
         if (direction == Direction.West)
         {
-            transform.GetChild(0).rotation = Quaternion.Euler(0, 180f, 0);
+            transform.rotation = Quaternion.Euler(0, 180f, 0);
             transform.position = new Vector3(10, 0, 0) + startingPosition;
             facingWest = true;
         }
@@ -49,7 +49,7 @@ public class Subortinate : Conductable
     }
     protected override void OnFullBeat() 
     {
-        if (state == SubortinateState.attack) return;
+        if (state == SubortinateState.attack || state == SubortinateState.dead) return;
         if (currDecisionTime > 0)
         {
             currDecisionTime--;
@@ -109,13 +109,34 @@ public class Subortinate : Conductable
         transform.position = startingPosition;
     }
 
+    public void Kill()
+    {
+        state = SubortinateState.dead;
+        Disable();
+        StartCoroutine(FlyOutAndDestroy(5f, 15f));
+    }
+
+    private IEnumerator FlyOutAndDestroy(float duration, float speed)
+    {
+        _spriteAnimator.Play("dead");
+        while (duration > 0f)
+        {
+            Vector3 newPosition = transform.position + (facingWest ? new Vector3(200, 200, 0) : new Vector3(-200, 200, 0));
+            transform.position = Vector3.MoveTowards(transform.position, newPosition, Time.fixedDeltaTime * speed);
+            yield return new WaitForFixedUpdate();
+            duration -= Time.fixedDeltaTime;
+        }
+        Destroy(gameObject);
+    }
+    
+
     #region HitBox Methods
     private void OnDeflect(IAttackReceiver receiver)
     {
         _spriteAnimator.Play("deflected");
         if (--health <= 0)
         {
-            Destroy(gameObject);
+            Kill();
         }
         else
         {
@@ -152,5 +173,6 @@ public enum SubortinateState
 {
     idle,
     broadcast,
-    attack
+    attack,
+    dead,
 }

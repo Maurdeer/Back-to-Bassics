@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 3945093598045307347}
   - component: {fileID: 895455712876900671}
   - component: {fileID: 3937796734531597402}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5347,7 +5347,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574600789773547606}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.02840552, w: 0.99959654}
+  m_LocalRotation: {x: -0, y: -0, z: 0.028410738, w: 0.9995963}
   m_LocalPosition: {x: 0.65, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5545,7 +5545,7 @@ GameObject:
   - component: {fileID: 2955706682959726331}
   - component: {fileID: 8428997388284587386}
   - component: {fileID: 5391532267913310839}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5865,7 +5865,7 @@ GameObject:
   - component: {fileID: 4423053834010165689}
   - component: {fileID: 1779889187248786745}
   - component: {fileID: 3033051130252744156}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6181,7 +6181,7 @@ GameObject:
   - component: {fileID: 3220503501993213934}
   - component: {fileID: 8288492048749715145}
   - component: {fileID: 128268220735547165}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11184,7 +11184,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3894484940666760500}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.000002488494, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.000005736946, w: 1}
   m_LocalPosition: {x: 0.48, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11326,7 +11326,7 @@ GameObject:
   - component: {fileID: 7285231149191962358}
   - component: {fileID: 2337776521553097344}
   - component: {fileID: 936548144199279572}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SmallFryAuto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11519,7 +11519,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5431806863635908229}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.0000024288886, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.000009357927, w: 1}
   m_LocalPosition: {x: 0.53, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11550,7 +11550,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5651820500523533346}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.044974722, w: 0.9989882}
+  m_LocalRotation: {x: -0, y: -0, z: -0.04497773, w: 0.998988}
   m_LocalPosition: {x: 0.59, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11569,7 +11569,7 @@ GameObject:
   - component: {fileID: 8737510316718671115}
   - component: {fileID: 2327881232655521870}
   - component: {fileID: 5257912433584583688}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PawnCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12274,7 +12274,7 @@ Transform:
   m_GameObject: {fileID: 7458281747463722615}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.4500008, z: -7.119995}
+  m_LocalPosition: {x: 0, y: 3.449997, z: -7.119995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17580,11 +17580,19 @@ MonoBehaviour:
   onPawnDefeat:
     m_PersistentCalls:
       m_Calls: []
+  tutComboList: {fileID: 0}
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 3632154329678698217}
   <battleCam>k__BackingField: {fileID: 530538101871512614}
   FloatingTextPrefab: {fileID: 7298091450208674678, guid: 52ed510f10a693c4a80fb35040e3675c, type: 3}
+  <_staggerSFX>k__BackingField:
+    Guid:
+      Data1: 626277483
+      Data2: 1179491428
+      Data3: 1725835428
+      Data4: 1262564516
+    Path: event:/SFX/Combat/Stagger
   <IntroCutscene>k__BackingField: {fileID: 0}
   <OutroCutscene>k__BackingField: {fileID: 0}
   maxStaggerHealth: 0
@@ -17892,7 +17900,7 @@ GameObject:
   - component: {fileID: 3880106148718307256}
   - component: {fileID: 3207739912805446614}
   - component: {fileID: 6920204683321519840}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SmallFryManual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18297,7 +18305,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5257208858528208257, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000003237032
+      value: 0.0000026914925
       objectReference: {fileID: 0}
     - target: {fileID: -4928855884534424619, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_Layer
@@ -18317,11 +18325,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2377494905487071929, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9860699
+      value: 0.9860688
       objectReference: {fileID: 0}
     - target: {fileID: -2377494905487071929, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.16633154
+      value: -0.16633835
       objectReference: {fileID: 0}
     - target: {fileID: -1186530545774409408, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_Layer
@@ -18341,7 +18349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99937934
+      value: 0.9993787
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.y
@@ -18349,7 +18357,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.03522988
+      value: -0.035246417
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -18365,7 +18373,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1740887091039016810, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.058690038
+      value: 0.058701348
       objectReference: {fileID: 0}
     - target: {fileID: 1740887091039016810, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.y
@@ -18373,7 +18381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1740887091039016810, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.9982763
+      value: -0.99827564
       objectReference: {fileID: 0}
     - target: {fileID: 1789211442912187506, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_Layer
@@ -18509,11 +18517,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7199932529532373612, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.978412
+      value: 0.9784137
       objectReference: {fileID: 0}
     - target: {fileID: 7199932529532373612, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.20666394
+      value: 0.20665589
       objectReference: {fileID: 0}
     - target: {fileID: 7265729947643615892, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_Layer

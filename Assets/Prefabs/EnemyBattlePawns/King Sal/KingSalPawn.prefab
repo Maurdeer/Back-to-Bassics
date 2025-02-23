@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3886064943855278065}
   - component: {fileID: 4197129320404935017}
   - component: {fileID: 7974839970966829192}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: KingSalAuto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 6206087851844270856}
   - component: {fileID: 2301269467052560255}
   - component: {fileID: 7587180699038114239}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: KingSalManual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 8822199693988653823}
   - component: {fileID: 1648442707801486960}
   - component: {fileID: 2344411422914024504}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -437,7 +437,7 @@ GameObject:
   - component: {fileID: 2628161225509723874}
   - component: {fileID: 4052092616328566961}
   - component: {fileID: 7926131458275411074}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5723,7 +5723,7 @@ GameObject:
   - component: {fileID: 7353671042608204633}
   - component: {fileID: 5005113769569473329}
   - component: {fileID: 755624748056228193}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5923,7 +5923,7 @@ GameObject:
   - component: {fileID: 826271787894664604}
   - component: {fileID: 6120272700496931208}
   - component: {fileID: 499221628799686049}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PawnCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6026,9 +6026,9 @@ GameObject:
   - component: {fileID: 423797268895823708}
   - component: {fileID: 9015069501282787790}
   - component: {fileID: 1839872098697242518}
-  - component: {fileID: 6455533350248220364}
   - component: {fileID: 5485853761180358699}
   - component: {fileID: 6364750070387360343}
+  - component: {fileID: 5723573942927688174}
   m_Layer: 0
   m_Name: KingSalPawn
   m_TagString: Untagged
@@ -6076,11 +6076,19 @@ MonoBehaviour:
   onPawnDefeat:
     m_PersistentCalls:
       m_Calls: []
+  tutComboList: {fileID: 0}
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 1651033693196524078}
   <battleCam>k__BackingField: {fileID: 8437978959896095199}
   FloatingTextPrefab: {fileID: 7298091450208674678, guid: 52ed510f10a693c4a80fb35040e3675c, type: 3}
+  <_staggerSFX>k__BackingField:
+    Guid:
+      Data1: 626277483
+      Data2: 1179491428
+      Data3: 1725835428
+      Data4: 1262564516
+    Path: event:/SFX/Combat/Stagger
   <IntroCutscene>k__BackingField: {fileID: 0}
   <OutroCutscene>k__BackingField: {fileID: 0}
   maxStaggerHealth: 0
@@ -6109,26 +6117,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a33d29cff20dafb47b289da5d51c0eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6455533350248220364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4999856665150672825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56a4a76b7b4021a41bd0832c08f8b851, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemyStages:
-  - {fileID: 11400000, guid: f32537f6245ee2142808d3d6a12f93f0, type: 2}
-  - {fileID: 11400000, guid: de673c80f373a5048a38bd50f0b28924, type: 2}
-  - {fileID: 11400000, guid: 6536b85a9eed23c42afa7e06179937ce, type: 2}
-  useDistanceOverBlock: 0
-  firstTimeStagger:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!210 &5485853761180358699
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -6168,6 +6156,28 @@ PlayableDirector:
     value: {fileID: 8953189125102002042}
   m_ExposedReferences:
     m_References: []
+--- !u!114 &5723573942927688174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4999856665150672825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c30c8326580834f45aa354daf398f528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyStages:
+  - {fileID: 11400000, guid: f32537f6245ee2142808d3d6a12f93f0, type: 2}
+  - {fileID: 11400000, guid: de673c80f373a5048a38bd50f0b28924, type: 2}
+  - {fileID: 11400000, guid: 6536b85a9eed23c42afa7e06179937ce, type: 2}
+  useDistanceOverBlock: 0
+  firstTimeStagger:
+    m_PersistentCalls:
+      m_Calls: []
+  regularSubordinateSummon: {fileID: 7998147405068883441}
+  fastSubordinateSummon: {fileID: 570840864812863741}
 --- !u!1 &5132814882481283367
 GameObject:
   m_ObjectHideFlags: 0
@@ -6215,7 +6225,7 @@ GameObject:
   - component: {fileID: 4480224458005750963}
   - component: {fileID: 8191983433384596757}
   - component: {fileID: 4724343979604893676}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6415,7 +6425,7 @@ Transform:
   m_GameObject: {fileID: 6170113813700144987}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.8500004, z: -9.479996}
+  m_LocalPosition: {x: 0, y: 4.8499985, z: -9.47998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

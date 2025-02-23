@@ -11,23 +11,23 @@ public class PressurePlateTrigger : MonoBehaviour
     [SerializeField] private UnityEvent onPressEvent;
     [SerializeField] private UnityEvent onStayEvent;
     [SerializeField] private UnityEvent onReleaseEvent;
-    [SerializeField] private bool smallFryStone; // Done for making sure the stone is complete 
+    [SerializeField] private GameObject targetObject;
+    private bool pressed; // (Joseph 1 / 13 / 25) Done to resolve an issue where the pressure plate would float
 
 
     private void OnTriggerEnter(Collider other)
     {
-        // Done quickly to check for the stone
-        // TODO: DON'T DO THIS WTF WHY WOULD YOU
-        // crunch...
-        print(other.transform.gameObject.name);
-        if (smallFryStone) {
-            if (other.transform.gameObject.name.Equals("DAROCK")) {
+        // (Joseph 1 / 13 / 25) Modified this function to more appropriately check if a certain game object is required and if so, only depreses upon that gameObject
+        if (targetObject != null) { // If there is a targetObject and the thing that entered the trigger is the targetObject
+            if (other.transform.gameObject == targetObject) {
                 transform.localPosition -= new Vector3(0, pressurePlateDepth, 0);
                 onPressEvent.Invoke();
+                pressed = true;
             }
         } else {
             transform.localPosition -= new Vector3(0, pressurePlateDepth, 0);
             onPressEvent.Invoke();
+            pressed = true;
         }
 
     }
@@ -39,8 +39,11 @@ public class PressurePlateTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        transform.localPosition += new Vector3(0, pressurePlateDepth, 0);
-        onReleaseEvent.Invoke();
+        if (pressed) {
+            transform.localPosition += new Vector3(0, pressurePlateDepth, 0);
+            onReleaseEvent.Invoke();   
+            pressed = false;
+        }
     }
 
 }
