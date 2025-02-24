@@ -10,10 +10,14 @@ public partial class GameStateMachine
         {
             GameManager.Instance.PC.SwitchToUIActions();
             UIManager.Instance.ShowDeathMenuPanel();
+            if (DataPersistenceManager.Instance != null)
+                DataPersistenceManager.Instance.enabled = false;
         }
         public override void Exit(GameStateInput i)
         {
             UIManager.Instance.HideDeathMenuPanel();
+            if (DataPersistenceManager.Instance != null)
+                DataPersistenceManager.Instance.enabled = true;
         }
     }
 }

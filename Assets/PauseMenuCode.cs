@@ -46,4 +46,12 @@ public class PauseMenuCode : MonoBehaviour
         Application.Quit();
         Time.timeScale = 1f;
     }
+    public void SaveGame()
+    {
+
+    }
+    public void LoadGame()
+    {
+
+    }
 }
