@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,7 @@ public class GameData
 
     // Achievements
     public bool[] wreckconQuests;
+    public ulong[] enemyScore;
 
     //values defined in this constructor are the values each save starts with
     public GameData(GameDataIntialize initialData)
@@ -49,6 +51,7 @@ public class GameData
         // Event Pools Set
         truthArray = new bool[7];
         wreckconQuests = new bool[16];
+        enemyScore = new ulong[4];
     }
     private void Default()
     {

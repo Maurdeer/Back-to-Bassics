@@ -11,6 +11,10 @@ public class Autosave : MonoBehaviour
         if (other.gameObject.name == "PlayerPoncho")
         {
             DataPersistenceManager.instance.SaveGame();
+
+            // Change to 
+            // UIManager.Instance.SaveUI.Saving();
+            // UIManager.Instance.SaveUI.SavingComplete();
             Debug.Log("Auto-saved Game");
         }
     }

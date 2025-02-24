@@ -36,24 +36,26 @@ public class DataPersistenceManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(this.gameObject);
 
+        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
+
+        InitializeSelectedProfileId();
+
         if (disableDataPersistence)
         {
             Debug.LogWarning("Data Persistence is currently disabled!");
         }
-
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
-
-        InitializeSelectedProfileId();
     }
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        disableDataPersistence = false;
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        disableDataPersistence = true;
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -106,10 +108,10 @@ public class DataPersistenceManager : MonoBehaviour
         }
     }
 
-    public void NewGame()
+    public void NewGame(GameDataIntialize initialize = GameDataIntialize.Default)
     {
         Debug.Log("Initializing new game...");
-        this.gameData = new GameData();
+        this.gameData = new GameData(initialize);
 
         // timestamp the data so we know when it was last saved
         gameData.lastUpdated = System.DateTime.Now.ToBinary();
