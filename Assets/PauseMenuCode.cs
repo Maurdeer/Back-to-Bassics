@@ -5,7 +5,8 @@ using static GameStateMachine;
 
 public class PauseMenuCode : MonoBehaviour
 {
-    public GameObject pauseMenuPanel;
+    [SerializeField] private Animator m_animator;
+    private Coroutine pausingThread;
     public void TogglePause()
     {
         if (GameManager.Instance.GSM.IsOnState<Pause>())
@@ -19,12 +20,16 @@ public class PauseMenuCode : MonoBehaviour
     }
     private void Pause ()
     {
-        pauseMenuPanel.SetActive(true);
+        m_animator.Play("Appear");
+
+        // Temp and bad!
+        pausingThread = StartCoroutine(TimeBeforePause());
         GameManager.Instance.GSM.Transition<Pause>();
     }
     public void Resume()
     {
-        pauseMenuPanel.SetActive(false);
+        if (pausingThread != null) StopCoroutine(pausingThread);
+        m_animator.Play("Hide");
         if (GameManager.Instance.GSM.PrevState.GetType() == typeof(Battle))
         {
             GameManager.Instance.GSM.Transition<Battle>();
@@ -53,5 +58,10 @@ public class PauseMenuCode : MonoBehaviour
     public void LoadGame()
     {
 
+    }
+    private IEnumerator TimeBeforePause()
+    {
+        yield return new WaitForSeconds(1f);
+        Time.timeScale = 0f;
     }
 }

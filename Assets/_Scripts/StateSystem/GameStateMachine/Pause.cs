@@ -10,7 +10,6 @@ public partial class GameStateMachine
         {
             GameManager.Instance.PC.SwitchToUIActions();
             Conductor.Instance.PauseCondcutor();
-            Time.timeScale = 0f;
         }
         public override void Exit(GameStateInput i)
         {
