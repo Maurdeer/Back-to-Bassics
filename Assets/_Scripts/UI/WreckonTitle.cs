@@ -19,13 +19,13 @@ public class WreckonTitle : MonoBehaviour
             Debug.LogError("Bad Name!");
             return;
         }
-        DataPersistenceManager.instance.ChangeSelectedProfileId(m_saveProfileName);
+        DataPersistenceManager.Instance.ChangeSelectedProfileId(m_saveProfileName);
 
-        if (!DataPersistenceManager.instance.HasGameData())
+        if (!DataPersistenceManager.Instance.HasGameData())
         {
-            DataPersistenceManager.instance.NewGame(GameDataIntialize.Wreckcon);
+            DataPersistenceManager.Instance.NewGame(GameDataIntialize.Wreckcon);
         }
 
-        DataPersistenceManager.instance.LoadGame();
+        DataPersistenceManager.Instance.LoadGame();
     }
 }

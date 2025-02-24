@@ -21,7 +21,7 @@ public class SaveMenu : Menu
 
     private void DisableButtonsDependingOnData()
     {
-        if (!DataPersistenceManager.instance.HasGameData())
+        if (!DataPersistenceManager.Instance.HasGameData())
         {
             continueGameButton.interactable = false;
             loadGameButton.interactable = false;
@@ -30,7 +30,7 @@ public class SaveMenu : Menu
 
     public void OnSaveCurrentProfileClicked()
     {
-        DataPersistenceManager.instance.SaveGame();
+        DataPersistenceManager.Instance.SaveGame();
     }
 
     public void OnNewGameClicked()
@@ -56,7 +56,7 @@ public class SaveMenu : Menu
         DisableMenuButtons();
 
         // save the game anytime before loading a new scene
-        DataPersistenceManager.instance.LoadGame();
+        DataPersistenceManager.Instance.LoadGame();
     }
 
     private void DisableMenuButtons()

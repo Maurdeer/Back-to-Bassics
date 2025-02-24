@@ -9,7 +9,9 @@ public partial class GameStateMachine
         public override void Enter(GameStateInput i)
         {
             GameManager.Instance.PC.SwitchToDialogueActions();
-            DataPersistenceManager.instance.enabled = false;
+
+            if (DataPersistenceManager.Instance != null )
+                DataPersistenceManager.Instance.enabled = false;
         }
         public override void Exit(GameStateInput i)
         {

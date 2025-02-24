@@ -88,11 +88,11 @@ public class ComboManager : MonoBehaviour, IDataPersistence
 
     public void SaveData(GameData data)
     {
-        data.combosUnlocked = combosDict.ToDictionary(pair => pair.Key, pair => pair.Value) as SerializableDictionary<string, Combo>;
+        //data.combosUnlocked = combosDict.ToDictionary(pair => pair.Key, pair => pair.Value) as SerializableDictionary<string, Combo>;
     }
 
     public void LoadData(GameData data)
     {
-        combosDict = data.combosUnlocked.ToDictionary(pair => pair.Key, pair => pair.Value) as SerializableDictionary<string, Combo>;
+        //combosDict = data.combosUnlocked.ToDictionary(pair => pair.Key, pair => pair.Value) as SerializableDictionary<string, Combo>;
     }
 }

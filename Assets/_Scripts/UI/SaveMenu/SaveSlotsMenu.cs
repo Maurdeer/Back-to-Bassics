@@ -32,8 +32,8 @@ public class SaveSlotsMenu : Menu
         // if loading game
         if (isLoadingGame)
         {
-            DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
-            DataPersistenceManager.instance.LoadGame();
+            DataPersistenceManager.Instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
+            DataPersistenceManager.Instance.LoadGame();
         }
         // if new game, but the save slot has data
         else if (saveSlot.hasData)
@@ -42,9 +42,9 @@ public class SaveSlotsMenu : Menu
                 "Starting a New Game with this slot will override the currently saved data. Are you sure?",
                 // function to execute if we select 'yes'
                 () => {
-                    DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
-                    DataPersistenceManager.instance.NewGame();
-                    DataPersistenceManager.instance.LoadGame();
+                    DataPersistenceManager.Instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
+                    DataPersistenceManager.Instance.NewGame();
+                    DataPersistenceManager.Instance.LoadGame();
                 },
                 // function to execute if we select 'cancel'
                 () => {
@@ -55,9 +55,9 @@ public class SaveSlotsMenu : Menu
         // if new game, and the save slot has no data
         else
         {
-            DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
-            DataPersistenceManager.instance.NewGame();
-            DataPersistenceManager.instance.LoadGame();
+            DataPersistenceManager.Instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
+            DataPersistenceManager.Instance.NewGame();
+            DataPersistenceManager.Instance.LoadGame();
         }
     }
 
@@ -69,7 +69,7 @@ public class SaveSlotsMenu : Menu
             "Are you sure you want to delete this saved data?",
             // function to execute if we select 'yes'
             () => {
-                DataPersistenceManager.instance.DeleteProfileData(saveSlot.GetProfileId());
+                DataPersistenceManager.Instance.DeleteProfileData(saveSlot.GetProfileId());
                 ActivateMenu(isLoadingGame);
             },
             // function to execute if we select 'cancel'
@@ -94,7 +94,7 @@ public class SaveSlotsMenu : Menu
         this.isLoadingGame = isLoadingGame;
 
         // load all of the profiles that exist
-        Dictionary<string, GameData> profilesGameData = DataPersistenceManager.instance.GetAllProfilesGameData();
+        Dictionary<string, GameData> profilesGameData = DataPersistenceManager.Instance.GetAllProfilesGameData();
 
         // ensure the back button is enabled when we activate the menu
         backButton.interactable = true;

@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using System;
 
-public class DataPersistenceManager : MonoBehaviour
+public class DataPersistenceManager : Singleton<DataPersistenceManager>
 {
     [Header("Debugging")]
     [SerializeField] private bool disableDataPersistence = false;
@@ -23,17 +23,9 @@ public class DataPersistenceManager : MonoBehaviour
 
     private string selectedProfileId = "";
 
-    public static DataPersistenceManager instance { get; private set; }
-
     private void Awake()
     {
-        if (instance != null)
-        {
-            Debug.Log("Found more than one Data Persistence Manager in the scene. Destroying the newest one.");
-            Destroy(this.gameObject);
-            return;
-        }
-        instance = this;
+        InitializeSingleton();
         DontDestroyOnLoad(this.gameObject);
 
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
