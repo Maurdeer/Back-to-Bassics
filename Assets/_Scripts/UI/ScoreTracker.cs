@@ -36,7 +36,7 @@ public class ScoreTracker : MonoBehaviour
     }
     public void UpdateScore(ulong score)
     {
-        m_scoreText.text = score.ToString("D12");    
+        m_scoreText.text = score.ToString("D10");    
     }
     public void UpdateMultiplier(uint multiplier)
     {

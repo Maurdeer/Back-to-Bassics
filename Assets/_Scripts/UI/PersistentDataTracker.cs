@@ -16,7 +16,7 @@ public class PersistentDataTracker : MonoBehaviour, IDataPersistence
     public void UpdateEnemyScore(int id, ulong score)
     {
         m_enemyScores[id] = score;
-        m_enemyScoreTexts.GetChild(id).GetComponentInChildren<TextMeshProUGUI>().text = score.ToString("D12");
+        m_enemyScoreTexts.GetChild(id).GetComponentInChildren<TextMeshProUGUI>().text = score.ToString("D10");
     }
     public void LoadData(GameData data)
     {
@@ -25,7 +25,7 @@ public class PersistentDataTracker : MonoBehaviour, IDataPersistence
         foreach (Transform enemyScoreText in m_enemyScoreTexts)
         {
             m_enemyScores[i] = data.enemyScore[i];
-            enemyScoreText.GetComponentInChildren<TextMeshProUGUI>().text = data.enemyScore[i].ToString("D12");
+            enemyScoreText.GetComponentInChildren<TextMeshProUGUI>().text = data.enemyScore[i].ToString("D10");
             i++;
         }
     }

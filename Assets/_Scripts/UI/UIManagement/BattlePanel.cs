@@ -17,6 +17,7 @@ public partial class UIManager
     [SerializeField] private Image _enemyHpBar;
     [SerializeField] private TextMeshProUGUI _enemyHpText;
     [SerializeField] private ComboGaugeBar _comboGaugeBar;
+    public Image EnemyIcon;
     public ClockUI ClockUI;
     public ScoreTracker ScoreTracker;
     public ComboDisplay ComboDisplay;

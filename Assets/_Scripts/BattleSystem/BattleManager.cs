@@ -76,6 +76,7 @@ public class BattleManager : Singleton<BattleManager>
         Enemy.EnterBattle();
         AudioManager.Instance.SetAmbienceVolume(0.1f);
         CameraConfigure.Instance.SwitchToCamera(Enemy.battleCam);
+        UIManager.Instance.EnemyIcon.sprite = Enemy.EnemyData.Icon;
         for (float i = battleDelay; i > 0; i--)
         {
             UIManager.Instance.UpdateCenterText(i.ToString());

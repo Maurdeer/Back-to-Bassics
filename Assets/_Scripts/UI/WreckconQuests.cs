@@ -33,6 +33,7 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
         }
 
         data.tickets = tickets;
+        m_ticketText.text = tickets.ToString();
     }
 
     public void SaveData(GameData data)
@@ -44,6 +45,7 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
         }
 
         tickets = data.tickets;
+        m_ticketText.text = tickets.ToString();
     }
 }
 
