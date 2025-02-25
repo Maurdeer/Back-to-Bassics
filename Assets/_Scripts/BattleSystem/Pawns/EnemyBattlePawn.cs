@@ -209,6 +209,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         // Staggered Animation (Paper Crumple)
         psm.Transition<Center>();
         esm.Transition<Stagger>();
+        UIManager.Instance.BeatIndicator.Show();
         _director.Stop();
         OnEnemyStaggerEvent?.Invoke();
         return StopAllEnemyActions();
@@ -216,6 +217,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     }
     protected override void OnUnstagger()
     {
+        UIManager.Instance.BeatIndicator.Hide();
         if (esm.IsOnState<Dead>()) return;
         base.OnUnstagger();
         // Unstagger Animation transition to idle
@@ -225,6 +227,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     protected override void OnDeath()
     {
         base.OnDeath();
+        UIManager.Instance.BeatIndicator.Hide();
         esm.Transition<Dead>();
         StopAllEnemyActions();
         //_particleSystem?.Stop();

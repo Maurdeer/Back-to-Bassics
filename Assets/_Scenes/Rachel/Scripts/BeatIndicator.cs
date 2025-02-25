@@ -4,11 +4,18 @@ using UnityEngine.UI;
 public class BeatIndicator : Conductable
 {
     [SerializeField] private GameObject centerIndicator;
+    private Animator m_animator;
 
     private Vector3 originalScale;
     private bool isBeat = false;
     private float elapsedTime = 0f;
     private float halfSpb;
+    private bool hidden;
+    private void Awake()
+    {
+        m_animator = GetComponent<Animator>();
+        hidden = true;
+    }
 
     private void Start()
     {
@@ -64,5 +71,17 @@ public class BeatIndicator : Conductable
                 elapsedTime = 0f;
             }
         }
+    }
+    public void Show()
+    {
+        if (!hidden) return;
+        hidden = false;
+        m_animator.Play("show");
+    }
+    public void Hide()
+    {
+        if (hidden) return;
+        hidden = true;
+        m_animator.Play("hide");
     }
 }
