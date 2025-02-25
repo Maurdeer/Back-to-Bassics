@@ -83,6 +83,7 @@ public class BattleManager : Singleton<BattleManager>
         }
         UIManager.Instance.UpdateCenterText("Battle!");
         UIManager.Instance.ClockUI.StartClock();
+        UIManager.Instance.ScoreTracker.StartTimeMultiplier(Enemy.EnemyData.ClockDecayTH);
         Conductor.Instance.BeginConducting(Enemy);
         GameManager.Instance.GSM.Transition<GameStateMachine.Battle>();
         Player.StartBattle();
@@ -169,17 +170,7 @@ public class BattleManager : Singleton<BattleManager>
     }
     private void CalculateAndUpdateScore()
     {
-        float secondsPassed = UIManager.Instance.ClockUI.SecondsPassed;
-        float timeMultiplier;
-        if (secondsPassed <= Enemy.EnemyData.ClockDecayTH)
-        {
-            timeMultiplier = 3f - 2f * (secondsPassed / Enemy.EnemyData.ClockDecayTH);
-        }
-        else
-        {
-            float decay = (secondsPassed - Enemy.EnemyData.ClockDecayTH) / 300f; // 5 minutes
-            timeMultiplier = Mathf.Clamp(1f - 0.99f * decay, 0.01f, 1f);
-        }
+        float timeMultiplier = UIManager.Instance.ScoreTracker.StopAndGetTimeMultiplier();
         // Kill Ryan For Hardcodeness NOW!
         int id = Enemy.Data.name == "Bassics" ? 0 : (Enemy.Data.name == "SmallFry" ? 1 : (Enemy.Data.name == "TurboTop" ? 2 : (Enemy.Data.name == "KingSal" ? 3 : -1)));
         ulong finalScore = (ulong)(timeMultiplier * m_playerScore);

@@ -139,6 +139,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     public void SaveGame()
     {
         Debug.Log("Saving game...");
+        UIManager.Instance.SavePanel.gameObject.SetActive(true);
 
         // return right away if data persistence is disabled
         if (disableDataPersistence)
@@ -170,6 +171,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
 
         // save that data to a file using the datahandler
         dataHandler.Save(gameData, selectedProfileId);
+        UIManager.Instance.SavePanel.gameObject.SetActive(false);
     }
 
     //called whenever the game quits

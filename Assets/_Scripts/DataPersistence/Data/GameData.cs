@@ -24,6 +24,7 @@ public class GameData
     // Achievements
     public bool[] wreckconQuests;
     public ulong[] enemyScore;
+    public int tickets;
 
     //values defined in this constructor are the values each save starts with
     public GameData(string profileName, GameDataIntialize initialData = GameDataIntialize.Default)
@@ -50,6 +51,7 @@ public class GameData
         truthArray = new bool[7];
         wreckconQuests = new bool[16];
         enemyScore = new ulong[4];
+        tickets = 0;
     }
     private void Default()
     {

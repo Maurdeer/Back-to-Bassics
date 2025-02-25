@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using TMPro;
-
+using static GameStateMachine;
 
 public class SceneManagement : Singleton<SceneManagement>, IDataPersistence
 {
@@ -55,6 +55,9 @@ public class SceneManagement : Singleton<SceneManagement>, IDataPersistence
         {
             reloaded = true;
         }
+
+        // Get out of pause menu if that is possible
+        if (GameManager.Instance != null) GameManager.Instance.GSM.Transition<WorldTraversal>();
 
         //SceneManager.LoadSceneAsync(scene);
         loadSceneParent.SetActive(true);
