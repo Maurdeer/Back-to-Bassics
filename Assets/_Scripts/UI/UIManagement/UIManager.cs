@@ -11,6 +11,10 @@ public partial class UIManager : Singleton<UIManager>
     [field: SerializeField] public TextMeshProUGUI interactableText { get; private set; }
     private Coroutine _sic;
     private Coroutine _hic;
+
+    [Header("Wreckcon")]
+    public PersistentDataTracker PersistentDataTracker;
+    public WreckconQuests WreckconQuests;
     public void Awake()
     {
         InitializeSingleton();

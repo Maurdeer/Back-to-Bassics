@@ -10,6 +10,26 @@ public class BattleManager : Singleton<BattleManager>
     public EnemyBattlePawn Enemy { get; set; }
     private float battleDelay = 3f;
     private Queue<EnemyBattlePawn> enemyBattlePawns;
+    private ulong m_playerScore;
+    public ulong PlayerScore
+    {
+        get { return m_playerScore; }
+        set
+        {
+            m_playerScore = value;
+            UIManager.Instance.ScoreTracker.UpdateScore(m_playerScore);
+        }
+    }
+    private uint m_playerMultiplier;
+    public uint PlayerMultiplier
+    {
+        get { return m_playerMultiplier; }
+        set
+        {
+            m_playerMultiplier = value;
+            UIManager.Instance.ScoreTracker.UpdateMultiplier(m_playerMultiplier);
+        }
+    }
     private void Awake()
     {
         InitializeSingleton();
@@ -22,6 +42,8 @@ public class BattleManager : Singleton<BattleManager>
     {
         enemyBattlePawns = new Queue<EnemyBattlePawn>(pawns);
         Enemy = enemyBattlePawns?.Dequeue();
+        PlayerScore = 0;
+        PlayerMultiplier = 1;   
         if (Enemy == null)
         {
             Debug.LogError("BattleManager tried to start battle, but player has no Enemy Opponent!");
@@ -32,7 +54,9 @@ public class BattleManager : Singleton<BattleManager>
     public void EndBattle()
     {
         IsBattleActive = false;
+        UIManager.Instance.ClockUI.StopClock();
         Conductor.Instance.StopConducting();
+        CalculateAndUpdateScore();
         GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
         Player.ExitBattle();
         Enemy.ExitBattle();
@@ -58,6 +82,7 @@ public class BattleManager : Singleton<BattleManager>
             yield return new WaitForSeconds(1f);
         }
         UIManager.Instance.UpdateCenterText("Battle!");
+        UIManager.Instance.ClockUI.StartClock();
         Conductor.Instance.BeginConducting(Enemy);
         GameManager.Instance.GSM.Transition<GameStateMachine.Battle>();
         Player.StartBattle();
@@ -129,5 +154,35 @@ public class BattleManager : Singleton<BattleManager>
         TraversalPawn traversalPawn = Player.GetComponent<TraversalPawn>();
         traversalPawn.MoveToDestination(Enemy.targetFightingLocation.position);
         yield return new WaitUntil(() => !traversalPawn.movingToDestination);
+    }
+    public void AddPlayerScore(ulong score)
+    {
+        PlayerScore += score * PlayerMultiplier;
+    }
+    public void AddPlayerMultiplier(uint multiplier)
+    {
+        PlayerMultiplier += multiplier;
+    }
+    public void ResetPlayerMultiplier()
+    {
+        PlayerMultiplier = 1;
+    }
+    private void CalculateAndUpdateScore()
+    {
+        float secondsPassed = UIManager.Instance.ClockUI.SecondsPassed;
+        float timeMultiplier;
+        if (secondsPassed <= Enemy.EnemyData.ClockDecayTH)
+        {
+            timeMultiplier = 3f - 2f * (secondsPassed / Enemy.EnemyData.ClockDecayTH);
+        }
+        else
+        {
+            float decay = (secondsPassed - Enemy.EnemyData.ClockDecayTH) / 300f; // 5 minutes
+            timeMultiplier = Mathf.Clamp(1f - 0.99f * decay, 0.01f, 1f);
+        }
+        // Kill Ryan For Hardcodeness NOW!
+        int id = Enemy.Data.name == "Bassics" ? 0 : (Enemy.Data.name == "SmallFry" ? 1 : (Enemy.Data.name == "TurboTop" ? 2 : (Enemy.Data.name == "KingSal" ? 3 : -1)));
+        ulong finalScore = (ulong)(timeMultiplier * m_playerScore);
+        UIManager.Instance.PersistentDataTracker.UpdateEnemyScore(id, finalScore);
     }
 }

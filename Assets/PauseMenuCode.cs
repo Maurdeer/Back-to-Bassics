@@ -20,7 +20,7 @@ public class PauseMenuCode : MonoBehaviour
     }
     private void Pause ()
     {
-        m_animator.Play("Appear");
+        m_animator.Play("show");
 
         // Temp and bad!
         pausingThread = StartCoroutine(TimeBeforePause());
@@ -29,7 +29,7 @@ public class PauseMenuCode : MonoBehaviour
     public void Resume()
     {
         if (pausingThread != null) StopCoroutine(pausingThread);
-        m_animator.Play("Hide");
+        m_animator.Play("hide");
         if (GameManager.Instance.GSM.PrevState.GetType() == typeof(Battle))
         {
             GameManager.Instance.GSM.Transition<Battle>();
@@ -61,7 +61,7 @@ public class PauseMenuCode : MonoBehaviour
     }
     private IEnumerator TimeBeforePause()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitUntil(() => m_animator.GetCurrentAnimatorStateInfo(0).IsName("shown"));
         Time.timeScale = 0f;
     }
 }

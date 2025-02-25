@@ -6,6 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
+    public string profileName;
     public long lastUpdated;
     public string currentScene;
     public SerializableDictionary<string, Vector3> playerPosition;
@@ -25,8 +26,9 @@ public class GameData
     public ulong[] enemyScore;
 
     //values defined in this constructor are the values each save starts with
-    public GameData(GameDataIntialize initialData)
+    public GameData(string profileName, GameDataIntialize initialData = GameDataIntialize.Default)
     {
+        this.profileName = profileName;
         switch (initialData)
         {
             case GameDataIntialize.Wreckcon:
@@ -35,11 +37,7 @@ public class GameData
             default:
                 Default();
                 break;
-        }
-    }
-    public GameData()
-    {
-        Default();
+        } 
     }
     private void Wreckcon()
     {

@@ -10,6 +10,8 @@ public class GreatSlash : Combo
     public override void InBattle()
     {
         BattleManager.Instance.Enemy.Damage(damage);
+        if (StrId.Length == 2) BattleManager.Instance.AddPlayerScore(10);
+        if (StrId.Length == 4) BattleManager.Instance.AddPlayerScore(30);
     }
     public override void InTraversal()
     {

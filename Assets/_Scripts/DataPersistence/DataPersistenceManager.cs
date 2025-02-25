@@ -57,7 +57,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
         // Using OnSceneUnloaded doesn't work because it tries to save
         // after all the objects in the scene are destroyed
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
-        if (scene.name == "Title") return;
+        if (scene.name.ToLower().Contains("title")) return;
         UpdatePersistentData();
 
     }
@@ -103,7 +103,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
     public void NewGame(GameDataIntialize initialize = GameDataIntialize.Default)
     {
         Debug.Log("Initializing new game...");
-        this.gameData = new GameData(initialize);
+        this.gameData = new GameData(selectedProfileId, initialize);
 
         // timestamp the data so we know when it was last saved
         gameData.lastUpdated = System.DateTime.Now.ToBinary();

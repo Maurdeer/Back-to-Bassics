@@ -10,6 +10,7 @@ public class UltCombo : Combo
         BattleManager.Instance.Player.PawnSprite.Animator.Play("greatslash");
         BattleManager.Instance.Enemy.Damage(100);
         BattleManager.Instance.Enemy.UnStagger();
+        BattleManager.Instance.AddPlayerScore(1000);
     }
     public override void InTraversal()
     {

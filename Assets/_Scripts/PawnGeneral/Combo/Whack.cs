@@ -10,6 +10,7 @@ public class Whack : Combo
     public override void InBattle()
     {
         BattleManager.Instance.Enemy.Damage(damage);
+        BattleManager.Instance.AddPlayerScore(20);
         //Debug.Log("Whack (Combat)");
     }
     public override void InTraversal()

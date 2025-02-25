@@ -246,6 +246,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
             AudioManager.Instance.PlayOnShotSound(WeaponData.slashHitSound, transform.position);
             _deflectEffect.Play();
             _comboManager.CurrComboMeterAmount += 1;
+            BattleManager.Instance.AddPlayerMultiplier(1);
             if (--currDeflectsTillHeal <= 0)
             {
                 Heal(1);
@@ -299,11 +300,14 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         // Could make this more variable
         if (amount > 0)
         {
+            // Shred VFX
             _paperShredBurst?.Play();
             // Reset Deflects Till Heal
             currDeflectsTillHeal = deflectsTillHeal;
             if (!dodging)
             {
+                // Any Damage Taken Resets Multiplier
+                BattleManager.Instance.ResetPlayerMultiplier();
                 _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
             }
         }

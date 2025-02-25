@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WreckconQuests : MonoBehaviour, IDataPersistence
+public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
 {
     [SerializeField] private Transform m_pointDelgationHolder;
     [SerializeField] private Sprite notAchievedImage;
     [SerializeField] private Sprite achievedImage;
+    private void Awake()
+    {
+        InitializeSingleton();
+    }
     public void MarkAchievement(int id)
     {
         m_pointDelgationHolder.GetChild(id).GetComponent<Image>().sprite = achievedImage;

@@ -12,11 +12,11 @@ public partial class UIManager
     public void ShowDeathMenuPanel()
     {
         Debug.Log("Opening Death Menu");
-        deathMenuPanelAnimator.Play("ShowDeathMenuPanel");
+        deathMenuPanelAnimator.Play("show");
     }
     public void HideDeathMenuPanel()
     {
         Debug.Log("Hiding Death Menu");
-        deathMenuPanelAnimator.Play("HideDeathMenuPanel");
+        deathMenuPanelAnimator.Play("hide");
     }
 }
