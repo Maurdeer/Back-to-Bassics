@@ -43,8 +43,8 @@ public class GameData
     private void Wreckcon()
     {
         playerPosition = new SerializableDictionary<string, Vector3>();
-        playerPosition.Add("test", new Vector3(829.789978f, 100.028999f, 238.210007f));
-        currentScene = "test";
+        playerPosition.Add("WreckConRush", new Vector3(829.789978f, 100.028999f, 243f));
+        currentScene = "WreckConRush";
         combosUnlocked = new SerializableDictionary<string, Combo>();
 
         // Event Pools Set

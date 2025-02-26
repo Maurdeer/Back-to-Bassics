@@ -11,6 +11,7 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
     [SerializeField] private Sprite achievedImage;
     [SerializeField] private TextMeshProUGUI m_ticketText;
     private int tickets;
+    private bool[] truthArray;
     private void Awake()
     {
         InitializeSingleton();
@@ -21,7 +22,19 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
         Image image = m_pointDelgationHolder.GetChild(id).GetComponent<Image>();
         if (image.sprite == achievedImage) return;
         image.sprite = achievedImage;
-        tickets += id % 4 == 0 ? 10 : 5;
+        if (id % 4 == 0)
+        {
+            // Defeated a Boss
+            tickets += 10;
+            truthArray[id / 4] = true;
+            DataPersistenceManager.Instance.SaveGame();
+        }
+        else
+        {
+            // Did another task
+            tickets += 5;
+        }
+        
         m_ticketText.text = tickets.ToString();  
     }
     public void LoadData(GameData data)
@@ -34,6 +47,7 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
 
         data.tickets = tickets;
         m_ticketText.text = tickets.ToString();
+        truthArray = data.truthArray;
     }
 
     public void SaveData(GameData data)
@@ -46,6 +60,7 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
 
         tickets = data.tickets;
         m_ticketText.text = tickets.ToString();
+        data.truthArray = truthArray;
     }
 }
 

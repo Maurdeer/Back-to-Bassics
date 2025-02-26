@@ -55,12 +55,12 @@ public class BattleManager : Singleton<BattleManager>
     public void EndBattle()
     {
         IsBattleActive = false;
+        GameManager.Instance.GSM.Transition<GameStateMachine.UIState>();
         UIManager.Instance.ClockUI.StopClock();
         Conductor.Instance.StopConducting();
         // Update Score: Kill Ryan For Hardcodeness NOW!
-        int id = Enemy.Data.Name == "Bassics" ? 0 : (Enemy.Data.Name == "Small Fry" ? 1 : (Enemy.Data.Name == "Turbo Top" ? 2 : (Enemy.Data.Name == "King Sal" ? 3 : -1)));
+        int id = EnemyId(Enemy.EnemyData.Name);
         ulong finalScore = UIManager.Instance.ScoreTracker.StopAndGetFinalScore();
-        
         // Rank Calculation
         double scoreFraction = (double)finalScore / Enemy.EnemyData.SRankMax;
         string scoreRank = "";
@@ -70,6 +70,19 @@ public class BattleManager : Singleton<BattleManager>
             if (scoreFraction >= fraction)
             {
                 scoreRank = rank;
+                switch (scoreRank)
+                {
+                    // Can't Save Here, need to do it on WorldTraversal!
+                    case "S":
+                        UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 3);
+                        goto case "A";
+                    case "A":
+                        UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 2);
+                        break;
+                    default:
+                        break;
+                }
+                
                 break;
             }
             fraction -= 0.2;
@@ -79,8 +92,6 @@ public class BattleManager : Singleton<BattleManager>
 
         UIManager.Instance.PersistentDataTracker.UpdateEnemyScore(id, finalScore, scoreRank);
         
-        
-        GameManager.Instance.GSM.Transition<GameStateMachine.UIState>();
         UIManager.Instance.BeatEnemyPanel.PlayBattleVictory(Enemy.EnemyData.Name, finalScore, Enemy.EnemyData.SRankMax, scoreRank);
         // Instead of directly to world traversal, need a win screen of some kind
         // [Win Buffer Here]
@@ -90,8 +101,9 @@ public class BattleManager : Singleton<BattleManager>
     public void EndBattleComplete()
     {
         GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
+        UIManager.Instance.WreckconQuests.MarkAchievement(EnemyId(Enemy.EnemyData.Name) * 4);
         Player.ExitBattle();
-        Enemy.ExitBattle();
+        Enemy.ExitBattle();  
     }
     private IEnumerator IntializeBattle()
     {
@@ -199,5 +211,9 @@ public class BattleManager : Singleton<BattleManager>
     public void ResetPlayerMultiplier()
     {
         PlayerMultiplier = 1;
+    }
+    private int EnemyId(string name)
+    {
+        return name == "Bassics" ? 0 : (name == "Small Fry" ? 1 : (name == "Turbo Top" ? 2 : (name == "King Sal" ? 3 : -1)));
     }
 }

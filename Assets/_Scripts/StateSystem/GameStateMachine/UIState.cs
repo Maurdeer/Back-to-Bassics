@@ -8,6 +8,8 @@ public partial class GameStateMachine
     {
         public override void Enter(GameStateInput i)
         {
+            if (DataPersistenceManager.Instance != null)
+                DataPersistenceManager.Instance.enabled = true;
             GameManager.Instance.PC.DisableControl();
         }
         public override void Exit(GameStateInput i)
