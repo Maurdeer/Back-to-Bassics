@@ -10,6 +10,7 @@ public class BattleManager : Singleton<BattleManager>
     public EnemyBattlePawn Enemy { get; set; }
     private float battleDelay = 3f;
     private Queue<EnemyBattlePawn> enemyBattlePawns;
+    private readonly string[] ranks = {"S", "A", "B", "C", "D"};
     private ulong m_playerScore;
     public ulong PlayerScore
     {
@@ -56,11 +57,41 @@ public class BattleManager : Singleton<BattleManager>
         IsBattleActive = false;
         UIManager.Instance.ClockUI.StopClock();
         Conductor.Instance.StopConducting();
-        CalculateAndUpdateScore();
+        // Update Score: Kill Ryan For Hardcodeness NOW!
+        int id = Enemy.Data.Name == "Bassics" ? 0 : (Enemy.Data.Name == "Small Fry" ? 1 : (Enemy.Data.Name == "Turbo Top" ? 2 : (Enemy.Data.Name == "King Sal" ? 3 : -1)));
+        ulong finalScore = UIManager.Instance.ScoreTracker.StopAndGetFinalScore();
+        
+        // Rank Calculation
+        double scoreFraction = (double)finalScore / Enemy.EnemyData.SRankMax;
+        string scoreRank = "";
+        double fraction = 1;
+        foreach (string rank in ranks)
+        {
+            if (scoreFraction >= fraction)
+            {
+                scoreRank = rank;
+                break;
+            }
+            fraction -= 0.2;
+        }
+
+        if (scoreRank == "") scoreRank = "E";
+
+        UIManager.Instance.PersistentDataTracker.UpdateEnemyScore(id, finalScore, scoreRank);
+        
+        
+        GameManager.Instance.GSM.Transition<GameStateMachine.UIState>();
+        UIManager.Instance.BeatEnemyPanel.PlayBattleVictory(Enemy.EnemyData.Name, finalScore, Enemy.EnemyData.SRankMax, scoreRank);
+        // Instead of directly to world traversal, need a win screen of some kind
+        // [Win Buffer Here]
+
+    }
+    
+    public void EndBattleComplete()
+    {
         GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
         Player.ExitBattle();
         Enemy.ExitBattle();
-        // Instead of directly to world traversal, need a win screen of some kind
     }
     private IEnumerator IntializeBattle()
     {
@@ -168,13 +199,5 @@ public class BattleManager : Singleton<BattleManager>
     public void ResetPlayerMultiplier()
     {
         PlayerMultiplier = 1;
-    }
-    private void CalculateAndUpdateScore()
-    {
-        float timeMultiplier = UIManager.Instance.ScoreTracker.StopAndGetTimeMultiplier();
-        // Kill Ryan For Hardcodeness NOW!
-        int id = Enemy.Data.name == "Bassics" ? 0 : (Enemy.Data.name == "SmallFry" ? 1 : (Enemy.Data.name == "TurboTop" ? 2 : (Enemy.Data.name == "KingSal" ? 3 : -1)));
-        ulong finalScore = (ulong)(timeMultiplier * m_playerScore);
-        UIManager.Instance.PersistentDataTracker.UpdateEnemyScore(id, finalScore);
     }
 }

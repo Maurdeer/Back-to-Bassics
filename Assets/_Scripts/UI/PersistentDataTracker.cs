@@ -13,7 +13,7 @@ public class PersistentDataTracker : MonoBehaviour, IDataPersistence
     {
         m_enemyScores = new ulong[4];
     }
-    public void UpdateEnemyScore(int id, ulong score)
+    public void UpdateEnemyScore(int id, ulong score, string rank)
     {
         m_enemyScores[id] = score;
         m_enemyScoreTexts.GetChild(id).GetComponentInChildren<TextMeshProUGUI>().text = score.ToString("D10");

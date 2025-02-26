@@ -57,7 +57,8 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         AnimatorStateInfo animatorState = _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
         if (!animatorState.IsName("idle")) return;
         DodgeDirection = DirectionHelper.GetVectorDirection(direction);
-        updateCombo(false);
+        // Removed For now
+        //updateCombo(false);
 
         // TODO: refactor coroutine
         StartCoroutine(DodgeThread(DodgeDirection.ToString().ToLower()));
@@ -155,18 +156,22 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         {
             if (SlashDirection == Vector2.left)
             {
+                UIManager.Instance.BeatIndicator.AddArrow(Direction.West);
                 _comboManager.AppendToCombo('W');
             }
             else if (SlashDirection == Vector2.right)
             {
+                UIManager.Instance.BeatIndicator.AddArrow(Direction.East);
                 _comboManager.AppendToCombo('E');
             }
             else if (SlashDirection == Vector2.up) 
             {
+                UIManager.Instance.BeatIndicator.AddArrow(Direction.North);
                 _comboManager.AppendToCombo('N');
             }
             else if (SlashDirection == Vector2.down) 
             {
+                UIManager.Instance.BeatIndicator.AddArrow(Direction.South);
                 _comboManager.AppendToCombo('S');
             }
         }

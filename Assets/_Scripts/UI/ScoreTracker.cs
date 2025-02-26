@@ -61,10 +61,12 @@ public class ScoreTracker : MonoBehaviour
         hardDecay = 2f / decayTH;
         softDecay = 0.99f / 300f; // 5 minutes after hard decay till 0.01x
     }
-    public float StopAndGetTimeMultiplier()
+    public ulong StopAndGetFinalScore()
     {
         runTimeMultiplier = false;
-        return currTimeMultiplierValue;
+        ulong finalScore = (ulong)(currScore * (double)currTimeMultiplierValue);
+        UpdateScore(finalScore);
+        return finalScore;
     }
     private IEnumerator TextUpdater(ulong from, ulong to)
     {
@@ -73,7 +75,7 @@ public class ScoreTracker : MonoBehaviour
             // increasing
             while (from < to)
             {
-                from++;
+                from+=100;
                 m_scoreText.text = from.ToString("D10");
                 yield return new WaitForEndOfFrame();
             }
@@ -81,9 +83,9 @@ public class ScoreTracker : MonoBehaviour
         else
         {
             // decreasing
-            while (from > to)
+            while (from > to && from > 100)
             {
-                from--;
+                from-=100;
                 m_scoreText.text = from.ToString("D10");
                 yield return new WaitForEndOfFrame();
             }

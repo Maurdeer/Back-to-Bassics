@@ -48,7 +48,7 @@ public class ComboManager : MonoBehaviour, IDataPersistence
         {
             _currComboString = _currComboString.Substring(1);
         }
-        
+
         _currComboString += combo;
         UIManager.Instance.ComboDisplay.AddCombo(combo);
         if (_comboReseter != null)

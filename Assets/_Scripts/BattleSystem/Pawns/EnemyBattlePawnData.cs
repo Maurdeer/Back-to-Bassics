@@ -10,8 +10,10 @@ public class EnemyBattlePawnData : BattlePawnData
     [SerializeField] private Sprite icon;
     [SerializeField] private int _staggerHealth;
     [SerializeField, Tooltip("In Seconds to being decay under 1x")] private uint _clockDecayTH;
+    [SerializeField] private ulong _sRankMax;
     public int StaggerHealth => _staggerHealth; // Can be overwritten by EnemyStageData
     public uint ClockDecayTH => _clockDecayTH;
+    public ulong SRankMax => _sRankMax;
     public Sprite Icon => icon;
     public FMODUnity.EventReference fmodEvent;
     public FMODUnity.EventReference voiceByte;

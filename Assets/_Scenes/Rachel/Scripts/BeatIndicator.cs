@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class BeatIndicator : Conductable
 {
     [SerializeField] private GameObject centerIndicator;
+    [SerializeField] private GameObject centerArrow;
     private Animator m_animator;
 
     private Vector3 originalScale;
@@ -20,7 +21,7 @@ public class BeatIndicator : Conductable
     private void Start()
     {
         originalScale = centerIndicator.transform.localScale;
-
+        centerArrow.SetActive(false);
         Enable();
     }
 
@@ -72,6 +73,30 @@ public class BeatIndicator : Conductable
             }
         }
     }
+    public void AddArrow(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.East:
+                centerArrow.SetActive(true);
+                centerArrow.transform.rotation = Quaternion.Euler(0, 0, -90f);
+                break;
+            case Direction.West:
+                centerArrow.SetActive(true);
+                centerArrow.transform.rotation = Quaternion.Euler(0, 0, 90f);
+                break;
+            case Direction.North:
+                centerArrow.SetActive(true);
+                centerArrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case Direction.South:
+                centerArrow.SetActive(true);
+                centerArrow.transform.rotation = Quaternion.Euler(0, 0, 180f);
+                break;
+            default:
+                break;
+        }
+    }
     public void Show()
     {
         if (!hidden) return;
@@ -81,6 +106,7 @@ public class BeatIndicator : Conductable
     public void Hide()
     {
         if (hidden) return;
+        centerArrow.SetActive(false);
         hidden = true;
         m_animator.Play("hide");
     }
