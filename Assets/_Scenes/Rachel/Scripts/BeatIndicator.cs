@@ -110,4 +110,12 @@ public class BeatIndicator : Conductable
         hidden = true;
         m_animator.Play("hide");
     }
+    public void ShowArrow()
+    {
+        centerArrow.SetActive(true);
+    }
+    public void HideArrow()
+    {
+        centerArrow.SetActive(false);
+    }
 }

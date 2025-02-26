@@ -79,7 +79,7 @@ public class ComboManager : MonoBehaviour, IDataPersistence
         }
         
         UIManager.Instance.ComboDisplay.HideCombo();
-        UIManager.Instance.BeatIndicator.Hide();
+        UIManager.Instance.BeatIndicator.HideArrow();
         _currComboString = "";
     }
     public void AddCombo(Combo combo)
