@@ -45,7 +45,7 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
             child.GetComponent<Image>().sprite = data.wreckconQuests[i++] ? achievedImage : notAchievedImage;
         }
 
-        data.tickets = tickets;
+        tickets = data.tickets;
         m_ticketText.text = tickets.ToString();
         truthArray = data.truthArray;
     }
@@ -53,13 +53,12 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
     public void SaveData(GameData data)
     {
         int i = 0;
-        foreach (GameObject child in m_pointDelgationHolder)
+        foreach (Transform child in m_pointDelgationHolder)
         {
             data.wreckconQuests[i++] = child.GetComponent<Image>().sprite == achievedImage;
         }
 
-        tickets = data.tickets;
-        m_ticketText.text = tickets.ToString();
+        data.tickets = tickets;
         data.truthArray = truthArray;
     }
 }

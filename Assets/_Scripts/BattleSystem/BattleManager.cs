@@ -58,44 +58,6 @@ public class BattleManager : Singleton<BattleManager>
         GameManager.Instance.GSM.Transition<GameStateMachine.UIState>();
         UIManager.Instance.ClockUI.StopClock();
         Conductor.Instance.StopConducting();
-        // Update Score: Kill Ryan For Hardcodeness NOW!
-        int id = EnemyId(Enemy.EnemyData.Name);
-        ulong finalScore = UIManager.Instance.ScoreTracker.StopAndGetFinalScore();
-        // Rank Calculation
-        double scoreFraction = (double)finalScore / Enemy.EnemyData.SRankMax;
-        string scoreRank = "";
-        double fraction = 1;
-        foreach (string rank in ranks)
-        {
-            if (scoreFraction >= fraction)
-            {
-                scoreRank = rank;
-                switch (scoreRank)
-                {
-                    // Can't Save Here, need to do it on WorldTraversal!
-                    case "S":
-                        UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 3);
-                        goto case "A";
-                    case "A":
-                        UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 2);
-                        break;
-                    default:
-                        break;
-                }
-                
-                break;
-            }
-            fraction -= 0.2;
-        }
-
-        if (scoreRank == "") scoreRank = "E";
-
-        UIManager.Instance.PersistentDataTracker.UpdateEnemyScore(id, finalScore, scoreRank);
-        
-        UIManager.Instance.BeatEnemyPanel.PlayBattleVictory(Enemy.EnemyData.Name, finalScore, Enemy.EnemyData.SRankMax, scoreRank);
-        // Instead of directly to world traversal, need a win screen of some kind
-        // [Win Buffer Here]
-
     }
     
     public void EndBattleComplete()
@@ -127,7 +89,7 @@ public class BattleManager : Singleton<BattleManager>
         }
         UIManager.Instance.UpdateCenterText("Battle!");
         UIManager.Instance.ClockUI.StartClock();
-        UIManager.Instance.ScoreTracker.StartTimeMultiplier(Enemy.EnemyData.ClockDecayTH);
+        UIManager.Instance.ScoreTracker.StartTimeMultiplier(Enemy.EnemyData.ClockDelayTH, Enemy.EnemyData.ClockDecayTH);
         Conductor.Instance.BeginConducting(Enemy);
         GameManager.Instance.GSM.Transition<GameStateMachine.Battle>();
         Player.StartBattle();
@@ -168,7 +130,10 @@ public class BattleManager : Singleton<BattleManager>
     private void OnPlayerDeath()
     {
         EndBattle();
-        //UIManager.Instance.UpdateCenterText("Player Is Dead, SAD!");
+        Player.ExitBattle();
+        Enemy.ExitBattle();
+
+        // Lose Logic
         GameManager.Instance.GSM.Transition<GameStateMachine.Death>();
     }
     private void OnEnemyDeath()
@@ -184,8 +149,39 @@ public class BattleManager : Singleton<BattleManager>
         }
         EndBattle();
 
-        // For now we won't use this
-        // StartCoroutine(EnemyDefeatTemp());
+        // Victory Logic
+        // Update Score: Kill Ryan For Hardcodeness NOW!
+        int id = EnemyId(Enemy.EnemyData.Name);
+        ulong finalScore = UIManager.Instance.ScoreTracker.StopAndGetFinalScore();
+        // Rank Calculation
+        double scoreFraction = (double)finalScore / Enemy.EnemyData.SRankMax;
+        string scoreRank = "";
+        double fraction = 1;
+        foreach (string rank in ranks)
+        {
+            if (scoreFraction >= fraction)
+            {
+                scoreRank = rank;
+                if (scoreRank == "S")
+                {
+                    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 2);
+                    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 3);
+                }
+                else if (scoreRank == "A")
+                {
+                    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 3);
+                }
+
+                break;
+            }
+            fraction -= 0.2;
+        }
+
+        if (scoreRank == "") scoreRank = "E";
+
+        UIManager.Instance.PersistentDataTracker.UpdateEnemyScore(id, finalScore, scoreRank);
+
+        UIManager.Instance.BeatEnemyPanel.PlayBattleVictory(Enemy.EnemyData.Name, finalScore, Enemy.EnemyData.SRankMax, scoreRank);
     } 
 
     private IEnumerator EnemyDefeatTemp()

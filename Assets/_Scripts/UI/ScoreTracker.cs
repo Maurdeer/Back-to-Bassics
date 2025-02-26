@@ -7,9 +7,16 @@ using UnityEngine.UI;
 
 public class ScoreTracker : MonoBehaviour
 {
+    [Header("Specifications")]
+    [SerializeField] private Color NonDecayingMultiplierColor;
+    [SerializeField] private Color DecayingMultiplierColor;
+    [SerializeField] private Color SevereDecayingMultiplierColor;
+    [Header("References")]
     [SerializeField] private TextMeshProUGUI m_scoreText;
     [SerializeField] private TextMeshProUGUI m_comboMultiplierText;
     [SerializeField] private TextMeshProUGUI m_timeMultiplierText;
+    private Animator m_animator;
+    private float waitTH;
     private float decayTH;
     private float hardDecay;
     private float softDecay;
@@ -18,20 +25,32 @@ public class ScoreTracker : MonoBehaviour
     private bool runTimeMultiplier;
     private Coroutine textUpdater;
     private ulong currScore;
+    private void Awake()
+    {
+        m_animator = GetComponent<Animator>();  
+    }
     private void Update()
     {
         if (!runTimeMultiplier) return;
 
         // Calcualte Time Multiplier Every Frame (-_-)
         float secondsPassed = Time.time - timeStarted;
-        if (secondsPassed <= decayTH)
+        if (secondsPassed < waitTH)
         {
-            currTimeMultiplierValue = 3f - secondsPassed * hardDecay;
+            currTimeMultiplierValue = 3f;
+            m_timeMultiplierText.color = NonDecayingMultiplierColor;
+        }
+        else if (secondsPassed <= decayTH)
+        {
+            float decay = secondsPassed * hardDecay - 2f;
+            currTimeMultiplierValue = 3f - decay;
+            m_timeMultiplierText.color = DecayingMultiplierColor;
         }
         else
         {
             float decay = (secondsPassed - decayTH) * softDecay; // 5 minutes
-            currTimeMultiplierValue = Mathf.Clamp(1f - decay, 0.01f, 1f);
+            currTimeMultiplierValue = Mathf.Clamp(1f - decay, 0.1f, 1f);
+            m_timeMultiplierText.color = SevereDecayingMultiplierColor;
         }
 
         // Update Tracker
@@ -51,15 +70,21 @@ public class ScoreTracker : MonoBehaviour
     public void UpdateMultiplier(uint multiplier)
     {
         m_comboMultiplierText.text = $"{multiplier}x";
+        if (multiplier <= 1)
+        {
+            Debug.Log("Text Shake YEEEEE");
+            m_animator.Play("shake");
+        }
     }
-    public void StartTimeMultiplier(float clockDecayTH)
+    public void StartTimeMultiplier(float clockDelayTH, float clockDecayTH)
     {
         runTimeMultiplier = true;
         currTimeMultiplierValue = 3f;
         timeStarted = Time.time;
+        waitTH = clockDelayTH;
         decayTH = clockDecayTH;
         hardDecay = 2f / decayTH;
-        softDecay = 0.99f / 300f; // 5 minutes after hard decay till 0.01x
+        softDecay = 0.9f / 300f; // 5 minutes after hard decay till 0.01x
     }
     public ulong StopAndGetFinalScore()
     {
@@ -76,6 +101,7 @@ public class ScoreTracker : MonoBehaviour
             while (from < to)
             {
                 from+=100;
+                m_scoreText.color = NonDecayingMultiplierColor;
                 m_scoreText.text = from.ToString("D10");
                 yield return new WaitForEndOfFrame();
             }
@@ -86,10 +112,12 @@ public class ScoreTracker : MonoBehaviour
             while (from > to && from > 100)
             {
                 from-=100;
+                m_scoreText.color = SevereDecayingMultiplierColor;
                 m_scoreText.text = from.ToString("D10");
                 yield return new WaitForEndOfFrame();
             }
         }
+        m_scoreText.color = Color.black;
         m_scoreText.text = to.ToString("D10");
     }
 }

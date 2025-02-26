@@ -71,7 +71,7 @@ public class ComboManager : MonoBehaviour, IDataPersistence
         // Give the player 2 beat of time
         if (Conductor.Instance.IsPlaying)
         {
-            yield return new WaitForSeconds(2 * Conductor.Instance.spb);
+            yield return new WaitForSeconds(Conductor.Instance.spb);
         }
         else
         {
@@ -79,6 +79,7 @@ public class ComboManager : MonoBehaviour, IDataPersistence
         }
         
         UIManager.Instance.ComboDisplay.HideCombo();
+        UIManager.Instance.BeatIndicator.Hide();
         _currComboString = "";
     }
     public void AddCombo(Combo combo)

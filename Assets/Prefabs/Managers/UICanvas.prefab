@@ -918,7 +918,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -419, y: 45}
+  m_AnchoredPosition: {x: -389, y: -56}
   m_SizeDelta: {x: 184.32996, y: 182.6563}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8092172308309030338
@@ -2540,7 +2540,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286722533
+    rgba: 8532453
   m_fontColor: {r: 0.8962264, g: 0.19023676, b: 0.50929606, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -7491,6 +7491,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771c9cecb8ce0234d944401ad399f9d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NonDecayingMultiplierColor: {r: 0, g: 0, b: 0, a: 0}
+  DecayingMultiplierColor: {r: 0, g: 0, b: 0, a: 0}
+  SevereDecayingMultiplierColor: {r: 0, g: 0, b: 0, a: 0}
   m_scoreText: {fileID: 6263355972960575082}
   m_comboMultiplierText: {fileID: 0}
   m_timeMultiplierText: {fileID: 0}
@@ -8152,6 +8155,7 @@ GameObject:
   - component: {fileID: 2479673009759849854}
   - component: {fileID: 2843793399043860735}
   - component: {fileID: 1163491399923174687}
+  - component: {fileID: 3370453849923503364}
   m_Layer: 5
   m_Name: ScoreStat
   m_TagString: Untagged
@@ -8201,9 +8205,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771c9cecb8ce0234d944401ad399f9d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NonDecayingMultiplierColor: {r: 0, g: 0.7372549, b: 1, a: 1}
+  DecayingMultiplierColor: {r: 1, g: 0.85490197, b: 0.007843138, a: 1}
+  SevereDecayingMultiplierColor: {r: 0.93333334, g: 0.39215687, b: 0.30588236, a: 1}
   m_scoreText: {fileID: 6263355972960575082}
   m_comboMultiplierText: {fileID: 8687032493006818282}
   m_timeMultiplierText: {fileID: 4802583186015226191}
+--- !u!95 &3370453849923503364
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5057853099173393357}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a0498ff799505474992873f7d31e2af4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5057981387964740293
 GameObject:
   m_ObjectHideFlags: 0
@@ -11210,7 +11238,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -388, y: 220}
+  m_AnchoredPosition: {x: -388, y: 237}
   m_SizeDelta: {x: 502.55005, y: 129.05188}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1836522971310296717
@@ -13809,8 +13837,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294949888
-  m_fontColor: {r: 0, g: 0.7355242, b: 1, a: 1}
+    rgba: 4283327726
+  m_fontColor: {r: 0.9339623, g: 0.39065096, b: 0.3039783, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
