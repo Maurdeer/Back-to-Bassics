@@ -24,6 +24,8 @@ public class GameData
     // Achievements
     public bool[] wreckconQuests;
     public ulong[] enemyScore;
+    public string[] enemyRank;
+    public ulong totalScore;
     public int tickets;
 
     //values defined in this constructor are the values each save starts with
@@ -51,6 +53,7 @@ public class GameData
         truthArray = new bool[7];
         wreckconQuests = new bool[16];
         enemyScore = new ulong[4];
+        enemyRank = new string[4];
         tickets = 0;
     }
     private void Default()

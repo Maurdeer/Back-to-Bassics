@@ -42,7 +42,7 @@ public class ScoreTracker : MonoBehaviour
         }
         else if (secondsPassed <= decayTH)
         {
-            float decay = secondsPassed * hardDecay - 2f;
+            float decay = (secondsPassed - waitTH) * hardDecay;
             currTimeMultiplierValue = 3f - decay;
             m_timeMultiplierText.color = DecayingMultiplierColor;
         }
@@ -83,7 +83,7 @@ public class ScoreTracker : MonoBehaviour
         timeStarted = Time.time;
         waitTH = clockDelayTH;
         decayTH = clockDecayTH;
-        hardDecay = 2f / decayTH;
+        hardDecay = 2f / (decayTH - waitTH);
         softDecay = 0.9f / 300f; // 5 minutes after hard decay till 0.01x
     }
     public ulong StopAndGetFinalScore()
