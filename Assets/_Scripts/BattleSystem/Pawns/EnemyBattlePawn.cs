@@ -220,6 +220,9 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         UIManager.Instance.BeatIndicator.Hide();
         if (esm.IsOnState<Dead>()) return;
         base.OnUnstagger();
+
+        // (Ryan) Reset Stagger Health Here From Now On!!
+        currentStaggerHealth = maxStaggerHealth;
         // Unstagger Animation transition to idle
         esm.Transition<Idle>();
         //_particleSystem?.Stop();

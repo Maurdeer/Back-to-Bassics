@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class ScoreTracker : MonoBehaviour
@@ -15,6 +16,8 @@ public class ScoreTracker : MonoBehaviour
     private float currTimeMultiplierValue;
     private float timeStarted;
     private bool runTimeMultiplier;
+    private Coroutine textUpdater;
+    private ulong currScore;
     private void Update()
     {
         if (!runTimeMultiplier) return;
@@ -36,7 +39,14 @@ public class ScoreTracker : MonoBehaviour
     }
     public void UpdateScore(ulong score)
     {
-        m_scoreText.text = score.ToString("D10");    
+        if (textUpdater != null)
+        {
+            StopCoroutine(textUpdater);
+            m_scoreText.text = currScore.ToString("D10");
+        }
+
+        textUpdater = StartCoroutine(TextUpdater(currScore, score));
+        currScore = score;
     }
     public void UpdateMultiplier(uint multiplier)
     {
@@ -55,5 +65,29 @@ public class ScoreTracker : MonoBehaviour
     {
         runTimeMultiplier = false;
         return currTimeMultiplierValue;
+    }
+    private IEnumerator TextUpdater(ulong from, ulong to)
+    {
+        if (from < to)
+        {
+            // increasing
+            while (from < to)
+            {
+                from++;
+                m_scoreText.text = from.ToString("D10");
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        else
+        {
+            // decreasing
+            while (from > to)
+            {
+                from--;
+                m_scoreText.text = from.ToString("D10");
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        m_scoreText.text = to.ToString("D10");
     }
 }

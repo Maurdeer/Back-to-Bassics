@@ -96,7 +96,9 @@ public class BossAI : Conductable
 
         // may want to abstract enemy actions away from just timelines in the future?
         _enemyBattlePawn.interruptable = actions[idx].Interruptable;
-        _enemyBattlePawn.currentStaggerHealth = _enemyBattlePawn.maxStaggerHealth;
+        // Reset Stagger Health Only on Stage Request!
+        if (_enemyStages[_currentStage].ResetStaggerHealth)
+            _enemyBattlePawn.currentStaggerHealth = _enemyBattlePawn.maxStaggerHealth;
         _enemyBattlePawn.esm.Transition<Attacking>();
         _enemyBattlePawn.Director.playableAsset = actions[idx].ActionSequence;
         _enemyBattlePawn.Director.Play();
