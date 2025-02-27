@@ -187,7 +187,7 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         if (activeDialogueView != null)
         {
-            Debug.Log($"Displaying line: {line} in {activeDialogueView.name}");
+            //Debug.Log($"Displaying line: {line} in {activeDialogueView.name}");
 
             // Create a dummy LocalizedLine for now
             var localizedLine = new LocalizedLine
@@ -198,7 +198,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
             // Define the onDialogueLineFinished action to continue the dialogue flow
             System.Action onDialogueLineFinished = () => {
-                Debug.Log("Dialogue line finished displaying.");
+                //Debug.Log("Dialogue line finished displaying.");
                 // Continue dialogue or handle post-dialogue logic here
             };
 

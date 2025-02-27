@@ -71,7 +71,7 @@ public class ComboManager : MonoBehaviour, IDataPersistence
         // Give the player 2 beat of time
         if (Conductor.Instance.IsPlaying)
         {
-            yield return new WaitForSeconds(Conductor.Instance.spb);
+            yield return new WaitForSeconds(1.25f * Conductor.Instance.spb);
         }
         else
         {

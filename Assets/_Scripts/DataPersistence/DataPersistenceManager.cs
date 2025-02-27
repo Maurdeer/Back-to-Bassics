@@ -102,7 +102,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
 
     public void NewGame(GameDataIntialize initialize = GameDataIntialize.Default)
     {
-        Debug.Log("Initializing new game...");
+        //Debug.Log("Initializing new game...");
         this.gameData = new GameData(selectedProfileId, initialize);
 
         // timestamp the data so we know when it was last saved
@@ -113,7 +113,7 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
 
     public void LoadGame()
     {
-        Debug.Log("Loading game...");
+        //Debug.Log("Loading game...");
 
         // return right away if data persistence is disabled
         if (disableDataPersistence)
@@ -138,9 +138,6 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
 
     public void SaveGame()
     {
-        Debug.Log("Saving game...");
-        UIManager.Instance.SavePanel.gameObject.SetActive(true);
-
         // return right away if data persistence is disabled
         if (disableDataPersistence)
         {
@@ -171,7 +168,6 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
 
         // save that data to a file using the datahandler
         dataHandler.Save(gameData, selectedProfileId);
-        UIManager.Instance.SavePanel.gameObject.SetActive(false);
     }
 
     //called whenever the game quits

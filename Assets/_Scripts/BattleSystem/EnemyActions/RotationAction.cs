@@ -22,9 +22,12 @@ public class RotationAction : EnemyAction
     private float resetSpeed = 0f;
     #endregion
 
+    private bool wasPlayerHit;
+
     protected override void Awake()
     {
         base.Awake();
+        wasPlayerHit = true;
         if (spinner == null)
         {
             Debug.LogError($"Rotation Action must reference spinner");
@@ -42,6 +45,7 @@ public class RotationAction : EnemyAction
             Debug.LogError("Attempting to start spin action even though it is already active");
             return;
         }
+        wasPlayerHit = false;
         spinner.minSpeed = minSpeed;
         spinner.maxSpeed = maxSpeed;
 
@@ -60,6 +64,13 @@ public class RotationAction : EnemyAction
         hitBox.DeflectCheck -= DeflectCheckEvent;
         hitBox.DodgeCheck -= DodgeCheckEvent;
         resetSpeed = 0;
+
+        /// [WRECKCON] TURBOTOP_SPECIAL
+        if (!wasPlayerHit)
+        {
+            UIManager.Instance.WreckconQuests.MarkAchievement(9);
+        }
+        ///==============================
         return StartCoroutine(StopSpinThread());
     }
     private IEnumerator SpinThread() {
@@ -101,6 +112,7 @@ public class RotationAction : EnemyAction
     // HitBox Related Methods
     private void OnHit(IAttackReceiver receiver)
     {
+        wasPlayerHit = true;
         // Decrease spinner speed if player is hit
         if (reduceSpeedOnHit && spinner.speed > spinner.minSpeed)
         {

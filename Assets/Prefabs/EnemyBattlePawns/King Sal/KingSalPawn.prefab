@@ -6076,6 +6076,9 @@ MonoBehaviour:
   onPawnDefeat:
     m_PersistentCalls:
       m_Calls: []
+  onPawnExitBattle:
+    m_PersistentCalls:
+      m_Calls: []
   tutComboList: {fileID: 0}
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
@@ -11725,34 +11728,6 @@ PrefabInstance:
     - target: {fileID: 2792879626266271100, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
       propertyPath: m_Layer
       value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2844804172574613442, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.4086683
-      objectReference: {fileID: 0}
-    - target: {fileID: 2844804172574613442, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -4.362776
-      objectReference: {fileID: 0}
-    - target: {fileID: 2844804172574613442, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.5166785
-      objectReference: {fileID: 0}
-    - target: {fileID: 2844804172574613442, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2844804172574613442, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2844804172574613442, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.8561795
-      objectReference: {fileID: 0}
-    - target: {fileID: 2844804172574613442, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -242.219
       objectReference: {fileID: 0}
     - target: {fileID: 4519537183621174618, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
       propertyPath: m_Layer

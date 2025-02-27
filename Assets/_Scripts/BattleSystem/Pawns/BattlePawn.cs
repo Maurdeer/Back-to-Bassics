@@ -31,6 +31,7 @@ public class BattlePawn : Conductable
 
     // events
     [SerializeField] protected UnityEvent onPawnDefeat;
+    [SerializeField] protected UnityEvent onPawnExitBattle;
     public event Action OnPawnDeath;
     public event Action OnEnterBattle;
     public event Action OnExitBattle;
@@ -127,6 +128,7 @@ public class BattlePawn : Conductable
         // TODO: Play Some Animation that makes the battle pawn leave the battle
         Disable();
         OnExitBattle?.Invoke();
+        onPawnExitBattle?.Invoke();
     }
     #region BattlePawn Messages
     protected virtual List<Coroutine> OnStagger()

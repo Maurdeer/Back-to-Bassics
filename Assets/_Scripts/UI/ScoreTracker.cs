@@ -64,15 +64,14 @@ public class ScoreTracker : MonoBehaviour
             m_scoreText.text = currScore.ToString("D10");
         }
 
-        textUpdater = StartCoroutine(TextUpdater(currScore, score));
         currScore = score;
+        textUpdater = StartCoroutine(TextUpdater(currScore, score));
     }
     public void UpdateMultiplier(uint multiplier)
     {
         m_comboMultiplierText.text = $"{multiplier}x";
         if (multiplier <= 1)
         {
-            Debug.Log("Text Shake YEEEEE");
             m_animator.Play("shake");
         }
     }
@@ -91,7 +90,7 @@ public class ScoreTracker : MonoBehaviour
         runTimeMultiplier = false;
         ulong finalScore = (ulong)(currScore * (double)currTimeMultiplierValue);
         UpdateScore(finalScore);
-        return finalScore;
+        return currScore;
     }
     private IEnumerator TextUpdater(ulong from, ulong to)
     {

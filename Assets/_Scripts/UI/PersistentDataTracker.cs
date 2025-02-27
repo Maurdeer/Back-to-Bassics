@@ -14,6 +14,7 @@ public class PersistentDataTracker : MonoBehaviour, IDataPersistence
     private void Awake()
     {
         m_enemyScores = new ulong[4];
+        m_enemyRanks = new string[4];
         totalScore = 0;
     }
     public void UpdateEnemyScore(int id, ulong score, string rank)

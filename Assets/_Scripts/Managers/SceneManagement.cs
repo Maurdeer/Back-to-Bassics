@@ -50,7 +50,7 @@ public class SceneManagement : Singleton<SceneManagement>, IDataPersistence
     }
     public void ChangeScene(string scene)
     {
-        Debug.Log("Change Scene Invoked!");
+        //Debug.Log("Change Scene Invoked!");
         if (SceneManager.GetActiveScene().name == scene) 
         {
             reloaded = true;
@@ -64,6 +64,7 @@ public class SceneManagement : Singleton<SceneManagement>, IDataPersistence
         loadText.SetText("");
         loadingScreen.SetActive(false);
 
+        Conductor.Instance?.StopConducting();
         StartCoroutine(LoadSceneAsynchronously(scene));
     }
     public void ReloadCurrentScene()

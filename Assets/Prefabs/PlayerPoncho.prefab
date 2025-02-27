@@ -271,7 +271,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalScale: {x: 0.46870106, y: 0.46870106, z: 0.46870106}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1102659413466783360}
@@ -5268,8 +5268,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6292754098507325895}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.014805608, y: -0.00000002979906, z: -4.4124157e-10, w: 0.9998904}
-  m_LocalPosition: {x: 0, y: 4.66, z: -10.3}
+  m_LocalRotation: {x: -0.014805205, y: -0.00000003071617, z: -4.54809e-10, w: 0.99989045}
+  m_LocalPosition: {x: 0, y: 4.6600037, z: -10.300003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5446,6 +5446,9 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: 615d985bad138be4eb9f15eac06a1261, type: 2}
   _currHP: 20
   onPawnDefeat:
+    m_PersistentCalls:
+      m_Calls: []
+  onPawnExitBattle:
     m_PersistentCalls:
       m_Calls: []
   tutComboList: {fileID: 0}
@@ -5946,7 +5949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8653719598885068355, guid: fc9c52e8924606e4eb7952bd4158d30a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8089108032486474258, guid: fc9c52e8924606e4eb7952bd4158d30a, type: 3}
       propertyPath: m_SortingLayer
@@ -6463,7 +6466,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8653719598885068355, guid: 53f5b06d64b7a5543a281850c68344cf, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8556169939178387296, guid: 53f5b06d64b7a5543a281850c68344cf, type: 3}
       propertyPath: m_Layer

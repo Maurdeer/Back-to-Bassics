@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WreckonTitle : MonoBehaviour
 {
-    private string m_saveProfileName;
+    [SerializeField] private TextMeshProUGUI m_errorText;
+    private string m_saveProfileName = "";
 
     public void UpdateSaveProfile(string saveProfileName)
     {
@@ -14,9 +16,14 @@ public class WreckonTitle : MonoBehaviour
 
     public void StartGame()
     {
-        if (m_saveProfileName.Trim() == "" || m_saveProfileName.Length > 30) 
+        if (m_saveProfileName.Trim() == "")
         {
-            Debug.LogError("Bad Name!");
+            m_errorText.text = "Please enter a name";
+            return;
+        }
+        if (m_saveProfileName.Length > 30) 
+        {
+            m_errorText.text = "Name cannot be above 30 characters";
             return;
         }
         DataPersistenceManager.Instance.ChangeSelectedProfileId(m_saveProfileName);

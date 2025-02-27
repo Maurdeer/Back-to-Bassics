@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.ProBuilder.AutoUnwrapSettings;
 
 public class RankingGauge : MonoBehaviour
 {
@@ -15,6 +17,13 @@ public class RankingGauge : MonoBehaviour
     public Coroutine UpdateGauge(double from, double to, double max)
     {
         return StartCoroutine(GaugeFilling(from, to, max));
+    }
+
+    public void SetGauge(float fill)
+    {
+        if (fill > 1) fill = 1;
+        float length = fill * upperBound + (1 - fill) * lowerBound;
+        bar.anchoredPosition = new Vector2(length, bar.anchoredPosition.y);
     }
 
     private IEnumerator GaugeFilling(double from, double to, double max)

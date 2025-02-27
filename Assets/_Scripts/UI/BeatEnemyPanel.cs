@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class BeatEnemyPanel : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class BeatEnemyPanel : MonoBehaviour
         m_rankText.gameObject.SetActive(false);
         m_continueButton.SetActive(false);
         m_animator.Play("hide_endscreen");
+        m_rankGauge.SetGauge(0);
         BattleManager.Instance.EndBattleComplete();
     }
 }

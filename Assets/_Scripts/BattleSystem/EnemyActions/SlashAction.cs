@@ -117,6 +117,12 @@ public class SlashAction : EnemyAction, IAttackRequester
         parentPawnSprite.Animator.Play($"{slashAnimationName}_deflected");
         if (_currNode.staggersParent && parentPawn is EnemyBattlePawn enemyPawn)
         {
+            /// [WREKCON] BASSICS_SPECIAL
+            if (enemyPawn.EnemyData.Name == "Bassics")
+            {
+                UIManager.Instance.WreckconQuests.MarkAchievement(1);
+            }
+            ///============
             enemyPawn.StaggerDamage(_staggerDamage);
         }
         return true;

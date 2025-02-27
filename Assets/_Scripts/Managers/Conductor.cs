@@ -41,7 +41,7 @@ public class Conductor : Singleton<Conductor>
         {
             if (_ctx != null)
             {
-                Debug.Log("=========== STOPPED CONDUCTING ===========");
+                //Debug.Log("=========== STOPPED CONDUCTING ===========");
                 _ctx.Stop();
                 ctxHandle.Free();
             }
