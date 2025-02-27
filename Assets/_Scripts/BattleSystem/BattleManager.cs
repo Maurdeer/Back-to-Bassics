@@ -63,7 +63,6 @@ public class BattleManager : Singleton<BattleManager>
     public void EndBattleComplete()
     {
         GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
-        UIManager.Instance.WreckconQuests.MarkAchievement(EnemyId(Enemy.EnemyData.Name) * 4);
         Player.ExitBattle();
         Enemy.ExitBattle();  
     }
@@ -153,6 +152,7 @@ public class BattleManager : Singleton<BattleManager>
         // Update Score: Kill Ryan For Hardcodeness NOW!
         int id = EnemyId(Enemy.EnemyData.Name);
         ulong finalScore = UIManager.Instance.ScoreTracker.StopAndGetFinalScore();
+        UIManager.Instance.WreckconQuests.MarkAchievement(id * 4);
         // Rank Calculation
         double scoreFraction = (double)finalScore / Enemy.EnemyData.SRankMax;
         string scoreRank = "";

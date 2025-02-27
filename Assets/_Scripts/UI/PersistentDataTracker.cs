@@ -1,20 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class PersistentDataTracker : MonoBehaviour, IDataPersistence
 {
     [SerializeField] private TextMeshProUGUI m_profileNameText;
     [SerializeField] private Transform m_enemyScoreTexts;
+    [SerializeField] private Transform m_enemyRankTexts;
     private ulong[] m_enemyScores;
     private string[] m_enemyRanks;
     private ulong totalScore;
     private void Awake()
     {
         m_enemyScores = new ulong[4];
-        m_enemyRanks = new string[4];
+        m_enemyRanks = new string[4] { "", "", "", ""};
         totalScore = 0;
     }
     public void UpdateEnemyScore(int id, ulong score, string rank)
@@ -27,13 +25,24 @@ public class PersistentDataTracker : MonoBehaviour, IDataPersistence
     public void LoadData(GameData data)
     {
         m_profileNameText.text = data.profileName;
-        int i = 0;
-        foreach (TextMeshProUGUI child in m_enemyScoreTexts.GetComponentsInChildren<TextMeshProUGUI>())
+        TextMeshProUGUI[] scoreTexts = m_enemyScoreTexts.GetComponentsInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI[] rankTexts = m_enemyRankTexts.GetComponentsInChildren<TextMeshProUGUI>();
+        if (scoreTexts == null)
+        {
+            Debug.LogError("Couldn't Find Scores Text Panels");
+            return;
+        }
+        if (rankTexts == null)
+        {
+            Debug.LogError("Couldn't Find Rank Text Panels");
+            return;
+        }
+        for (int i = 0; i < scoreTexts.Length; i++)
         {
             m_enemyScores[i] = data.enemyScore[i];
             m_enemyRanks[i] = data.enemyRank[i];
-            child.text = data.enemyScore[i].ToString("D10");
-            i++;
+            scoreTexts[i].text = data.enemyScore[i].ToString("D10");
+            rankTexts[i].text = data.enemyRank[i];
         }
         RefreshTotalScore(); // Inefficent, but modular
     }
