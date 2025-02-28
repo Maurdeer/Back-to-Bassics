@@ -141,17 +141,17 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         if (data.truthArray[1]) // Wack since there numbers are off lmao
         {
             // Beat Small Fry
-            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(829.330017f, 100.043f, 442f);
+            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 442f);
         }
         else if (data.truthArray[2])
         {
             // Beat Turbo Top
-            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(829.330017f, 100.043f, 394.100006f);
+            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 394.100006f);
         }
         else if (data.truthArray[0])
         {
             // Beat Bassics
-            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(829.789978f, 100.043f, 303.299988f);
+            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 303.299988f);
         }
         
 

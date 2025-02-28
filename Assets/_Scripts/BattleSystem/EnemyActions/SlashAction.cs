@@ -83,6 +83,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         //---------------------------------------
 
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
+        //parentPawnSprite.Animator.SetFloat("x_faceDir", -parentPawnSprite.Animator.GetFloat("x_faceDir"));
         BattleManager.Instance.Player.Damage(_currNode.dmg);
     }
 

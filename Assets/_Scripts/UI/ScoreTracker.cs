@@ -64,8 +64,9 @@ public class ScoreTracker : MonoBehaviour
             m_scoreText.text = currScore.ToString("D10");
         }
 
+        ulong oldscore = currScore;
         currScore = score;
-        textUpdater = StartCoroutine(TextUpdater(currScore, score));
+        textUpdater = StartCoroutine(TextUpdater(oldscore, currScore));
     }
     public void UpdateMultiplier(uint multiplier)
     {
@@ -89,8 +90,7 @@ public class ScoreTracker : MonoBehaviour
     {
         runTimeMultiplier = false;
         ulong finalScore = (ulong)(currScore * double.Parse(currTimeMultiplierValue.ToString("0.0")));
-        UpdateScore(finalScore);
-        return currScore;
+        return finalScore;
     }
     private IEnumerator TextUpdater(ulong from, ulong to)
     {

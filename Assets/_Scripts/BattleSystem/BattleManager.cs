@@ -41,6 +41,7 @@ public class BattleManager : Singleton<BattleManager>
     }
     public void StartBattle(EnemyBattlePawn[] pawns)
     {
+        UIManager.Instance.PauseButtonAnimator.Play("hide");
         enemyBattlePawns = new Queue<EnemyBattlePawn>(pawns);
         Enemy = enemyBattlePawns?.Dequeue();
         PlayerScore = 0;
@@ -152,6 +153,7 @@ public class BattleManager : Singleton<BattleManager>
         // Update Score: Kill Ryan For Hardcodeness NOW!
         int id = EnemyId(Enemy.EnemyData.Name);
         ulong finalScore = UIManager.Instance.ScoreTracker.StopAndGetFinalScore();
+        PlayerScore = finalScore;
         UIManager.Instance.WreckconQuests.MarkAchievement(id * 4);
         // Rank Calculation
         double scoreFraction = (double)finalScore / Enemy.EnemyData.SRankMax;
@@ -180,6 +182,9 @@ public class BattleManager : Singleton<BattleManager>
         if (scoreRank == "") scoreRank = "E";
 
         UIManager.Instance.PersistentDataTracker.UpdateEnemyScore(id, finalScore, scoreRank);
+
+        // Save Here Since All Needed Data has been processed
+        DataPersistenceManager.Instance.SaveGame();
 
         UIManager.Instance.BeatEnemyPanel.PlayBattleVictory(Enemy.EnemyData.Name, finalScore, Enemy.EnemyData.SRankMax, scoreRank);
     } 

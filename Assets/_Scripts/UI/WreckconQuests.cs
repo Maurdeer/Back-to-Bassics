@@ -27,7 +27,6 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
             // Defeated a Boss
             tickets += 10;
             truthArray[id / 4] = true;
-            DataPersistenceManager.Instance.SaveGame();
         }
         else
         {
