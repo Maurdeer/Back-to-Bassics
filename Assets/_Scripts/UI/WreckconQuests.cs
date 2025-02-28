@@ -59,7 +59,8 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
         }
 
         data.tickets = tickets;
-        data.truthArray = truthArray;
+        // (Ryan) Keeping this as a reminder, Passed by referenced, no need to save!
+        //data.truthArray = truthArray;
     }
 }
 

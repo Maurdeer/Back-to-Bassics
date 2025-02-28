@@ -135,17 +135,18 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         //get player transform and assign it to data's player position
 
         // (Ryan) WRECKCON LOGIC WOOO
+        // No Concern over updating these in order since truthArray is updated by reference in GameData!!
         if (data.truthArray[3]) return; // Beat King Sal
 
         if (data.truthArray[2])
         {
             // Beat Small Fry
-            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(829.789978f, 100.028999f, 303.299988f); // CHANGE
+            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(829.330017f, 100.028999f, 442f);
         }
         else if (data.truthArray[1])
         {
             // Beat Turbo Top
-            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(829.789978f, 100.028999f, 303.299988f); // CHANGE
+            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(829.330017f, 100.028999f, 394.100006f);
         }
         else if (data.truthArray[0])
         {
