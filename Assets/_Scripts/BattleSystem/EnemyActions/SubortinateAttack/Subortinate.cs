@@ -56,17 +56,19 @@ public class Subortinate : Conductable
     }
 
     public void Stagger() {
+        if (this == null) return;
         state = SubortinateState.idle;
 
-        StopAllCoroutines();
+        if (activeThread != null) StopCoroutine(activeThread);
         transform.position = startingPosition;
-        _spriteAnimator.Play("staggered");
+        _spriteAnimator?.Play("staggered");
         // _spriteAnimator.Play("idle");
     }
 
     public void Unstagger() {
+        Debug.Log("I'm unstaggering now!");
         currDecisionTime = decisionTimeInBeats;
-        _spriteAnimator.Play("idle");
+        if (_spriteAnimator != null) _spriteAnimator.Play("idle");
     }
     protected override void OnFullBeat() 
     {
@@ -101,9 +103,11 @@ public class Subortinate : Conductable
         currDecisionTime = decisionTimeInBeats;
     }
 
+    // About 510 in Timeline, 240 For Sal Slash
     public void Attack() {
+        Debug.Log("Attacking, playing animation Engarde and setting state to broadcast");
         state = SubortinateState.broadcast;
-        _spriteAnimator.Play("engard");
+        _spriteAnimator?.Play("engard");
     }
 
     private IEnumerator ChargeThread()
@@ -141,7 +145,7 @@ public class Subortinate : Conductable
     {
         state = SubortinateState.dead;
         Disable();
-        StartCoroutine(FlyOutAndDestroy(5f, 15f));
+        StartCoroutine(FlyOutAndDestroy(0.5f, 15f));
     }
 
     private IEnumerator FlyOutAndDestroy(float duration, float speed)

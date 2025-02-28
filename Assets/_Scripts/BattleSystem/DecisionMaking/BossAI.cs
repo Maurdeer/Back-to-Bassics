@@ -10,18 +10,18 @@ using static PositionStateMachine;
 public class BossAI : Conductable
 {
     [Header("Config")]
-    [SerializeField] private EnemyStageData[] _enemyStages;
-    [SerializeField] private bool useDistanceOverBlock;
-    private int _lastAction; // prevents using same attack twice in a row
+    [SerializeField] protected EnemyStageData[] _enemyStages;
+    [SerializeField] protected bool useDistanceOverBlock;
+    protected int _lastAction; // prevents using same attack twice in a row
     protected int _currentStage;
     public event System.Action OnEnemyStageTransition;
-    private int _beatsPerDecision;
+    protected int _beatsPerDecision;
 
     // references
-    private EnemyBattlePawn _enemyBattlePawn;
-    private float _decisionTime;
-    private bool staggeredBefore;
-    [SerializeField] private UnityEvent firstTimeStagger;
+    protected EnemyBattlePawn _enemyBattlePawn;
+    protected float _decisionTime;
+    protected bool staggeredBefore;
+    [SerializeField] protected UnityEvent firstTimeStagger;
     private void Awake()
     {
         _enemyBattlePawn = GetComponent<EnemyBattlePawn>();
