@@ -32,6 +32,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
 
     [field: Header("Events")]
     [SerializeField] public event Action OnEnemyStaggerEvent;
+    [SerializeField] public event Action OnEnemyUnstaggerEvent;
     [field: SerializeField] public TimelineAsset IntroCutscene { get; private set; }
     [field: SerializeField] public TimelineAsset OutroCutscene { get; private set; }
 
@@ -220,6 +221,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         UIManager.Instance.BeatIndicator.Hide();
         if (esm.IsOnState<Dead>()) return;
         base.OnUnstagger();
+        OnEnemyUnstaggerEvent?.Invoke();
 
         // (Ryan) Reset Stagger Health Here From Now On!!
         currentStaggerHealth = maxStaggerHealth;

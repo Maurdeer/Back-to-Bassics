@@ -8,7 +8,9 @@ using static GameStateMachine;
 public class Subortinate : Conductable
 {
     [SerializeField] private int decisionTimeInBeats = 4;
+    [SerializeField] private int fasterDecisionTimeInBeats;
     [SerializeField] private float speed = 5f;
+    [SerializeField] private float fasterSpeed;
     [SerializeField] private int health = 3;
     [Header("References")]
     [SerializeField] private DeflectableHitBox hitBox;
@@ -47,24 +49,45 @@ public class Subortinate : Conductable
         }
         StartCoroutine(MoveIntoPosition());
     }
+
+    public void UpgradeStats() {
+        speed = fasterSpeed;
+        decisionTimeInBeats = fasterDecisionTimeInBeats;
+    }
+
+    public void Stagger() {
+        state = SubortinateState.idle;
+
+        StopAllCoroutines();
+        transform.position = startingPosition;
+        _spriteAnimator.Play("staggered");
+        // _spriteAnimator.Play("idle");
+    }
+
+    public void Unstagger() {
+        currDecisionTime = decisionTimeInBeats;
+        _spriteAnimator.Play("idle");
+    }
     protected override void OnFullBeat() 
     {
-        if (state == SubortinateState.attack || state == SubortinateState.dead) return;
+        if (state == SubortinateState.idle || state == SubortinateState.attack || state == SubortinateState.dead) return;
         if (currDecisionTime > 0)
         {
             currDecisionTime--;
             return;
         }
 
+        
+
         switch (state)
         {
-            case SubortinateState.idle:
-                if (Random.Range(0, 2) == 1)
-                {
-                    state = SubortinateState.broadcast;
-                    _spriteAnimator.Play("engard");
-                }
-                break;
+            // case SubortinateState.idle:
+            //     if (Random.Range(0, 2) == 1)
+            //     {
+            //         state = SubortinateState.broadcast;
+            //         _spriteAnimator.Play("engard");
+            //     }
+            //     break;
             case SubortinateState.broadcast:
                 state = SubortinateState.attack;
                 _spriteAnimator.Play("charge");
@@ -76,6 +99,11 @@ public class Subortinate : Conductable
         }
 
         currDecisionTime = decisionTimeInBeats;
+    }
+
+    public void Attack() {
+        state = SubortinateState.broadcast;
+        _spriteAnimator.Play("engard");
     }
 
     private IEnumerator ChargeThread()
@@ -158,6 +186,8 @@ public class Subortinate : Conductable
         return (!facingWest || BattleManager.Instance.Player.DodgeDirection != Direction.East)
             && BattleManager.Instance.Player.DodgeDirection != Direction.West;
     }
+
+
     #endregion
     //private void OnTriggerEnter(Collider other)
     //{

@@ -5,16 +5,16 @@ using UnityEngine;
 public class KingSalAI : BossAI
 {
     [Header("King Sal Specific Parameters")]
-    [SerializeField] SummonSubortinate regularSubordinateSummon;
-    [SerializeField] SummonSubortinate fastSubordinateSummon;
+    [SerializeField] private SummonSubortinate regularSubordinateSummon;
+    private bool empoweredSubordinates = false;
 
     protected override void PhaseChange() {
         base.PhaseChange();
-        if (_currentStage == 2) {
-            Destroy(regularSubordinateSummon);
+        if (!empoweredSubordinates && _currentStage == 2) {
+            regularSubordinateSummon.UpgradeMinions();
+            empoweredSubordinates = true;
         }
     }
 
-    
 
 }
