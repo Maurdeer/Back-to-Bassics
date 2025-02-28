@@ -48,7 +48,7 @@ public class BattlePawn : Conductable
         _currHP = MaxHP;
         _pawnAnimator = GetComponent<Animator>();
         _pawnSprite = GetComponentInChildren<PawnSprite>();
-        _paperShredBurst = GameObject.Find("ShreddedPaperParticles").GetComponent<ParticleSystem>();
+        _paperShredBurst = transform.Find("ShreddedPaperParticles").GetComponent<ParticleSystem>();
         _staggerVFX = transform.Find("StaggerVFX")?.GetComponent<ParticleSystem>();
     }
     #endregion
