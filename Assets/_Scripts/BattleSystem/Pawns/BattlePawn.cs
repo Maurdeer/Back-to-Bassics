@@ -167,9 +167,11 @@ public class BattlePawn : Conductable
         {
             yield return thread;
         }
-        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_battle") 
-                                    || _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle"));
-        _pawnSprite.Animator.Play("stagger");
+        //yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_battle") 
+        //                            || _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle")
+        //                            || _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("staggered"));
+        
+        if (!_pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("staggered")) _pawnSprite.Animator.Play("stagger");
         _staggerVFX?.Play();
         // TODO: Notify BattleManager to broadcast this BattlePawn's stagger
         // Debug.Log("StaggeredFor" + duration);
@@ -182,6 +184,5 @@ public class BattlePawn : Conductable
         IsStaggered = false;
         OnUnstagger();
         _pawnSprite.Animator.Play("recover");
-        Debug.Log("Recover");
     }
 }

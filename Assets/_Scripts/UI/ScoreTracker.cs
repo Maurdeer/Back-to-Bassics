@@ -88,7 +88,7 @@ public class ScoreTracker : MonoBehaviour
     public ulong StopAndGetFinalScore()
     {
         runTimeMultiplier = false;
-        ulong finalScore = (ulong)(currScore * (double)currTimeMultiplierValue);
+        ulong finalScore = (ulong)(currScore * double.Parse(currTimeMultiplierValue.ToString("0.0")));
         UpdateScore(finalScore);
         return currScore;
     }

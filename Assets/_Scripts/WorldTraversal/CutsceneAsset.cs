@@ -12,6 +12,11 @@ public class CutsceneAsset : MonoBehaviour
     private void Awake()
     {
         director = GetComponent<PlayableDirector>();
+        
+    }
+
+    private void Start()
+    {
         if (playOnAwake) PlayCutscene();
     }
 

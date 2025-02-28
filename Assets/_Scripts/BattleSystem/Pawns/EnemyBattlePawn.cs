@@ -184,7 +184,17 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         if (amount > 0)
         {
             _paperShredBurst?.Play();
-            _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
+
+            // (Ryan) Do not modify the follow! Makes it look better
+            if (IsStaggered)
+            {
+                if (_pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("staggered"))
+                    _pawnSprite.Animator.Play("staggered_damaged");
+            }
+            else
+            {
+                _pawnSprite.Animator.Play("damaged");
+            }
         }
         base.Damage(amount);
     }

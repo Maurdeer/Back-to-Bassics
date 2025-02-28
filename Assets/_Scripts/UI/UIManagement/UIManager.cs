@@ -12,6 +12,7 @@ public partial class UIManager : Singleton<UIManager>
     private Coroutine _sic;
     private Coroutine _hic;
     public Transform SavePanel;
+    public Animator PauseButtonAnimator;
 
     [Header("Wreckcon")]
     public PersistentDataTracker PersistentDataTracker;

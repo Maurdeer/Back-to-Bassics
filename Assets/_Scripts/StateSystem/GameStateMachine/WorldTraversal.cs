@@ -12,6 +12,12 @@ public partial class GameStateMachine
                 DataPersistenceManager.Instance.enabled = true;
             GameManager.Instance.PC.SwitchToTraversalActions();
             CameraConfigure.Instance.SwitchToCamera(Input.PonchoCam);
+            UIManager.Instance.PauseButtonAnimator.Play("show");
+        }
+
+        public override void Exit(GameStateInput i)
+        {
+            UIManager.Instance.PauseButtonAnimator.Play("hide");
         }
     }
 }

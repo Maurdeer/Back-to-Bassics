@@ -18,7 +18,7 @@ public class PauseMenuCode : MonoBehaviour
             Pause();
         }
     }
-    private void Pause ()
+    public void Pause ()
     {
         m_animator.Play("show");
 

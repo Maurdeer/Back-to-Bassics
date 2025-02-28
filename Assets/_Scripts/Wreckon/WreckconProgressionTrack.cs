@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class WreckconProgressionTrack : MonoBehaviour, IDataPersistence
 {
+    [SerializeField] private GameObject GameObjectIntro;
     [SerializeField] private GameObject[] eventLocations;
     [SerializeField] private GameObject[] pawnGameObjects;
     public void LoadData(GameData data)
     {
-        if (eventLocations.Length < 4) 
+        if (eventLocations.Length < 4 || GameObjectIntro == null) 
         {
             Debug.LogError("Please Add All Event Locations Scrub!");
             return;
         }
-        if (data.truthArray[3]) 
+        if (data.truthArray[3])
         {
             Debug.LogError("HOW ARE YOU HERE? YOU SHOULDN'T BE HERE!");
             return;
@@ -21,6 +22,7 @@ public class WreckconProgressionTrack : MonoBehaviour, IDataPersistence
         int i = 0;
         while (data.truthArray[i])
         {
+            GameObjectIntro.SetActive(false);
             eventLocations[i].SetActive(false);
             pawnGameObjects[i].SetActive(false);
             i++;
