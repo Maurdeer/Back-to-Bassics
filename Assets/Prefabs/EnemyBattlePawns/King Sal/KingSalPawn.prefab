@@ -5711,7 +5711,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 1
   _subortinatePrefabRef: {fileID: 1417911782453582160, guid: e92691a8443d13840b2d417d2ab58a9f, type: 3}
-  kingSal: {fileID: 0}
+  kingSal: {fileID: 423797268895823708}
 --- !u!1 &4142156145447947518
 GameObject:
   m_ObjectHideFlags: 0
@@ -6096,7 +6096,7 @@ PlayableDirector:
   m_GameObject: {fileID: 4999856665150672825}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 6080291590368ac4ab3093498afc4c2e, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: ac423f01f744ade4483ebccb1058c1da, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -11795,6 +11795,10 @@ PrefabInstance:
     - target: {fileID: 4550884989801888863, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4955305811856419086, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.4600003
       objectReference: {fileID: 0}
     - target: {fileID: 5770145550531089090, guid: 643d03f00593c3c4f9d25e9ec8cde134, type: 3}
       propertyPath: m_Layer
