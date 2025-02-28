@@ -87,12 +87,13 @@ public class BattlePawn : Conductable
         // (Joseph 1 / 12 / 25) Trying to address the issue of StaggerFor in BossAi being called and being useless
         // Debug.Log("IsStaggered is " + IsStaggered);
         // IsStaggered = true;
-        // Debug.Log("selfStaggerInstnace is null: " + (selfStaggerInstance == null));
-        if (selfStaggerInstance != null)  {
+        if (selfStaggerInstance != null)  
+        {
             StopCoroutine(selfStaggerInstance);
         } // (Joseph 1 / 12 / 25) I'm not sure this line is doing anything.
-        // It doesn't. In the context of the issue we're trying to address, both get called at around the same time and thus selfStaggerInstance is always null.
-        // if (IsStaggered) return; // (Joseph 1 / 12 / 25) This solution doesn't work because normal stagger is called first, meaning the second doesn't get registered.
+          // It doesn't. In the context of the issue we're trying to address, both get called at around the same time and thus selfStaggerInstance is always null.
+          // if (IsStaggered) return; // (Joseph 1 / 12 / 25) This solution doesn't work because normal stagger is called first, meaning the second doesn't get registered.
+        IsStaggered = true;
         selfStaggerInstance = StartCoroutine(StaggerSelf(duration));
     }
     public virtual void UnStagger()
@@ -160,12 +161,14 @@ public class BattlePawn : Conductable
         //     Debug.Log("Duration");
         //     _maxRecordedDurationForStagger = duration;
         // }
-        IsStaggered = true;
+        yield return null; // <----- Fuck you unity Fuck you
         List<Coroutine> completionThreads = OnStagger();
         foreach(Coroutine thread in completionThreads)
         {
             yield return thread;
         }
+        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_battle") 
+                                    || _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle"));
         _pawnSprite.Animator.Play("stagger");
         _staggerVFX?.Play();
         // TODO: Notify BattleManager to broadcast this BattlePawn's stagger
@@ -179,5 +182,6 @@ public class BattlePawn : Conductable
         IsStaggered = false;
         OnUnstagger();
         _pawnSprite.Animator.Play("recover");
+        Debug.Log("Recover");
     }
 }

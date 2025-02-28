@@ -103,7 +103,7 @@ public class ComboDisplay : MonoBehaviour
         yield return new WaitForSeconds(.19f);
 
         ResetCombo();
-        Debug.Log("coroutine done");
+        //Debug.Log("coroutine done");
 
     }
 }
