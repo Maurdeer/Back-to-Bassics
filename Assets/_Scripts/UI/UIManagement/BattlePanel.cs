@@ -70,7 +70,7 @@ public partial class UIManager
 
         // Enemy Pawn
         _enemyHpBar.fillAmount = (float)pawn.HP / pawn.Data.HP;
-        _enemyHpText.text = $"{pawn.HP}/{pawn.Data.HP}";
+        _enemyHpText.text = $"{Mathf.Clamp(pawn.HP, 0, pawn.Data.HP)}/{pawn.Data.HP}";
     }
     public void SetPlayerHealthBarOnFire()
     {
