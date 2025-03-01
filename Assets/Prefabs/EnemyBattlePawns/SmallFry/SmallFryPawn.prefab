@@ -5347,7 +5347,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574600789773547606}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.028410738, w: 0.9995963}
+  m_LocalRotation: {x: -0, y: -0, z: 0.028410947, w: 0.99959636}
   m_LocalPosition: {x: 0.65, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -12454,7 +12454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9fe0a9b7ecad7f4abbfa242c8097125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timelineDurationInBeats: 5
+  timelineDurationInBeats: 3
   damage: 4
   attackAnimationName: sandwhich
   prehitFraction: 0.6
@@ -17580,6 +17580,9 @@ MonoBehaviour:
   onPawnDefeat:
     m_PersistentCalls:
       m_Calls: []
+  onPawnExitBattle:
+    m_PersistentCalls:
+      m_Calls: []
   tutComboList: {fileID: 0}
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
@@ -17630,7 +17633,7 @@ PlayableDirector:
   m_GameObject: {fileID: 8123077407089530165}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 7a820986f157fa742bc25d22be9ce68a, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 676742bcea3128b47886c130e3aca98a, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -18349,7 +18352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9993787
+      value: 0.99937874
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.y
@@ -18357,7 +18360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.035246417
+      value: -0.035246626
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

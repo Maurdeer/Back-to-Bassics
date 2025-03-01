@@ -12,7 +12,15 @@ public partial class EnemyStateMachine
             base.Enter(i);
             if (Input.EnemySprite != null)
             {
-                Input.EnemySprite?.Animator?.Play("standby");
+                if (Input.Enemy.EnemyData.Name == "Bassics")
+                {
+                    Input.EnemySprite?.Animator?.Play("nothing");
+                }
+                else
+                {
+                    Input.EnemySprite?.Animator?.Play("StandbyFront");
+                }
+                
                 Input.EnemySprite.Animator?.Play("dead");
             }   
         }

@@ -16,7 +16,8 @@ public class WreckconProgressionTrack : MonoBehaviour, IDataPersistence
         }
         if (data.truthArray[3])
         {
-            Debug.LogError("HOW ARE YOU HERE? YOU SHOULDN'T BE HERE!");
+            // Most Likley In there if they are doing rebattles
+            //Debug.LogError("HOW ARE YOU HERE? YOU SHOULDN'T BE HERE!");
             return;
         }
         int i = 0;
