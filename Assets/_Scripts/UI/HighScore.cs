@@ -8,7 +8,8 @@ using UnityEngine.TextCore.Text;
 
 public class HighScore : MonoBehaviour
 {
-    [SerializeField] private Transform highscoreRegion;
+    [SerializeField] private TextMeshProUGUI[] namesMesh;
+    [SerializeField] private TextMeshProUGUI[] scoreMesh;
     [SerializeField] private TMP_FontAsset fontAsset;
     public class HighScoreComparer : IComparer
     {
@@ -25,17 +26,14 @@ public class HighScore : MonoBehaviour
         GameData[] profileGamedata = profiles.Values.ToArray();
         Array.Sort(profileGamedata, new HighScoreComparer());
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < namesMesh.Length; i++)
         {
             if (i > profileGamedata.Length)
             {
                 return;
             }
-            GameObject highScoreObject = new GameObject();
-            TextMeshProUGUI mesh = highScoreObject.AddComponent<TextMeshProUGUI>();
-            mesh.text = $"{profileGamedata[i].profileName} | {profileGamedata[i].totalScore}";
-            mesh.font = fontAsset;
-            highScoreObject.transform.SetParent(highscoreRegion, false);
+            namesMesh[i].text = profileGamedata[i].profileName;
+            scoreMesh[i].text = profileGamedata[i].totalScore.ToString("D10");
         }
     }
 }
