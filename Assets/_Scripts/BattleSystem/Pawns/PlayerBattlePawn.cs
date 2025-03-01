@@ -67,7 +67,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     {
         dodging = true;
         _pawnSprite.Animator.Play("dodge_" + directionAnimation);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.60f);
         dodging = false;
     }
     
