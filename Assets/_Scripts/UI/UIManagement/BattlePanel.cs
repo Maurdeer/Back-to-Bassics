@@ -23,9 +23,9 @@ public partial class UIManager
     public ClockUI ClockUI;
     public ScoreTracker ScoreTracker;
     public ComboDisplay ComboDisplay;
-    int parryCount;
-    int blockCount;
-    int missCount;
+    public int parryCount;
+    public int blockCount;
+    public int missCount;
     // Replacement For easier use maybe
     //public GaugeTracker PlayerHP;
     //public GaugeTracker EnemyHP;

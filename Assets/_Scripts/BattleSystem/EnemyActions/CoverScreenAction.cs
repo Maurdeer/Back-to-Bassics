@@ -19,6 +19,10 @@ public class CoverScreenAction : EnemyAction
     private Image screenCoverImage;
     private bool isFadingOut = false;
 
+    // WRECKON RELATED
+    private float pastMisses;
+    private float pastParries;
+
     /// <summary>
     /// Creates a screen cover if it does not exist
     /// </summary>
@@ -30,6 +34,10 @@ public class CoverScreenAction : EnemyAction
             StopAllCoroutines();
             isFadingOut = false;
         }
+        // [WRECKON] Start the check:
+        pastParries = UIManager.Instance.parryCount;
+        pastMisses = UIManager.Instance.missCount;
+        //==========================
         numOfBeats = maxNumOfBeats;
         screenCoverInstance = Instantiate(screenCoverPrefab);
         screenCoverInstance.SetActive(false);
@@ -94,6 +102,9 @@ public class CoverScreenAction : EnemyAction
         }
         screenCoverImage.color = new Color(initialColor.r, initialColor.g, initialColor.b, 0);
         isFadingOut = false;
+        // [WRECKON] CHECK IF Player did do it!!!
+        TaskCheck();
+        //==========================
         Destroy(screenCoverInstance);
     }
 
@@ -106,6 +117,14 @@ public class CoverScreenAction : EnemyAction
         if (numOfBeats <= 0)
         {
             StopAction();
+        }
+    }
+
+    private void TaskCheck()
+    {
+        if (UIManager.Instance.parryCount >= pastParries + 2 && UIManager.Instance.missCount == pastMisses)
+        {
+            UIManager.Instance.WreckconQuests.MarkAchievement(5);
         }
     }
 }
