@@ -66,7 +66,7 @@ public class Pooler : Singleton<Pooler>
             return null;
         }
         int idx = _pooledRefMapping[goName].currIdx;
-        Debug.Log(_pooledRefMapping[goName].objects.Length);
+        // Debug.Log(_pooledRefMapping[goName].objects.Length);
         _pooledRefMapping[goName].currIdx = (idx + 1) % _pooledRefMapping[goName].objects.Length;
         _pooledRefMapping[goName].objects[idx].transform.SetParent(transform, true);
         return _pooledRefMapping[goName].objects[idx];

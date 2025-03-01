@@ -106,7 +106,7 @@ public class Subortinate : Conductable
 
     // About 510 in Timeline, 240 For Sal Slash
     public void Attack() {
-        Debug.Log("Attacking, playing animation Engarde and setting state to broadcast");
+        // Debug.Log("Attacking, playing animation Engarde and setting state to broadcast");
         state = SubortinateState.broadcast;
         currDecisionTime = decisionTimeInBeats;
         _spriteAnimator?.Play("engard");

@@ -11,7 +11,7 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
     [SerializeField] private Sprite achievedImage;
     [SerializeField] private TextMeshProUGUI m_ticketText;
     private int tickets;
-    private bool[] truthArray;
+    public bool[] truthArray;
     private void Awake()
     {
         InitializeSingleton();

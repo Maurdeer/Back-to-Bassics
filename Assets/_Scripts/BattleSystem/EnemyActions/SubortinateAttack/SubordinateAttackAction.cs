@@ -17,10 +17,10 @@ public class SubordinateAttackAction : EnemyAction
     // Start is called before the first frame update
     protected override void OnStartAction() {
         if(attackDirection == Direction.LEFT) {
-            Debug.Log("Calling the attack from the left");
+            // Debug.Log("Calling the attack from the left");
             summonSubordinates.GetLeftSubordinate()?.Attack();
         } else if (attackDirection == Direction.RIGHT) {
-            Debug.Log("Calling the attack from the right");
+            // Debug.Log("Calling the attack from the right");
             summonSubordinates.GetRightSubordinate()?.Attack();
         }
         StopAction();
