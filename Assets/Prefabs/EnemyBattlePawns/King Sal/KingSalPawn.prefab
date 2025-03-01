@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 5
-  projectilePoolAmount: 1
+  projectilePoolAmount: 4
   animationName: speartoss
   performAnimationBeforeFire: 0
   firePattern: 1
@@ -6149,7 +6149,7 @@ PlayableDirector:
   m_GameObject: {fileID: 4999856665150672825}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: ac423f01f744ade4483ebccb1058c1da, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 644f64918298eeb4ea2fc965add10ba3, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -6172,6 +6172,50 @@ PlayableDirector:
   - key: {fileID: 7195557166257667691, guid: 6080291590368ac4ab3093498afc4c2e, type: 2}
     value: {fileID: 4785778536512103016}
   - key: {fileID: 1379466647307712435, guid: ac423f01f744ade4483ebccb1058c1da, type: 2}
+    value: {fileID: 8953189125102002042}
+  - key: {fileID: -3051052126417114862, guid: ef6a25458fef191449396239906cfaf6, type: 2}
+    value: {fileID: 4785778536512103016}
+  - key: {fileID: 1379466647307712435, guid: ef6a25458fef191449396239906cfaf6, type: 2}
+    value: {fileID: 8953189125102002042}
+  - key: {fileID: -3724533416208748780, guid: ef6a25458fef191449396239906cfaf6, type: 2}
+    value: {fileID: 4125045691171716938}
+  - key: {fileID: -7553392456843543561, guid: eff2629a3030e634b96866679abf3a3f, type: 2}
+    value: {fileID: 4785778536512103016}
+  - key: {fileID: 3488445239655186416, guid: eff2629a3030e634b96866679abf3a3f, type: 2}
+    value: {fileID: 4125045691171716938}
+  - key: {fileID: 9180376195924672871, guid: eff2629a3030e634b96866679abf3a3f, type: 2}
+    value: {fileID: 8953189125102002042}
+  - key: {fileID: -6467714915145891134, guid: f495d71374998604eb7dec11e0808ed6, type: 2}
+    value: {fileID: 3105596179044317891}
+  - key: {fileID: 637950127740459880, guid: f495d71374998604eb7dec11e0808ed6, type: 2}
+    value: {fileID: 8953189125102002042}
+  - key: {fileID: 7320004784616833046, guid: c47af42077ea0e34b8d86f86d3cadcc7, type: 2}
+    value: {fileID: 4785778536512103016}
+  - key: {fileID: 8378647935599964435, guid: c47af42077ea0e34b8d86f86d3cadcc7, type: 2}
+    value: {fileID: 4125045691171716938}
+  - key: {fileID: -6084103284689969577, guid: c47af42077ea0e34b8d86f86d3cadcc7, type: 2}
+    value: {fileID: 8953189125102002042}
+  - key: {fileID: -5334314858497034787, guid: 8d3f035b0d07f0c44ae14f39cb74023e, type: 2}
+    value: {fileID: 3105596179044317891}
+  - key: {fileID: -6380383881146060051, guid: 8d3f035b0d07f0c44ae14f39cb74023e, type: 2}
+    value: {fileID: 4785778536512103016}
+  - key: {fileID: -2193039177146187869, guid: d21161c30819b704e8f0a28831d8f797, type: 2}
+    value: {fileID: 4125045691171716938}
+  - key: {fileID: -5038764894638088643, guid: d21161c30819b704e8f0a28831d8f797, type: 2}
+    value: {fileID: 4785778536512103016}
+  - key: {fileID: -3394258188369424910, guid: d21161c30819b704e8f0a28831d8f797, type: 2}
+    value: {fileID: 3105596179044317891}
+  - key: {fileID: 6695136223047453654, guid: d21161c30819b704e8f0a28831d8f797, type: 2}
+    value: {fileID: 3105596179044317891}
+  - key: {fileID: -1063922314532975705, guid: d21161c30819b704e8f0a28831d8f797, type: 2}
+    value: {fileID: 8953189125102002042}
+  - key: {fileID: -3340522403088415987, guid: a7a6d7920725b3a469f831db8cfa2271, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 3341408857534408519, guid: a7a6d7920725b3a469f831db8cfa2271, type: 2}
+    value: {fileID: 4785778536512103016}
+  - key: {fileID: -379665813744546558, guid: a7a6d7920725b3a469f831db8cfa2271, type: 2}
+    value: {fileID: 4125045691171716938}
+  - key: {fileID: 3606724881129452968, guid: 644f64918298eeb4ea2fc965add10ba3, type: 2}
     value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
@@ -6226,7 +6270,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2649866085227129878}
-  - {fileID: 1890555279525635504}
   - {fileID: 9009874540369882015}
   - {fileID: 8730679792051458449}
   - {fileID: 6074443267926148571}
@@ -6445,7 +6488,7 @@ Transform:
   m_GameObject: {fileID: 6170113813700144987}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.8499985, z: -9.47998}
+  m_LocalPosition: {x: 0.00000047683716, y: 4.8499985, z: -9.479979}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6539,57 +6582,6 @@ MonoBehaviour:
   timelineDurationInBeats: 5
   attackDirection: 0
   summonSubordinates: {fileID: 7998147405068883441}
---- !u!1 &6193117047529973840
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1890555279525635504}
-  - component: {fileID: 6850259670322381690}
-  m_Layer: 0
-  m_Name: FireProjectileAction
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1890555279525635504
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6193117047529973840}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3684823079573804144}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6850259670322381690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6193117047529973840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1be2721dfd1b374484d3c108adbbfc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timelineDurationInBeats: 0
-  projectilePoolAmount: 20
-  animationName: fire
-  performAnimationBeforeFire: 0
-  firePattern: 1
-  projectileFabs:
-  - {fileID: 7447668936119333177, guid: d9778582e6e969147a1ea75ec9da21e8, type: 3}
 --- !u!1 &6425661194071035408
 GameObject:
   m_ObjectHideFlags: 0
