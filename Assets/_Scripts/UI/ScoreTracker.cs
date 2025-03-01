@@ -102,7 +102,7 @@ public class ScoreTracker : MonoBehaviour
                 from+=100;
                 m_scoreText.color = NonDecayingMultiplierColor;
                 m_scoreText.text = from.ToString("D10");
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForSeconds(0.01f);
             }
         }
         else
@@ -113,7 +113,7 @@ public class ScoreTracker : MonoBehaviour
                 from-=100;
                 m_scoreText.color = SevereDecayingMultiplierColor;
                 m_scoreText.text = from.ToString("D10");
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForSeconds(0.01f);
             }
         }
         m_scoreText.color = Color.black;
