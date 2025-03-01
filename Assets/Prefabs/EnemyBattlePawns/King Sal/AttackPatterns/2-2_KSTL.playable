@@ -120,10 +120,10 @@ MonoBehaviour:
     node:
       slashDirection: 3
       isCharged: 0
-      staggersParent: 0
-      dmg: 1
+      staggersParent: 1
+      dmg: 3
       slashLengthInBeats: 0
-      dodgeDirections: 00000000000000000000000000000000
+      dodgeDirections: 01000000020000000000000004000000
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,10 +168,10 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 2.5
+    m_Start: 2
     m_ClipIn: 0
     m_Asset: {fileID: -1000855557527306516}
-    m_Duration: 5
+    m_Duration: 4
     m_TimeScale: 1
     m_ParentTrack: {fileID: 1379466647307712435}
     m_EaseInDuration: 0

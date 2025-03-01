@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 6
+    m_Start: 7.5
     m_ClipIn: 0
     m_Asset: {fileID: -707323732349124831}
     m_Duration: 4
@@ -210,9 +210,9 @@ MonoBehaviour:
       slashDirection: 4
       isCharged: 0
       staggersParent: 1
-      dmg: 1
+      dmg: 3
       slashLengthInBeats: 0
-      dodgeDirections: 01000000020000000000000004000000
+      dodgeDirections: 01000000020000000300000000000000
 --- !u!114 &-707323732349124831
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -230,9 +230,9 @@ MonoBehaviour:
       slashDirection: 3
       isCharged: 0
       staggersParent: 1
-      dmg: 1
+      dmg: 3
       slashLengthInBeats: 0
-      dodgeDirections: 01000000020000000300000000000000
+      dodgeDirections: 01000000020000000000000004000000
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

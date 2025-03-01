@@ -91,6 +91,7 @@ public class Subortinate : Conductable
             //     }
             //     break;
             case SubortinateState.broadcast:
+                // transform.position = startingPosition;
                 state = SubortinateState.attack;
                 _spriteAnimator.Play("charge");
                 activeThread = StartCoroutine(ChargeThread());
@@ -107,6 +108,7 @@ public class Subortinate : Conductable
     public void Attack() {
         Debug.Log("Attacking, playing animation Engarde and setting state to broadcast");
         state = SubortinateState.broadcast;
+        currDecisionTime = decisionTimeInBeats;
         _spriteAnimator?.Play("engard");
     }
 
