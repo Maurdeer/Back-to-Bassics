@@ -12,6 +12,10 @@ public class KingSalAI : BossAI
     private bool empoweredSubordinates = false;
     // private int summonIdx = 1;
 
+    private void Start() {
+        base.Start();
+        _enemyBattlePawn.OnPawnDeath += CheckAchievementOnDeath;
+    }
     protected override void PhaseChange() {
         base.PhaseChange();
         if (!empoweredSubordinates && _currentStage == 2) {
@@ -44,10 +48,12 @@ public class KingSalAI : BossAI
         EnemyAttackPattern[] actions = _enemyStages[_currentStage].EnemyAttackPatterns;
         
         // Summon is indexed at 0, always. For DreamHack at least. 
-        int idx = Random.Range(regularSubordinateSummon.GetIsFull()? 1 : 0, actions != null ? actions.Length : 0);
-        // if (idx == _lastAction)
-        // // doesnt use same attack twice consecutively
-        //     idx = (idx + 1) % actions.Length;
+        int idx = 1;
+        if (!regularSubordinateSummon.GetIsFull() && _lastAction != 0) idx = 0;
+        else {
+            idx = Random.Range(regularSubordinateSummon.GetIsFull()? 1 : 0, actions != null ? actions.Length : 0);
+            if (idx == _lastAction) idx = (actions.Length - idx) % actions.Length;
+        }
         _lastAction = idx;
 
         // may want to abstract enemy actions away from just timelines in the future?
@@ -61,6 +67,10 @@ public class KingSalAI : BossAI
         var handle = _enemyBattlePawn.Director.ScheduleToBeat();
 
         _decisionTime = _beatsPerDecision;
+    }
+
+    private void CheckAchievementOnDeath() {
+        if (regularSubordinateSummon.CompletedKillNoSubordinatesTask()) UIManager.Instance.WreckconQuests.MarkAchievement(13);
     }
 
 

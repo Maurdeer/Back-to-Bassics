@@ -11,7 +11,8 @@ public class SummonSubortinate : EnemyAction
     public Subortinate leftInstance;
     public Subortinate rightInstance;
     private Vector3 leftSummonLocation;
-    private Vector3 rightSummonLocation;    
+    private Vector3 rightSummonLocation;
+    private int summonedSubordinateCount = 0;
     private void Start()
     {
         leftSummonLocation = parentPawn.targetFightingLocation.position + new Vector3(-9, 0, 0);
@@ -24,22 +25,30 @@ public class SummonSubortinate : EnemyAction
         float duration = (timelineDurationInBeats - 1) * Conductor.Instance.spb;
         parentPawnSprite.Animator?.SetFloat("speed", 1 / duration);
         parentPawnSprite.Animator?.Play("kingsal_summon");
+        // parentPawnSprite.Animator?.Set("")
         if (rightInstance == null)
         {
-            Debug.Log("Summoned to the right");
+            // Debug.Log("Summoned to the right");
         
             rightInstance = Instantiate(_subortinatePrefabRef).GetComponent<Subortinate>();
             if (empoweredSubordinates) rightInstance.UpgradeStats();
             rightInstance.Summon(rightSummonLocation, Direction.West);
+            summonedSubordinateCount++;
+
         }
         else if (leftInstance == null)
         {
-            Debug.Log("Summoned to the left");
+            // Debug.Log("Summoned to the left");
             leftInstance = Instantiate(_subortinatePrefabRef).GetComponent<Subortinate>();
             if (empoweredSubordinates) leftInstance.UpgradeStats();
             leftInstance.Summon(leftSummonLocation, Direction.East);
+            summonedSubordinateCount++;
         }
         StopAction();
+    }
+
+    public bool CompletedKillNoSubordinatesTask() {
+        return summonedSubordinateCount < 3;
     }
 
     public Subortinate GetLeftSubordinate() {
@@ -78,9 +87,9 @@ public class SummonSubortinate : EnemyAction
     }
 
     private void UnstaggerMinions() {
-        Debug.Log("Unstaggering Left Side");
+        // Debug.Log("Unstaggering Left Side");
         leftInstance?.Unstagger();
-        Debug.Log("Unstagerg Right Side");
+        // Debug.Log("Unstagerg Right Side");
         rightInstance?.Unstagger();
     }
 }

@@ -35,7 +35,7 @@ public class BossAI : Conductable
         _currentStage = 0;
     }
 
-    private void Start()
+    protected void Start()
     {
         _enemyBattlePawn.OnPawnDeath += _enemyBattlePawn.Director.Stop;
         _enemyBattlePawn.OnEnterBattle += Enable;

@@ -66,7 +66,7 @@ public class Subortinate : Conductable
     }
 
     public void Unstagger() {
-        Debug.Log("I'm unstaggering now!");
+        // Debug.Log("I'm unstaggering now!");
         currDecisionTime = decisionTimeInBeats;
         if (_spriteAnimator != null) _spriteAnimator.Play("idle");
     }
