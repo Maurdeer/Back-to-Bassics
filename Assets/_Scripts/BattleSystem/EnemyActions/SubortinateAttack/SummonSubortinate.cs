@@ -25,17 +25,13 @@ public class SummonSubortinate : EnemyAction
         float duration = (timelineDurationInBeats - 1) * Conductor.Instance.spb;
         parentPawnSprite.Animator?.SetFloat("speed", 1 / duration);
         parentPawnSprite.Animator?.Play("kingsal_summon");
-        // parentPawnSprite.Animator?.Set("")
-        if (rightInstance == null)
-        {
-            // Debug.Log("Summoned to the right");
-        
+        if (rightInstance == null && Random.Range(0, 2) == 0) {
             rightInstance = Instantiate(_subortinatePrefabRef).GetComponent<Subortinate>();
             if (empoweredSubordinates) rightInstance.UpgradeStats();
             rightInstance.Summon(rightSummonLocation, Direction.West);
             summonedSubordinateCount++;
-
         }
+        // parentPawnSprite.Animator?.Set("")
         else if (leftInstance == null)
         {
             // Debug.Log("Summoned to the left");
