@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
@@ -25,6 +26,7 @@ public class ScoreTracker : MonoBehaviour
     private bool runTimeMultiplier;
     private Coroutine textUpdater;
     private ulong currScore;
+    private uint currComboMultiplier;
     private void Awake()
     {
         m_animator = GetComponent<Animator>();  
@@ -70,11 +72,13 @@ public class ScoreTracker : MonoBehaviour
     }
     public void UpdateMultiplier(uint multiplier)
     {
-        m_comboMultiplierText.text = $"{multiplier}x";
-        if (multiplier <= 1)
+        
+        if (multiplier <= (currComboMultiplier / 2))
         {
             m_animator.Play("shake");
         }
+        currComboMultiplier = multiplier;
+        m_comboMultiplierText.text = $"{multiplier}x";
     }
     public void StartTimeMultiplier(float clockDelayTH, float clockDecayTH)
     {

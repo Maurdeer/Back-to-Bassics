@@ -211,7 +211,7 @@ public class BattleManager : Singleton<BattleManager>
     }
     public void ResetPlayerMultiplier()
     {
-        PlayerMultiplier = 1;
+        PlayerMultiplier = (uint)Mathf.Clamp(PlayerMultiplier / 2, 1, 999);
     }
     private int EnemyId(string name)
     {

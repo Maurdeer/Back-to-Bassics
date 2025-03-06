@@ -129,7 +129,10 @@ public class BattlePawn : Conductable
         // TODO: Play Some Animation that makes the battle pawn leave the battle
         Disable();
         OnExitBattle?.Invoke();
-        onPawnExitBattle?.Invoke();
+
+        // Change this for On Victory
+        if (_currHP <= 0)
+            onPawnExitBattle?.Invoke();
     }
     #region BattlePawn Messages
     protected virtual List<Coroutine> OnStagger()
