@@ -25,22 +25,28 @@ public class SummonSubortinate : EnemyAction
         float duration = (timelineDurationInBeats - 1) * Conductor.Instance.spb;
         parentPawnSprite.Animator?.SetFloat("speed", 1 / duration);
         parentPawnSprite.Animator?.Play("kingsal_summon");
-        if (rightInstance == null && Random.Range(0, 2) == 0) {
-            rightInstance = Instantiate(_subortinatePrefabRef).GetComponent<Subortinate>();
-            if (empoweredSubordinates) rightInstance.UpgradeStats();
-            rightInstance.Summon(rightSummonLocation, Direction.West);
-            summonedSubordinateCount++;
+
+        if (rightInstance == null && leftInstance == null) {
+            if (Random.Range(0, 2) == 0) { // Summon to the right side
+                rightInstance = InstantiateSubordinate(rightSummonLocation, Direction.West);
+            } else {
+                leftInstance = InstantiateSubordinate(leftSummonLocation, Direction.East);
+            }
         }
-        // parentPawnSprite.Animator?.Set("")
-        else if (leftInstance == null)
-        {
-            // Debug.Log("Summoned to the left");
-            leftInstance = Instantiate(_subortinatePrefabRef).GetComponent<Subortinate>();
-            if (empoweredSubordinates) leftInstance.UpgradeStats();
-            leftInstance.Summon(leftSummonLocation, Direction.East);
-            summonedSubordinateCount++;
+        else if (rightInstance == null) {
+            rightInstance = InstantiateSubordinate(rightSummonLocation, Direction.West);
+        } else if (leftInstance == null) {
+            leftInstance = InstantiateSubordinate(leftSummonLocation, Direction.East);
         }
         StopAction();
+    }
+
+    private Subortinate InstantiateSubordinate(Vector3 summonLocation, Direction direction) {
+        Subortinate summonedSubordinate = Instantiate(_subortinatePrefabRef).GetComponent<Subortinate>();
+        if (empoweredSubordinates) rightInstance.UpgradeStats();
+        summonedSubordinateCount++;
+        summonedSubordinate.Summon(summonLocation, direction);
+        return summonedSubordinate;
     }
 
     public bool CompletedKillNoSubordinatesTask() {
@@ -60,14 +66,6 @@ public class SummonSubortinate : EnemyAction
     public bool GetIsFull() {
         return (leftInstance != null && rightInstance != null);
     }
-
-
-    // protected override void OnDestroy()
-    // {
-    //     leftInstance?.Kill();
-    //     rightInstance?.Kill();
-    // }
-
 
     // This works, just modify the code that applies to them.
     public void UpgradeMinions() {

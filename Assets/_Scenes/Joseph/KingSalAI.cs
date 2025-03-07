@@ -61,23 +61,32 @@ public class KingSalAI : BossAI
         // _lastAction = idx;
 
         int idx = -1;
-        if (!regularSubordinateSummon.GetIsFull()) {
-            if (Random.Range(1, 101) <= salSummonProbability) {
-                idx = 0; // Range is 1 - 100 I believe
-                salSummonProbability = defaultSalSummonProbability;
-            }
-            else {
-                salSummonProbability += increaseSummonProbabilityAfterFailure;
+
+        if (_currentStage < 1) { // Phase 1 for King Sal, just choose randomly
+            idx = Random.Range(0, actions != null ? actions.Length : 0);
+            if (idx == _lastAction) idx = (actions.Length - idx) % actions.Length;
+
+        }
+        else if (_currentStage >= 1) { // Phase 2 and 3 for King Sal
+            if (!regularSubordinateSummon.GetIsFull()) {
+                if (Random.Range(1, 101) <= salSummonProbability) {
+                    idx = 0; // Range is 1 - 100 I believe
+                    salSummonProbability = defaultSalSummonProbability;
+                }
+                else {
+                    salSummonProbability += increaseSummonProbabilityAfterFailure;
+                    idx = Random.Range(1, actions != null ? actions.Length : 0);
+                    if (idx == _lastAction) idx = (actions.Length - idx) % actions.Length;
+                    Debug.Log("Sal Summon Probability right now is " + salSummonProbability);
+
+
+                }
+            } else {
                 idx = Random.Range(1, actions != null ? actions.Length : 0);
                 if (idx == _lastAction) idx = (actions.Length - idx) % actions.Length;
-                Debug.Log("Sal Summon Probability right now is " + salSummonProbability);
-
-
             }
-        } else {
-            idx = Random.Range(1, actions != null ? actions.Length : 0);
-            if (idx == _lastAction) idx = (actions.Length - idx) % actions.Length;
         }
+        
         _lastAction = idx;
         if (idx == -1) Debug.LogError("idx for this enemy is -1. Not sure how that happened.");
 

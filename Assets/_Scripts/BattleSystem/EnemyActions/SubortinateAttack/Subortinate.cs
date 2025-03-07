@@ -20,6 +20,10 @@ public class Subortinate : Conductable
     private int currDecisionTime;
     private Vector3 startingPosition;
     private bool facingWest;
+    private bool IsAlive 
+    {
+        get {return health >= 0;}
+    }
     private void Awake()
     {
         _spriteAnimator = GetComponentInChildren<Animator>();
@@ -61,14 +65,14 @@ public class Subortinate : Conductable
 
         if (activeThread != null) StopCoroutine(activeThread);
         transform.position = startingPosition;
-        _spriteAnimator?.Play("staggered");
+        if (IsAlive) _spriteAnimator?.Play("staggered");
         // _spriteAnimator.Play("idle");
     }
 
     public void Unstagger() {
         // Debug.Log("I'm unstaggering now!");
         currDecisionTime = decisionTimeInBeats;
-        if (_spriteAnimator != null) _spriteAnimator.Play("idle");
+        if (IsAlive) _spriteAnimator.Play("idle");
     }
     protected override void OnFullBeat() 
     {
@@ -183,8 +187,12 @@ public class Subortinate : Conductable
     }
     private bool DeflectCheckEvent(IAttackReceiver receiver)
     {
-        return (facingWest && BattleManager.Instance.Player.SlashDirection == Vector2.right)
-            || BattleManager.Instance.Player.SlashDirection == Vector2.left;
+        // PlayerBattlePawn player = receiver as PlayerBattlePawn;
+        // return player != null && DirectionHelper.MaxAngleBetweenVectors(spinner.ccw ? Vector2.right : Vector2.left, player.SlashDirection, 5f);
+        PlayerBattlePawn player = receiver as PlayerBattlePawn;
+        Debug.Log("The current player slash direction is " + player.SlashDirection);
+        return (facingWest && player.SlashDirection == Vector2.right)
+            || (!facingWest && player.SlashDirection == Vector2.left);
     }
     private bool DodgeCheckEvent(IAttackReceiver receiver)
     {
