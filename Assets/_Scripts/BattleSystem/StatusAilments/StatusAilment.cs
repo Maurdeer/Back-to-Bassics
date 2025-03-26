@@ -49,4 +49,7 @@ public abstract class StatusAilment : Conductable
             Destroy(this);
         }
     }
+
+    protected virtual void OnStartAction() { }
+    protected virtual void OnStopAction() { }
 }
