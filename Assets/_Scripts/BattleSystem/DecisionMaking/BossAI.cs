@@ -124,6 +124,10 @@ public class BossAI : Conductable
             {
                 DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode);
             }
+            if (!string.IsNullOrEmpty(_enemyStages[_currentStage].PhaseTransitionAnimation)) {
+                _enemyBattlePawn.PlayTransitionAnimation(_enemyStages[_currentStage].PhaseTransitionAnimation);
+                Debug.Log(_enemyStages[_currentStage].PhaseTransitionAnimation);
+            }
             OnEnemyStageTransition?.Invoke();
         }
     }

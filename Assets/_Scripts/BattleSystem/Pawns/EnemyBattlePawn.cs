@@ -139,6 +139,10 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             }
         }
     }
+    public void PlayTransitionAnimation(string PhaseTransitionAnimationName) {
+        _pawnSprite.Animator.Play(PhaseTransitionAnimationName);
+    }
+
     public Coroutine PlayIntroCutscene()
     {
         return StartCoroutine(Cutscene());

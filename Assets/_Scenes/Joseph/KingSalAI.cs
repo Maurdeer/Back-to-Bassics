@@ -12,6 +12,7 @@ public class KingSalAI : BossAI
     [SerializeField] private int defaultSalSummonProbability;
     [SerializeField] private int increaseSummonProbabilityAfterFailure;
     private bool empoweredSubordinates = false;
+    private bool playedPhase3Transition = false;
     private int salSummonProbability;
     // private int summonIdx = 1;
 
@@ -77,7 +78,7 @@ public class KingSalAI : BossAI
                     salSummonProbability += increaseSummonProbabilityAfterFailure;
                     idx = Random.Range(1, actions != null ? actions.Length : 0);
                     if (idx == _lastAction) idx = (actions.Length - idx) % actions.Length;
-                    Debug.Log("Sal Summon Probability right now is " + salSummonProbability);
+                    // Debug.Log("Sal Summon Probability right now is " + salSummonProbability);
 
 
                 }

@@ -43,7 +43,7 @@ public class SummonSubortinate : EnemyAction
 
     private Subortinate InstantiateSubordinate(Vector3 summonLocation, Direction direction) {
         Subortinate summonedSubordinate = Instantiate(_subortinatePrefabRef).GetComponent<Subortinate>();
-        if (empoweredSubordinates) rightInstance.UpgradeStats();
+        if (empoweredSubordinates) summonedSubordinate.UpgradeStats();
         summonedSubordinateCount++;
         summonedSubordinate.Summon(summonLocation, direction);
         return summonedSubordinate;

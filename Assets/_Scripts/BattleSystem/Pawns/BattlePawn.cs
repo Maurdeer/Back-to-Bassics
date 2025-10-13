@@ -80,6 +80,7 @@ public class BattlePawn : Conductable
     }
     public virtual void Stagger()
     {
+        Debug.Log("Regular stagger called");
         StaggerFor(_data.StaggerDuration);
     }
     public virtual void StaggerFor(float duration)
@@ -165,6 +166,7 @@ public class BattlePawn : Conductable
         //     _maxRecordedDurationForStagger = duration;
         // }
         yield return null; // <----- Fuck you unity Fuck you
+        Debug.Log("Staggering for " + duration + " seconds");
         List<Coroutine> completionThreads = OnStagger();
         foreach(Coroutine thread in completionThreads)
         {
