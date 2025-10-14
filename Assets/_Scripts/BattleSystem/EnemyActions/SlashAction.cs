@@ -6,11 +6,11 @@ using static PositionStateMachine;
 public class SlashAction : EnemyAction, IAttackRequester
 {
     [Header("Slash Action")]
-    [SerializeField] private string slashAnimationName;
-    [SerializeField] private bool inverseFacingDirection = false;
+    [SerializeField] protected string slashAnimationName;
+    [SerializeField] protected bool inverseFacingDirection = false;
     [SerializeField] private int _staggerDamage = 5;
-    [SerializeField] private float prehitBeats = 0.5f;
-    [SerializeField] private float posthitBeats = 0.5f;
+    [SerializeField] protected float prehitBeats = 0.5f;
+    [SerializeField] protected float posthitBeats = 0.5f;
 
     [Header("Slash References")]
     //[SerializeField] private AnimationClip broadcastClip;
@@ -18,7 +18,7 @@ public class SlashAction : EnemyAction, IAttackRequester
     [SerializeField] private ParticleSystem indicatorSpark;
     //public float minSlashTillHitDuration => (preHitClip.length + broadcastClip.length);
     //public float minSlashTillHitInBeats => minSlashTillHitDuration / parentPawn.EnemyData.SPB;
-    private SlashNode _currNode;
+    protected SlashNode _currNode;
     //Amount of stagger damage towards enemy of successful deflect.
     
     public void Broadcast(Direction direction)
@@ -44,7 +44,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         }
         StartCoroutine(SlashThread(node));
     }
-    private IEnumerator SlashThread(SlashNode node)
+    protected virtual IEnumerator SlashThread(SlashNode node)
     {
         // Slash Initialization
         _currNode = node;

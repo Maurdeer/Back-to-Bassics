@@ -49,7 +49,7 @@ public class BossAI : Conductable
         _enemyBattlePawn.OnEnemyStaggerEvent += delegate
         {
             // (Joseph 1 / 11 / 2025) Modifying this to account for Bassic's behavior in the tutorial
-            // I want him to repeat his dialogue if he 
+            // (10/14/2025 Joseph) No need to repeat dialogue, as the dialogue should persist during the tutorial until the player advances. 
             if (_currentStage == 0 && !staggeredBefore)
             {
                 staggeredBefore = true;

@@ -9,11 +9,11 @@ public class Projectile : MonoBehaviour, IAttackRequester
     [SerializeField] private int _staggerDamage;
     private float _speed;
     private Rigidbody _rb;
-    public bool isDestroyed { get; private set; }
+    public bool isDestroyed { get; protected set; }
     private EnemyBattlePawn _targetEnemy;
     public float AttackDamage => _dmg;
     public float AttackLurch => _dmg;
-    private Vector3 _initialScale;
+    protected Vector3 _initialScale;
     #region Unity Messages
     protected virtual void Awake()
     {
@@ -28,18 +28,18 @@ public class Projectile : MonoBehaviour, IAttackRequester
 
     [SerializeField] private EventReference playOnMiss;
     private float coyoteTimer = 0;
-    private Vector3 _slashDirection;
+    protected Vector3 _slashDirection;
     private ParticleSystem _burstEffect;
-    private SpriteRenderer _spriteRenderer;
-    private MeshRenderer _meshRenderer;
-    private Conductor.ConductorSchedulable activeScheduable;
+    protected SpriteRenderer _spriteRenderer;
+    protected MeshRenderer _meshRenderer;
+    protected Conductor.ConductorSchedulable activeScheduable;
     
     /// <summary>
     /// Spawn a projectile with a predetermined offset
     /// </summary>
     /// <param name="lifetimeDisplacement">total traversal the projectile should go through in its lifetime</param>
     /// <param name="duration">duration in beats</param>
-    public void Fire(Vector3 lifetimeDisplacement, float duration)
+    public virtual void Fire(Vector3 lifetimeDisplacement, float duration)
     {
         var originalLocation = transform.position;
         _slashDirection = -lifetimeDisplacement;
@@ -90,7 +90,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
         coyoteTimer = GetDeflectionCoyoteTime() * state._elapsedProgressCount;
     }
 
-    public bool OnRequestDeflect(IAttackReceiver receiver)
+    public virtual bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         // Did receiver deflect in correct direction?
