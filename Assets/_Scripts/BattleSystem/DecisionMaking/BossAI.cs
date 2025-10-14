@@ -16,7 +16,7 @@ public class BossAI : Conductable
     protected int _currentStage;
     public event System.Action OnEnemyStageTransition;
     protected int _beatsPerDecision;
-
+    protected int idx;
     // references
     protected EnemyBattlePawn _enemyBattlePawn;
     protected float _decisionTime;
@@ -77,35 +77,37 @@ public class BossAI : Conductable
         // I'm going to try to make it so it's only called every beat, and if 
         staggeredBefore = false;
 
-        if (_enemyBattlePawn.Director.state == PlayState.Playing 
+        if (_enemyBattlePawn.Director.state == PlayState.Playing
             || _enemyBattlePawn.IsDead || _enemyBattlePawn.IsStaggered || DialogueManager.Instance.IsDialogueRunning) return;
-        
-        if (_decisionTime > 0) {
+
+        if (_decisionTime > 0)
+        {
             // counting down time between attacks
             _decisionTime--;
             return;
         }
-            
-        EnemyAttackPattern[] actions = _enemyStages[_currentStage].EnemyAttackPatterns;
-        
-        int idx = Random.Range(0, actions != null ? actions.Length : 0);
-        if (idx == _lastAction)
-        // doesnt use same attack twice consecutively
-            idx = (idx + 1) % actions.Length;
-        _lastAction = idx;
 
+        EnemyAttackPattern move = MakeDecision();
         // may want to abstract enemy actions away from just timelines in the future?
-        _enemyBattlePawn.interruptable = actions[idx].Interruptable;
+        UseMove(move);
         // Reset Stagger Health Only on Stage Request!
         if (_enemyStages[_currentStage].ResetStaggerHealth)
             _enemyBattlePawn.currentStaggerHealth = _enemyBattlePawn.maxStaggerHealth;
-        _enemyBattlePawn.esm.Transition<Attacking>();
-        _enemyBattlePawn.Director.playableAsset = actions[idx].ActionSequence;
-        _enemyBattlePawn.Director.Play();
-        var handle = _enemyBattlePawn.Director.ScheduleToBeat();
-
-        _decisionTime = _beatsPerDecision;
     }
+
+    protected virtual EnemyAttackPattern MakeDecision()
+    {
+        EnemyAttackPattern[] actions = _enemyStages[_currentStage].EnemyAttackPatterns;
+
+        idx = Random.Range(0, actions != null ? actions.Length : 0);
+        if (idx == _lastAction)
+            // doesnt use same attack twice consecutively
+            idx = (idx + 1) % actions.Length;
+        _lastAction = idx;
+
+        return actions[idx];
+    }
+    
     protected virtual void PhaseChange()
     {
         if (_currentStage + 1 < _enemyStages.Length &&
@@ -124,12 +126,28 @@ public class BossAI : Conductable
             {
                 DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode);
             }
-            if (!string.IsNullOrEmpty(_enemyStages[_currentStage].PhaseTransitionAnimation)) {
-                _enemyBattlePawn.PlayTransitionAnimation(_enemyStages[_currentStage].PhaseTransitionAnimation);
-                Debug.Log(_enemyStages[_currentStage].PhaseTransitionAnimation);
+            if (_enemyStages[_currentStage].PhaseTransitionMove != null)
+            {
+                // (10/14/25 Joseph) I think this transition animation doesn't work because the boss decides to act immediately 
+                // _enemyBattlePawn.PlayTransitionAnimation(_enemyStages[_currentStage].PhaseTransitionAnimation);
+                UseMove(_enemyStages[_currentStage].PhaseTransitionMove);
             }
             OnEnemyStageTransition?.Invoke();
         }
+    }
+    
+    protected void UseMove(EnemyAttackPattern enemyMove)
+    {
+         // may want to abstract enemy actions away from just timelines in the future?
+        _enemyBattlePawn.interruptable = enemyMove.Interruptable;
+        
+        
+        _enemyBattlePawn.esm.Transition<Attacking>();
+        _enemyBattlePawn.Director.playableAsset = enemyMove.ActionSequence;
+        _enemyBattlePawn.Director.Play();
+        var handle = _enemyBattlePawn.Director.ScheduleToBeat();
+
+        _decisionTime = _beatsPerDecision;
     }
 
     private void PreventPlayerAttack()

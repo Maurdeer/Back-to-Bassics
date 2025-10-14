@@ -20,9 +20,9 @@ public class Subortinate : Conductable
     private int currDecisionTime;
     private Vector3 startingPosition;
     private bool facingWest;
-    private bool IsAlive 
+    private bool IsAlive
     {
-        get {return health >= 0;}
+        get { return health >= 0; }
     }
     private void Awake()
     {
@@ -190,7 +190,7 @@ public class Subortinate : Conductable
         // PlayerBattlePawn player = receiver as PlayerBattlePawn;
         // return player != null && DirectionHelper.MaxAngleBetweenVectors(spinner.ccw ? Vector2.right : Vector2.left, player.SlashDirection, 5f);
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
-        Debug.Log("The current player slash direction is " + player.SlashDirection);
+        // Debug.Log("The current player slash direction is " + player.SlashDirection);
         return (facingWest && player.SlashDirection == Vector2.right)
             || (!facingWest && player.SlashDirection == Vector2.left);
     }

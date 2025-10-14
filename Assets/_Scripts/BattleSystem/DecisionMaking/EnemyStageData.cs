@@ -15,8 +15,9 @@ public class EnemyStageData : ScriptableObject {
     [SerializeField] private int _beatsPerDecision;
     [SerializeField] private int _staggerHealth;
     [SerializeField] private string _dialogueNode;
-    [SerializeField] private string _phaseTransitionAnimation;
+    [SerializeField] private EnemyAttackPattern _phaseTransitionMove;
     [SerializeField] private bool _resetStaggerHealth;
+    
 
     // future: add dialogue, bpm changes?
     public string DialogueNode => _dialogueNode;
@@ -24,6 +25,6 @@ public class EnemyStageData : ScriptableObject {
     public EnemyAttackPattern[] EnemyAttackPatterns => _enemyAttackPatterns;
     public int BeatsPerDecision => _beatsPerDecision;
     public int StaggerHealth => _staggerHealth;
-    public string PhaseTransitionAnimation => _phaseTransitionAnimation;
+    public EnemyAttackPattern PhaseTransitionMove => _phaseTransitionMove;
     public bool ResetStaggerHealth => _resetStaggerHealth;
 }

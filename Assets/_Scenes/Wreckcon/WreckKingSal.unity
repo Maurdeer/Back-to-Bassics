@@ -37535,6 +37535,17 @@ Transform:
   - {fileID: 1438454854}
   m_Father: {fileID: 20245244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1719800301 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6572276400193137675, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
+  m_PrefabInstance: {fileID: 3732562617716791249}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7bca1d6a9f1ab84ebbffac3f17c9831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1720835351
 GameObject:
   m_ObjectHideFlags: 0
@@ -78043,6 +78054,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7928284038222633100, guid: 759f70ed07cfdd44f95f32137b09061c, type: 3}
+      propertyPath: yarnProject
+      value: 
+      objectReference: {fileID: 7545569452688597077, guid: d79e98695d3b70540aa8b1e33b113012, type: 3}
+    - target: {fileID: 7928284038222633100, guid: 759f70ed07cfdd44f95f32137b09061c, type: 3}
       propertyPath: startAutomatically
       value: 0
       objectReference: {fileID: 0}
@@ -78053,7 +78068,7 @@ PrefabInstance:
     - target: {fileID: 7928284038222633100, guid: 759f70ed07cfdd44f95f32137b09061c, type: 3}
       propertyPath: dialogueViews.Array.data[0]
       value: 
-      objectReference: {fileID: 1626413801}
+      objectReference: {fileID: 684695114}
     - target: {fileID: 7928284038222633100, guid: 759f70ed07cfdd44f95f32137b09061c, type: 3}
       propertyPath: dialogueViews.Array.data[1]
       value: 
@@ -79384,6 +79399,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5723573942927688174, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
+      propertyPath: bossTransitionIdx
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5723573942927688174, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: defaultSalSummonProbability
       value: 40
       objectReference: {fileID: 0}
@@ -79430,6 +79449,30 @@ PrefabInstance:
     - target: {fileID: 5798671807794288456, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6364750070387360343, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
+      propertyPath: m_PlayableAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c2fd6230268dead48b990f880c411194, type: 2}
+    - target: {fileID: 6364750070387360343, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
+      propertyPath: m_SceneBindings.Array.size
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 6364750070387360343, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
+      propertyPath: m_SceneBindings.Array.data[31].key
+      value: 
+      objectReference: {fileID: 5773642529300937058, guid: c2fd6230268dead48b990f880c411194, type: 2}
+    - target: {fileID: 6364750070387360343, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
+      propertyPath: m_SceneBindings.Array.data[31].value
+      value: 
+      objectReference: {fileID: 1719800301}
+    - target: {fileID: 8616148526761235626, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6370314
+      objectReference: {fileID: 0}
+    - target: {fileID: 8616148526761235626, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7708379
       objectReference: {fileID: 0}
     - target: {fileID: 8725074685705339553, guid: cc690080b2986ff4a9186546de1eb5ed, type: 3}
       propertyPath: m_AnchorMax.y
