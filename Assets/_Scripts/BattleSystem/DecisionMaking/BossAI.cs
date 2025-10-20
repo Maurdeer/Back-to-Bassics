@@ -20,8 +20,6 @@ public class BossAI : Conductable
     // references
     protected EnemyBattlePawn _enemyBattlePawn;
     protected float _decisionTime;
-    protected bool staggeredBefore;
-    [SerializeField] protected UnityEvent firstTimeStagger;
     private void Awake()
     {
         _enemyBattlePawn = GetComponent<EnemyBattlePawn>();
@@ -35,7 +33,7 @@ public class BossAI : Conductable
         _currentStage = 0;
     }
 
-    protected void Start()
+    protected virtual void Start()
     {
         _enemyBattlePawn.OnPawnDeath += _enemyBattlePawn.Director.Stop;
         _enemyBattlePawn.OnEnterBattle += Enable;
@@ -45,16 +43,6 @@ public class BossAI : Conductable
             if (_currentStage <= 0) return;
             if (!_enemyBattlePawn.esm.IsOnState<Idle>()) return;
             PreventPlayerAttack();
-        };
-        _enemyBattlePawn.OnEnemyStaggerEvent += delegate
-        {
-            // (Joseph 1 / 11 / 2025) Modifying this to account for Bassic's behavior in the tutorial
-            // (10/14/2025 Joseph) No need to repeat dialogue, as the dialogue should persist during the tutorial until the player advances. 
-            if (_currentStage == 0 && !staggeredBefore)
-            {
-                staggeredBefore = true;
-                firstTimeStagger.Invoke();
-            }
         };
     }
 
@@ -72,10 +60,6 @@ public class BossAI : Conductable
             OnFirstBeat();
         }
         PhaseChange();
-
-        // (Joseph 1 / 11 / 2025) Was running into a stack overflow issue when calling firstStagger through checking enemy stages and making sure it was the first one.
-        // I'm going to try to make it so it's only called every beat, and if 
-        staggeredBefore = false;
 
         if (_enemyBattlePawn.Director.state == PlayState.Playing
             || _enemyBattlePawn.IsDead || _enemyBattlePawn.IsStaggered || DialogueManager.Instance.IsDialogueRunning) return;
@@ -95,6 +79,7 @@ public class BossAI : Conductable
             _enemyBattlePawn.currentStaggerHealth = _enemyBattlePawn.maxStaggerHealth;
     }
 
+    // (Joseph 10/19/2025) Defines default 
     protected virtual EnemyAttackPattern MakeDecision()
     {
         EnemyAttackPattern[] actions = _enemyStages[_currentStage].EnemyAttackPatterns;
@@ -129,7 +114,6 @@ public class BossAI : Conductable
             if (_enemyStages[_currentStage].PhaseTransitionMove != null)
             {
                 // (10/14/25 Joseph) I think this transition animation doesn't work because the boss decides to act immediately 
-                // _enemyBattlePawn.PlayTransitionAnimation(_enemyStages[_currentStage].PhaseTransitionAnimation);
                 UseMove(_enemyStages[_currentStage].PhaseTransitionMove);
             }
             OnEnemyStageTransition?.Invoke();
@@ -140,7 +124,6 @@ public class BossAI : Conductable
     {
          // may want to abstract enemy actions away from just timelines in the future?
         _enemyBattlePawn.interruptable = enemyMove.Interruptable;
-        
         
         _enemyBattlePawn.esm.Transition<Attacking>();
         _enemyBattlePawn.Director.playableAsset = enemyMove.ActionSequence;

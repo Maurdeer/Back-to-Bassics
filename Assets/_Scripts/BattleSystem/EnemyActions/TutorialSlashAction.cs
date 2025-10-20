@@ -37,29 +37,62 @@ public class TutorialSlashAction : SlashAction
 
         // (10/14/25 Joseph) Tutorial Management Code
         // Somewhat dirty, still works.
-        TutorialManager.Instance.Pause();
-        string dir = "";
-        if (_currNode.slashVector.x > 0) dir = "Right";
-        else if (_currNode.slashVector.x < 0) dir = "Left";
-        DialogueManager.Instance.RunDialogueNode("bassics-guitarSwing" + dir);
-
-        while (!hasProgressed)
+        // This should probably be modified to work on attack materialized?
+        // Actually that doesn't make sense
+        // There's probably some better logic behind this attack that could be worked in
+        if (TutorialManager.Instance.TutorialEnabled)
         {
-            if ((Input.GetKeyDown("right") && _currNode.slashVector.x > 0) ||
-            (Input.GetKeyDown("left") && _currNode.slashVector.x < 0)||
-            (Input.GetKeyDown("up") && _currNode.slashVector.y > 0))
+            if (TutorialManager.Instance.CheckForSlash)
             {
-                hasProgressed = true;
+                TutorialManager.Instance.Pause(_currNode.slashVector);
+                string dir = "";
+                if (_currNode.slashVector.x > 0) dir = "Right";
+                else if (_currNode.slashVector.x < 0) dir = "Left";
+                DialogueManager.Instance.RunDialogueNode("bassics-guitarSwing" + dir);
+
             }
-            yield return null;
+
+            else if (TutorialManager.Instance.CheckForDodge)
+            {
+                TutorialManager.Instance.Pause(new Vector3(0, -1, 0));
+                DialogueManager.Instance.RunDialogueNode("bassics-battle_unblockable");
+            }
+
+            while (TutorialManager.Instance.PausedForTutorial)
+            {
+                yield return null;
+            }
+
+            TutorialManager.Instance.Unpause();
+            hasProgressed = false;
+
+
         }
-        TutorialManager.Instance.Unpause();
-        hasProgressed = false;
+
 
         yield return new WaitForSeconds(timeBeforeHitPlayer);
-        
+
         // Hit
         parentPawnSprite.Animator.SetFloat("speed", 1 / (posthitBeats * Conductor.Instance.spb));
         BattleManager.Instance.Player.ReceiveAttackRequest(this);
+    }
+
+    public override void OnAttackMaterialize(IAttackReceiver receiver)
+    {
+        // This is bugged because it doesn't know which attack is the bugged attack
+        TutorialManager.Instance.ModifyNumOfMisses(5);
+        base.OnAttackMaterialize(receiver);
+    }
+
+    public override bool OnRequestDeflect(IAttackReceiver receiver)
+    {
+        TutorialManager.Instance.ModifyNumOfMisses(-5);
+        return base.OnRequestDeflect(receiver);
+    }
+    
+    public override bool OnRequestDodge(IAttackReceiver receiver)
+    {
+        TutorialManager.Instance.ModifyNumOfMisses(-5);
+        return base.OnRequestDeflect(receiver);
     }
 }

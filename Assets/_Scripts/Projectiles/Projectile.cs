@@ -127,12 +127,12 @@ public class Projectile : MonoBehaviour, IAttackRequester
 
         return true;
     }
-    public bool OnRequestDodge(IAttackReceiver receiver) 
+    public virtual bool OnRequestDodge(IAttackReceiver receiver) 
     {
         Reset();
         return true;
     }
-    public void Reset()
+    public virtual void Reset()
     {
         isDestroyed = true;
         _burstEffect?.Play();

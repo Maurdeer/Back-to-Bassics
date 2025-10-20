@@ -22,7 +22,6 @@ public class CoverScreenAction : EnemyAction
     // WRECKON RELATED
     private float pastMisses;
     private float pastParries;
-
     /// <summary>
     /// Creates a screen cover if it does not exist
     /// </summary>
@@ -51,6 +50,14 @@ public class CoverScreenAction : EnemyAction
         }
         StartCoroutine(ScaleUp());
         Conductor.Instance.OnFullBeat += UpdateBeat;
+
+        // (10/14/25 Joseph) This is definitely jank af but I'll consult with Ryan on this one.
+        EnemyBattlePawn enemyUser = this.gameObject.GetComponentInParent<EnemyBattlePawn>();
+        if (enemyUser == null) return;
+        Debug.Log("Found a parent");
+        enemyUser.OnExitBattle += delegate {
+            Destroy(screenCoverInstance);
+        }; 
     }
 
     /// <summary>
@@ -96,6 +103,7 @@ public class CoverScreenAction : EnemyAction
         Color initialColor = screenCoverImage.color;
         while (elapsedTime < fadeDuration)
         {
+            if (screenCoverImage == null) StopCoroutine(FadeOut());
             screenCoverImage.color = new Color(initialColor.r, initialColor.g, initialColor.b, Mathf.Lerp(1, 0, elapsedTime / fadeDuration));
             elapsedTime += Time.deltaTime;
             yield return null;

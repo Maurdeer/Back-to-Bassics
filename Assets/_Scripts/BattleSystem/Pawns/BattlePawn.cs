@@ -80,7 +80,6 @@ public class BattlePawn : Conductable
     }
     public virtual void Stagger()
     {
-        Debug.Log("Regular stagger called");
         StaggerFor(_data.StaggerDuration);
     }
     public virtual void StaggerFor(float duration)

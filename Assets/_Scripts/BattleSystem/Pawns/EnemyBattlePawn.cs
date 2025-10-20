@@ -192,7 +192,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             // (Ryan) Do not modify the follow! Makes it look better
             if (IsStaggered)
             {
-                if (_pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("staggered"))
+                // if (_pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("staggered"))
                     _pawnSprite.Animator.Play("staggered_damaged");
             }
             else

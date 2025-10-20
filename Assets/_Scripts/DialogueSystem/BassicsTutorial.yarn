@@ -2,7 +2,8 @@
 tags:
 ---
 <<setView "BassicsAuto">>
-Bassics: Let's start with the basics! Deflect my attacks using your arrow keys!
+Bassics: Let's start with the basics! Defending yourself!
+Bassics: Try deflecting the notes that I send your way using your arrow keys!
 ===
 title: bassics-noteHitRight
 tags:
@@ -22,36 +23,67 @@ tags:
 <<setView "BassicsManual">>
 Bassics: Use the up arrow key to deflect the note!
 ===
-title: bassics-guitarSwingRight
+title: bassics-exclamation
 tags:
 ---
 <<setView "BassicsAuto">>
-Bassics: Use the right arrow key to deflect my attack!
-===
-title: bassics-guitarSwingLeft
-tags:
----
-<<setView "BassicsAuto">>
-Bassics: Use the left arrow key to deflect my attack!
+Bassics: Good!
 ===
 title: bassics-battle_first-stagger
 tags:
 ---
-<<setView "BassicsAuto">>
+<<setView "BassicsManual">>
 Bassics: You've deflected enough of my attacks to stagger me! Now's your chance to strike back.
-Bassics: Try performing a combo! 
+Bassics: Try doing one of the combos on screen right now to the beat of the song!
 ===
 title: bassics-battle_phase2
 tags:
 ---
 <<setView "BassicsAuto">>
-Bassics: Good start!
-Bassics: But it's not just notes that you can parry.
+Bassics: Good start! Now let's get you used to some other attacks.
+Bassics: Try deflecting my guitar swing!
+===
+title: bassics-guitarSwingRight
+tags:
+---
+<<setView "BassicsManual">>
+Bassics: Use the right arrow key to deflect my attack!
+===
+title: bassics-guitarSwingLeft
+tags:
+---
+<<setView "BassicsManual">>
+Bassics: Use the left arrow key to deflect my attack!
+===
+title: bassics-battle_second-stagger
+tags:
+---
+<<setView "BassicsManual">>
+Bassics: Good! Try doing some attacks again!
+===
+title: bassics-battle_first-unstagger
+tags:
+---
+<<setView "BassicsAuto">>
+Bassics: Enemies don't stay staggered forever!
 ===
 title: bassics-battle_phase3
 tags:
 ---
 <<setView "BassicsAuto">>
-Bassics: You've done well.
-Bassics: Now prove to me you can handle anything!
+Bassics: For your final lesson, some attacks can't be deflected!
+Bassics: That's why you can dodge these attacks by using WASD!
+===
+title: bassics-battle_unblockable
+tags:
+---
+<<setView "BassicsManual">>
+Bassics: Dodge backwards using S!
+===
+title: bassics-battle_phase4
+tags:
+---
+<<setView "BassicsAuto">>
+Bassics: Excellent!
+Bassics: Now let's see if your Bassics are up to par!
 ===

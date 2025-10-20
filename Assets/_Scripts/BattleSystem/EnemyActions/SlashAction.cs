@@ -8,7 +8,7 @@ public class SlashAction : EnemyAction, IAttackRequester
     [Header("Slash Action")]
     [SerializeField] protected string slashAnimationName;
     [SerializeField] protected bool inverseFacingDirection = false;
-    [SerializeField] private int _staggerDamage = 5;
+    [SerializeField] protected int _staggerDamage = 5;
     [SerializeField] protected float prehitBeats = 0.5f;
     [SerializeField] protected float posthitBeats = 0.5f;
 
@@ -19,6 +19,7 @@ public class SlashAction : EnemyAction, IAttackRequester
     //public float minSlashTillHitDuration => (preHitClip.length + broadcastClip.length);
     //public float minSlashTillHitInBeats => minSlashTillHitDuration / parentPawn.EnemyData.SPB;
     protected SlashNode _currNode;
+    protected float syncedAnimationTime;
     //Amount of stagger damage towards enemy of successful deflect.
     
     public void Broadcast(Direction direction)
@@ -47,36 +48,56 @@ public class SlashAction : EnemyAction, IAttackRequester
     protected virtual IEnumerator SlashThread(SlashNode node)
     {
         // Slash Initialization
+        yield return StartCoroutine(SlashInitialization(node));
+        // Broadcast
+        yield return StartCoroutine(SlashBroadcast());
+
+        // Prehit
+        yield return StartCoroutine(SlashPrehit());
+
+        // Hit
+        SlashHit();
+    }
+
+    protected virtual IEnumerator SlashInitialization(SlashNode node)
+    {
         _currNode = node;
         parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
         parentPawnSprite.FaceDirection(new Vector3((inverseFacingDirection ? -1 : 1) * _currNode.slashVector.x, 0, -1));
         parentPawnSprite.Animator.SetFloat("x_slashDir", _currNode.slashVector.x);
         parentPawnSprite.Animator.SetFloat("y_slashDir", _currNode.slashVector.y);
-        float syncedAnimationTime = (_currNode.slashLengthInBeats - prehitBeats - posthitBeats) * Conductor.Instance.spb;
+        syncedAnimationTime = (_currNode.slashLengthInBeats - prehitBeats - posthitBeats) * Conductor.Instance.spb;
         if (parentPawn.psm.IsOnState<Distant>())
         {
             parentPawn.psm.Transition<Center>();
             yield return new WaitForSeconds(Conductor.Instance.spb);
             syncedAnimationTime -= Conductor.Instance.spb;
         }
+    }
 
-        // Broadcast
+    protected virtual IEnumerator SlashBroadcast()
+    {
         parentPawnSprite.Animator.SetFloat("speed", 1 / syncedAnimationTime);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_broadcast");
         yield return new WaitForSeconds(syncedAnimationTime);
+    }
 
-        // Prehit
+    protected virtual IEnumerator SlashPrehit()
+    {
         float prehitSeconds = prehitBeats * Conductor.Instance.spb;
         parentPawnSprite.Animator.SetFloat("speed", 1 / prehitSeconds);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_prehit");
         yield return new WaitForSeconds(prehitSeconds);
-        
-        // Hit
+    }
+    
+    protected virtual void SlashHit()
+    {
         parentPawnSprite.Animator.SetFloat("speed", 1 / (posthitBeats * Conductor.Instance.spb));
         BattleManager.Instance.Player.ReceiveAttackRequest(this);
     }
     
-    public void OnAttackMaterialize(IAttackReceiver receiver)
+
+    public virtual void OnAttackMaterialize(IAttackReceiver receiver)
     {
         // (TEMP) DEBUG UI Tracker -------
         UIManager.Instance.IncrementMissTracker();
@@ -104,7 +125,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         return true;
     }
     
-    public bool OnRequestDeflect(IAttackReceiver receiver)
+    public virtual bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         if (player == null
@@ -128,7 +149,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         }
         return true;
     }
-    public bool OnRequestDodge(IAttackReceiver receiver)
+    public virtual bool OnRequestDodge(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         if (player == null || !_currNode.dodgeDirections.Contains(player.DodgeDirection)) return false;

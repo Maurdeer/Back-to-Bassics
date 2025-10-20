@@ -32,6 +32,7 @@ public class FireProjectileBehaviour : PlayableBehaviour
         node.projRef = projectileRef;
         node.duration = (float)playable.GetDuration();
         node.relativeSpawnPosition = firePosition;
+        node.direction = fireDirection;
         _cachedProjectileActionRef.FireProjectileAtPlayer(node);
     }
 }

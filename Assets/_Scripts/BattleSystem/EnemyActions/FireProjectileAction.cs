@@ -99,9 +99,34 @@ public class FireProjectileAction : EnemyAction
         }
         Projectile proj = objRef.GetComponent<Projectile>();
         proj.SetTargetEnemy(parentPawn);
-        proj.transform.position = BattleManager.Instance.Player.playerCollider.position + node.relativeSpawnPosition;
-        // Debug.Log($"{proj}: {proj.transform.position}");
-        proj.Fire(BattleManager.Instance.Player.playerCollider.position - proj.transform.position, node.duration);
+
+        // Define the offset for the purposes of making things more visually cohesive
+        // This defines the adjustment scaling, so not actually all that useful. Maybe use the base player transform?
+        // Nope. Just physically cast the transforms at this point
+        // Double check to make sure that the total displacement remains the same;
+        Vector3 offset = new Vector3(0, 0, 0);
+
+        switch (node.direction)
+        {
+            case Direction.North:
+                offset.y = 1.6f;
+                break;
+            case Direction.South:
+                offset.y = -1.6f;
+                break;
+            case Direction.East:
+                offset.x = 0.6f;
+                break;
+            case Direction.West:
+                offset.x = -0.6f;
+                break;
+        }
+
+        proj.transform.position = BattleManager.Instance.Player.playerCollider.position + offset + node.relativeSpawnPosition;
+        proj.Fire(BattleManager.Instance.Player.playerCollider.position + offset - proj.transform.position, node.duration);
+
+        // proj.transform.position = BattleManager.Instance.Player.playerCollider.position + node.relativeSpawnPosition;        
+        // proj.Fire(BattleManager.Instance.Player.playerCollider.position - proj.transform.position, node.duration);
     }
 
     private IEnumerator AnimateBeforeFire(FireProjectileNode node)
@@ -119,6 +144,7 @@ public struct FireProjectileNode
     public GameObject projRef;
     [Tooltip("In Beats")] public float duration;
     public Vector3 relativeSpawnPosition;
+    public Direction direction;
 }
 public enum ProjectileSourceChoice
 {

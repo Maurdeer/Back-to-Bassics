@@ -54,6 +54,19 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     public void Dodge(Vector2 direction)
     {
         if (IsDead) return;
+
+        if (TutorialManager.Instance != null && TutorialManager.Instance.PausedForTutorial)
+        {
+            if (!TutorialManager.Instance.CheckForDodge || !DirectionHelper.MaxAngleBetweenVectors(direction, TutorialManager.Instance.ExpectedDirection, 5f))
+            {
+                return;
+            }
+            else
+            {
+                TutorialManager.Instance.Unpause();
+            }
+        }
+        
         AnimatorStateInfo animatorState = _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
         if (!animatorState.IsName("idle")) return;
         DodgeDirection = DirectionHelper.GetVectorDirection(direction);
@@ -83,13 +96,25 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     {
         if (IsDead || dodging) return;
 
+        if (TutorialManager.Instance != null && TutorialManager.Instance.PausedForTutorial)
+        {
+            if (!TutorialManager.Instance.CheckForSlash || !DirectionHelper.MaxAngleBetweenVectors(direction, TutorialManager.Instance.ExpectedDirection, 5f))
+            {
+                return;
+            }
+            else
+            {
+                TutorialManager.Instance.Unpause();
+            }
+        }
+
         if (slashHandle != null)
         {
             if (slashCancelCounter > 1) // <-- tweak here for number of cancels allowed
             {
                 return;
-            }
-            
+            } 
+
             slashHandle.SelfAbort();
             slashCancelCounter += 1;
         }

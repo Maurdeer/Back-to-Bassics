@@ -18,6 +18,7 @@ public class KingSalAI : BossAI
         base.Start();
         _enemyBattlePawn.OnPawnDeath += CheckAchievementOnDeath;
         salSummonProbability = defaultSalSummonProbability;
+        _enemyBattlePawn.OnExitBattle += regularSubordinateSummon.StaggerMinions;
     }
     
     protected override EnemyAttackPattern MakeDecision()

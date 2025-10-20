@@ -116,16 +116,18 @@ public class Subortinate : Conductable
         _spriteAnimator?.Play("engard");
     }
 
+    // Fix this to be on beat
     private IEnumerator ChargeThread()
-    { 
+    {
         Vector3 targetPosition = BattleManager.Instance.Player.transform.position;
         while (Vector3.Distance(transform.position, targetPosition) > 0f)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.fixedDeltaTime * speed);
             yield return new WaitForFixedUpdate();
         }
-        transform.position = targetPosition;     
+        transform.position = targetPosition;
     }
+    
     private IEnumerator GoBack()
     {
         while (Vector3.Distance(transform.position, startingPosition) > 0f)

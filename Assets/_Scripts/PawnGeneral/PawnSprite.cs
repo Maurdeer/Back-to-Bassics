@@ -13,7 +13,7 @@ public class PawnSprite : MonoBehaviour
         _animator = GetComponent<Animator>();
         _facingDirection = new Vector3(_animator.GetFloat("x_faceDir"), 0, _animator.GetFloat("z_faceDir"));
     }
-    public void FaceDirection(Vector3 direction)
+    public void FaceDirection(Vector3 direction, bool dont_trigger_flip = false)
     {
         if (direction.x != 0)
         {
@@ -23,6 +23,7 @@ public class PawnSprite : MonoBehaviour
         {
             _animator.SetFloat("z_faceDir", Mathf.Sign(direction.z));
         }
+        if (dont_trigger_flip) return;
         Vector2 change = new Vector2(_animator.GetFloat("x_faceDir"), _animator.GetFloat("z_faceDir"));
         float angle = Vector2.SignedAngle(_facingDirection, change);
         _facingDirection = change;

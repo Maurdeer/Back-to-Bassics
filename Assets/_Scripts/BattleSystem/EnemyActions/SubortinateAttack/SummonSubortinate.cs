@@ -76,7 +76,7 @@ public class SummonSubortinate : EnemyAction
     }
 
 
-    private void StaggerMinions() {
+    public void StaggerMinions() {
         leftInstance?.Stagger();
         rightInstance?.Stagger();
     }
