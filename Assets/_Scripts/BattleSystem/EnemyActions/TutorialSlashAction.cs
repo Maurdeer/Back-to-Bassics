@@ -11,23 +11,9 @@ public class TutorialSlashAction : SlashAction
     protected override IEnumerator SlashThread(SlashNode node)
     {
         // Slash Initialization
-        _currNode = node;
-        parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
-        parentPawnSprite.FaceDirection(new Vector3((inverseFacingDirection ? -1 : 1) * _currNode.slashVector.x, 0, -1));
-        parentPawnSprite.Animator.SetFloat("x_slashDir", _currNode.slashVector.x);
-        parentPawnSprite.Animator.SetFloat("y_slashDir", _currNode.slashVector.y);
-        float syncedAnimationTime = (_currNode.slashLengthInBeats - prehitBeats - posthitBeats) * Conductor.Instance.spb;
-        if (parentPawn.psm.IsOnState<Distant>())
-        {
-            parentPawn.psm.Transition<Center>();
-            yield return new WaitForSeconds(Conductor.Instance.spb);
-            syncedAnimationTime -= Conductor.Instance.spb;
-        }
-
+        yield return StartCoroutine(SlashInitialization(node));
         // Broadcast
-        parentPawnSprite.Animator.SetFloat("speed", 1 / syncedAnimationTime);
-        parentPawnSprite.Animator.Play($"{slashAnimationName}_broadcast");
-        yield return new WaitForSeconds(syncedAnimationTime);
+        yield return StartCoroutine(SlashBroadcast());
 
         // Prehit
         float prehitSeconds = prehitBeats * Conductor.Instance.spb;
@@ -89,10 +75,17 @@ public class TutorialSlashAction : SlashAction
         TutorialManager.Instance.ModifyNumOfMisses(-5);
         return base.OnRequestDeflect(receiver);
     }
-    
+
     public override bool OnRequestDodge(IAttackReceiver receiver)
     {
         TutorialManager.Instance.ModifyNumOfMisses(-5);
-        return base.OnRequestDeflect(receiver);
+        return base.OnRequestDodge(receiver);
     }
+
+    // protected override Coroutine OnStopAction()
+    // {
+    //     StopAllCoroutines();
+    //     return null;
+    // }
+    
 }

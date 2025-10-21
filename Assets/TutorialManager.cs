@@ -75,6 +75,7 @@ public class TutorialManager : Singleton<TutorialManager>
     public void Unpause()
     {
         Conductor.Instance.ResumeConductor();
+        // Make sure this isn't messing things up
         _enemyBattlePawn.PawnSprite.Animator.speed = 1f;
         DialogueManager.Instance.customDialogueRunner.Stop();
         _inTutorialPause = false;

@@ -39,8 +39,8 @@ public class BattlePawn : Conductable
 
     // Extra
     protected Coroutine selfStaggerInstance;
-    private int _maxRecordedDurationForStagger = 0; //(Joseph 1 / 13 / 25) Attempt at implementing staggerFor better
-    [SerializeField] private GameObject tutComboList; //(Joseph 1 / 13 / 25) Hacky Implementation, will try to fix later
+    // private int _maxRecordedDurationForStagger = 0; //(Joseph 1 / 13 / 25) Attempt at implementing staggerFor better
+    // [SerializeField] private GameObject tutComboList; //(Joseph 1 / 13 / 25) Hacky Implementation, will try to fix later
 
     #region Unity Messages
     protected virtual void Awake()
@@ -147,23 +147,10 @@ public class BattlePawn : Conductable
     protected virtual void OnUnstagger()
     {
         // TODO: Things that occur on battle pawn after unstaggering
-        if (tutComboList != null) {
-            _maxRecordedDurationForStagger += 1;
-            if (_maxRecordedDurationForStagger >= 1) {
-                tutComboList.SetActive(false);
-                _maxRecordedDurationForStagger = 0;
-            } 
-        }
-        
     }
     #endregion
     protected virtual IEnumerator StaggerSelf(float duration)
     {
-        // if (duration < _maxRecordedDurationForStagger) yield break;
-        // else {
-        //     Debug.Log("Duration");Tu
-        //     _maxRecordedDurationForStagger = duration;
-        // }
         yield return null; // <----- Fuck you unity Fuck you
         Debug.Log("Staggering for " + duration + " seconds");
         List<Coroutine> completionThreads = OnStagger();

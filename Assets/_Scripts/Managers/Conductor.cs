@@ -72,13 +72,13 @@ public class Conductor : Singleton<Conductor>
     public void PauseCondcutor()
     {
         if (ctx == null || paused) return;
-        ctx.fmodInstance.setPaused(true);
+        if (TutorialManager.Instance != null && !TutorialManager.Instance.TutorialEnabled) ctx.fmodInstance.setPaused(true);
         paused = true;
     }
     public void ResumeConductor()
     {
         if (ctx == null || !paused) return;
-        ctx.fmodInstance.setPaused(false);
+        if (TutorialManager.Instance != null && !TutorialManager.Instance.TutorialEnabled) ctx.fmodInstance.setPaused(false);
         paused = false;
     }
     
