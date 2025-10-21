@@ -18,6 +18,7 @@ public class WreckconQuests : Singleton<WreckconQuests>, IDataPersistence
     }
     public void MarkAchievement(int id)
     {
+        if ((id / 4) < 0 || (id / 4) >= truthArray.Length) return;
         // Assumes that we only have 16 tasks with perfect order of ticket value
         Image image = m_pointDelgationHolder.GetChild(id).GetComponent<Image>();
         if (image.sprite == achievedImage) return;
