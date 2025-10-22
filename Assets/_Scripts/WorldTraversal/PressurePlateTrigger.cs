@@ -13,22 +13,17 @@ public class PressurePlateTrigger : MonoBehaviour
     [SerializeField] private UnityEvent onReleaseEvent;
     [SerializeField] private GameObject targetObject;
     private bool pressed; // (Joseph 1 / 13 / 25) Done to resolve an issue where the pressure plate would float
-
+    private Vector3 priorlocation;
 
     private void OnTriggerEnter(Collider other)
     {
+        // If there is a targetObject and the thing that entered the trigger is the targetObject
+        if (pressed || (targetObject != null && other.transform.gameObject != targetObject)) return;
         // (Joseph 1 / 13 / 25) Modified this function to more appropriately check if a certain game object is required and if so, only depreses upon that gameObject
-        if (targetObject != null) { // If there is a targetObject and the thing that entered the trigger is the targetObject
-            if (other.transform.gameObject == targetObject) {
-                transform.localPosition -= new Vector3(0, pressurePlateDepth, 0);
-                onPressEvent.Invoke();
-                pressed = true;
-            }
-        } else {
-            transform.localPosition -= new Vector3(0, pressurePlateDepth, 0);
-            onPressEvent.Invoke();
-            pressed = true;
-        }
+        priorlocation = transform.localPosition;
+        transform.localPosition -= new Vector3(0, pressurePlateDepth, 0);
+        onPressEvent.Invoke();
+        pressed = true;
 
     }
 
@@ -39,11 +34,10 @@ public class PressurePlateTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (pressed) {
-            transform.localPosition += new Vector3(0, pressurePlateDepth, 0);
-            onReleaseEvent.Invoke();   
-            pressed = false;
-        }
+        if (!pressed) return;
+        transform.localPosition = priorlocation;
+        onReleaseEvent.Invoke();
+        pressed = false;
     }
 
 }

@@ -5678,7 +5678,6 @@ MonoBehaviour:
   onPawnExitBattle:
     m_PersistentCalls:
       m_Calls: []
-  tutComboList: {fileID: 0}
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 0}
@@ -5733,9 +5732,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyStages: []
   useDistanceOverBlock: 0
-  firstTimeStagger:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!320 &5855974717105860843
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -6096,7 +6092,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.64688, y: 2.64688, z: 2.64688}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 773076155185163588}

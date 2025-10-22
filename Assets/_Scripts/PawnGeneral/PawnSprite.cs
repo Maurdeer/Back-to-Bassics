@@ -7,33 +7,69 @@ public class PawnSprite : MonoBehaviour
     public Animator Animator => _animator;
     public Vector3 FacingDirection => _facingDirection;
     protected Animator _animator;
-    protected Vector3 _facingDirection;
+    protected Vector2 _facingDirection;
+    private Coroutine _currFlippingCoroutine;
+    private Queue<IEnumerator> _flippingEnumeratorQueue;
+    private Vector2 _prevToChangeFaceDir;
     protected virtual void Awake()
     {
         _animator = GetComponent<Animator>();
-        _facingDirection = new Vector3(_animator.GetFloat("x_faceDir"), 0, _animator.GetFloat("z_faceDir"));
+        _flippingEnumeratorQueue = new Queue<IEnumerator>();
+        StartCoroutine(FlipQueuer());
     }
-    public void FaceDirection(Vector3 direction, bool dont_trigger_flip = false)
+    protected virtual void Start()
     {
-        if (direction.x != 0)
+        _facingDirection = new Vector2(_animator.GetFloat("x_faceDir"), _animator.GetFloat("z_faceDir"));
+    }
+    
+    public void FaceDirection(Vector3 direction, bool dont_trigger_flip = false)
+    {   
+        if (direction == Vector3.zero)
         {
-            _animator.SetFloat("x_faceDir", Mathf.Sign(direction.x));
+            // No Significant changes need to be done
+            return;
         }
-        if (direction.z != 0)
+        Vector2 change = new Vector2(direction.x != 0 ? direction.x : _animator.GetFloat("x_faceDir"),
+            direction.z != 0 ? direction.z : _animator.GetFloat("z_faceDir"));
+        
+        if (change != _prevToChangeFaceDir)
         {
-            _animator.SetFloat("z_faceDir", Mathf.Sign(direction.z));
+            _prevToChangeFaceDir = change;
+            _flippingEnumeratorQueue.Enqueue(FlipThread(change, dont_trigger_flip));
+            Debug.Log($"{_flippingEnumeratorQueue.Count}, {_currFlippingCoroutine}");
+        }  
+    }
+
+    public IEnumerator FlipThread(Vector2 change, bool dont_trigger_flip = false)
+    {
+        if (!dont_trigger_flip)
+        {
+            float angle = Vector2.SignedAngle(_facingDirection, change);
+            _facingDirection = change;
+            if (angle > 0)
+            {
+                _animator.SetTrigger("flip_ccw");
+                yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(_animator.GetLayerIndex("Flip Layer")).IsName("Part2"));
+            }
+            if (angle < 0)
+            {
+                _animator.SetTrigger("flip_cw");
+                yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(_animator.GetLayerIndex("Flip Layer")).IsName("Part2"));
+            }
+            
         }
-        if (dont_trigger_flip) return;
-        Vector2 change = new Vector2(_animator.GetFloat("x_faceDir"), _animator.GetFloat("z_faceDir"));
-        float angle = Vector2.SignedAngle(_facingDirection, change);
-        _facingDirection = change;
-        if (angle > 0)
+        Debug.Log("Flip Thread Updated");
+        _animator.SetFloat("x_faceDir", Mathf.Sign(change.x));
+        _animator.SetFloat("z_faceDir", Mathf.Sign(change.y));
+        _currFlippingCoroutine = null;
+    }
+
+    public IEnumerator FlipQueuer()
+    {
+        while (true)
         {
-            _animator.SetTrigger("flip_ccw");
+            yield return new WaitUntil(() => _flippingEnumeratorQueue.Count > 0 && _currFlippingCoroutine == null);
+            _currFlippingCoroutine = StartCoroutine(_flippingEnumeratorQueue.Dequeue());
         }
-        else if (angle < 0)
-        {
-            _animator.SetTrigger("flip_cw");
-        }   
     }
 }
