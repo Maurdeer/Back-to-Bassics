@@ -36,7 +36,7 @@ public class PawnSprite : MonoBehaviour
         {
             _prevToChangeFaceDir = change;
             _flippingEnumeratorQueue.Enqueue(FlipThread(change, dont_trigger_flip));
-            Debug.Log($"{_flippingEnumeratorQueue.Count}, {_currFlippingCoroutine}");
+            //Debug.Log($"{_flippingEnumeratorQueue.Count}, {_currFlippingCoroutine}");
         }  
     }
 
@@ -58,7 +58,7 @@ public class PawnSprite : MonoBehaviour
             }
             
         }
-        Debug.Log("Flip Thread Updated");
+        //Debug.Log("Flip Thread Updated");
         _animator.SetFloat("x_faceDir", Mathf.Sign(change.x));
         _animator.SetFloat("z_faceDir", Mathf.Sign(change.y));
         _currFlippingCoroutine = null;
