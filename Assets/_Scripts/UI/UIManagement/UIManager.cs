@@ -9,6 +9,7 @@ public partial class UIManager : Singleton<UIManager>
     [field: Header("UI General")]
     [field: SerializeField] public PauseMenuCode pauseMenu { get; private set; }
     [field: SerializeField] public TextMeshProUGUI interactableText { get; private set; }
+    [SerializeField] private Animator credits_animator;
     private Coroutine _sic;
     private Coroutine _hic;
     public Transform SavePanel;
@@ -30,6 +31,10 @@ public partial class UIManager : Singleton<UIManager>
     {
         if (_sic != null) StopCoroutine(_sic);
         _hic = StartCoroutine(HideInteractableCoroutine(0.2f));
+    }
+    public void BeginCredits()
+    {
+        credits_animator.Play("BeginCreditsScroll");
     }
     private IEnumerator ShowInteractableCoroutine(float duration)
     {
