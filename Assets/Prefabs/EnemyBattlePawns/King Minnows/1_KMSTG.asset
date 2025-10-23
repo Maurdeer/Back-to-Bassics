@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: 1_KMSTG
   m_EditorClassIdentifier: 
   _healthThreshold: 1
-  _enemyAttackPatterns: []
-  _beatsPerDecision: 0
-  _staggerHealth: 0
+  _enemyAttackPatterns:
+  - {fileID: 11400000, guid: c76c69a7a7bcb7e49995ee5a9dcfa6de, type: 2}
+  _beatsPerDecision: 5
+  _staggerHealth: 10
   _dialogueNode: 
   _phaseTransitionMove: {fileID: 0}
   _resetStaggerHealth: 0
