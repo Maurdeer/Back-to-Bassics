@@ -14,7 +14,7 @@ public class WreckonTitle : MonoBehaviour
         m_saveProfileName = saveProfileName;
     }
 
-    public void StartGame()
+    public void StartGame(GameDataIntialize initialDataType)
     {
         if (m_saveProfileName.Trim() == "")
         {
@@ -30,7 +30,7 @@ public class WreckonTitle : MonoBehaviour
 
         if (!DataPersistenceManager.Instance.HasGameData())
         {
-            DataPersistenceManager.Instance.NewGame(GameDataIntialize.Wreckcon);
+            DataPersistenceManager.Instance.NewGame(initialDataType);
         }
 
         DataPersistenceManager.Instance.LoadGame();

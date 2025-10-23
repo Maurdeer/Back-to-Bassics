@@ -74,5 +74,5 @@ public class GameData
 public enum GameDataIntialize
 {
     Default=0,
-    Wreckcon
+    Wreckcon,
 }
