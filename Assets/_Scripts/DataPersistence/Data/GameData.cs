@@ -52,8 +52,8 @@ public class GameData
         // Event Pools Set
         truthArray = new bool[7];
         wreckconQuests = new bool[16];
-        enemyScore = new ulong[4];
-        enemyRank = new string[4] { "-", "-", "-", "-" };
+        enemyScore = new ulong[5];
+        enemyRank = new string[5] { "-", "-", "-", "-" , "-" };
         tickets = 0;
     }
     private void Default()

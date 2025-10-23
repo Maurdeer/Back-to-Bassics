@@ -9,10 +9,11 @@ public class PersistentDataTracker : MonoBehaviour, IDataPersistence
     private ulong[] m_enemyScores;
     private string[] m_enemyRanks;
     private ulong totalScore;
+    const int number_of_enemies = 5;
     private void Awake()
     {
-        m_enemyScores = new ulong[4];
-        m_enemyRanks = new string[4] { "-", "-", "-", "-"};
+        m_enemyScores = new ulong[number_of_enemies];
+        m_enemyRanks = new string[number_of_enemies] { "-", "-", "-", "-", "-"};
         totalScore = 0;
     }
     public void UpdateEnemyScore(int id, ulong score, string rank)
@@ -40,7 +41,7 @@ public class PersistentDataTracker : MonoBehaviour, IDataPersistence
             {
                 Debug.LogError("Couldn't Find Rank Text Panels");
             }
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < number_of_enemies; i++)
             {
                 m_enemyScores[i] = data.enemyScore[i];
                 m_enemyRanks[i] = data.enemyRank[i];
@@ -49,7 +50,7 @@ public class PersistentDataTracker : MonoBehaviour, IDataPersistence
             return;
         }
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < number_of_enemies; i++)
         {
             m_enemyScores[i] = data.enemyScore[i];
             m_enemyRanks[i] = data.enemyRank[i];

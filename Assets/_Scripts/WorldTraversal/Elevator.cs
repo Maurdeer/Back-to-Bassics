@@ -6,9 +6,11 @@ public class Elevator : MonoBehaviour
 {
     [SerializeField] private Transform newPosition;
     [SerializeField] private float speed;
+    [SerializeField] private GameObject borders;
     private Vector3 startingPosition;
     private Vector3 targetPosition;
     private Vector3 destinationPosition;
+   
     private void Awake()
     {
         startingPosition = transform.position;
@@ -19,7 +21,12 @@ public class Elevator : MonoBehaviour
     {
         if (transform.position != targetPosition)
         {
-            transform.position = Vector3.Slerp(transform.position, targetPosition, speed * Time.fixedDeltaTime);
+            if (borders != null) borders.SetActive(true);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.fixedDeltaTime);
+        }
+        else
+        {
+            if (borders != null) borders.SetActive(false);
         }
     }
     public void GoToNextPosition()
@@ -29,5 +36,15 @@ public class Elevator : MonoBehaviour
     public void ReturnToPriorPosition()
     {
         targetPosition = startingPosition;
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<PlayerTraversalPawn>() == null) return;
+        other.transform.SetParent(transform, true);
+    }
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<PlayerTraversalPawn>() == null) return;
+        other.transform.SetParent(null, true);
     }
 }

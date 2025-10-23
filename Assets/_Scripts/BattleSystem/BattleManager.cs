@@ -215,6 +215,6 @@ public class BattleManager : Singleton<BattleManager>
     }
     private int EnemyId(string name)
     {
-        return name == "Bassics" ? 0 : (name == "Small Fry" ? 1 : (name == "Turbo Top" ? 2 : (name == "King Sal" ? 3 : -1)));
+        return name == "Bassics" ? 0 : (name == "Small Fry" ? 1 : (name == "Turbo Top" ? 2 : (name == "King Sal" ? 3 : (name == "King Minnows" ? 4 : -1))));
     }
 }
