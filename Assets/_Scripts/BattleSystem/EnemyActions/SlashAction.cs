@@ -8,6 +8,7 @@ public class SlashAction : EnemyAction, IAttackRequester
     [Header("Slash Action")]
     [SerializeField] protected string slashAnimationName;
     [SerializeField] protected bool inverseFacingDirection = false;
+    [SerializeField] protected bool swapFacingDirectionAfterPostHit = false;
     [SerializeField] protected int _staggerDamage = 5;
     [SerializeField] protected float prehitBeats = 0.5f;
     [SerializeField] protected float posthitBeats = 0.5f;
@@ -103,9 +104,22 @@ public class SlashAction : EnemyAction, IAttackRequester
         UIManager.Instance.IncrementMissTracker();
         //---------------------------------------
 
-        parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
-        //parentPawnSprite.Animator.SetFloat("x_faceDir", -parentPawnSprite.Animator.GetFloat("x_faceDir"));
+        if (swapFacingDirectionAfterPostHit)
+        {
+            StartCoroutine(SwapDirectionAfterAnimation());
+        }
+        else
+        {
+            parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
+        }
         BattleManager.Instance.Player.Damage(_currNode.dmg);
+    }
+
+    private IEnumerator SwapDirectionAfterAnimation()
+    {
+        parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
+        yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_battle"));
+        parentPawnSprite.Animator.SetFloat("x_faceDir", -parentPawnSprite.Animator.GetFloat("x_faceDir"));
     }
 
     public float GetDeflectionCoyoteTime()

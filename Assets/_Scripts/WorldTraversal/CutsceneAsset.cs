@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Playables;
 using static GameStateMachine;
 
@@ -8,6 +9,7 @@ public class CutsceneAsset : MonoBehaviour
 {
     [SerializeField] private bool playOnAwake;
     [SerializeField] private StateAfterCutscene nextState;
+    [SerializeField] private UnityEvent postCutsceneEvent;
     private PlayableDirector director;
     private void Awake()
     {
@@ -47,7 +49,8 @@ public class CutsceneAsset : MonoBehaviour
             case StateAfterCutscene.dialogue:
                 GameManager.Instance.GSM.Transition<Dialogue>();
                 break;
-        } 
+        }
+        postCutsceneEvent.Invoke();
     }
 }
 

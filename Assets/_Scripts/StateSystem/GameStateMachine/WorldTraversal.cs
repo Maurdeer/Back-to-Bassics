@@ -11,7 +11,11 @@ public partial class GameStateMachine
             if (DataPersistenceManager.Instance != null)
                 DataPersistenceManager.Instance.enabled = true;
             GameManager.Instance.PC.SwitchToTraversalActions();
-            CameraConfigure.Instance.SwitchToCamera(Input.PonchoCam);
+            if (GameManager.Instance.GSM.PrevState.GetType() != typeof(Pause))
+            {
+                CameraConfigure.Instance.SwitchToCamera(Input.PonchoCam);
+            }
+            
             UIManager.Instance.PauseButtonAnimator.Play("show");
         }
 
