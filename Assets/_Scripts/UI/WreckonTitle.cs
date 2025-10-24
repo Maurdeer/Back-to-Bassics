@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,7 +15,7 @@ public class WreckonTitle : MonoBehaviour
         m_saveProfileName = saveProfileName;
     }
 
-    public void StartGame(GameDataIntialize initialDataType)
+    public void StartGame()
     {
         if (m_saveProfileName.Trim() == "")
         {
@@ -30,7 +31,7 @@ public class WreckonTitle : MonoBehaviour
 
         if (!DataPersistenceManager.Instance.HasGameData())
         {
-            DataPersistenceManager.Instance.NewGame(initialDataType);
+            DataPersistenceManager.Instance.NewGame(GameDataIntialize.Default);
         }
 
         DataPersistenceManager.Instance.LoadGame();
