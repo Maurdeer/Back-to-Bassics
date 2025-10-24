@@ -60,12 +60,15 @@ public class GameData
     {
         //Set player position at the start of the game
         playerPosition = new SerializableDictionary<string, Vector3>();
-        playerPosition.Add("BaselineShores", new Vector3(330.4f, 20, 79.89f));
+        playerPosition.Add("BaselineShores", new Vector3(344.2f, 40.29f, 123f));
         currentScene = "BaselineShores";
         combosUnlocked = new SerializableDictionary<string, Combo>();
 
         // Event Pools Set
         truthArray = new bool[7];
+        wreckconQuests = new bool[16];
+        enemyScore = new ulong[5];
+        enemyRank = new string[5] { "-", "-", "-", "-", "-" };
 
         //Debug.Log("New save created.");
     }
