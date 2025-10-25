@@ -197,8 +197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 120
-  minSpeed: 6
-  maxSpeed: 16
+  minSpeedInBeats: 0
+  maxSpeedInBeats: 0
   fakeOutChance: 0.2
   spinSpeedIncreasePerHit: 0.2
   reduceSpeedOnHit: 1
@@ -385,8 +385,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 120
-  minSpeed: 2
-  maxSpeed: 5
+  minSpeedInBeats: 1
+  maxSpeedInBeats: 2
   fakeOutChance: -1
   spinSpeedIncreasePerHit: 0.2
   reduceSpeedOnHit: 1
@@ -5798,6 +5798,7 @@ MonoBehaviour:
   timelineDurationInBeats: 0
   slashAnimationName: slash
   inverseFacingDirection: 0
+  swapFacingDirectionAfterPostHit: 0
   _staggerDamage: 5
   prehitBeats: 0.5
   posthitBeats: 0.5
@@ -5847,8 +5848,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 120
-  minSpeed: 4
-  maxSpeed: 10
+  minSpeedInBeats: 0
+  maxSpeedInBeats: 0
   fakeOutChance: 0.2
   spinSpeedIncreasePerHit: 0.2
   reduceSpeedOnHit: 1
@@ -6202,7 +6203,6 @@ MonoBehaviour:
   onPawnExitBattle:
     m_PersistentCalls:
       m_Calls: []
-  tutComboList: {fileID: 0}
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 7955827430294983148}
@@ -11986,8 +11986,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 5
-  minSpeed: 8
-  maxSpeed: 18
+  minSpeedInBeats: 0
+  maxSpeedInBeats: 0
   fakeOutChance: 0.2
   spinSpeedIncreasePerHit: 0.2
   reduceSpeedOnHit: 1
@@ -12266,8 +12266,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 40000
-  minSpeed: 2
-  maxSpeed: 100
+  minSpeedInBeats: 0
+  maxSpeedInBeats: 0
   fakeOutChance: -1
   spinSpeedIncreasePerHit: 0.05
   reduceSpeedOnHit: 0
