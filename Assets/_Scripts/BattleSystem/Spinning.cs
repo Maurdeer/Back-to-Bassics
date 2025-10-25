@@ -4,19 +4,9 @@ using UnityEngine;
 
 public class Spinning : MonoBehaviour
 {
-    private float speed;
-    public float Speed 
-    {
-        get
-        {
-            return speed;
-        }
-        set
-        {
-            speed = value;
-            speedUp = speed;
-        }
-    }
+    public float minSpeed;
+    public float maxSpeed;
+    public float speed;
     public bool ccw;
     private float speedUp;
     private const float accelerate = 0.05f;
@@ -27,36 +17,35 @@ public class Spinning : MonoBehaviour
 
     private void Start()
     {
-        //halfMaxSpeed = maxSpeed / 2f;
+        halfMaxSpeed = maxSpeed / 2f;
     }
 
     private void FixedUpdate()
     {
-        //if (speedUp < speed)
-        //{
-        //    speedUp += accelerate;
-        //}
-        //else if (speed < maxSpeed)
-        //{
-        //    speedUp = speed;
-        //}
-        //else
-        //{
-        //    speedUp = maxSpeed;
-        //}
+        if (speedUp < speed)
+        {
+            speedUp += accelerate;
+        }
+        else if (speed < maxSpeed)
+        {
+            speedUp = speed;
+        }
+        else
+        {
+            speedUp = maxSpeed;
+        }
         // Modifying this portion in order to rotate by z
         // Changing from Vector3.up to Vector3.Forward
         Quaternion rotateTo = Quaternion.identity;
         if (!finishSpinning) {
             rotateTo = (transform.rotation) * Quaternion.AngleAxis((ccw ? -1 : 1) * 90, Vector3.forward);
-        } else
-        {
+        } else {
             speedUp *= 2;
         }
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, rotateTo, Time.deltaTime * speedUp);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotateTo, Time.deltaTime * speedUp);
         if (finishSpinning && Quaternion.Angle(transform.rotation, Quaternion.identity) < 1f) {
             transform.rotation = Quaternion.identity;
-            Speed = 0;
+            speed = 0;
             finishSpinning = false;
         }
         // Fake out attack
@@ -80,9 +69,9 @@ public class Spinning : MonoBehaviour
 
     public void ChangeDirectionRandomSpeed()
     {
-        //speedUp = Random.Range(0f, halfMaxSpeed);
-        //speed = Random.Range(halfMaxSpeed, maxSpeed);
-        //ccw = !ccw;
+        speedUp = Random.Range(0f, halfMaxSpeed);
+        speed = Random.Range(halfMaxSpeed, maxSpeed);
+        ccw = !ccw;
     }
 
     public void ReduceSpeed(float newSpeedUp)
