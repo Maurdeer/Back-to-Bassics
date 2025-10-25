@@ -7,15 +7,18 @@ using Cinemachine;
 public class RotationAction : EnemyAction
 {
     [Header("Rotation Action Specifics")]
-    [SerializeField] private float minSpeed;
-    [SerializeField] private float maxSpeed;
+    [SerializeField] private float minDurationInBeats;
+    [SerializeField] private float maxDurationInBeats;
     [SerializeField] private float fakeOutChance = 0.2f;
-    [SerializeField] private float spinSpeedIncreasePerHit = 0.2f;
+    [SerializeField, Tooltip("In Beats Please")] private float spinSpeedIncreasePerHit = 0.5f; // Default is saying Quarter Beat
     [SerializeField] private bool reduceSpeedOnHit = true;
     [Header("References")]
     [SerializeField] private Spinning spinner;
     [SerializeField] private DeflectableHitBox hitBox;
     [SerializeField] private CinemachineVirtualCamera spinCamera;
+
+    private float halfSpinSpeed;
+    private float fullSpinSpeed;
 
     #region Technical
     private Coroutine activeSpinThread;
@@ -46,8 +49,8 @@ public class RotationAction : EnemyAction
             return;
         }
         wasPlayerHit = false;
-        spinner.minSpeed = minSpeed;
-        spinner.maxSpeed = maxSpeed;
+        halfSpinSpeed = 180f / (Conductor.Instance.spb * maxDurationInBeats);
+        fullSpinSpeed = 360f / (Conductor.Instance.spb * maxDurationInBeats);
 
         // Subscribe to Events
         hitBox.OnHit += OnHit;
@@ -84,7 +87,7 @@ public class RotationAction : EnemyAction
         parentPawnSprite.Animator.Play("TurboTopRevealSword");
         yield return new WaitForSeconds(0.8f);
         spinner.enabled = true;
-        spinner.speed = spinner.minSpeed;
+        spinner.Speed = halfSpinSpeed;
         yield return new WaitForSeconds(spinDuration);
         
         StopAction();
@@ -114,31 +117,35 @@ public class RotationAction : EnemyAction
     {
         wasPlayerHit = true;
         // Decrease spinner speed if player is hit
-        if (reduceSpeedOnHit && spinner.speed > spinner.minSpeed)
-        {
-            spinner.speed /= 2;
-            spinner.speed = Mathf.Max(spinner.speed, spinner.minSpeed);
-            spinner.ReduceSpeed(spinner.speed / 2);
-            resetSpeed = spinner.speed / 2;
-        }
+        //if (reduceSpeedOnHit && spinner.speed > spinner.minSpeed)
+        //{
+        //    spinner.speed /= 2;
+        //    spinner.speed = Mathf.Max(spinner.speed, spinner.minSpeed);
+        //    spinner.ReduceSpeed(spinner.speed / 2);
+        //    resetSpeed = spinner.speed / 2;
+        //}
+        spinner.Speed = halfSpinSpeed;
     }
     private void OnDeflect(IAttackReceiver receiver)
     {
         // Limit max speed of spinner
-        if (spinner.speed < spinner.maxSpeed)
-        {
-            spinner.speed += resetSpeed;
-            spinner.speed = Mathf.Min(spinner.speed, spinner.maxSpeed);
-        }
+        //if (spinner.speed < spinner.maxSpeed)
+        //{
+        //    spinner.speed += resetSpeed;
+        //    spinner.speed = Mathf.Min(spinner.speed, spinner.maxSpeed);
+        //}
         // Randomize fake out chance
         float rand = UnityEngine.Random.Range(0f, 1f);
+        float secondsPerBeat = Conductor.Instance.spb * Mathf.Clamp(maxDurationInBeats - resetSpeed, minDurationInBeats, maxDurationInBeats);
+        halfSpinSpeed = 180f / secondsPerBeat;
+        fullSpinSpeed = 360f / secondsPerBeat;
         if (rand <= fakeOutChance)
         {
-            spinner.FakeOut(spinner.minSpeed + resetSpeed);
+            spinner.FakeOut(halfSpinSpeed);
         }
         else
         {
-            spinner.ChangeDirection(spinner.minSpeed + resetSpeed);
+            spinner.ChangeDirection(halfSpinSpeed);
         }
         resetSpeed += spinSpeedIncreasePerHit;
 
