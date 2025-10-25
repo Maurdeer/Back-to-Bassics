@@ -115,7 +115,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         BattleManager.Instance.Player.Damage(_currNode.dmg);
     }
 
-    private IEnumerator SwapDirectionAfterAnimation()
+    protected IEnumerator SwapDirectionAfterAnimation()
     {
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
         yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_battle"));
