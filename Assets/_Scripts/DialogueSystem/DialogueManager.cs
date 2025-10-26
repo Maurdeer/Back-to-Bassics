@@ -125,8 +125,17 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public IEnumerator PlayAnimation(GameObject pawn, string animation)
     {
-        Animator pawnAnimator = pawn.GetComponentInChildren<Animator>();
-        if (pawnAnimator == null) {
+        Animator pawnAnimator;
+        if (pawn.tag.Equals("Player"))
+        {
+            // Debug.Log("GameObject tagged as being from the player! Strange animator check used!");
+            pawnAnimator = pawn.GetComponentsInChildren<Animator>()[1];
+            pawnAnimator.SetFloat("x_faceDir", 1f);
+            pawnAnimator.SetFloat("z_faceDir", 1f);
+        }
+        else pawnAnimator = pawn.GetComponentInChildren<Animator>();
+        if (pawnAnimator == null)
+        {
             Debug.LogWarning($"{pawn.name} does not have an animator.");
         }
         pawnAnimator.Play(animation);

@@ -10,6 +10,7 @@ public class Elevator : MonoBehaviour
     private Vector3 startingPosition;
     private Vector3 targetPosition;
     private Vector3 destinationPosition;
+    private bool isActive = false;
    
     private void Awake()
     {
@@ -19,23 +20,31 @@ public class Elevator : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        if (transform.position != targetPosition)
+        if (isActive)
         {
-            if (borders != null) borders.SetActive(true);
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.fixedDeltaTime);
-        }
-        else
-        {
-            if (borders != null) borders.SetActive(false);
+            if((transform.position - targetPosition).magnitude > 0.1f)
+            {
+                if (borders != null) borders.SetActive(true);
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.fixedDeltaTime);
+            }
+            else
+            {
+                if (borders != null) borders.SetActive(false);
+                // targetPosition = transform.position;
+                isActive = false;
+            }
+            
         }
     }
     public void GoToNextPosition()
     {
         targetPosition = destinationPosition;
+        isActive = true;
     }
     public void ReturnToPriorPosition()
     {
         targetPosition = startingPosition;
+        isActive = true;
     }
     public void OnTriggerEnter(Collider other)
     {
