@@ -31,7 +31,7 @@ public class WreckonTitle : MonoBehaviour
 
         if (!DataPersistenceManager.Instance.HasGameData())
         {
-            DataPersistenceManager.Instance.NewGame(GameDataIntialize.Default);
+            DataPersistenceManager.Instance.NewGame(GameDataIntialize.ReplayOnly);
         }
 
         DataPersistenceManager.Instance.LoadGame();

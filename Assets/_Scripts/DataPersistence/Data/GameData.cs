@@ -37,6 +37,9 @@ public class GameData
             case GameDataIntialize.Wreckcon:
                 Wreckcon();
                 break;
+            case GameDataIntialize.ReplayOnly:
+                Replay();
+                break;
             default:
                 Default();
                 break;
@@ -72,10 +75,22 @@ public class GameData
 
         //Debug.Log("New save created.");
     }
+    private void Replay()
+    {
+        currentScene = "WreckonReplay";
+
+        // Event Pools Set
+        truthArray = new bool[7];
+        wreckconQuests = new bool[16];
+        enemyScore = new ulong[5] { 0,0,0,0,0};
+        enemyRank = new string[5] { "-", "-", "-", "-", "-" };
+
+    }
 }
 
 public enum GameDataIntialize
 {
     Default=0,
     Wreckcon,
+    ReplayOnly,
 }
