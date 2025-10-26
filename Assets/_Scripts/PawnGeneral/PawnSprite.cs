@@ -10,7 +10,7 @@ public class PawnSprite : MonoBehaviour
     protected Vector2 _facingDirection;
     private Coroutine _currFlippingCoroutine;
     private Queue<IEnumerator> _flippingEnumeratorQueue;
-    private Vector2 _prevToChangeFaceDir;
+    private Vector3 _prevToChangeFaceDir;
     protected virtual void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -23,26 +23,26 @@ public class PawnSprite : MonoBehaviour
     }
     
     public void FaceDirection(Vector3 direction, bool dont_trigger_flip = false)
-    {   
+    {
         if (direction == Vector3.zero)
         {
             // No Significant changes need to be done
             return;
         }
-        Vector2 change = new Vector2(direction.x != 0 ? direction.x : _animator.GetFloat("x_faceDir"),
-            direction.z != 0 ? direction.z : _animator.GetFloat("z_faceDir"));
-        
-        if (change != _prevToChangeFaceDir)
+
+        if (direction != _prevToChangeFaceDir)
         {
-            _prevToChangeFaceDir = change;
-            _flippingEnumeratorQueue.Enqueue(FlipThread(change, dont_trigger_flip));
-            //Debug.Log($"{_flippingEnumeratorQueue.Count}, {_currFlippingCoroutine}");
+            _prevToChangeFaceDir = direction;
+            _flippingEnumeratorQueue.Enqueue(FlipThread(direction, dont_trigger_flip));
         }  
     }
 
-    public IEnumerator FlipThread(Vector2 change, bool dont_trigger_flip = false)
+    public IEnumerator FlipThread(Vector3 direction, bool dont_trigger_flip = false)
     {
-        if (!dont_trigger_flip)
+        Vector2 change = new Vector2(direction.x != 0 ? Mathf.Sign(direction.x) : _animator.GetFloat("x_faceDir"),
+         direction.z != 0 ? Mathf.Sign(direction.z) : _animator.GetFloat("z_faceDir"));
+
+        if (!dont_trigger_flip && change != _facingDirection)
         {
             float angle = Vector2.SignedAngle(_facingDirection, change);
             _facingDirection = change;
@@ -59,8 +59,8 @@ public class PawnSprite : MonoBehaviour
             
         }
         //Debug.Log("Flip Thread Updated");
-        _animator.SetFloat("x_faceDir", Mathf.Sign(change.x));
-        _animator.SetFloat("z_faceDir", Mathf.Sign(change.y));
+        _animator.SetFloat("x_faceDir", change.x);
+        _animator.SetFloat("z_faceDir", change.y);
         _currFlippingCoroutine = null;
     }
 
