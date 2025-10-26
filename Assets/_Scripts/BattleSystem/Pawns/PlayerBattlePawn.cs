@@ -21,6 +21,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private VisualEffect _slashEffect;
     [SerializeField] private ParticleSystem _deflectEffect;
+    [SerializeField] private GameObject _stickWeapon;
     
     private PlayerTraversalPawn _traversalPawn;
     public PlayerWeaponData WeaponData => _weaponData;
@@ -82,6 +83,18 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         _pawnSprite.Animator.Play("dodge_" + directionAnimation);
         yield return new WaitForSeconds(0.60f);
         dodging = false;
+    }
+
+    public override void EnterBattle()
+    {
+        base.EnterBattle();
+        _stickWeapon.SetActive(true);
+    }
+
+    public override void ExitBattle()
+    {
+        base.EnterBattle();
+        _stickWeapon.SetActive(false);
     }
     
     private Conductor.ConductorSchedulable slashHandle;
