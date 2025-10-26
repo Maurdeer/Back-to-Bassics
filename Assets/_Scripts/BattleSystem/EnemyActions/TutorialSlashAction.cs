@@ -6,7 +6,7 @@ using static PositionStateMachine;
 public class TutorialSlashAction : SlashAction
 {
     private bool hasProgressed = false;
-    [SerializeField] private float timeBeforeHitPlayer = 0.08f;
+    [SerializeField] private float timeBeforeHitPlayer = 0.03f;
 
     protected override IEnumerator SlashThread(SlashNode node)
     {

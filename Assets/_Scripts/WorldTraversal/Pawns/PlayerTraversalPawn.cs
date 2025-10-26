@@ -15,11 +15,23 @@ public class PlayerTraversalPawn : TraversalPawn
     private bool attacking;
     public bool spinSlashing { get; set; }
     private Interactable currInteractable;
+    // private _sprite
     protected override void Awake()
     {
         base.Awake();
         _battlePawn = GetComponent<PlayerBattlePawn>();
         _comboManager = GetComponent<ComboManager>();
+        
+    }
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        if (transform.position == destinationTarget)
+        {
+            Debug.Log("This final check was called?");
+            _spriteAnimator.SetFloat("x_faceDir", 1f);
+            _spriteAnimator.SetFloat("z_faceDir", 1f);
+        }
     }
     public override void Move(Vector3 direction)
     {
