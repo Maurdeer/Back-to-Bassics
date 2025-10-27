@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        if (data.truthArray[3]) return; // (Ryan) WRECKON AHH CRAZY
+        //if (data.truthArray[3]) return; // (Ryan) WRECKON AHH CRAZY
 
         //change the player's position to match the saved data's player position
 
@@ -136,36 +136,36 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
         // (Ryan) WRECKCON LOGIC WOOO
         // No Concern over updating these in order since truthArray is updated by reference in GameData!!
-        if (data.truthArray[3]) return; // Beat King Sal
+        //if (data.truthArray[3]) return; // Beat King Sal
 
-        if (data.truthArray[1]) // Wack since there numbers are off lmao
-        {
-            // Beat Small Fry
-            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 442f);
-        }
-        else if (data.truthArray[2])
-        {
-            // Beat Turbo Top
-            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 394.100006f);
-        }
-        else if (data.truthArray[0])
-        {
-            // Beat Bassics
-            data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 303.299988f);
-        }
-        
+        //if (data.truthArray[1]) // Wack since there numbers are off lmao
+        //{
+        //    // Beat Small Fry
+        //    data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 442f);
+        //}
+        //else if (data.truthArray[2])
+        //{
+        //    // Beat Turbo Top
+        //    data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 394.100006f);
+        //}
+        //else if (data.truthArray[0])
+        //{
+        //    // Beat Bassics
+        //    data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 303.299988f);
+        //}
+
 
         // [REAL AND BETTER LOGIC HERE]
         //if the scene is already in the playerPosition dict
-        //if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
-        //{
-        //    //save the current position as the value for the scene key
-        //    data.playerPosition[SceneManager.GetActiveScene().name] = this.transform.position;
-        //}
-        //else //if the scene isn't already in there
-        //{
-        //    //add the current scene & transform to the dict as a key-value pair
-        //    data.playerPosition.Add(SceneManager.GetActiveScene().name, this.transform.position);
-        //}
+        if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
+        {
+            //save the current position as the value for the scene key
+            data.playerPosition[SceneManager.GetActiveScene().name] = this.transform.position;
+        }
+        else //if the scene isn't already in there
+        {
+            //add the current scene & transform to the dict as a key-value pair
+            data.playerPosition.Add(SceneManager.GetActiveScene().name, this.transform.position);
+        }
     }
 }

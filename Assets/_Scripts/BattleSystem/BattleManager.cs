@@ -154,7 +154,7 @@ public class BattleManager : Singleton<BattleManager>
         int id = EnemyId(Enemy.EnemyData.Name);
         ulong finalScore = UIManager.Instance.ScoreTracker.StopAndGetFinalScore();
         PlayerScore = finalScore;
-        UIManager.Instance.WreckconQuests.MarkAchievement(id * 4);
+        //UIManager.Instance.WreckconQuests.MarkAchievement(id * 4);
         // Rank Calculation
         double scoreFraction = (double)finalScore / Enemy.EnemyData.SRankMax;
         string scoreRank = "";
@@ -164,15 +164,15 @@ public class BattleManager : Singleton<BattleManager>
             if (scoreFraction >= fraction)
             {
                 scoreRank = rank;
-                if (scoreRank == "S")
-                {
-                    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 2);
-                    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 3);
-                }
-                else if (scoreRank == "A")
-                {
-                    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 3);
-                }
+                //if (scoreRank == "S")
+                //{
+                //    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 2);
+                //    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 3);
+                //}
+                //else if (scoreRank == "A")
+                //{
+                //    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 3);
+                //} 
 
                 break;
             }
@@ -184,7 +184,7 @@ public class BattleManager : Singleton<BattleManager>
         UIManager.Instance.PersistentDataTracker.UpdateEnemyScore(id, finalScore, scoreRank);
 
         // Save Here Since All Needed Data has been processed
-        DataPersistenceManager.Instance.SaveGame();
+        //DataPersistenceManager.Instance.SaveGame();
 
         UIManager.Instance.BeatEnemyPanel.PlayBattleVictory(Enemy.EnemyData.Name, finalScore, Enemy.EnemyData.SRankMax, scoreRank);
     } 

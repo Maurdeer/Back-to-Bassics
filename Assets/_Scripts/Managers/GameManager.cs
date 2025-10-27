@@ -32,4 +32,8 @@ public class GameManager : Singleton<GameManager>
         Director.playableAsset = asset;
         Director.Play();
     }
+    public void SaveGame()
+    {
+        DataPersistenceManager.Instance.SaveGame();
+    }
 }

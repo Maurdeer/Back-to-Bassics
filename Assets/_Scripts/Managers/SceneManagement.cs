@@ -140,15 +140,11 @@ public class SceneManagement : Singleton<SceneManagement>, IDataPersistence
 
     public void SaveData(GameData data)
     {
-        // (Ryan) WRECKON LOGIC AHHH CRAZY
-        if (data.truthArray[3])
-        {
-            data.currentScene = "WreckonReplay"; //Special Scene that lets player select bosses to fight
-        }
-        else
-        {
-            data.currentScene = SceneManager.GetActiveScene().name;
-        }
-        
+        //// (Ryan) WRECKON LOGIC AHHH CRAZY
+        //if (data.truthArray[3])
+        //{
+        //    data.currentScene = "WreckonReplay"; //Special Scene that lets player select bosses to fight
+        //}
+        data.currentScene = SceneManager.GetActiveScene().name;
     }
 }

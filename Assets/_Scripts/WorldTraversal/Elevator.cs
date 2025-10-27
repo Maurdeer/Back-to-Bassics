@@ -17,6 +17,7 @@ public class Elevator : MonoBehaviour
         startingPosition = transform.position;
         targetPosition = transform.position;
         destinationPosition = newPosition.position;
+        borders.SetActive(false);
     }
     public void FixedUpdate()
     {
@@ -30,7 +31,7 @@ public class Elevator : MonoBehaviour
             else
             {
                 if (borders != null) borders.SetActive(false);
-                // targetPosition = transform.position;
+                targetPosition = transform.position;
                 isActive = false;
             }
             
