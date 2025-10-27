@@ -18,6 +18,7 @@ public class PersistentDataTracker : MonoBehaviour, IDataPersistence
     }
     public void UpdateEnemyScore(int id, ulong score, string rank)
     {
+        if (id < 0) return;
         if (m_enemyScores[id] > score) return; // Don't update if score is worse!
         m_enemyScores[id] = score;
         m_enemyRanks[id] = rank;

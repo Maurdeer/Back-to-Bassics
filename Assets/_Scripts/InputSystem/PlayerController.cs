@@ -118,16 +118,17 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         //change the player's position to match the saved data's player position
 
         //if the playerPosition dict has the scene in it already
-        if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
-        {
-            //update the position value for this scene
-            this.transform.position = data.playerPosition[SceneManager.GetActiveScene().name]; 
-        }
-        else
-        {
-            //uh oh something went wrong
-            Debug.Log("No saved data for the current scene.");
-        }
+        //transform.position = TruthArrayMaster.Instance.
+        //if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
+        //{
+        //    //update the position value for this scene
+        //    this.transform.position = data.playerPosition[SceneManager.GetActiveScene().name]; 
+        //}
+        //else
+        //{
+        //    //uh oh something went wrong
+        //    Debug.Log("No saved data for the current scene.");
+        //}
     }
 
     public void SaveData(GameData data)
@@ -157,15 +158,15 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
         // [REAL AND BETTER LOGIC HERE]
         //if the scene is already in the playerPosition dict
-        if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
-        {
-            //save the current position as the value for the scene key
-            data.playerPosition[SceneManager.GetActiveScene().name] = this.transform.position;
-        }
-        else //if the scene isn't already in there
-        {
-            //add the current scene & transform to the dict as a key-value pair
-            data.playerPosition.Add(SceneManager.GetActiveScene().name, this.transform.position);
-        }
+        //if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
+        //{
+        //    //save the current position as the value for the scene key
+        //    data.playerPosition[SceneManager.GetActiveScene().name] = this.transform.position;
+        //}
+        //else //if the scene isn't already in there
+        //{
+        //    //add the current scene & transform to the dict as a key-value pair
+        //    data.playerPosition.Add(SceneManager.GetActiveScene().name, this.transform.position);
+        //}
     }
 }

@@ -11309,6 +11309,7 @@ MonoBehaviour:
   timelineDurationInBeats: 0
   slashAnimationName: slash
   inverseFacingDirection: 0
+  swapFacingDirectionAfterPostHit: 0
   _staggerDamage: 5
   prehitBeats: 0.5
   posthitBeats: 0.5
@@ -11402,7 +11403,19 @@ MonoBehaviour:
   useTypewriterEffect: 1
   onCharacterTyped:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2622334173887554957}
+        m_TargetAssemblyTypeName: EnemyBattlePawn, Assembly-CSharp
+        m_MethodName: VoiceByte
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPauseStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -11519,7 +11532,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5431806863635908229}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.000009357927, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.0000055581318, w: 1}
   m_LocalPosition: {x: 0.53, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -17583,7 +17596,6 @@ MonoBehaviour:
   onPawnExitBattle:
     m_PersistentCalls:
       m_Calls: []
-  tutComboList: {fileID: 0}
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 3632154329678698217}
@@ -17740,9 +17752,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 11a0f6ed1f3233b4089397aa7b86da8a, type: 2}
   - {fileID: 11400000, guid: 9c50a461c5b3fcb4bb11d12e3d38f4cb, type: 2}
   useDistanceOverBlock: 0
-  firstTimeStagger:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &8778551073191323628
 GameObject:
   m_ObjectHideFlags: 0
@@ -17979,7 +17988,19 @@ MonoBehaviour:
   useTypewriterEffect: 1
   onCharacterTyped:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2622334173887554957}
+        m_TargetAssemblyTypeName: EnemyBattlePawn, Assembly-CSharp
+        m_MethodName: VoiceByte
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPauseStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -18328,11 +18349,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2377494905487071929, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9860688
+      value: 0.9860694
       objectReference: {fileID: 0}
     - target: {fileID: -2377494905487071929, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.16633835
+      value: -0.16633461
       objectReference: {fileID: 0}
     - target: {fileID: -1186530545774409408, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_Layer

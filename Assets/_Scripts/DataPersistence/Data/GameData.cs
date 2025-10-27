@@ -55,7 +55,7 @@ public class GameData
         // Event Pools Set
         truthArray = new bool[7];
         wreckconQuests = new bool[16];
-        enemyScore = new ulong[5];
+        enemyScore = new ulong[5] { 0, 0, 0, 0, 0 };
         enemyRank = new string[5] { "-", "-", "-", "-" , "-" };
         tickets = 0;
     }
@@ -70,7 +70,7 @@ public class GameData
         // Event Pools Set
         truthArray = new bool[7];
         wreckconQuests = new bool[16];
-        enemyScore = new ulong[5];
+        enemyScore = new ulong[5] { 0, 0, 0, 0, 0 };
         enemyRank = new string[5] { "-", "-", "-", "-", "-" };
 
         //Debug.Log("New save created.");

@@ -181,6 +181,13 @@ public class BattleManager : Singleton<BattleManager>
 
         if (scoreRank == "") scoreRank = "E";
 
+        
+        if (id < 0)
+        {
+            // If the id isn't a real enemy, then don't apply a score
+            EndBattleComplete();
+            return;
+        }
         UIManager.Instance.PersistentDataTracker.UpdateEnemyScore(id, finalScore, scoreRank);
 
         // Save Here Since All Needed Data has been processed
