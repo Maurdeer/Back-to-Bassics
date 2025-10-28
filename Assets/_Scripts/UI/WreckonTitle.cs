@@ -23,7 +23,7 @@ public class WreckonTitle : MonoBehaviour
             m_saveProfileName = value;
         }
     }
-    private void Awake()
+    private void Start()
     {
         Dictionary<string, GameData> profiles = DataPersistenceManager.Instance.GetAllProfilesGameData();
         GameData[] datas = profiles.Values.ToArray();
