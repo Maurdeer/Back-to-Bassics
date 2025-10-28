@@ -131,6 +131,10 @@ public class Conductor : Singleton<Conductor>
     {
         ctx.fmodInstance.setParameterByName("Phase", phase);
     }
+    public void GoToTimelinePoint(int position)
+    {
+        ctx.fmodInstance.setTimelinePosition(position);
+    }
 
     // AT: Run this after the regular update so that all events are definitely triggered within the same interval,
     // instead of in-between regular updates

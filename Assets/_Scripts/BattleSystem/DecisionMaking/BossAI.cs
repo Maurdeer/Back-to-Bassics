@@ -103,6 +103,11 @@ public class BossAI : Conductable
             // Debug.Log($"Phase: {_currentStage}");
             _beatsPerDecision = _enemyStages[_currentStage].BeatsPerDecision;
             Conductor.Instance.ChangeMusicPhase(_currentStage + 1);
+            if (_enemyStages[_currentStage].SkipPointInSong)
+            {
+                Conductor.Instance.GoToTimelinePoint(_enemyStages[_currentStage].PointToSkip);
+            }
+            
             _enemyBattlePawn.UnStagger();
             PreventPlayerAttack();
             _enemyBattlePawn.maxStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
