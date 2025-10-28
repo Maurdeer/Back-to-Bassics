@@ -70,6 +70,18 @@ public class ScoreTracker : MonoBehaviour
         currScore = score;
         textUpdater = StartCoroutine(TextUpdater(oldscore, currScore));
     }
+    public void UpdateScoreFast(ulong score)
+    {
+        if (textUpdater != null)
+        {
+            StopCoroutine(textUpdater);
+            m_scoreText.text = currScore.ToString("D10");
+        }
+
+        ulong oldscore = currScore;
+        currScore = score;
+        textUpdater = StartCoroutine(TextUpdaterFast(oldscore, currScore));
+    }
     public void UpdateMultiplier(uint multiplier)
     {
         
@@ -118,6 +130,34 @@ public class ScoreTracker : MonoBehaviour
                 m_scoreText.color = SevereDecayingMultiplierColor;
                 m_scoreText.text = from.ToString("D10");
                 yield return new WaitForSeconds(0.01f);
+            }
+        }
+        m_scoreText.color = Color.black;
+        m_scoreText.text = to.ToString("D10");
+    }
+
+    private IEnumerator TextUpdaterFast(ulong from, ulong to)
+    {
+        if (from < to)
+        {
+            // increasing
+            while (from < to)
+            {
+                from += 100;
+                m_scoreText.color = NonDecayingMultiplierColor;
+                m_scoreText.text = from.ToString("D10");
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        else
+        {
+            // decreasing
+            while (from > to && from > 100)
+            {
+                from -= 100;
+                m_scoreText.color = SevereDecayingMultiplierColor;
+                m_scoreText.text = from.ToString("D10");
+                yield return new WaitForEndOfFrame();
             }
         }
         m_scoreText.color = Color.black;
