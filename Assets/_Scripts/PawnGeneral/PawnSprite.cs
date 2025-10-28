@@ -58,6 +58,10 @@ public class PawnSprite : MonoBehaviour
             }
             
         }
+        else
+        {
+            _facingDirection = change;
+        }
         //Debug.Log("Flip Thread Updated");
         _animator.SetFloat("x_faceDir", change.x);
         _animator.SetFloat("z_faceDir", change.y);

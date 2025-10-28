@@ -106,20 +106,22 @@ public class SlashAction : EnemyAction, IAttackRequester
 
         if (swapFacingDirectionAfterPostHit)
         {
-            StartCoroutine(SwapDirectionAfterAnimation());
+            parentPawnSprite.FaceDirection(new Vector3(-parentPawnSprite.Animator.GetFloat("x_faceDir"), 0, 0), true);
         }
-        else
-        {
-            parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
-        }
+        parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
         BattleManager.Instance.Player.Damage(_currNode.dmg);
     }
 
     protected IEnumerator SwapDirectionAfterAnimation()
     {
-        parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
-        yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_battle"));
-        parentPawnSprite.Animator.SetFloat("x_faceDir", -parentPawnSprite.Animator.GetFloat("x_faceDir"));
+        string animation_name = $"{slashAnimationName}_posthit";
+        parentPawnSprite.Animator.Play(animation_name);
+        yield return new WaitUntil(() => {
+            AnimatorStateInfo info = parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
+            return info.IsName(animation_name) && parentPawnSprite.Animator.IsInTransition(0);
+            });
+        parentPawnSprite.FaceDirection(new Vector3(-parentPawnSprite.Animator.GetFloat("x_faceDir"), 0, 0), true);
+
     }
 
     public float GetDeflectionCoyoteTime()
