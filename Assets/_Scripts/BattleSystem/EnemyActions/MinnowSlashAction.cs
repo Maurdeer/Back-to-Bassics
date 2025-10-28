@@ -13,6 +13,7 @@ public class MinnowSlashAction : SlashAction
 
     protected override IEnumerator SlashThread(SlashNode node)
     {
+        leftSword.gameObject.SetActive(true);
         // Slash Initialization
         yield return StartCoroutine(SlashInitialization(node));
         // Broadcast
@@ -44,7 +45,8 @@ public class MinnowSlashAction : SlashAction
     protected override IEnumerator SlashBroadcast()
     {
         parentPawnSprite.Animator.SetFloat("speed", 1 / syncedAnimationTime);
-        parentPawnSprite.Animator.Play($"{slashAnimationName}_broadcast");
+        // parentPawnSprite.Animator.Play($"{slashAnimationName}_broadcast");
+        leftSword.Play("slash_broadcast");
         yield return new WaitForSeconds(syncedAnimationTime);
     }
 

@@ -28,7 +28,6 @@ public class PlayerTraversalPawn : TraversalPawn
         base.FixedUpdate();
         if (transform.position == destinationTarget)
         {
-            Debug.Log("This final check was called?");
             _spriteAnimator.SetFloat("x_faceDir", 1f);
             _spriteAnimator.SetFloat("z_faceDir", 1f);
         }
