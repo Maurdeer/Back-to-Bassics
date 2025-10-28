@@ -23,6 +23,8 @@ public class DataPersistenceManager : Singleton<DataPersistenceManager>
 
     private string selectedProfileId = "";
 
+    public GameData GameData => gameData;
+
     private void Awake()
     {
         InitializeSingleton();

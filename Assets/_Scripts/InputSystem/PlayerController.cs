@@ -45,38 +45,45 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     }
     public void DisableControl()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
     }
     public void EnableControl()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Enable();
     }
     public void SwitchToBattleActions()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
         _playerinput.SwitchCurrentActionMap("PlayerBattlePawn");
         _playerinput.currentActionMap.Enable();
     }
     public void SwitchToTraversalActions()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
         _playerinput.SwitchCurrentActionMap("PlayerTraversalPawn");
         _playerinput.currentActionMap.Enable();
     }
     public void SwitchToDialogueActions()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
         _playerinput.SwitchCurrentActionMap("Dialogue");
         _playerinput.currentActionMap.Enable();
     }
     public void SwitchToCutsceneActions()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
         _playerinput.SwitchCurrentActionMap("Cutscene");
         _playerinput.currentActionMap.Enable();
     }
     public void SwitchToUIActions()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
         _playerinput.SwitchCurrentActionMap("UI");
         _playerinput.currentActionMap.Enable();
@@ -118,17 +125,16 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         //change the player's position to match the saved data's player position
 
         //if the playerPosition dict has the scene in it already
-        //transform.position = TruthArrayMaster.Instance.
-        //if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
-        //{
-        //    //update the position value for this scene
-        //    this.transform.position = data.playerPosition[SceneManager.GetActiveScene().name]; 
-        //}
-        //else
-        //{
-        //    //uh oh something went wrong
-        //    Debug.Log("No saved data for the current scene.");
-        //}
+        if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
+        {
+            //update the position value for this scene
+            this.transform.position = data.playerPosition[SceneManager.GetActiveScene().name];
+        }
+        else
+        {
+            //uh oh something went wrong
+            Debug.Log("No saved data for the current scene.");
+        }
     }
 
     public void SaveData(GameData data)

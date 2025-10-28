@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class TruthArrayMaster : Singleton<TruthArrayMaster>, IDataPersistence
 {
     [SerializeField] private TruthBehavior[] truthBehaviors;
-    private bool[] truthArray;
+    [SerializeField] private bool[] truthArray;
     private TruthBehavior lastTruth;
     private void Awake()
     {

@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using TMPro;
 using static GameStateMachine;
+using UnityEditor.SearchService;
 
 public class SceneManagement : Singleton<SceneManagement>, IDataPersistence
 {
@@ -58,7 +59,6 @@ public class SceneManagement : Singleton<SceneManagement>, IDataPersistence
 
         // Get out of pause menu if that is possible
         if (GameManager.Instance != null) GameManager.Instance.GSM.Transition<WorldTraversal>();
-
         //SceneManager.LoadSceneAsync(scene);
         loadSceneParent.SetActive(true);
         loadText.SetText("");
@@ -145,6 +145,7 @@ public class SceneManagement : Singleton<SceneManagement>, IDataPersistence
         //{
         //    data.currentScene = "WreckonReplay"; //Special Scene that lets player select bosses to fight
         //}
+        if (SceneManager.GetActiveScene().name.ToLower().Contains("title")) return;
         data.currentScene = SceneManager.GetActiveScene().name;
     }
 }

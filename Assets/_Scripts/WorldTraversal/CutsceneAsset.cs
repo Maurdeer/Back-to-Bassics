@@ -58,5 +58,6 @@ public enum StateAfterCutscene
 {
     traversal,
     battle,
-    dialogue
+    dialogue,
+    none
 }
