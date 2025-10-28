@@ -68,13 +68,20 @@ title: small_fry_1
 tags:
 ---
 <<teleport "SmallFryPawn" "SmallFryTPLocation">>
-<<setView "SmallFryAuto">>
-<<setCamera "SmallFryCam">>
-<<move "SmallFryPawn" "SmallFryDialogue1Location">>
-<<move "PlayerPoncho" "SmallFryDialogue1PlayerLocation">>
+<<setView "RockManual">>
+<<setCamera "RockCamera">>
+// <<setCamera "SmallFryCam">>
+
 Small Fry: NOOOO!!! MY RICE!!!!
-<<setView "SmallFryManual">>
 Small Fry: I wasn't finished with that!
+<<setView "SmallFryManual">>
+<<move "SmallFryPawn" "SmallFryDialogue1Location">>
+// <<setCamera "SmallFryCam">>
+<<wait 1>>
+
+
+// <<move "PlayerPoncho" "SmallFryDialogue1PlayerLocation">>
+
 Small Fry: My glorious recipe! Two years worth of work! Down the drain!
 Small Fry: It was almost PERFECT!!!
 Small Fry: I suppose it's my fault. I shouldn't have left such delectable food unattended!
@@ -86,10 +93,9 @@ Small Fry: One-in-a-krillion?
 <<animate "SmallFryPawn" "enterbattle">>
 <<wait 1>>
 Small Fry: The best shrimp fried rice you've ever had?
+
 <<animate "SmallFryPawn" "idle">>
-Small Fry: ...It was "dry"?
-Small Fry: Dry?
-Small Fry: DRY.
+Small Fry: ...Just okay?
 Small Fry: Hahaha. You think you know better than me?
 Small Fry: You're trying to tell ME how to do MY job?
 Small Fry: You IDIOT SANDWICH! I'd like to see you fry some rice!
