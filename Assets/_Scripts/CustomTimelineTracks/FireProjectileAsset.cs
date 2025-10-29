@@ -18,7 +18,6 @@ public class FireProjectileAsset : PlayableAsset
 [CustomEditor(typeof(FireProjectileAsset))]
 public class FireProjectileAssetEditor : Editor
 {
-    private readonly string[] directions = { "North", "South", "East", "West" };
     public override void OnInspectorGUI()
     {
         FireProjectileAsset fpa = target as FireProjectileAsset;

@@ -112,7 +112,7 @@ public class SlashAction : EnemyAction, IAttackRequester
         BattleManager.Instance.Player.Damage(_currNode.dmg);
     }
 
-    protected IEnumerator SwapDirectionAfterAnimation()
+    protected virtual IEnumerator SwapDirectionAfterAnimation()
     {
         string animation_name = $"{slashAnimationName}_posthit";
         parentPawnSprite.Animator.Play(animation_name);

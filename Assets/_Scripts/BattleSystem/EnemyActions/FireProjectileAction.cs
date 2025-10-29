@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using TreeEditor;
 using UnityEngine;
 
 public class FireProjectileAction : EnemyAction
 {
     [Header("Fire Projectile Action")]
     [SerializeField, Range(1, 100)] private int projectilePoolAmount;
-    [SerializeField] private string animationName;
+    [SerializeField] protected string enterFireName;
+    [SerializeField] protected string animationName;
+    [SerializeField] protected string exitFireName;
     [SerializeField] private bool performAnimationBeforeFire;
     [Header("Default Projectile Settings")]
     [SerializeField] private FirePatternChoice firePattern;
     [SerializeField] private GameObject[] projectileFabs;
+
+    protected Coroutine currentlyFiring;
+    protected float timeElapsed;
+    private FireProjectileNode prevNode;
 
     private int idx;
     private GameObject fabSelection;
@@ -33,23 +40,40 @@ public class FireProjectileAction : EnemyAction
     }
     public void FireProjectileAtPlayer(FireProjectileNode node)
     {
-
         if (performAnimationBeforeFire)
         {
-            StartCoroutine(AnimateBeforeFire(node));
+            if (currentlyFiring != null)
+            {
+                StopCoroutine(currentlyFiring);
+                timeElapsed = Conductor.Instance.Beat - timeElapsed;
+                LaunchProjectile(prevNode, prevNode.duration - timeElapsed);
+            }
+            prevNode = node;
+            currentlyFiring = StartCoroutine(AnimateBeforeFire(node));
             return;
         }
 
-        LaunchProjectile(node);
+        LaunchProjectile(node, node.duration);
         AnimateProjectileLaunch(node); 
     }
-    private void AnimateProjectileLaunch(FireProjectileNode node)
+    protected virtual void AnimateProjectileLaunch(FireProjectileNode node)
     {
         parentPawnSprite.FaceDirection(new Vector3(node.relativeSpawnPosition.x, 0, -1));
         parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
-        parentPawnSprite.Animator.Play(animationName);
+        AnimatorStateInfo animStateInfo = parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
+        if (enterFireName.Trim() != "" && exitFireName.Trim() != ""
+            && (animStateInfo.IsName(enterFireName)
+            || animStateInfo.IsName(animationName)
+            || animStateInfo.IsName(exitFireName)))
+        {
+            parentPawnSprite.Animator.Play(animationName);
+        }
+        else
+        {
+            parentPawnSprite.Animator.Play(enterFireName);
+        }
     }
-    private void LaunchProjectile(FireProjectileNode node)
+    protected void LaunchProjectile(FireProjectileNode node, float duration)
     {
         GameObject objRef = null;
         if (node.useDefault)
@@ -123,17 +147,21 @@ public class FireProjectileAction : EnemyAction
         }
 
         proj.transform.position = BattleManager.Instance.Player.playerCollider.position + offset + node.relativeSpawnPosition;
-        proj.Fire(BattleManager.Instance.Player.playerCollider.position + offset - proj.transform.position, node.duration);
+        proj.Fire(BattleManager.Instance.Player.playerCollider.position + offset - proj.transform.position, duration);
 
         // proj.transform.position = BattleManager.Instance.Player.playerCollider.position + node.relativeSpawnPosition;        
         // proj.Fire(BattleManager.Instance.Player.playerCollider.position - proj.transform.position, node.duration);
     }
 
-    private IEnumerator AnimateBeforeFire(FireProjectileNode node)
+    protected virtual IEnumerator AnimateBeforeFire(FireProjectileNode node)
     {
         AnimateProjectileLaunch(node);
-        yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_battle"));
-        LaunchProjectile(node);
+        timeElapsed = Conductor.Instance.Beat;
+        string exit_name = exitFireName.Trim() == "" ? "idle_battle" : exitFireName;
+        yield return new WaitUntil(() => parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName(exit_name) && !parentPawnSprite.Animator.IsInTransition(0));
+        timeElapsed = Conductor.Instance.Beat - timeElapsed;
+        LaunchProjectile(node, node.duration - timeElapsed);
+        currentlyFiring = null;
     }
 }
 
