@@ -52,6 +52,7 @@ public class NoEnemySlashAction : SlashAction
         }
         sourcePawn.Animator.Play($"{slashAnimationName}_posthit");
         BattleManager.Instance.Player.Damage(_currNode.dmg);
+        StartCoroutine(ResetSpeed(posthitBeats * Conductor.Instance.spb));
     }
 
     protected override IEnumerator SwapDirectionAfterAnimation()
@@ -88,7 +89,14 @@ public class NoEnemySlashAction : SlashAction
             ///============
             enemyPawn.StaggerDamage(_staggerDamage);
         }
+        sourcePawn.Animator.SetFloat("speed", 1);
         return true;
+    }
+
+    private IEnumerator ResetSpeed(float waitDuration)
+    {
+        yield return new WaitForSeconds(waitDuration);
+        sourcePawn.Animator.SetFloat("speed", 1);
     }
 
     public override bool OnRequestDodge(IAttackReceiver receiver)
@@ -97,6 +105,7 @@ public class NoEnemySlashAction : SlashAction
         if (player == null || !_currNode.dodgeDirections.Contains(player.DodgeDirection)) return false;
 
         sourcePawn.Animator.Play($"{slashAnimationName}_posthit");
+        sourcePawn.Animator.SetFloat("speed", 1);
         return true;
     }
 }
