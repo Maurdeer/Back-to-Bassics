@@ -188,7 +188,6 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         if (amount > 0)
         {
             _paperShredBurst?.Play();
-
             // (Ryan) Do not modify the follow! Makes it look better
             if (IsStaggered)
             {

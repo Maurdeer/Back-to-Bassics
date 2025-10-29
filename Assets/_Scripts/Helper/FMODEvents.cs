@@ -10,6 +10,7 @@ public class FMODEvents : Singleton<FMODEvents>
     [field: SerializeField] public EventReference bassicsBlub { get; private set; }
     [field: SerializeField] public EventReference pointRinging { get; private set; }
     [field: SerializeField] public EventReference pointRingingEnd { get; private set; }
+    [field: SerializeField] public EventReference onHitEffect{ get; private set; }
 
     private void Awake()
     {
