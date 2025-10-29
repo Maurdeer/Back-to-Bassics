@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Threading;
+using FMOD.Studio;
 
 [DisallowMultipleComponent]
 public class BattlePawn : Conductable
@@ -36,6 +37,7 @@ public class BattlePawn : Conductable
     public event Action OnEnterBattle;
     public event Action OnExitBattle;
     public event Action OnDamage;
+    private EventInstance _onHitInstance;
 
     // Extra
     protected Coroutine selfStaggerInstance;
@@ -51,12 +53,17 @@ public class BattlePawn : Conductable
         _paperShredBurst = transform.Find("ShreddedPaperParticles").GetComponent<ParticleSystem>();
         _staggerVFX = transform.Find("StaggerVFX")?.GetComponent<ParticleSystem>();
     }
+    protected virtual void Start()
+    {
+        _onHitInstance = AudioManager.Instance.CreateInstance(FMODEvents.Instance.onHitEffect);
+    }
     #endregion
     #region Modification Methods
     public virtual void Damage(int amount)
     {
         if (IsDead) return;
         _currHP -= amount;
+        if (amount > 0) _onHitInstance.start();
         UIManager.Instance.UpdateHP(this);
         OnDamage?.Invoke();
         if (_currHP <= 0) 
