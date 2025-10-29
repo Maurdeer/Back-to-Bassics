@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,13 +90,19 @@ public class NoEnemySlashAction : SlashAction
             ///============
             enemyPawn.StaggerDamage(_staggerDamage);
         }
-        sourcePawn.Animator.SetFloat("speed", 1);
+        StartCoroutine(ResetSpeed(() => sourcePawn.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_battle")));
         return true;
     }
 
     private IEnumerator ResetSpeed(float waitDuration)
     {
         yield return new WaitForSeconds(waitDuration);
+        sourcePawn.Animator.SetFloat("speed", 1);
+    }
+
+    private IEnumerator ResetSpeed(System.Func<bool> predicate)
+    {
+        yield return new WaitUntil(predicate);
         sourcePawn.Animator.SetFloat("speed", 1);
     }
 

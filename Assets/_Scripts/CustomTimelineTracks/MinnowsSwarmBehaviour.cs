@@ -57,6 +57,9 @@ public class MinnowsSwarmBehaviour : PlayableBehaviour
                 break;
             case MinnowsSwarmActionChoice.Cover:
                 break;
+            case MinnowsSwarmActionChoice.EnterBattle:
+                _cachedAction.EnterBattle(minnowsDirection);
+                break;
         }
         
         

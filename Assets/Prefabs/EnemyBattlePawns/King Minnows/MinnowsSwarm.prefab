@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8282297761016464558}
-  - component: {fileID: 1149185562546808683}
   m_Layer: 6
   m_Name: Right Weapon
   m_TagString: Untagged
@@ -38,27 +37,6 @@ Transform:
   - {fileID: 1198593726289262924}
   m_Father: {fileID: 7858516463854201992}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1149185562546808683
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 42327610496899414}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a6f1c4af3ace64a468022e2912a46371, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &102176491203231843
 GameObject:
   m_ObjectHideFlags: 0
@@ -895,7 +873,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7240875526765393497}
-  - component: {fileID: 1666046457273076300}
   m_Layer: 6
   m_Name: Left Weapon
   m_TagString: Untagged
@@ -925,27 +902,6 @@ Transform:
   - {fileID: 2502145614534428288}
   m_Father: {fileID: 7858516463854201992}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1666046457273076300
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1356563678121274309}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a6f1c4af3ace64a468022e2912a46371, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1541325263787007338
 GameObject:
   m_ObjectHideFlags: 0
@@ -3272,6 +3228,10 @@ PrefabInstance:
     - target: {fileID: -8653719598885068355, guid: 06e9b8dc4cc8d454fa4f82c38140ab02, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -8653719598885068355, guid: 06e9b8dc4cc8d454fa4f82c38140ab02, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8412690245625461842, guid: 06e9b8dc4cc8d454fa4f82c38140ab02, type: 3}
       propertyPath: m_Layer

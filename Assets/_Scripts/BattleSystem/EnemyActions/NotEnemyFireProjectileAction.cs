@@ -8,7 +8,7 @@ public class NotEnemyFireProjectileAction : FireProjectileAction
     protected override void AnimateProjectileLaunch(FireProjectileNode node)
     {
         //parentPawnSprite.FaceDirection(new Vector3(node.relativeSpawnPosition.x, 0, -1));
-        _sourceAnimator.SetFloat("speed", 1 / Conductor.Instance.spb);
+        _sourceAnimator.SetFloat("speed", 1 / (Conductor.Instance.spb));
         _sourceAnimator.Play(animationName);
     }
 
@@ -16,7 +16,7 @@ public class NotEnemyFireProjectileAction : FireProjectileAction
     {
         AnimateProjectileLaunch(node);
         string exit_name = exitFireName.Trim() == "" ? "idle_battle" : exitFireName;
-        yield return new WaitUntil(() => _sourceAnimator.GetCurrentAnimatorStateInfo(0).IsName(exit_name) && !_sourceAnimator.IsInTransition(0));
+        yield return new WaitForSeconds(Conductor.Instance.spb);
         LaunchProjectile(node, timelineDurationInBeats - 1);
         _sourceAnimator.SetFloat("speed", 1);
         currentlyFiring = null;

@@ -34,7 +34,14 @@ public class MinnowsSwarmAction : EnemyAction
     }
     public void ShootPlayer(FireProjectileNode node)
     {
-        StartCoroutine(ShootThread(node));
+        if (_idleTrickThread != null)
+        {
+            StopCoroutine(_idleTrickThread);
+            _idleTrickThread = null;
+        }
+        fireProjectileAction.timelineDurationInBeats = timelineDurationInBeats;
+        _minnowSprite.FaceDirection(new Vector3(node.relativeSpawnPosition.x, 0, -1), true);
+        fireProjectileAction.FireProjectileAtPlayer(node);
     }
     public void SlashPlayer(SlashNode node)
     {
@@ -49,9 +56,14 @@ public class MinnowsSwarmAction : EnemyAction
     {
         
     }
+    public void EnterBattle(Direction direction)
+    {
+        _minnowsAnimator.SetFloat("x_faceDir", direction == Direction.East ? 1 : -1);
+        _minnowsAnimator.SetFloat("speed", 1 / (Conductor.Instance.spb * timelineDurationInBeats));
+        _minnowsAnimator.Play("enter_battle");
+    }
     private IEnumerator ShootThread(FireProjectileNode node)
     {
-        yield return _idleTrickThread;
         _minnowSprite.FaceDirection(new Vector3(node.relativeSpawnPosition.x, 0, -1), true);
         float tenth_of_duration = timelineDurationInBeats * 0.1f;
         fireProjectileAction.timelineDurationInBeats = timelineDurationInBeats - tenth_of_duration;
@@ -84,4 +96,5 @@ public enum MinnowsSwarmActionChoice
     Fire,
     Slash,
     Cover,
+    EnterBattle,
 }

@@ -25,6 +25,56 @@ MonoBehaviour:
     fireDistance: 16
     choice: 4
     _cachedAction: {fileID: 0}
+--- !u!114 &-2777570276802172170
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b449ee8d08bf89e49995e9b38dcb3bc9, type: 3}
+  m_Name: MinnowsSwarmAsset(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  template:
+    slash_node:
+      slashDirection: 3
+      isCharged: 0
+      staggersParent: 0
+      dmg: 2
+      slashLengthInBeats: 0
+      dodgeDirections: 01000000000000000000000000000000
+    fireDirection: 3
+    minnowsDirection: 0
+    fireDistance: 16
+    choice: 3
+    _cachedAction: {fileID: 0}
+--- !u!114 &-1104764697982644948
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b449ee8d08bf89e49995e9b38dcb3bc9, type: 3}
+  m_Name: MinnowsSwarmAsset(Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  template:
+    slash_node:
+      slashDirection: 4
+      isCharged: 0
+      staggersParent: 0
+      dmg: 2
+      slashLengthInBeats: 0
+      dodgeDirections: 01000000000000000000000000000000
+    fireDirection: 4
+    minnowsDirection: 0
+    fireDistance: 16
+    choice: 3
+    _cachedAction: {fileID: 0}
 --- !u!114 &-172811314602463200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -79,6 +129,72 @@ MonoBehaviour:
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
     m_DisplayName: MinnowsSwarmAsset
+  - m_Version: 1
+    m_Start: 6
+    m_ClipIn: 0
+    m_Asset: {fileID: 1468854839355281903}
+    m_Duration: 1.983333
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: -172811314602463200}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: MinnowsSwarmAsset
+  - m_Version: 1
+    m_Start: 7.983333
+    m_ClipIn: 0
+    m_Asset: {fileID: -2777570276802172170}
+    m_Duration: 4.016667
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: -172811314602463200}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: MinnowsSwarmAsset
   m_Markers:
     m_Objects: []
 --- !u!114 &11400000
@@ -104,6 +220,51 @@ MonoBehaviour:
     m_ScenePreview: 1
   m_DurationMode: 0
   m_MarkerTrack: {fileID: 0}
+--- !u!114 &1468854839355281903
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b449ee8d08bf89e49995e9b38dcb3bc9, type: 3}
+  m_Name: MinnowsSwarmAsset(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  template:
+    slash_node:
+      slashDirection: 3
+      isCharged: 0
+      staggersParent: 0
+      dmg: 2
+      slashLengthInBeats: 0
+      dodgeDirections: 01000000000000000000000000000000
+    fireDirection: 3
+    minnowsDirection: 3
+    fireDistance: 16
+    choice: 0
+    _cachedAction: {fileID: 0}
+--- !u!114 &2926200397647161078
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf310886b5c46c14a83fb1757dc9de99, type: 3}
+  m_Name: SlashAsset(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  template:
+    node:
+      slashDirection: 4
+      isCharged: 0
+      staggersParent: 0
+      dmg: 2
+      slashLengthInBeats: 0
+      dodgeDirections: 01000000000000000000000000000000
 --- !u!114 &3278827773247642532
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -153,7 +314,7 @@ MonoBehaviour:
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: 8195173650357826766}
+    m_Asset: {fileID: 2926200397647161078}
     m_Duration: 4
     m_TimeScale: 1
     m_ParentTrack: {fileID: 3536273961819551739}
@@ -182,6 +343,39 @@ MonoBehaviour:
         weightedMode: 0
         inWeight: 0
         outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: SlashAsset
+  - m_Version: 1
+    m_Start: 6
+    m_ClipIn: 0
+    m_Asset: {fileID: 8195173650357826766}
+    m_Duration: 4
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: 3536273961819551739}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -275,8 +469,99 @@ MonoBehaviour:
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
     m_DisplayName: MinnowsSwarmAsset
+  - m_Version: 1
+    m_Start: 6
+    m_ClipIn: 0
+    m_Asset: {fileID: 7638427633604882307}
+    m_Duration: 1.983333
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: 6039164146226115223}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: MinnowsSwarmAsset
+  - m_Version: 1
+    m_Start: 7.983333
+    m_ClipIn: 0
+    m_Asset: {fileID: -1104764697982644948}
+    m_Duration: 4.016667
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: 6039164146226115223}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: MinnowsSwarmAsset
   m_Markers:
     m_Objects: []
+--- !u!114 &7638427633604882307
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b449ee8d08bf89e49995e9b38dcb3bc9, type: 3}
+  m_Name: MinnowsSwarmAsset(Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  template:
+    slash_node:
+      slashDirection: 3
+      isCharged: 0
+      staggersParent: 0
+      dmg: 2
+      slashLengthInBeats: 0
+      dodgeDirections: 01000000000000000000000000000000
+    fireDirection: 3
+    minnowsDirection: 4
+    fireDistance: 16
+    choice: 0
+    _cachedAction: {fileID: 0}
 --- !u!114 &8195173650357826766
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -291,9 +576,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   template:
     node:
-      slashDirection: 4
+      slashDirection: 3
       isCharged: 0
       staggersParent: 0
-      dmg: 0
+      dmg: 2
       slashLengthInBeats: 0
-      dodgeDirections: 00000000000000000000000000000000
+      dodgeDirections: 01000000000000000000000000000000

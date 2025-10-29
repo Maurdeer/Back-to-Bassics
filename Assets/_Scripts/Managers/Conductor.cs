@@ -113,7 +113,7 @@ public class Conductor : Singleton<Conductor>
         };
         ctx.Start();
         // this.spb = Data.SPB;
-        // OnFirstBeat?.Invoke();
+        //OnFirstBeat?.Invoke();
         // StartCoroutine(Conduct());
     }
     

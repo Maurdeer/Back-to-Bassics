@@ -29,7 +29,8 @@ public class MinnowsSwarmAssetEditor : Editor
         switch (msa.template.choice)
         {
             case MinnowsSwarmActionChoice.Idle:
-                msa.template.minnowsDirection = (Direction)EditorGUILayout.EnumPopup("Slash Direction", msa.template.minnowsDirection);
+            case MinnowsSwarmActionChoice.EnterBattle:
+                msa.template.minnowsDirection = (Direction)EditorGUILayout.EnumPopup("Go to Direction", msa.template.minnowsDirection);
                 break;
             case MinnowsSwarmActionChoice.Slash:
                 msa.template.slash_node.slashDirection = (Direction)EditorGUILayout.EnumPopup("Slash Direction", msa.template.slash_node.slashDirection);
@@ -51,7 +52,7 @@ public class MinnowsSwarmAssetEditor : Editor
                 EditorGUI.indentLevel--;
                 break;
             case MinnowsSwarmActionChoice.Fire:
-                msa.template.fireDirection = (Direction)EditorGUILayout.EnumPopup("Slash Direction", msa.template.fireDirection);
+                msa.template.fireDirection = (Direction)EditorGUILayout.EnumPopup("Fire Direction", msa.template.fireDirection);
                 msa.template.fireDistance = EditorGUILayout.FloatField("Fire Distance", msa.template.fireDistance);
                 break;
         }
