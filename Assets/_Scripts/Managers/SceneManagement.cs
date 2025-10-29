@@ -5,7 +5,6 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using TMPro;
 using static GameStateMachine;
-using UnityEditor.SearchService;
 
 public class SceneManagement : Singleton<SceneManagement>, IDataPersistence
 {

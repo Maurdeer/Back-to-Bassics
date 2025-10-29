@@ -30,6 +30,7 @@ public class Subortinate : Conductable
         currDecisionTime = decisionTimeInBeats;
         hitBox.OnHit += OnHit;
         hitBox.OnDeflect += OnDeflect;
+        hitBox.OnDodge += OnDodge;
         hitBox.DeflectCheck += DeflectCheckEvent;
         hitBox.DodgeCheck += DodgeCheckEvent;
         hitBox.OnTriggered += () => StopCoroutine(activeThread);
@@ -182,6 +183,10 @@ public class Subortinate : Conductable
         {
             StartCoroutine(GoBack());
         }     
+    }
+    private void OnDodge(IAttackReceiver receiver)
+    {
+        StartCoroutine(GoBack());
     }
     private void OnHit(IAttackReceiver receiver)
     {
