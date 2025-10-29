@@ -111,8 +111,14 @@ public class NoEnemySlashAction : SlashAction
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         if (player == null || !_currNode.dodgeDirections.Contains(player.DodgeDirection)) return false;
 
+
+        if (swapFacingDirectionAfterPostHit)
+        {
+            sourcePawn.FaceDirection(new Vector3(-sourcePawn.Animator.GetFloat("x_faceDir"), 0, 0), true);
+        }
+
         sourcePawn.Animator.Play($"{slashAnimationName}_posthit");
-        sourcePawn.Animator.SetFloat("speed", 1);
+        StartCoroutine(ResetSpeed(posthitBeats * Conductor.Instance.spb));
         return true;
     }
 }

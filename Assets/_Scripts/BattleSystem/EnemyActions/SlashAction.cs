@@ -170,6 +170,10 @@ public class SlashAction : EnemyAction, IAttackRequester
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         if (player == null || !_currNode.dodgeDirections.Contains(player.DodgeDirection)) return false;
 
+        if (swapFacingDirectionAfterPostHit)
+        {
+            parentPawnSprite.FaceDirection(new Vector3(-parentPawnSprite.Animator.GetFloat("x_faceDir"), 0, 0), true);
+        }
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
         return true;
     }

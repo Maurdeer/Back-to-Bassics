@@ -79,9 +79,10 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     }
     private IEnumerator DodgeThread(string directionAnimation)
     {
-        dodging = true;
         _pawnSprite.Animator.Play("dodge_" + directionAnimation);
-        yield return new WaitForSeconds(0.60f);
+        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("dodge_" + directionAnimation));
+        dodging = true;
+        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle"));
         dodging = false;
     }
 
