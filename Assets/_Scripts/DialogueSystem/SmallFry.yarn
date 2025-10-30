@@ -74,12 +74,11 @@ tags:
 
 Small Fry: NOOOO!!! MY RICE!!!!
 Small Fry: I wasn't finished with that!
-<<setView "SmallFryManual">>
+
 <<move "SmallFryPawn" "SmallFryDialogue1Location">>
-// <<setCamera "SmallFryCam">>
-<<wait 1>>
-
-
+<<wait 2>>
+<<setView "SmallFryManual">>
+<<setCamera "SmallFryCam">>
 // <<move "PlayerPoncho" "SmallFryDialogue1PlayerLocation">>
 
 Small Fry: My glorious recipe! Two years worth of work! Down the drain!
