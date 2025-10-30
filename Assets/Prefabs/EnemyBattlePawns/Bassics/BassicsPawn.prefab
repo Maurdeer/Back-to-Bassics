@@ -5654,7 +5654,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 0
   projectilePoolAmount: 20
+  enterFireName: 
   animationName: music
+  exitFireName: 
   performAnimationBeforeFire: 0
   firePattern: 1
   projectileFabs:
@@ -5736,7 +5738,6 @@ MonoBehaviour:
   onPawnExitBattle:
     m_PersistentCalls:
       m_Calls: []
-  tutComboList: {fileID: 0}
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 8599476617418693142}
@@ -11278,6 +11279,7 @@ MonoBehaviour:
   timelineDurationInBeats: 0
   slashAnimationName: slash
   inverseFacingDirection: 0
+  swapFacingDirectionAfterPostHit: 0
   _staggerDamage: 5
   prehitBeats: 0.5
   posthitBeats: 0.5

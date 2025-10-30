@@ -72,13 +72,17 @@ public class Conductor : Singleton<Conductor>
     public void PauseCondcutor()
     {
         if (ctx == null || paused) return;
-        if (TutorialManager.Instance != null && !TutorialManager.Instance.TutorialEnabled) ctx.fmodInstance.setPaused(true);
+        // (Ryan) No! Bad Joseph! 10/30/2025
+        // If you want to pause music, investigate this script further
+        //if (TutorialManager.Instance != null && !TutorialManager.Instance.TutorialEnabled)
+        ctx.fmodInstance.setPaused(true);
         paused = true;
     }
     public void ResumeConductor()
     {
         if (ctx == null || !paused) return;
-        if (TutorialManager.Instance != null && !TutorialManager.Instance.TutorialEnabled) ctx.fmodInstance.setPaused(false);
+        //if (TutorialManager.Instance != null && !TutorialManager.Instance.TutorialEnabled)
+        ctx.fmodInstance.setPaused(false);
         paused = false;
     }
     

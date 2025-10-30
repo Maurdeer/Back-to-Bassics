@@ -46,7 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 0
   slashAnimationName: slash
-  inverseFacingDirection: 1
+  inverseFacingDirection: 0
+  swapFacingDirectionAfterPostHit: 0
   _staggerDamage: 3
   prehitBeats: 0.5
   posthitBeats: 0.5
@@ -646,7 +647,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 0
   projectilePoolAmount: 20
+  enterFireName: music
   animationName: music
+  exitFireName: 
   performAnimationBeforeFire: 0
   firePattern: 1
   projectileFabs:
@@ -5585,7 +5588,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 0
   projectilePoolAmount: 20
+  enterFireName: music
   animationName: music
+  exitFireName: 
   performAnimationBeforeFire: 0
   firePattern: 1
   projectileFabs:
@@ -11357,7 +11362,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 0
   slashAnimationName: slash
-  inverseFacingDirection: 1
+  inverseFacingDirection: 0
+  swapFacingDirectionAfterPostHit: 0
   _staggerDamage: 3
   prehitBeats: 0.5
   posthitBeats: 0.5
