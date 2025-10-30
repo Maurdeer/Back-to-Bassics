@@ -7,6 +7,8 @@ public class Projectile : MonoBehaviour, IAttackRequester
     [Header("Projectile Specs")]
     [SerializeField] private int _dmg;
     [SerializeField] private int _staggerDamage;
+    [SerializeField] private bool _flipBasedOnMove;
+    [SerializeField] private Vector3 _offset;
     private float _speed;
     private Rigidbody _rb;
     public bool isDestroyed { get; protected set; }
@@ -14,9 +16,11 @@ public class Projectile : MonoBehaviour, IAttackRequester
     public float AttackDamage => _dmg;
     public float AttackLurch => _dmg;
     protected Vector3 _initialScale;
+    protected Vector3 _initialRotation;
     #region Unity Messages
     protected virtual void Awake()
     {
+        _initialRotation = transform.rotation.eulerAngles;
         _rb = GetComponent<Rigidbody>();
         _initialScale = transform.localScale;
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -48,6 +52,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
             onStarted: (state, ctxState) =>
             {
                 isDestroyed = false;
+                if (_flipBasedOnMove) gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, Mathf.Sign(lifetimeDisplacement.x) > 0 ? 180 : 0, _initialRotation.z));
                 gameObject.SetActive(true);
                 if (_spriteRenderer != null) _spriteRenderer.enabled = true;
                 if (_meshRenderer != null) _meshRenderer.enabled = true;

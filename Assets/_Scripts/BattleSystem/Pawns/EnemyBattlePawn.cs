@@ -224,6 +224,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         psm.Transition<Center>();
         esm.Transition<Stagger>();
         UIManager.Instance.BeatIndicator.Show();
+        BattleManager.Instance.Player.Heal(BattleManager.Instance.Player.MaxHP);
         _director.Stop();
         OnEnemyStaggerEvent?.Invoke();
         return StopAllEnemyActions();
