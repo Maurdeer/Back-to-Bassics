@@ -1105,67 +1105,67 @@ AnimatorController:
     m_DefaultFloat: 1
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: z_faceDir
     m_Type: 1
     m_DefaultFloat: -1
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: x_slashDir
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: y_slashDir
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: speed
     m_Type: 1
     m_DefaultFloat: 1
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: flip_cw
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: flip_ccw
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: bow
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: sword
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: idle_west
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: idle_east
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -1349,7 +1349,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 695778dfc909e06488fa6ff184bd1161, type: 2}
+    m_Motion: {fileID: 7400000, guid: b6f968b214e42eb499f793dc6804dec0, type: 2}
     m_Threshold: -0.1
     m_Position: {x: 0.5, y: 0}
     m_TimeScale: 1
@@ -1357,7 +1357,7 @@ BlendTree:
     m_DirectBlendParameter: x_faceDir
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 7bb7a49a4d0f11b46acceb1c431fae87, type: 2}
+    m_Motion: {fileID: 7400000, guid: e9d2fc47f1921f649a0f3781a16b9837, type: 2}
     m_Threshold: 0.1
     m_Position: {x: -0.5, y: 0}
     m_TimeScale: 1
@@ -1465,7 +1465,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 3768c30cf67086d4ab2399426b1e73f8, type: 2}
+    m_Motion: {fileID: 7400000, guid: 80b9c8dd950c3454faaadb03d25856d1, type: 2}
     m_Threshold: -0.1
     m_Position: {x: -0.5, y: 0}
     m_TimeScale: 1
@@ -1473,7 +1473,7 @@ BlendTree:
     m_DirectBlendParameter: x_faceDir
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 7c1f3291fc4308e45b586250bfbf5e3b, type: 2}
+    m_Motion: {fileID: 7400000, guid: 4e611bad8b7f0ad4497c370d73a30caf, type: 2}
     m_Threshold: 0.1
     m_Position: {x: 0.5, y: 0}
     m_TimeScale: 1
@@ -1785,7 +1785,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 0136ce3b739fa9a48917a4d01d1347ce, type: 2}
+    m_Motion: {fileID: 7400000, guid: ff907247426b1a746a123e02c27d7513, type: 2}
     m_Threshold: -0.1
     m_Position: {x: -0.5, y: 0}
     m_TimeScale: 1
@@ -1793,7 +1793,7 @@ BlendTree:
     m_DirectBlendParameter: x_faceDir
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 8fa80a473bfb774488f3b9119c6fe057, type: 2}
+    m_Motion: {fileID: 7400000, guid: a2b158a6224eaeb4aa6eab1eabfc2e02, type: 2}
     m_Threshold: 0.1
     m_Position: {x: 0.5, y: 0}
     m_TimeScale: 1
@@ -1842,7 +1842,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: abc1facce05ccfb4b9cdd8c4573a4ea5, type: 2}
+    m_Motion: {fileID: 7400000, guid: 05aa798fb91eb7740926e71220923ee8, type: 2}
     m_Threshold: -0.1
     m_Position: {x: 0.5, y: 0}
     m_TimeScale: 1

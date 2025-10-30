@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   template:
     slash_node:
-      slashDirection: 3
+      slashDirection: 4
       isCharged: 0
-      staggersParent: 0
+      staggersParent: 1
       dmg: 2
       slashLengthInBeats: 0
       dodgeDirections: 01000000000000000000000000000000
@@ -261,7 +261,7 @@ MonoBehaviour:
     node:
       slashDirection: 4
       isCharged: 0
-      staggersParent: 0
+      staggersParent: 1
       dmg: 2
       slashLengthInBeats: 0
       dodgeDirections: 01000000000000000000000000000000
@@ -281,7 +281,7 @@ MonoBehaviour:
     slash_node:
       slashDirection: 4
       isCharged: 0
-      staggersParent: 0
+      staggersParent: 1
       dmg: 2
       slashLengthInBeats: 0
       dodgeDirections: 01000000000000000000000000000000
@@ -578,7 +578,7 @@ MonoBehaviour:
     node:
       slashDirection: 3
       isCharged: 0
-      staggersParent: 0
+      staggersParent: 1
       dmg: 2
       slashLengthInBeats: 0
       dodgeDirections: 01000000000000000000000000000000
