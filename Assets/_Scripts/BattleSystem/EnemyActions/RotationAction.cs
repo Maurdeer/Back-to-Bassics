@@ -12,6 +12,7 @@ public class RotationAction : EnemyAction
     [SerializeField] private float fakeOutChance = 0.2f;
     [SerializeField, Tooltip("In Beats Please")] private float spinSpeedIncreasePerHit = 0.5f; // Default is saying Quarter Beat
     [SerializeField] private bool reduceSpeedOnHit = true;
+    [SerializeField] private int _beatsBeforeIncrease;
     [Header("References")]
     [SerializeField] private Spinning spinner;
     [SerializeField] private DeflectableHitBox hitBox;
@@ -19,6 +20,7 @@ public class RotationAction : EnemyAction
 
     private float halfSpinSpeed;
     private float fullSpinSpeed;
+    private int currBeatsBeforeIncrease;
 
     #region Technical
     private Coroutine activeSpinThread;
@@ -43,6 +45,7 @@ public class RotationAction : EnemyAction
         }
     }
     protected override void OnStartAction() {
+        base.OnStartAction();
         if (activeSpinThread != null)
         {
             Debug.LogError("Attempting to start spin action even though it is already active");
@@ -51,6 +54,8 @@ public class RotationAction : EnemyAction
         wasPlayerHit = false;
         halfSpinSpeed = 180f / (Conductor.Instance.spb * maxDurationInBeats);
         fullSpinSpeed = 360f / (Conductor.Instance.spb * maxDurationInBeats);
+        currBeatsBeforeIncrease = _beatsBeforeIncrease;
+        // Also do this for when the enemy hits
 
         // Subscribe to Events
         hitBox.OnHit += OnHit;
@@ -62,6 +67,7 @@ public class RotationAction : EnemyAction
     }
     protected override Coroutine OnStopAction()
     {
+        Debug.Log("This is being called! We're stopping the action now!");
         hitBox.OnHit -= OnHit;
         hitBox.OnDeflect -= OnDeflect;
         hitBox.DeflectCheck -= DeflectCheckEvent;
@@ -147,7 +153,12 @@ public class RotationAction : EnemyAction
         {
             spinner.ChangeDirection(halfSpinSpeed);
         }
-        resetSpeed += spinSpeedIncreasePerHit;
+        if (--currBeatsBeforeIncrease <= 0)
+        {
+            resetSpeed += spinSpeedIncreasePerHit;
+            currBeatsBeforeIncrease = _beatsBeforeIncrease; 
+        }
+        
 
         // (TEMP)----------- This is dumb IK---------------------
         BattleManager.Instance.Enemy.StaggerDamage(1);

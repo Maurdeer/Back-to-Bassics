@@ -69,7 +69,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         }
         
         AnimatorStateInfo animatorState = _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
-        if (!animatorState.IsName("idle")) return;
+        // if (!animatorState.IsName("idle")) return;
         DodgeDirection = DirectionHelper.GetVectorDirection(direction);
         // Removed For now
         //updateCombo(false);

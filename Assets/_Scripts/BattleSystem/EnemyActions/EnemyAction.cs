@@ -36,9 +36,9 @@ public abstract class EnemyAction : Conductable
     }
     public Coroutine StopAction()
     {
-        Debug.Log("Stop action is being called!");
+        // Debug.Log("Stop action is being called!");
         if (!IsActive) return null;
-        Debug.Log("Stopped an action! Yipee!");
+        // Debug.Log("Stopped an action! Yipee!");
         IsActive = false;
         Disable();
         return OnStopAction();

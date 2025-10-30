@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebca2f589a529e545aaf5c099703c5e4, type: 3}
+  m_Name: 4_TTSTG
+  m_EditorClassIdentifier: 
+  _healthThreshold: 0.1
+  _enemyAttackPatterns:
+  - {fileID: 11400000, guid: 72aa6433e8555114f96006f24c084f2c, type: 2}
+  _beatsPerDecision: 2
+  _staggerHealth: 30
+  _dialogueNode: turbotop_stg4
+  _phaseTransitionMove: {fileID: 11400000, guid: 72aa6433e8555114f96006f24c084f2c, type: 2}
+  _resetStaggerHealth: 0
+  _skipPointInSong: 0
+  _pointToSkip: 0
