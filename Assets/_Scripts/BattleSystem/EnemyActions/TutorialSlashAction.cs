@@ -28,31 +28,35 @@ public class TutorialSlashAction : SlashAction
         // There's probably some better logic behind this attack that could be worked in
         if (TutorialManager.Instance.TutorialEnabled)
         {
-            if (TutorialManager.Instance.CheckForSlash)
+            bool paused = false;
+            if (TutorialManager.Instance.CheckForSlash && !BattleManager.Instance.Player.deflectionWindow)
             {
                 TutorialManager.Instance.Pause(_currNode.slashVector);
                 string dir = "";
                 if (_currNode.slashVector.x > 0) dir = "Right";
                 else if (_currNode.slashVector.x < 0) dir = "Left";
                 DialogueManager.Instance.RunDialogueNode("bassics-guitarSwing" + dir);
+                paused = true;
 
             }
 
-            else if (TutorialManager.Instance.CheckForDodge)
+            else if (TutorialManager.Instance.CheckForDodge && !BattleManager.Instance.Player.dodging)
             {
                 TutorialManager.Instance.Pause(new Vector3(0, -1, 0));
                 DialogueManager.Instance.RunDialogueNode("bassics-battle_unblockable");
+                paused = true;
             }
 
-            while (TutorialManager.Instance.PausedForTutorial)
+            if (paused)
             {
-                yield return null;
+                while (TutorialManager.Instance.PausedForTutorial)
+                {
+                    yield return null;
+                }
+
+                TutorialManager.Instance.Unpause();
+                hasProgressed = false;
             }
-
-            TutorialManager.Instance.Unpause();
-            hasProgressed = false;
-
-
         }
 
 
