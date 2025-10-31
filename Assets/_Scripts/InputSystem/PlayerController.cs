@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [DisallowMultipleComponent]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDataPersistence
 {
     private PlayerInput _playerinput;
     private PlayerBattlePawn _battlepawn;
@@ -44,38 +45,45 @@ public class PlayerController : MonoBehaviour
     }
     public void DisableControl()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
     }
     public void EnableControl()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Enable();
     }
     public void SwitchToBattleActions()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
         _playerinput.SwitchCurrentActionMap("PlayerBattlePawn");
         _playerinput.currentActionMap.Enable();
     }
     public void SwitchToTraversalActions()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
         _playerinput.SwitchCurrentActionMap("PlayerTraversalPawn");
         _playerinput.currentActionMap.Enable();
     }
     public void SwitchToDialogueActions()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
         _playerinput.SwitchCurrentActionMap("Dialogue");
         _playerinput.currentActionMap.Enable();
     }
     public void SwitchToCutsceneActions()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
         _playerinput.SwitchCurrentActionMap("Cutscene");
         _playerinput.currentActionMap.Enable();
     }
     public void SwitchToUIActions()
     {
+        if (!_playerinput.gameObject.activeSelf) return;
         _playerinput.currentActionMap.Disable();
         _playerinput.SwitchCurrentActionMap("UI");
         _playerinput.currentActionMap.Enable();
@@ -109,4 +117,62 @@ public class PlayerController : MonoBehaviour
         UIManager.Instance.pauseMenu.TogglePause();
     }
     #endregion
+
+    public void LoadData(GameData data)
+    {
+        //if (data.truthArray[3]) return; // (Ryan) WRECKON AHH CRAZY
+
+        //change the player's position to match the saved data's player position
+
+        //if the playerPosition dict has the scene in it already
+        if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
+        {
+            //update the position value for this scene
+            this.transform.position = data.playerPosition[SceneManager.GetActiveScene().name];
+        }
+        else
+        {
+            //uh oh something went wrong
+            Debug.Log("No saved data for the current scene.");
+        }
+    }
+
+    public void SaveData(GameData data)
+    {
+        //get player transform and assign it to data's player position
+
+        // (Ryan) WRECKCON LOGIC WOOO
+        // No Concern over updating these in order since truthArray is updated by reference in GameData!!
+        //if (data.truthArray[3]) return; // Beat King Sal
+
+        //if (data.truthArray[1]) // Wack since there numbers are off lmao
+        //{
+        //    // Beat Small Fry
+        //    data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 442f);
+        //}
+        //else if (data.truthArray[2])
+        //{
+        //    // Beat Turbo Top
+        //    data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 394.100006f);
+        //}
+        //else if (data.truthArray[0])
+        //{
+        //    // Beat Bassics
+        //    data.playerPosition[SceneManager.GetActiveScene().name] = new Vector3(830.4658f, 100.043f, 303.299988f);
+        //}
+
+
+        // [REAL AND BETTER LOGIC HERE]
+        //if the scene is already in the playerPosition dict
+        //if (data.playerPosition.ContainsKey(SceneManager.GetActiveScene().name))
+        //{
+        //    //save the current position as the value for the scene key
+        //    data.playerPosition[SceneManager.GetActiveScene().name] = this.transform.position;
+        //}
+        //else //if the scene isn't already in there
+        //{
+        //    //add the current scene & transform to the dict as a key-value pair
+        //    data.playerPosition.Add(SceneManager.GetActiveScene().name, this.transform.position);
+        //}
+    }
 }

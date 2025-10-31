@@ -8,7 +8,9 @@ using static GameStateMachine;
 public class Subortinate : Conductable
 {
     [SerializeField] private int decisionTimeInBeats = 4;
+    [SerializeField] private int fasterDecisionTimeInBeats;
     [SerializeField] private float speed = 5f;
+    [SerializeField] private float fasterSpeed;
     [SerializeField] private int health = 3;
     [Header("References")]
     [SerializeField] private DeflectableHitBox hitBox;
@@ -18,12 +20,17 @@ public class Subortinate : Conductable
     private int currDecisionTime;
     private Vector3 startingPosition;
     private bool facingWest;
+    private bool IsAlive
+    {
+        get { return health >= 0; }
+    }
     private void Awake()
     {
         _spriteAnimator = GetComponentInChildren<Animator>();
         currDecisionTime = decisionTimeInBeats;
         hitBox.OnHit += OnHit;
         hitBox.OnDeflect += OnDeflect;
+        hitBox.OnDodge += OnDodge;
         hitBox.DeflectCheck += DeflectCheckEvent;
         hitBox.DodgeCheck += DodgeCheckEvent;
         hitBox.OnTriggered += () => StopCoroutine(activeThread);
@@ -37,7 +44,7 @@ public class Subortinate : Conductable
         
         if (direction == Direction.West)
         {
-            transform.GetChild(0).rotation = Quaternion.Euler(0, 180f, 0);
+            transform.rotation = Quaternion.Euler(0, 180f, 0);
             transform.position = new Vector3(10, 0, 0) + startingPosition;
             facingWest = true;
         }
@@ -47,25 +54,49 @@ public class Subortinate : Conductable
         }
         StartCoroutine(MoveIntoPosition());
     }
+
+    public void UpgradeStats() {
+        speed = fasterSpeed;
+        decisionTimeInBeats = fasterDecisionTimeInBeats;
+    }
+
+    public void Stagger() {
+        if (this == null) return;
+        state = SubortinateState.idle;
+
+        if (activeThread != null) StopCoroutine(activeThread);
+        transform.position = startingPosition;
+        if (IsAlive) _spriteAnimator?.Play("staggered");
+        // _spriteAnimator.Play("idle");
+    }
+
+    public void Unstagger() {
+        // Debug.Log("I'm unstaggering now!");
+        currDecisionTime = decisionTimeInBeats;
+        if (_spriteAnimator != null && IsAlive) _spriteAnimator.Play("idle");
+    }
     protected override void OnFullBeat() 
     {
-        if (state == SubortinateState.attack) return;
+        if (state == SubortinateState.idle || state == SubortinateState.attack || state == SubortinateState.dead) return;
         if (currDecisionTime > 0)
         {
             currDecisionTime--;
             return;
         }
 
+        
+
         switch (state)
         {
-            case SubortinateState.idle:
-                if (Random.Range(0, 2) == 1)
-                {
-                    state = SubortinateState.broadcast;
-                    _spriteAnimator.Play("engard");
-                }
-                break;
+            // case SubortinateState.idle:
+            //     if (Random.Range(0, 2) == 1)
+            //     {
+            //         state = SubortinateState.broadcast;
+            //         _spriteAnimator.Play("engard");
+            //     }
+            //     break;
             case SubortinateState.broadcast:
+                // transform.position = startingPosition;
                 state = SubortinateState.attack;
                 _spriteAnimator.Play("charge");
                 activeThread = StartCoroutine(ChargeThread());
@@ -78,16 +109,26 @@ public class Subortinate : Conductable
         currDecisionTime = decisionTimeInBeats;
     }
 
+    // About 510 in Timeline, 240 For Sal Slash
+    public void Attack() {
+        // Debug.Log("Attacking, playing animation Engarde and setting state to broadcast");
+        state = SubortinateState.broadcast;
+        currDecisionTime = decisionTimeInBeats;
+        _spriteAnimator?.Play("engard");
+    }
+
+    // Fix this to be on beat
     private IEnumerator ChargeThread()
-    { 
+    {
         Vector3 targetPosition = BattleManager.Instance.Player.transform.position;
         while (Vector3.Distance(transform.position, targetPosition) > 0f)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.fixedDeltaTime * speed);
             yield return new WaitForFixedUpdate();
         }
-        transform.position = targetPosition;     
+        transform.position = targetPosition;
     }
+    
     private IEnumerator GoBack()
     {
         while (Vector3.Distance(transform.position, startingPosition) > 0f)
@@ -109,18 +150,43 @@ public class Subortinate : Conductable
         transform.position = startingPosition;
     }
 
+    public void Kill()
+    {
+        state = SubortinateState.dead;
+        Disable();
+        StartCoroutine(FlyOutAndDestroy(0.5f, 15f));
+    }
+
+    private IEnumerator FlyOutAndDestroy(float duration, float speed)
+    {
+        _spriteAnimator.Play("dead");
+        while (duration > 0f)
+        {
+            Vector3 newPosition = transform.position + (facingWest ? new Vector3(200, 200, 0) : new Vector3(-200, 200, 0));
+            transform.position = Vector3.MoveTowards(transform.position, newPosition, Time.fixedDeltaTime * speed);
+            yield return new WaitForFixedUpdate();
+            duration -= Time.fixedDeltaTime;
+        }
+        Destroy(gameObject);
+    }
+    
+
     #region HitBox Methods
     private void OnDeflect(IAttackReceiver receiver)
     {
         _spriteAnimator.Play("deflected");
         if (--health <= 0)
         {
-            Destroy(gameObject);
+            Kill();
         }
         else
         {
             StartCoroutine(GoBack());
         }     
+    }
+    private void OnDodge(IAttackReceiver receiver)
+    {
+        StartCoroutine(GoBack());
     }
     private void OnHit(IAttackReceiver receiver)
     {
@@ -128,8 +194,12 @@ public class Subortinate : Conductable
     }
     private bool DeflectCheckEvent(IAttackReceiver receiver)
     {
-        return (facingWest && BattleManager.Instance.Player.SlashDirection == Vector2.right)
-            || BattleManager.Instance.Player.SlashDirection == Vector2.left;
+        // PlayerBattlePawn player = receiver as PlayerBattlePawn;
+        // return player != null && DirectionHelper.MaxAngleBetweenVectors(spinner.ccw ? Vector2.right : Vector2.left, player.SlashDirection, 5f);
+        PlayerBattlePawn player = receiver as PlayerBattlePawn;
+        // Debug.Log("The current player slash direction is " + player.SlashDirection);
+        return (facingWest && player.SlashDirection == Vector2.right)
+            || (!facingWest && player.SlashDirection == Vector2.left);
     }
     private bool DodgeCheckEvent(IAttackReceiver receiver)
     {
@@ -137,6 +207,8 @@ public class Subortinate : Conductable
         return (!facingWest || BattleManager.Instance.Player.DodgeDirection != Direction.East)
             && BattleManager.Instance.Player.DodgeDirection != Direction.West;
     }
+
+
     #endregion
     //private void OnTriggerEnter(Collider other)
     //{
@@ -152,5 +224,6 @@ public enum SubortinateState
 {
     idle,
     broadcast,
-    attack
+    attack,
+    dead,
 }

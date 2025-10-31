@@ -14,8 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthThreshold: 0.4
   _enemyAttackPatterns:
-  - {fileID: 11400000, guid: 370bc9b6b19a44d40bb4d590cc2db50e, type: 2}
   - {fileID: 11400000, guid: d0b5c1350baa07a4488309318f7db679, type: 2}
+  - {fileID: 11400000, guid: 370bc9b6b19a44d40bb4d590cc2db50e, type: 2}
+  - {fileID: 11400000, guid: d8ce8d1b122465c40a438af6ba4aa0b5, type: 2}
+  - {fileID: 11400000, guid: 139b0836b38ba9a47bcd0f82b564e640, type: 2}
   _beatsPerDecision: 4
-  _staggerHealth: 15
-  _dialogueNode: 
+  _staggerHealth: 20
+  _dialogueNode: kingsal_stg3
+  _phaseTransitionMove: {fileID: 11400000, guid: eb3b21651db8f7745931e84d0e6f879b, type: 2}
+  _resetStaggerHealth: 0
+  _skipPointInSong: 1
+  _pointToSkip: 56000

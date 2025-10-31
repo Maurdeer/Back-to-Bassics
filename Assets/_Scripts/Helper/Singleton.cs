@@ -42,7 +42,7 @@ public abstract class Singleton<T> : MonoBehaviour
             if (_instance != null)
             {
                 Debug.LogError($"Multiple Singleton components of type {typeof(T)} were detected. The latest one was deleted.");
-                Destroy(this);
+                Destroy(gameObject);
                 return false;
             }
             else

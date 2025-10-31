@@ -49,7 +49,8 @@ public abstract class StateMachine<M, S, I> : MonoBehaviour
             newState.MySM = (M)this;
             // newState.character = this;
             // newState.Init(stateInput);
-            _stateMap.Add(type, newState);
+            if (!_stateMap.ContainsKey(type))
+                _stateMap.Add(type, newState);
             // loadedStates.Add(type.FullName, RuntimeHelpers.GetHashCode(newState).ToString());
         }
         SetInitialState();

@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
 
-public class ComboManager : MonoBehaviour
+public class ComboManager : MonoBehaviour, IDataPersistence
 {
     [Header("Combo Starting")]
     [SerializeField] private Combo[] initialCombos;
-    private Dictionary<string, Combo> combosDict;
+    private SerializableDictionary<string, Combo> combosDict;
     [Header("Combo Data")]
     [SerializeField] private int maxcomboMeterAmount = 100;
     [SerializeField] private int currComboMeterAmount;
@@ -35,7 +36,7 @@ public class ComboManager : MonoBehaviour
     private void Awake()
     {
         _currComboString = "";
-        combosDict = new Dictionary<string, Combo>();
+        combosDict = new SerializableDictionary<string, Combo>();
         foreach (Combo combo in initialCombos)
         {
             combosDict.Add(combo.StrId, combo);
@@ -47,7 +48,7 @@ public class ComboManager : MonoBehaviour
         {
             _currComboString = _currComboString.Substring(1);
         }
-        
+
         _currComboString += combo;
         UIManager.Instance.ComboDisplay.AddCombo(combo);
         if (_comboReseter != null)
@@ -70,7 +71,7 @@ public class ComboManager : MonoBehaviour
         // Give the player 2 beat of time
         if (Conductor.Instance.IsPlaying)
         {
-            yield return new WaitForSeconds(2 * Conductor.Instance.spb);
+            yield return new WaitForSeconds(1.25f * Conductor.Instance.spb);
         }
         else
         {
@@ -78,10 +79,21 @@ public class ComboManager : MonoBehaviour
         }
         
         UIManager.Instance.ComboDisplay.HideCombo();
+        UIManager.Instance.BeatIndicator.HideArrow();
         _currComboString = "";
     }
     public void AddCombo(Combo combo)
     {
         combosDict.Add(combo.StrId, combo);
+    }
+
+    public void SaveData(GameData data)
+    {
+        //data.combosUnlocked = combosDict.ToDictionary(pair => pair.Key, pair => pair.Value) as SerializableDictionary<string, Combo>;
+    }
+
+    public void LoadData(GameData data)
+    {
+        //combosDict = data.combosUnlocked.ToDictionary(pair => pair.Key, pair => pair.Value) as SerializableDictionary<string, Combo>;
     }
 }

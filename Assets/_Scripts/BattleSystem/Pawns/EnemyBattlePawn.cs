@@ -1,3 +1,5 @@
+using FMOD.Studio;
+using FMODUnity;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,9 +28,11 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     //reference to director for stagger implementation
     public EnemyBattlePawnData EnemyData => (EnemyBattlePawnData)Data;
     private Dictionary<Type, List<EnemyAction>> _enemyActions = new Dictionary<Type, List<EnemyAction>>();
+    [field: SerializeField] public EventReference _staggerSFX { get; private set; }
 
     [field: Header("Events")]
     [SerializeField] public event Action OnEnemyStaggerEvent;
+    [SerializeField] public event Action OnEnemyUnstaggerEvent;
     [field: SerializeField] public TimelineAsset IntroCutscene { get; private set; }
     [field: SerializeField] public TimelineAsset OutroCutscene { get; private set; }
 
@@ -135,6 +139,10 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
             }
         }
     }
+    public void PlayTransitionAnimation(string PhaseTransitionAnimationName) {
+        _pawnSprite.Animator.Play(PhaseTransitionAnimationName);
+    }
+
     public Coroutine PlayIntroCutscene()
     {
         return StartCoroutine(Cutscene());
@@ -180,7 +188,16 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
         if (amount > 0)
         {
             _paperShredBurst?.Play();
-            _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
+            // (Ryan) Do not modify the follow! Makes it look better
+            if (IsStaggered)
+            {
+                // if (_pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("staggered"))
+                    _pawnSprite.Animator.Play("staggered_damaged");
+            }
+            else
+            {
+                _pawnSprite.Animator.Play("damaged");
+            }
         }
         base.Damage(amount);
     }
@@ -201,10 +218,13 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     protected override List<Coroutine> OnStagger()
     {
         if (esm.IsOnState<Dead>()) return null;
+        AudioManager.Instance.PlayOnShotSound(_staggerSFX, transform.position);
         base.OnStagger();
         // Staggered Animation (Paper Crumple)
         psm.Transition<Center>();
         esm.Transition<Stagger>();
+        UIManager.Instance.BeatIndicator.Show();
+        BattleManager.Instance.Player.Heal(BattleManager.Instance.Player.MaxHP);
         _director.Stop();
         OnEnemyStaggerEvent?.Invoke();
         return StopAllEnemyActions();
@@ -212,8 +232,13 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     }
     protected override void OnUnstagger()
     {
+        UIManager.Instance.BeatIndicator.Hide();
         if (esm.IsOnState<Dead>()) return;
         base.OnUnstagger();
+        OnEnemyUnstaggerEvent?.Invoke();
+
+        // (Ryan) Reset Stagger Health Here From Now On!!
+        currentStaggerHealth = maxStaggerHealth;
         // Unstagger Animation transition to idle
         esm.Transition<Idle>();
         //_particleSystem?.Stop();
@@ -221,6 +246,7 @@ public class EnemyBattlePawn : BattlePawn, IAttackReceiver
     protected override void OnDeath()
     {
         base.OnDeath();
+        UIManager.Instance.BeatIndicator.Hide();
         esm.Transition<Dead>();
         StopAllEnemyActions();
         //_particleSystem?.Stop();

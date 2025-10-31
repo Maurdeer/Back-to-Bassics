@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebca2f589a529e545aaf5c099703c5e4, type: 3}
+  m_Name: 2_TUTBSCSTG
+  m_EditorClassIdentifier: 
+  _healthThreshold: 0.9
+  _enemyAttackPatterns:
+  - {fileID: 11400000, guid: ad940f0063b38f3438a8082b1f74835d, type: 2}
+  - {fileID: 11400000, guid: 4f79884e866b5134e80497fb3ec17904, type: 2}
+  _beatsPerDecision: 2
+  _staggerHealth: 10
+  _dialogueNode: bassics-battle_phase2
+  _phaseTransitionMove: {fileID: 0}
+  _resetStaggerHealth: 0

@@ -7,16 +7,20 @@ public class Projectile : MonoBehaviour, IAttackRequester
     [Header("Projectile Specs")]
     [SerializeField] private int _dmg;
     [SerializeField] private int _staggerDamage;
+    [SerializeField] private bool _flipBasedOnMove;
+    [SerializeField] private Vector3 _offset;
     private float _speed;
     private Rigidbody _rb;
-    public bool isDestroyed { get; private set; }
+    public bool isDestroyed { get; protected set; }
     private EnemyBattlePawn _targetEnemy;
     public float AttackDamage => _dmg;
     public float AttackLurch => _dmg;
-    private Vector3 _initialScale;
+    protected Vector3 _initialScale;
+    protected Vector3 _initialRotation;
     #region Unity Messages
     protected virtual void Awake()
     {
+        _initialRotation = transform.rotation.eulerAngles;
         _rb = GetComponent<Rigidbody>();
         _initialScale = transform.localScale;
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -28,18 +32,18 @@ public class Projectile : MonoBehaviour, IAttackRequester
 
     [SerializeField] private EventReference playOnMiss;
     private float coyoteTimer = 0;
-    private Vector3 _slashDirection;
+    protected Vector3 _slashDirection;
     private ParticleSystem _burstEffect;
-    private SpriteRenderer _spriteRenderer;
-    private MeshRenderer _meshRenderer;
-    private Conductor.ConductorSchedulable activeScheduable;
+    protected SpriteRenderer _spriteRenderer;
+    protected MeshRenderer _meshRenderer;
+    protected Conductor.ConductorSchedulable activeScheduable;
     
     /// <summary>
     /// Spawn a projectile with a predetermined offset
     /// </summary>
     /// <param name="lifetimeDisplacement">total traversal the projectile should go through in its lifetime</param>
     /// <param name="duration">duration in beats</param>
-    public void Fire(Vector3 lifetimeDisplacement, float duration)
+    public virtual void Fire(Vector3 lifetimeDisplacement, float duration)
     {
         var originalLocation = transform.position;
         _slashDirection = -lifetimeDisplacement;
@@ -48,6 +52,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
             onStarted: (state, ctxState) =>
             {
                 isDestroyed = false;
+                if (_flipBasedOnMove) gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, Mathf.Sign(lifetimeDisplacement.x) > 0 ? 180 : 0, _initialRotation.z));
                 gameObject.SetActive(true);
                 if (_spriteRenderer != null) _spriteRenderer.enabled = true;
                 if (_meshRenderer != null) _meshRenderer.enabled = true;
@@ -90,7 +95,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
         coyoteTimer = GetDeflectionCoyoteTime() * state._elapsedProgressCount;
     }
 
-    public bool OnRequestDeflect(IAttackReceiver receiver)
+    public virtual bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         // Did receiver deflect in correct direction?
@@ -127,12 +132,12 @@ public class Projectile : MonoBehaviour, IAttackRequester
 
         return true;
     }
-    public bool OnRequestDodge(IAttackReceiver receiver) 
+    public virtual bool OnRequestDodge(IAttackReceiver receiver) 
     {
         Reset();
         return true;
     }
-    public void Reset()
+    public virtual void Reset()
     {
         isDestroyed = true;
         _burstEffect?.Play();

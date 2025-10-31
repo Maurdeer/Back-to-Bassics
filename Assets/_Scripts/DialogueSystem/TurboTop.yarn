@@ -14,10 +14,12 @@ tags:
 ---
 <<setView "TurboTopManual">>
 <<setCamera "TurboTopCam">>
+<<animate "TurboTopPawn" "staggered">>
 TurboTop: Heh...
 TurboTop: Don't be too happy! I was going easy on you!
 TurboTop: I just wanted to test if you were worthy to be in my lair, that's all.
 TurboTop: And you've proved it! You're just as cool as me!
+<<animate "TurboTopPawn" "idle">>
 <<setCamera "PonchoCam">>
 ===
 title: turbotop_post_1
@@ -37,12 +39,33 @@ tags:
 ---
 <<setView "TurboTopManual">>
 <<setCamera "TurboTopCam">>
-TurboTop: 
+TurboTop: ...You think my sunglasses are cool? Really?
+TurboTop: ...Ahem. I mean. They're pretty special, one of a kind. Custom made for someone like me!
+TurboTop: ... Do I always wear these? Of course! I have to be prepared!
+TurboTop: ...For what? To make a cool entrance. Duh.
 <<setCamera "PonchoCam">>
 ===
 title: turbotop_stg1
 tags:
 ---
 <<setView "TurboTopAuto">>
-TurboTop: No more playing around, Lets fight!
+TurboTop: I'm pretty fast. Try to keep up!
+===
+title: turbotop_stg2
+tags:
+---
+<<setView "TurboTopAuto">>
+TurboTop: You're pretty cool as well! Let's pick up the pace!
+===
+title: turbotop_stg3
+tags:
+---
+<<setView "TurboTopAuto">>
+TurboTop: No more playing around! Here comes my ULTIMATE SPIN ATTACK!
+===
+title: turbotop_stg4
+tags:
+---
+<<setView "TurboTopAuto">>
+TurboTop: It's time for my ULTRASPIN!
 ===

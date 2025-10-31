@@ -31,6 +31,9 @@
 		<relationship name="timeline">
 			<destination>{22e67380-7997-4b93-a984-393e2af731dc}</destination>
 		</relationship>
+		<relationship name="banks">
+			<destination>{9063ec79-aa09-4986-ba79-797653ad8e7d}</destination>
+		</relationship>
 	</object>
 	<object class="EventMixer" id="{c5cea019-7d7a-4ed4-aeff-b6e7e3c65f0c}">
 		<relationship name="masterBus">
@@ -67,8 +70,15 @@
 		<relationship name="modules">
 			<destination>{00f0b230-a7ef-41d1-bdbf-7727d96c4009}</destination>
 		</relationship>
+		<relationship name="markers">
+			<destination>{b8d89be9-debc-45b5-9311-0ef0f7b473b8}</destination>
+			<destination>{8ea316de-220a-449f-85ba-1b799d13a054}</destination>
+		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{cccbbe61-59cc-4284-b92f-2408e1554a56}">
+		<relationship name="modulators">
+			<destination>{b87d3924-f1c1-48d9-9893-b4e45b69c163}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{3d706734-1b48-4acc-ad27-4d0ec197e67c}</destination>
 		</relationship>
@@ -106,6 +116,42 @@
 		<relationship name="output">
 			<destination>{cccbbe61-59cc-4284-b92f-2408e1554a56}</destination>
 		</relationship>
+	</object>
+	<object class="LoopRegion" id="{b8d89be9-debc-45b5-9311-0ef0f7b473b8}">
+		<property name="position">
+			<value>31</value>
+		</property>
+		<property name="length">
+			<value>80</value>
+		</property>
+		<relationship name="timeline">
+			<destination>{22e67380-7997-4b93-a984-393e2af731dc}</destination>
+		</relationship>
+		<relationship name="markerTrack">
+			<destination>{55e5b0ac-e59a-47b7-8318-b293fa021c16}</destination>
+		</relationship>
+	</object>
+	<object class="TempoMarker" id="{8ea316de-220a-449f-85ba-1b799d13a054}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<relationship name="timeline">
+			<destination>{22e67380-7997-4b93-a984-393e2af731dc}</destination>
+		</relationship>
+		<relationship name="markerTrack">
+			<destination>{55e5b0ac-e59a-47b7-8318-b293fa021c16}</destination>
+		</relationship>
+	</object>
+	<object class="ADSRModulator" id="{b87d3924-f1c1-48d9-9893-b4e45b69c163}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>0.177776337</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{3d706734-1b48-4acc-ad27-4d0ec197e67c}">
 		<relationship name="effects">

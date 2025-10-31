@@ -21,6 +21,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private VisualEffect _slashEffect;
     [SerializeField] private ParticleSystem _deflectEffect;
+    [SerializeField] private GameObject _stickWeapon;
     
     private PlayerTraversalPawn _traversalPawn;
     public PlayerWeaponData WeaponData => _weaponData;
@@ -54,20 +55,47 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     public void Dodge(Vector2 direction)
     {
         if (IsDead) return;
+
+        if (TutorialManager.Instance != null && TutorialManager.Instance.PausedForTutorial)
+        {
+            if (!TutorialManager.Instance.CheckForDodge || !DirectionHelper.MaxAngleBetweenVectors(direction, TutorialManager.Instance.ExpectedDirection, 5f))
+            {
+                return;
+            }
+            else
+            {
+                TutorialManager.Instance.Unpause();
+            }
+        }
+        
         AnimatorStateInfo animatorState = _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
-        if (!animatorState.IsName("idle")) return;
+        // if (!animatorState.IsName("idle")) return;
         DodgeDirection = DirectionHelper.GetVectorDirection(direction);
-        updateCombo(false);
+        // Removed For now
+        //updateCombo(false);
 
         // TODO: refactor coroutine
         StartCoroutine(DodgeThread(DodgeDirection.ToString().ToLower()));
     }
     private IEnumerator DodgeThread(string directionAnimation)
     {
-        dodging = true;
         _pawnSprite.Animator.Play("dodge_" + directionAnimation);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("dodge_" + directionAnimation));
+        dodging = true;
+        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle"));
         dodging = false;
+    }
+
+    public override void EnterBattle()
+    {
+        base.EnterBattle();
+        _stickWeapon.SetActive(true);
+    }
+
+    public override void ExitBattle()
+    {
+        base.EnterBattle();
+        _stickWeapon.SetActive(false);
     }
     
     private Conductor.ConductorSchedulable slashHandle;
@@ -82,13 +110,25 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     {
         if (IsDead || dodging) return;
 
+        if (TutorialManager.Instance != null && TutorialManager.Instance.PausedForTutorial)
+        {
+            if (!TutorialManager.Instance.CheckForSlash || !DirectionHelper.MaxAngleBetweenVectors(direction, TutorialManager.Instance.ExpectedDirection, 5f))
+            {
+                return;
+            }
+            else
+            {
+                TutorialManager.Instance.Unpause();
+            }
+        }
+
         if (slashHandle != null)
         {
             if (slashCancelCounter > 1) // <-- tweak here for number of cancels allowed
             {
                 return;
-            }
-            
+            } 
+
             slashHandle.SelfAbort();
             slashCancelCounter += 1;
         }
@@ -106,11 +146,13 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
                 _pawnAnimator.StopPlayback();
                 _pawnAnimator.Play($"Slash{DirectionHelper.GetVectorDirection(direction)}", -1, 0);
                 _pawnAnimator.speed = contextState.spb;
-                _slashEffect.Play();
                 // Set the Slash Direction
                 AudioManager.Instance.PlayOnShotSound(WeaponData.slashAirSound, transform.position);
                 SlashDirection = direction;
                 SlashDirection.Normalize();
+
+                _slashEffect.transform.eulerAngles = new Vector3(0, (SlashDirection.x == 0? _slashEffect.transform.eulerAngles.y : 90 * SlashDirection.x), 90 * SlashDirection.y);
+                _slashEffect.Play();
        
                 attacking = true;
                 deflectionWindow = true;
@@ -153,18 +195,22 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         {
             if (SlashDirection == Vector2.left)
             {
+                UIManager.Instance.BeatIndicator.AddArrow(Direction.West);
                 _comboManager.AppendToCombo('W');
             }
             else if (SlashDirection == Vector2.right)
             {
+                UIManager.Instance.BeatIndicator.AddArrow(Direction.East);
                 _comboManager.AppendToCombo('E');
             }
             else if (SlashDirection == Vector2.up) 
             {
+                UIManager.Instance.BeatIndicator.AddArrow(Direction.North);
                 _comboManager.AppendToCombo('N');
             }
             else if (SlashDirection == Vector2.down) 
             {
+                UIManager.Instance.BeatIndicator.AddArrow(Direction.South);
                 _comboManager.AppendToCombo('S');
             }
         }
@@ -244,6 +290,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
             AudioManager.Instance.PlayOnShotSound(WeaponData.slashHitSound, transform.position);
             _deflectEffect.Play();
             _comboManager.CurrComboMeterAmount += 1;
+            BattleManager.Instance.AddPlayerMultiplier(1);
             if (--currDeflectsTillHeal <= 0)
             {
                 Heal(1);
@@ -297,11 +344,14 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         // Could make this more variable
         if (amount > 0)
         {
+            // Shred VFX
             _paperShredBurst?.Play();
             // Reset Deflects Till Heal
             currDeflectsTillHeal = deflectsTillHeal;
             if (!dodging)
             {
+                // Any Damage Taken Resets Multiplier
+                BattleManager.Instance.ResetPlayerMultiplier();
                 _pawnSprite.Animator.Play(IsStaggered ? "staggered_damaged" : "damaged");
             }
         }

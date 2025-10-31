@@ -17,10 +17,15 @@ public partial class UIManager
     [SerializeField] private Image _enemyHpBar;
     [SerializeField] private TextMeshProUGUI _enemyHpText;
     [SerializeField] private ComboGaugeBar _comboGaugeBar;
+    public BeatEnemyPanel BeatEnemyPanel;
+    public BeatIndicator BeatIndicator;
+    public Image EnemyIcon;
+    public ClockUI ClockUI;
+    public ScoreTracker ScoreTracker;
     public ComboDisplay ComboDisplay;
-    int parryCount;
-    int blockCount;
-    int missCount;
+    public int parryCount;
+    public int blockCount;
+    public int missCount;
     // Replacement For easier use maybe
     //public GaugeTracker PlayerHP;
     //public GaugeTracker EnemyHP;
@@ -65,7 +70,7 @@ public partial class UIManager
 
         // Enemy Pawn
         _enemyHpBar.fillAmount = (float)pawn.HP / pawn.Data.HP;
-        _enemyHpText.text = $"{pawn.HP}/{pawn.Data.HP}";
+        _enemyHpText.text = $"{Mathf.Clamp(pawn.HP, 0, pawn.Data.HP)}/{pawn.Data.HP}";
     }
     public void SetPlayerHealthBarOnFire()
     {

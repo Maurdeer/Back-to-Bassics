@@ -10,18 +10,16 @@ using static PositionStateMachine;
 public class BossAI : Conductable
 {
     [Header("Config")]
-    [SerializeField] private EnemyStageData[] _enemyStages;
-    [SerializeField] private bool useDistanceOverBlock;
-    private int _lastAction; // prevents using same attack twice in a row
-    private int _currentStage;
+    [SerializeField] protected EnemyStageData[] _enemyStages;
+    [SerializeField] protected bool useDistanceOverBlock;
+    protected int _lastAction; // prevents using same attack twice in a row
+    protected int _currentStage;
     public event System.Action OnEnemyStageTransition;
-    private int _beatsPerDecision;
-
+    protected int _beatsPerDecision;
+    protected int idx;
     // references
-    private EnemyBattlePawn _enemyBattlePawn;
-    private float _decisionTime;
-    private bool staggeredBefore;
-    [SerializeField] private UnityEvent firstTimeStagger;
+    protected EnemyBattlePawn _enemyBattlePawn;
+    protected float _decisionTime;
     private void Awake()
     {
         _enemyBattlePawn = GetComponent<EnemyBattlePawn>();
@@ -35,7 +33,7 @@ public class BossAI : Conductable
         _currentStage = 0;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         _enemyBattlePawn.OnPawnDeath += _enemyBattlePawn.Director.Stop;
         _enemyBattlePawn.OnEnterBattle += Enable;
@@ -45,14 +43,6 @@ public class BossAI : Conductable
             if (_currentStage <= 0) return;
             if (!_enemyBattlePawn.esm.IsOnState<Idle>()) return;
             PreventPlayerAttack();
-        };
-        _enemyBattlePawn.OnEnemyStaggerEvent += delegate
-        {
-            if (!staggeredBefore)
-            {
-                staggeredBefore = true;
-                firstTimeStagger.Invoke();
-            }
         };
     }
 
@@ -71,34 +61,39 @@ public class BossAI : Conductable
         }
         PhaseChange();
 
-        if (_enemyBattlePawn.Director.state == PlayState.Playing 
+        if (_enemyBattlePawn.Director.state == PlayState.Playing
             || _enemyBattlePawn.IsDead || _enemyBattlePawn.IsStaggered || DialogueManager.Instance.IsDialogueRunning) return;
-        
-        if (_decisionTime > 0) {
+
+        if (_decisionTime > 0)
+        {
             // counting down time between attacks
             _decisionTime--;
             return;
         }
-            
+
+        EnemyAttackPattern move = MakeDecision();
+        // may want to abstract enemy actions away from just timelines in the future?
+        UseMove(move);
+        // Reset Stagger Health Only on Stage Request!
+        if (_enemyStages[_currentStage].ResetStaggerHealth)
+            _enemyBattlePawn.currentStaggerHealth = _enemyBattlePawn.maxStaggerHealth;
+    }
+
+    // (Joseph 10/19/2025) Defines default 
+    protected virtual EnemyAttackPattern MakeDecision()
+    {
         EnemyAttackPattern[] actions = _enemyStages[_currentStage].EnemyAttackPatterns;
-        
-        int idx = Random.Range(0, actions != null ? actions.Length : 0);
+
+        idx = Random.Range(0, actions != null ? actions.Length : 0);
         if (idx == _lastAction)
-        // doesnt use same attack twice consecutively
+            // doesnt use same attack twice consecutively
             idx = (idx + 1) % actions.Length;
         _lastAction = idx;
 
-        // may want to abstract enemy actions away from just timelines in the future?
-        _enemyBattlePawn.interruptable = actions[idx].Interruptable;
-        _enemyBattlePawn.currentStaggerHealth = _enemyBattlePawn.maxStaggerHealth;
-        _enemyBattlePawn.esm.Transition<Attacking>();
-        _enemyBattlePawn.Director.playableAsset = actions[idx].ActionSequence;
-        _enemyBattlePawn.Director.Play();
-        var handle = _enemyBattlePawn.Director.ScheduleToBeat();
-
-        _decisionTime = _beatsPerDecision;
+        return actions[idx];
     }
-    protected void PhaseChange()
+    
+    protected virtual void PhaseChange()
     {
         if (_currentStage + 1 < _enemyStages.Length &&
             _enemyStages[_currentStage + 1].HealthThreshold >= (float)_enemyBattlePawn.HP / _enemyBattlePawn.MaxHP)
@@ -108,6 +103,11 @@ public class BossAI : Conductable
             // Debug.Log($"Phase: {_currentStage}");
             _beatsPerDecision = _enemyStages[_currentStage].BeatsPerDecision;
             Conductor.Instance.ChangeMusicPhase(_currentStage + 1);
+            if (_enemyStages[_currentStage].SkipPointInSong)
+            {
+                Conductor.Instance.GoToTimelinePoint(_enemyStages[_currentStage].PointToSkip);
+            }
+            
             _enemyBattlePawn.UnStagger();
             PreventPlayerAttack();
             _enemyBattlePawn.maxStaggerHealth = _enemyStages[_currentStage].StaggerHealth;
@@ -116,8 +116,26 @@ public class BossAI : Conductable
             {
                 DialogueManager.Instance.RunDialogueNode(_enemyStages[_currentStage].DialogueNode);
             }
+            if (_enemyStages[_currentStage].PhaseTransitionMove != null)
+            {
+                // (10/14/25 Joseph) I think this transition animation doesn't work because the boss decides to act immediately 
+                UseMove(_enemyStages[_currentStage].PhaseTransitionMove);
+            }
             OnEnemyStageTransition?.Invoke();
         }
+    }
+    
+    protected void UseMove(EnemyAttackPattern enemyMove)
+    {
+         // may want to abstract enemy actions away from just timelines in the future?
+        _enemyBattlePawn.interruptable = enemyMove.Interruptable;
+        
+        _enemyBattlePawn.esm.Transition<Attacking>();
+        _enemyBattlePawn.Director.playableAsset = enemyMove.ActionSequence;
+        _enemyBattlePawn.Director.Play();
+        var handle = _enemyBattlePawn.Director.ScheduleToBeat();
+
+        _decisionTime = _beatsPerDecision;
     }
 
     private void PreventPlayerAttack()

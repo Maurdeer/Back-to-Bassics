@@ -10,6 +10,27 @@ public class BattleManager : Singleton<BattleManager>
     public EnemyBattlePawn Enemy { get; set; }
     private float battleDelay = 3f;
     private Queue<EnemyBattlePawn> enemyBattlePawns;
+    private readonly string[] ranks = {"S", "A", "B", "C", "D"};
+    private ulong m_playerScore;
+    public ulong PlayerScore
+    {
+        get { return m_playerScore; }
+        set
+        {
+            m_playerScore = value;
+            UIManager.Instance.ScoreTracker.UpdateScore(m_playerScore);
+        }
+    }
+    private uint m_playerMultiplier;
+    public uint PlayerMultiplier
+    {
+        get { return m_playerMultiplier; }
+        set
+        {
+            m_playerMultiplier = value;
+            UIManager.Instance.ScoreTracker.UpdateMultiplier(m_playerMultiplier);
+        }
+    }
     private void Awake()
     {
         InitializeSingleton();
@@ -20,8 +41,11 @@ public class BattleManager : Singleton<BattleManager>
     }
     public void StartBattle(EnemyBattlePawn[] pawns)
     {
+        UIManager.Instance.PauseButtonAnimator.Play("hide");
         enemyBattlePawns = new Queue<EnemyBattlePawn>(pawns);
         Enemy = enemyBattlePawns?.Dequeue();
+        PlayerScore = 0;
+        PlayerMultiplier = 1;   
         if (Enemy == null)
         {
             Debug.LogError("BattleManager tried to start battle, but player has no Enemy Opponent!");
@@ -32,11 +56,16 @@ public class BattleManager : Singleton<BattleManager>
     public void EndBattle()
     {
         IsBattleActive = false;
+        GameManager.Instance.GSM.Transition<GameStateMachine.UIState>();
+        UIManager.Instance.ClockUI.StopClock();
         Conductor.Instance.StopConducting();
+    }
+    
+    public void EndBattleComplete()
+    {
         GameManager.Instance.GSM.Transition<GameStateMachine.WorldTraversal>();
         Player.ExitBattle();
-        Enemy.ExitBattle();
-        // Instead of directly to world traversal, need a win screen of some kind
+        Enemy.ExitBattle();  
     }
     private IEnumerator IntializeBattle()
     {
@@ -52,12 +81,15 @@ public class BattleManager : Singleton<BattleManager>
         Enemy.EnterBattle();
         AudioManager.Instance.SetAmbienceVolume(0.1f);
         CameraConfigure.Instance.SwitchToCamera(Enemy.battleCam);
+        UIManager.Instance.EnemyIcon.sprite = Enemy.EnemyData.Icon;
         for (float i = battleDelay; i > 0; i--)
         {
             UIManager.Instance.UpdateCenterText(i.ToString());
             yield return new WaitForSeconds(1f);
         }
         UIManager.Instance.UpdateCenterText("Battle!");
+        UIManager.Instance.ClockUI.StartClock();
+        UIManager.Instance.ScoreTracker.StartTimeMultiplier(Enemy.EnemyData.ClockDelayTH, Enemy.EnemyData.ClockDecayTH);
         Conductor.Instance.BeginConducting(Enemy);
         GameManager.Instance.GSM.Transition<GameStateMachine.Battle>();
         Player.StartBattle();
@@ -98,7 +130,10 @@ public class BattleManager : Singleton<BattleManager>
     private void OnPlayerDeath()
     {
         EndBattle();
-        //UIManager.Instance.UpdateCenterText("Player Is Dead, SAD!");
+        Player.ExitBattle();
+        Enemy.ExitBattle();
+
+        // Lose Logic
         GameManager.Instance.GSM.Transition<GameStateMachine.Death>();
     }
     private void OnEnemyDeath()
@@ -114,8 +149,51 @@ public class BattleManager : Singleton<BattleManager>
         }
         EndBattle();
 
-        // For now we won't use this
-        // StartCoroutine(EnemyDefeatTemp());
+        // Victory Logic
+        // Update Score: Kill Ryan For Hardcodeness NOW!
+        int id = EnemyId(Enemy.EnemyData.Name);
+        ulong finalScore = UIManager.Instance.ScoreTracker.StopAndGetFinalScore();
+        PlayerScore = finalScore;
+        //UIManager.Instance.WreckconQuests.MarkAchievement(id * 4);
+        // Rank Calculation
+        double scoreFraction = (double)finalScore / Enemy.EnemyData.SRankMax;
+        string scoreRank = "";
+        double fraction = 1;
+        foreach (string rank in ranks)
+        {
+            if (scoreFraction >= fraction)
+            {
+                scoreRank = rank;
+                //if (scoreRank == "S")
+                //{
+                //    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 2);
+                //    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 3);
+                //}
+                //else if (scoreRank == "A")
+                //{
+                //    UIManager.Instance.WreckconQuests.MarkAchievement(id * 4 + 3);
+                //} 
+
+                break;
+            }
+            fraction -= 0.2;
+        }
+
+        if (scoreRank == "") scoreRank = "E";
+
+        
+        if (id < 0)
+        {
+            // If the id isn't a real enemy, then don't apply a score
+            EndBattleComplete();
+            return;
+        }
+        UIManager.Instance.PersistentDataTracker.UpdateEnemyScore(id, finalScore, scoreRank);
+
+        // Save Here Since All Needed Data has been processed
+        DataPersistenceManager.Instance.SaveGame();
+
+        UIManager.Instance.BeatEnemyPanel.PlayBattleVictory(Enemy.EnemyData.Name, finalScore, Enemy.EnemyData.SRankMax, scoreRank);
     } 
 
     private IEnumerator EnemyDefeatTemp()
@@ -129,5 +207,21 @@ public class BattleManager : Singleton<BattleManager>
         TraversalPawn traversalPawn = Player.GetComponent<TraversalPawn>();
         traversalPawn.MoveToDestination(Enemy.targetFightingLocation.position);
         yield return new WaitUntil(() => !traversalPawn.movingToDestination);
+    }
+    public void AddPlayerScore(ulong score)
+    {
+        PlayerScore += score * PlayerMultiplier;
+    }
+    public void AddPlayerMultiplier(uint multiplier)
+    {
+        PlayerMultiplier += multiplier;
+    }
+    public void ResetPlayerMultiplier()
+    {
+        PlayerMultiplier = (uint)Mathf.Clamp(PlayerMultiplier / 2, 1, 999);
+    }
+    private int EnemyId(string name)
+    {
+        return name == "Bassics" ? 0 : (name == "Small Fry" ? 1 : (name == "Turbo Top" ? 2 : (name == "King Sal" ? 3 : (name == "King Minnows" ? 4 : -1))));
     }
 }

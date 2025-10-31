@@ -41,7 +41,7 @@ public class Conductor : Singleton<Conductor>
         {
             if (_ctx != null)
             {
-                Debug.Log("=========== STOPPED CONDUCTING ===========");
+                //Debug.Log("=========== STOPPED CONDUCTING ===========");
                 _ctx.Stop();
                 ctxHandle.Free();
             }
@@ -72,12 +72,16 @@ public class Conductor : Singleton<Conductor>
     public void PauseCondcutor()
     {
         if (ctx == null || paused) return;
+        // (Ryan) No! Bad Joseph! 10/30/2025
+        // If you want to pause music, investigate this script further
+        //if (TutorialManager.Instance != null && !TutorialManager.Instance.TutorialEnabled)
         ctx.fmodInstance.setPaused(true);
         paused = true;
     }
     public void ResumeConductor()
     {
         if (ctx == null || !paused) return;
+        //if (TutorialManager.Instance != null && !TutorialManager.Instance.TutorialEnabled)
         ctx.fmodInstance.setPaused(false);
         paused = false;
     }
@@ -113,7 +117,7 @@ public class Conductor : Singleton<Conductor>
         };
         ctx.Start();
         // this.spb = Data.SPB;
-        // OnFirstBeat?.Invoke();
+        //OnFirstBeat?.Invoke();
         // StartCoroutine(Conduct());
     }
     
@@ -130,6 +134,10 @@ public class Conductor : Singleton<Conductor>
     public void ChangeMusicPhase(int phase)
     {
         ctx.fmodInstance.setParameterByName("Phase", phase);
+    }
+    public void GoToTimelinePoint(int position)
+    {
+        ctx.fmodInstance.setTimelinePosition(position);
     }
 
     // AT: Run this after the regular update so that all events are definitely triggered within the same interval,

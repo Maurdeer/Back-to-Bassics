@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 3945093598045307347}
   - component: {fileID: 895455712876900671}
   - component: {fileID: 3937796734531597402}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -428,6 +428,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dmg: 1
   _staggerDamage: 0
+  _flipBasedOnMove: 0
+  _offset: {x: 0, y: 0, z: 0}
   playOnMiss:
     Guid:
       Data1: 1851356272
@@ -5347,7 +5349,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574600789773547606}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.02840552, w: 0.99959654}
+  m_LocalRotation: {x: -0, y: -0, z: 0.028410947, w: 0.99959636}
   m_LocalPosition: {x: 0.65, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5545,7 +5547,7 @@ GameObject:
   - component: {fileID: 2955706682959726331}
   - component: {fileID: 8428997388284587386}
   - component: {fileID: 5391532267913310839}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5733,7 +5735,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 0
   projectilePoolAmount: 5
+  enterFireName: 
   animationName: fire
+  exitFireName: 
   performAnimationBeforeFire: 0
   firePattern: 2
   projectileFabs:
@@ -5865,7 +5869,7 @@ GameObject:
   - component: {fileID: 4423053834010165689}
   - component: {fileID: 1779889187248786745}
   - component: {fileID: 3033051130252744156}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6181,7 +6185,7 @@ GameObject:
   - component: {fileID: 3220503501993213934}
   - component: {fileID: 8288492048749715145}
   - component: {fileID: 128268220735547165}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11184,7 +11188,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3894484940666760500}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.000002488494, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.000005736946, w: 1}
   m_LocalPosition: {x: 0.48, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11309,6 +11313,7 @@ MonoBehaviour:
   timelineDurationInBeats: 0
   slashAnimationName: slash
   inverseFacingDirection: 0
+  swapFacingDirectionAfterPostHit: 0
   _staggerDamage: 5
   prehitBeats: 0.5
   posthitBeats: 0.5
@@ -11326,7 +11331,7 @@ GameObject:
   - component: {fileID: 7285231149191962358}
   - component: {fileID: 2337776521553097344}
   - component: {fileID: 936548144199279572}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SmallFryAuto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11402,7 +11407,19 @@ MonoBehaviour:
   useTypewriterEffect: 1
   onCharacterTyped:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2622334173887554957}
+        m_TargetAssemblyTypeName: EnemyBattlePawn, Assembly-CSharp
+        m_MethodName: VoiceByte
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPauseStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -11519,7 +11536,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5431806863635908229}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.0000024288886, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.0000055581318, w: 1}
   m_LocalPosition: {x: 0.53, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11550,7 +11567,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5651820500523533346}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.044974722, w: 0.9989882}
+  m_LocalRotation: {x: -0, y: -0, z: -0.04497773, w: 0.998988}
   m_LocalPosition: {x: 0.59, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11569,7 +11586,7 @@ GameObject:
   - component: {fileID: 8737510316718671115}
   - component: {fileID: 2327881232655521870}
   - component: {fileID: 5257912433584583688}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PawnCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12012,7 +12029,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 0
   projectilePoolAmount: 10
+  enterFireName: shoot
   animationName: shoot
+  exitFireName: 
   performAnimationBeforeFire: 0
   firePattern: 2
   projectileFabs:
@@ -12274,7 +12293,7 @@ Transform:
   m_GameObject: {fileID: 7458281747463722615}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.4500008, z: -7.119995}
+  m_LocalPosition: {x: 0, y: 3.449997, z: -7.119995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12454,7 +12473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9fe0a9b7ecad7f4abbfa242c8097125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timelineDurationInBeats: 5
+  timelineDurationInBeats: 3
   damage: 4
   attackAnimationName: sandwhich
   prehitFraction: 0.6
@@ -17580,11 +17599,21 @@ MonoBehaviour:
   onPawnDefeat:
     m_PersistentCalls:
       m_Calls: []
+  onPawnExitBattle:
+    m_PersistentCalls:
+      m_Calls: []
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 3632154329678698217}
   <battleCam>k__BackingField: {fileID: 530538101871512614}
   FloatingTextPrefab: {fileID: 7298091450208674678, guid: 52ed510f10a693c4a80fb35040e3675c, type: 3}
+  <_staggerSFX>k__BackingField:
+    Guid:
+      Data1: 626277483
+      Data2: 1179491428
+      Data3: 1725835428
+      Data4: 1262564516
+    Path: event:/SFX/Combat/Stagger
   <IntroCutscene>k__BackingField: {fileID: 0}
   <OutroCutscene>k__BackingField: {fileID: 0}
   maxStaggerHealth: 0
@@ -17622,7 +17651,7 @@ PlayableDirector:
   m_GameObject: {fileID: 8123077407089530165}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 7a820986f157fa742bc25d22be9ce68a, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 676742bcea3128b47886c130e3aca98a, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -17729,9 +17758,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 11a0f6ed1f3233b4089397aa7b86da8a, type: 2}
   - {fileID: 11400000, guid: 9c50a461c5b3fcb4bb11d12e3d38f4cb, type: 2}
   useDistanceOverBlock: 0
-  firstTimeStagger:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &8778551073191323628
 GameObject:
   m_ObjectHideFlags: 0
@@ -17892,7 +17918,7 @@ GameObject:
   - component: {fileID: 3880106148718307256}
   - component: {fileID: 3207739912805446614}
   - component: {fileID: 6920204683321519840}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SmallFryManual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17968,7 +17994,19 @@ MonoBehaviour:
   useTypewriterEffect: 1
   onCharacterTyped:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2622334173887554957}
+        m_TargetAssemblyTypeName: EnemyBattlePawn, Assembly-CSharp
+        m_MethodName: VoiceByte
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPauseStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -18297,7 +18335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5257208858528208257, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000003237032
+      value: 0.0000026914925
       objectReference: {fileID: 0}
     - target: {fileID: -4928855884534424619, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_Layer
@@ -18317,11 +18355,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2377494905487071929, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9860699
+      value: 0.9860694
       objectReference: {fileID: 0}
     - target: {fileID: -2377494905487071929, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.16633154
+      value: -0.16633461
       objectReference: {fileID: 0}
     - target: {fileID: -1186530545774409408, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_Layer
@@ -18341,7 +18379,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99937934
+      value: 0.99937874
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.y
@@ -18349,7 +18387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.03522988
+      value: -0.035246626
       objectReference: {fileID: 0}
     - target: {fileID: 854014552042160923, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -18365,7 +18403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1740887091039016810, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.058690038
+      value: 0.058701348
       objectReference: {fileID: 0}
     - target: {fileID: 1740887091039016810, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.y
@@ -18373,7 +18411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1740887091039016810, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.9982763
+      value: -0.99827564
       objectReference: {fileID: 0}
     - target: {fileID: 1789211442912187506, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_Layer
@@ -18509,11 +18547,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7199932529532373612, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.978412
+      value: 0.9784137
       objectReference: {fileID: 0}
     - target: {fileID: 7199932529532373612, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.20666394
+      value: 0.20665589
       objectReference: {fileID: 0}
     - target: {fileID: 7265729947643615892, guid: b842a4883c14c234487a63e109ceca67, type: 3}
       propertyPath: m_Layer

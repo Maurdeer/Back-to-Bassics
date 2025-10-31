@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebca2f589a529e545aaf5c099703c5e4, type: 3}
+  m_Name: 1_KMSTG
+  m_EditorClassIdentifier: 
+  _healthThreshold: 1
+  _enemyAttackPatterns:
+  - {fileID: 11400000, guid: c76c69a7a7bcb7e49995ee5a9dcfa6de, type: 2}
+  _beatsPerDecision: 5
+  _staggerHealth: 10
+  _dialogueNode: 
+  _phaseTransitionMove: {fileID: 11400000, guid: 603cda6396ddf8d49ac16c50ff14c4a4, type: 2}
+  _resetStaggerHealth: 0
+  _skipPointInSong: 0
+  _pointToSkip: 0

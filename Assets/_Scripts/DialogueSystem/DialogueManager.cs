@@ -43,6 +43,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         // Set up the view switching command handler
         customDialogueRunner.AddCommandHandler<string>("setView", SetDialogueView);
+        customDialogueRunner.AddCommandHandler<GameObject, string>("animate", PlayAnimation);
         customDialogueRunner.AddCommandHandler<string>("setCamera", SetCamera);
         customDialogueRunner.AddCommandHandler<GameObject, GameObject>("move", MoveToLocation);
         customDialogueRunner.AddCommandHandler<GameObject, GameObject, float>("teleport", TeleportToLocation);
@@ -124,7 +125,20 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public IEnumerator PlayAnimation(GameObject pawn, string animation)
     {
-        // TODO: Import Unity Animation, add animators to necessary targets, and play animations from Yarn Spinner at appropriate times.
+        Animator pawnAnimator;
+        if (pawn.tag.Equals("Player"))
+        {
+            // Debug.Log("GameObject tagged as being from the player! Strange animator check used!");
+            pawnAnimator = pawn.GetComponentsInChildren<Animator>()[1];
+            pawnAnimator.SetFloat("x_faceDir", 1f);
+            pawnAnimator.SetFloat("z_faceDir", 1f);
+        }
+        else pawnAnimator = pawn.GetComponentInChildren<Animator>();
+        if (pawnAnimator == null)
+        {
+            Debug.LogWarning($"{pawn.name} does not have an animator.");
+        }
+        pawnAnimator.Play(animation);
         yield break;
     }
 
@@ -148,6 +162,9 @@ public class DialogueManager : Singleton<DialogueManager>
         if (traversal == null) {
             Debug.LogWarning($"{pawn.name} is not a Traversal Pawn and cannot move");
         }
+        if (targetLocation == null) {
+            Debug.LogWarning($"{targetLocation.name} does not exist and cannot be moved towards.");
+        }
         traversal.MoveToDestination(targetLocation.transform.position);
         yield break;
     }
@@ -156,6 +173,9 @@ public class DialogueManager : Singleton<DialogueManager>
     public IEnumerator TeleportToLocation(GameObject pawn, GameObject targetLocation, float delay = 0f)
     {
         yield return new WaitForSeconds(delay);
+        if (targetLocation == null) {
+            Debug.LogWarning($"{targetLocation.name} does not exist and cannot be teleported to.");
+        }
         pawn.transform.position = targetLocation.transform.position;
     }
 
@@ -176,7 +196,7 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         if (activeDialogueView != null)
         {
-            Debug.Log($"Displaying line: {line} in {activeDialogueView.name}");
+            //Debug.Log($"Displaying line: {line} in {activeDialogueView.name}");
 
             // Create a dummy LocalizedLine for now
             var localizedLine = new LocalizedLine
@@ -187,7 +207,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
             // Define the onDialogueLineFinished action to continue the dialogue flow
             System.Action onDialogueLineFinished = () => {
-                Debug.Log("Dialogue line finished displaying.");
+                //Debug.Log("Dialogue line finished displaying.");
                 // Continue dialogue or handle post-dialogue logic here
             };
 

@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using TMPro;
+using static GameStateMachine;
 
-
-public class SceneManagement : MonoBehaviour
+public class SceneManagement : Singleton<SceneManagement>, IDataPersistence
 {
     [SerializeField] private UnityEvent OnFirstTime;
     private static bool reloaded;
@@ -19,8 +19,12 @@ public class SceneManagement : MonoBehaviour
     private bool fadeIn = false;
     private bool fadeOut = false;
     [Range(1, 20f)] public float timeToFade = 10f;
+    private string transitionToSceneName;
 
-
+    private void Awake()
+    {
+        InitializeSingleton();
+    }
 
     private void Start()
     {
@@ -46,16 +50,20 @@ public class SceneManagement : MonoBehaviour
     }
     public void ChangeScene(string scene)
     {
-        Debug.Log("Change Scene Invoked!");
+        //Debug.Log("Change Scene Invoked!");
         if (SceneManager.GetActiveScene().name == scene) 
         {
             reloaded = true;
         }
 
+        // Get out of pause menu if that is possible
+        if (GameManager.Instance != null) GameManager.Instance.GSM.Transition<WorldTraversal>();
         //SceneManager.LoadSceneAsync(scene);
         loadSceneParent.SetActive(true);
         loadText.SetText("");
         loadingScreen.SetActive(false);
+
+        Conductor.Instance?.StopConducting();
         StartCoroutine(LoadSceneAsynchronously(scene));
     }
     public void ReloadCurrentScene()
@@ -66,7 +74,6 @@ public class SceneManagement : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
-        Debug.Log("Quit!");
     }
 
 
@@ -123,5 +130,21 @@ public class SceneManagement : MonoBehaviour
             yield return new WaitForSeconds(1 / (speed * 10));
         }
         
+    }
+
+    public void LoadData(GameData data)
+    {
+        // Nothing needs to happen here
+    }
+
+    public void SaveData(GameData data)
+    {
+        //// (Ryan) WRECKON LOGIC AHHH CRAZY
+        //if (data.truthArray[3])
+        //{
+        //    data.currentScene = "WreckonReplay"; //Special Scene that lets player select bosses to fight
+        //}
+        if (SceneManager.GetActiveScene().name.ToLower().Contains("title")) return;
+        data.currentScene = SceneManager.GetActiveScene().name;
     }
 }

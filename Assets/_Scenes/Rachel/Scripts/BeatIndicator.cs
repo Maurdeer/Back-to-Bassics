@@ -4,16 +4,24 @@ using UnityEngine.UI;
 public class BeatIndicator : Conductable
 {
     [SerializeField] private GameObject centerIndicator;
+    [SerializeField] private GameObject centerArrow;
+    private Animator m_animator;
 
     private Vector3 originalScale;
     private bool isBeat = false;
     private float elapsedTime = 0f;
     private float halfSpb;
+    private bool hidden;
+    private void Awake()
+    {
+        m_animator = GetComponent<Animator>();
+        hidden = true;
+    }
 
     private void Start()
     {
         originalScale = centerIndicator.transform.localScale;
-
+        centerArrow.SetActive(false);
         Enable();
     }
 
@@ -64,5 +72,50 @@ public class BeatIndicator : Conductable
                 elapsedTime = 0f;
             }
         }
+    }
+    public void AddArrow(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.East:
+                centerArrow.SetActive(true);
+                centerArrow.transform.rotation = Quaternion.Euler(0, 0, -90f);
+                break;
+            case Direction.West:
+                centerArrow.SetActive(true);
+                centerArrow.transform.rotation = Quaternion.Euler(0, 0, 90f);
+                break;
+            case Direction.North:
+                centerArrow.SetActive(true);
+                centerArrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case Direction.South:
+                centerArrow.SetActive(true);
+                centerArrow.transform.rotation = Quaternion.Euler(0, 0, 180f);
+                break;
+            default:
+                break;
+        }
+    }
+    public void Show()
+    {
+        if (!hidden) return;
+        hidden = false;
+        m_animator.Play("show");
+    }
+    public void Hide()
+    {
+        if (hidden) return;
+        centerArrow.SetActive(false);
+        hidden = true;
+        m_animator.Play("hide");
+    }
+    public void ShowArrow()
+    {
+        centerArrow.SetActive(true);
+    }
+    public void HideArrow()
+    {
+        centerArrow.SetActive(false);
     }
 }

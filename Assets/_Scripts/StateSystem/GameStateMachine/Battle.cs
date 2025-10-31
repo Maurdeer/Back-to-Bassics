@@ -9,6 +9,8 @@ public partial class GameStateMachine
         public override void Enter(GameStateInput i)
         {
             GameManager.Instance.PC.SwitchToBattleActions();
+            if (DataPersistenceManager.Instance != null)
+                DataPersistenceManager.Instance.enabled = false;
             //CameraConfigure.Instance.SwitchToCamera(BattleManager.Instance.Enemy.battleCam);
             UIManager.Instance.ShowBattlePanel();
         }

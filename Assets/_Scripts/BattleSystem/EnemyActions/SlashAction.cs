@@ -6,11 +6,12 @@ using static PositionStateMachine;
 public class SlashAction : EnemyAction, IAttackRequester
 {
     [Header("Slash Action")]
-    [SerializeField] private string slashAnimationName;
-    [SerializeField] private bool inverseFacingDirection = false;
-    [SerializeField] private int _staggerDamage = 5;
-    [SerializeField] private float prehitBeats = 0.5f;
-    [SerializeField] private float posthitBeats = 0.5f;
+    [SerializeField] protected string slashAnimationName;
+    [SerializeField] protected bool inverseFacingDirection = false;
+    [SerializeField] protected bool swapFacingDirectionAfterPostHit = false;
+    [SerializeField] protected int _staggerDamage = 5;
+    [SerializeField] protected float prehitBeats = 0.5f;
+    [SerializeField] protected float posthitBeats = 0.5f;
 
     [Header("Slash References")]
     //[SerializeField] private AnimationClip broadcastClip;
@@ -18,7 +19,8 @@ public class SlashAction : EnemyAction, IAttackRequester
     [SerializeField] private ParticleSystem indicatorSpark;
     //public float minSlashTillHitDuration => (preHitClip.length + broadcastClip.length);
     //public float minSlashTillHitInBeats => minSlashTillHitDuration / parentPawn.EnemyData.SPB;
-    private SlashNode _currNode;
+    protected SlashNode _currNode;
+    protected float syncedAnimationTime;
     //Amount of stagger damage towards enemy of successful deflect.
     
     public void Broadcast(Direction direction)
@@ -44,46 +46,82 @@ public class SlashAction : EnemyAction, IAttackRequester
         }
         StartCoroutine(SlashThread(node));
     }
-    private IEnumerator SlashThread(SlashNode node)
+    protected virtual IEnumerator SlashThread(SlashNode node)
     {
         // Slash Initialization
+        yield return StartCoroutine(SlashInitialization(node));
+        // Broadcast
+        yield return StartCoroutine(SlashBroadcast());
+
+        // Prehit
+        yield return StartCoroutine(SlashPrehit());
+
+        // Hit
+        SlashHit();
+    }
+
+    protected virtual IEnumerator SlashInitialization(SlashNode node)
+    {
         _currNode = node;
         parentPawnSprite.Animator.SetFloat("speed", 1 / Conductor.Instance.spb);
-        parentPawnSprite.FaceDirection(new Vector3((inverseFacingDirection ? 1 : -1) * _currNode.slashVector.x, 0, -1));
+        parentPawnSprite.FaceDirection(new Vector3((inverseFacingDirection ? -1 : 1) * _currNode.slashVector.x, 0, -1));
         parentPawnSprite.Animator.SetFloat("x_slashDir", _currNode.slashVector.x);
         parentPawnSprite.Animator.SetFloat("y_slashDir", _currNode.slashVector.y);
-        float syncedAnimationTime = (_currNode.slashLengthInBeats - prehitBeats - posthitBeats) * Conductor.Instance.spb;
+        syncedAnimationTime = (_currNode.slashLengthInBeats - prehitBeats - posthitBeats) * Conductor.Instance.spb;
         if (parentPawn.psm.IsOnState<Distant>())
         {
             parentPawn.psm.Transition<Center>();
             yield return new WaitForSeconds(Conductor.Instance.spb);
             syncedAnimationTime -= Conductor.Instance.spb;
         }
+    }
 
-        // Broadcast
+    protected virtual IEnumerator SlashBroadcast()
+    {
         parentPawnSprite.Animator.SetFloat("speed", 1 / syncedAnimationTime);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_broadcast");
         yield return new WaitForSeconds(syncedAnimationTime);
+    }
 
-        // Prehit
+    protected virtual IEnumerator SlashPrehit()
+    {
         float prehitSeconds = prehitBeats * Conductor.Instance.spb;
         parentPawnSprite.Animator.SetFloat("speed", 1 / prehitSeconds);
         parentPawnSprite.Animator.Play($"{slashAnimationName}_prehit");
         yield return new WaitForSeconds(prehitSeconds);
-        
-        // Hit
+    }
+    
+    protected virtual void SlashHit()
+    {
         parentPawnSprite.Animator.SetFloat("speed", 1 / (posthitBeats * Conductor.Instance.spb));
         BattleManager.Instance.Player.ReceiveAttackRequest(this);
     }
     
-    public void OnAttackMaterialize(IAttackReceiver receiver)
+
+    public virtual void OnAttackMaterialize(IAttackReceiver receiver)
     {
         // (TEMP) DEBUG UI Tracker -------
         UIManager.Instance.IncrementMissTracker();
         //---------------------------------------
 
+        if (swapFacingDirectionAfterPostHit)
+        {
+            parentPawnSprite.FaceDirection(new Vector3(-parentPawnSprite.Animator.GetFloat("x_faceDir"), 0, 0), true);
+        }
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
         BattleManager.Instance.Player.Damage(_currNode.dmg);
+    }
+
+    protected virtual IEnumerator SwapDirectionAfterAnimation()
+    {
+        string animation_name = $"{slashAnimationName}_posthit";
+        parentPawnSprite.Animator.Play(animation_name);
+        yield return new WaitUntil(() => {
+            AnimatorStateInfo info = parentPawnSprite.Animator.GetCurrentAnimatorStateInfo(0);
+            return info.IsName(animation_name) && parentPawnSprite.Animator.IsInTransition(0);
+            });
+        parentPawnSprite.FaceDirection(new Vector3(-parentPawnSprite.Animator.GetFloat("x_faceDir"), 0, 0), true);
+
     }
 
     public float GetDeflectionCoyoteTime()
@@ -103,11 +141,11 @@ public class SlashAction : EnemyAction, IAttackRequester
         return true;
     }
     
-    public bool OnRequestDeflect(IAttackReceiver receiver)
+    public virtual bool OnRequestDeflect(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         if (player == null
-            || !DirectionHelper.MaxAngleBetweenVectors(-_currNode.slashVector, player.SlashDirection, 5f))
+            || !DirectionHelper.MaxAngleBetweenVectors(_currNode.slashVector, player.SlashDirection, 5f))
             return false;
 
         // (TEMP) DEBUG UI Tracker -------
@@ -117,15 +155,25 @@ public class SlashAction : EnemyAction, IAttackRequester
         parentPawnSprite.Animator.Play($"{slashAnimationName}_deflected");
         if (_currNode.staggersParent && parentPawn is EnemyBattlePawn enemyPawn)
         {
+            /// [WREKCON] BASSICS_SPECIAL
+            if (enemyPawn.EnemyData.Name == "Bassics")
+            {
+                UIManager.Instance.WreckconQuests.MarkAchievement(1);
+            }
+            ///============
             enemyPawn.StaggerDamage(_staggerDamage);
         }
         return true;
     }
-    public bool OnRequestDodge(IAttackReceiver receiver)
+    public virtual bool OnRequestDodge(IAttackReceiver receiver)
     {
         PlayerBattlePawn player = receiver as PlayerBattlePawn;
         if (player == null || !_currNode.dodgeDirections.Contains(player.DodgeDirection)) return false;
 
+        if (swapFacingDirectionAfterPostHit)
+        {
+            parentPawnSprite.FaceDirection(new Vector3(-parentPawnSprite.Animator.GetFloat("x_faceDir"), 0, 0), true);
+        }
         parentPawnSprite.Animator.Play($"{slashAnimationName}_posthit");
         return true;
     }

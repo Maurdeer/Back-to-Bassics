@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 5339081488841989598}
   - component: {fileID: 3541919459993712349}
   - component: {fileID: 5303288182403617157}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5093,7 +5093,7 @@ GameObject:
   - component: {fileID: 302587882185874418}
   - component: {fileID: 7342671599324778323}
   - component: {fileID: 46695543335122932}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BassicsAuto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5324,7 +5324,7 @@ GameObject:
   - component: {fileID: 4434546301489326177}
   - component: {fileID: 7405810048969044482}
   - component: {fileID: 1320066247122025290}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5460,7 +5460,7 @@ GameObject:
   - component: {fileID: 8896183428122786831}
   - component: {fileID: 7978382705582257006}
   - component: {fileID: 2467669351772794614}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BassicsManual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5654,7 +5654,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 0
   projectilePoolAmount: 20
+  enterFireName: 
   animationName: music
+  exitFireName: 
   performAnimationBeforeFire: 0
   firePattern: 1
   projectileFabs:
@@ -5733,11 +5735,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onPawnExitBattle:
+    m_PersistentCalls:
+      m_Calls: []
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 8599476617418693142}
   <battleCam>k__BackingField: {fileID: 813613764684687572}
   FloatingTextPrefab: {fileID: 7298091450208674678, guid: 52ed510f10a693c4a80fb35040e3675c, type: 3}
+  <_staggerSFX>k__BackingField:
+    Guid:
+      Data1: 626277483
+      Data2: 1179491428
+      Data3: 1725835428
+      Data4: 1262564516
+    Path: event:/SFX/Combat/Stagger
   <IntroCutscene>k__BackingField: {fileID: 0}
   <OutroCutscene>k__BackingField: {fileID: 0}
   maxStaggerHealth: 0
@@ -5892,33 +5904,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b20da1e55bbff9249b505ca8e9ddb9b6, type: 2}
   - {fileID: 11400000, guid: a6b1bc212cb8c214f9927bcedc3cf890, type: 2}
   useDistanceOverBlock: 1
-  firstTimeStagger:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5642884798581242194}
-        m_TargetAssemblyTypeName: BattlePawn, Assembly-CSharp
-        m_MethodName: StaggerFor
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 12
-          m_StringArgument: bassics-battle_first-stagger
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
-        m_MethodName: RunDialogueNode
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 12
-          m_StringArgument: bassics-battle_first-stagger
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!210 &8694757469888071649
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -5943,7 +5928,7 @@ GameObject:
   - component: {fileID: 5202002568376069265}
   - component: {fileID: 392686134471100159}
   - component: {fileID: 3486346979371979170}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PawnCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6045,7 +6030,7 @@ GameObject:
   - component: {fileID: 1181184798448508144}
   - component: {fileID: 6259986299895521199}
   - component: {fileID: 5442695896393181257}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11082,14 +11067,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6162650432267723590}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.14116044, y: -0, z: -0, w: 0.9899868}
-  m_LocalPosition: {x: 0, y: 8.33, z: -10.4}
+  m_LocalRotation: {x: 0.15849192, y: -0, z: -0, w: 0.9873603}
+  m_LocalPosition: {x: 0, y: 8.28, z: -10.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4716959993727667221}
   m_Father: {fileID: 9019337329852402836}
-  m_LocalEulerAnglesHint: {x: 16.23, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 18.239, y: 0, z: 0}
 --- !u!114 &813613764684687572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11156,7 +11141,7 @@ GameObject:
   - component: {fileID: 2179363408477720336}
   - component: {fileID: 2812254090764878630}
   - component: {fileID: 8737101428355948354}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11294,6 +11279,7 @@ MonoBehaviour:
   timelineDurationInBeats: 0
   slashAnimationName: slash
   inverseFacingDirection: 0
+  swapFacingDirectionAfterPostHit: 0
   _staggerDamage: 5
   prehitBeats: 0.5
   posthitBeats: 0.5
@@ -11543,7 +11529,7 @@ Transform:
   m_GameObject: {fileID: 9126940492273087536}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.4500008, z: -7.119995}
+  m_LocalPosition: {x: 0, y: 3.449997, z: -7.119995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
