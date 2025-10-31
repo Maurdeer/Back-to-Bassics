@@ -428,6 +428,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dmg: 1
   _staggerDamage: 0
+  _flipBasedOnMove: 0
+  _offset: {x: 0, y: 0, z: 0}
   playOnMiss:
     Guid:
       Data1: 1851356272
@@ -5733,7 +5735,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 0
   projectilePoolAmount: 5
+  enterFireName: 
   animationName: fire
+  exitFireName: 
   performAnimationBeforeFire: 0
   firePattern: 2
   projectileFabs:
@@ -12025,7 +12029,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 0
   projectilePoolAmount: 10
+  enterFireName: shoot
   animationName: shoot
+  exitFireName: 
   performAnimationBeforeFire: 0
   firePattern: 2
   projectileFabs:
