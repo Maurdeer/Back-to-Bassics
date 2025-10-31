@@ -11,7 +11,9 @@ public class WreckonTitle : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI m_errorText;
     [SerializeField] private TMP_Dropdown m_profileOptions;
+    private Animator m_animator;
     private string m_saveProfileName = "";
+    private bool menuShown = false;
     public string SaveProfileName
     {
         get
@@ -23,6 +25,10 @@ public class WreckonTitle : MonoBehaviour
             m_saveProfileName = value;
         }
     }
+    private void Awake()
+    {
+        m_animator = GetComponent<Animator>();  
+    }
     private void Start()
     {
         Dictionary<string, GameData> profiles = DataPersistenceManager.Instance.GetAllProfilesGameData();
@@ -33,6 +39,18 @@ public class WreckonTitle : MonoBehaviour
             options.Add(new TMP_Dropdown.OptionData(data.profileName));
         }
         m_profileOptions.AddOptions(options);
+    }
+    private void Update()
+    {
+        if (Input.anyKey && !menuShown)
+        {
+            ShowMenu();
+        }
+    }
+    public void ShowMenu()
+    {
+        menuShown = true;
+        m_animator.Play("LogoGoUp");
     }
     public void CreateNewProfile()
     {
@@ -56,8 +74,8 @@ public class WreckonTitle : MonoBehaviour
             m_profileOptions.options = m_profileOptions.options;
             m_profileOptions.value = m_profileOptions.options.Count() - 1;
         }
-        
-        
+
+        StartGame();
     }
     public void UpdateOption(int option_idx)
     {

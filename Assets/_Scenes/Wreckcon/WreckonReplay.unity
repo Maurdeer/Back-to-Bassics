@@ -821,7 +821,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 76794011}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3048482671374767034}
+        m_TargetAssemblyTypeName: SceneManagement, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Bassics
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &76794011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4940,7 +4952,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 851146628}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3048482671374767034}
+        m_TargetAssemblyTypeName: SceneManagement, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: SmallFry
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &851146628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5947,7 +5971,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1003567835}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3048482671374767034}
+        m_TargetAssemblyTypeName: SceneManagement, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: KingSal
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1003567835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10419,7 +10455,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1895738163}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3048482671374767034}
+        m_TargetAssemblyTypeName: SceneManagement, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: TurboTop
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1895738163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10673,7 +10721,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1928626956}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3048482671374767034}
+        m_TargetAssemblyTypeName: SceneManagement, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: KingMinnows
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1928626956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15272,8 +15332,8 @@ RectTransform:
   m_GameObject: {fileID: 2090365482378324645}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 91.39098}
-  m_LocalScale: {x: 0.10691672, y: 0.10691672, z: 0.10691672}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5569502558126475581}
   - {fileID: 1421182696736723127}
@@ -15281,8 +15341,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -960, y: -539}
-  m_SizeDelta: {x: 0.00012207031, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1732595310892065729
 GameObject:
