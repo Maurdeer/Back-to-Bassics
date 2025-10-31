@@ -55,4 +55,9 @@ public class PersistentDataReader : MonoBehaviour, IDataPersistence
     {
         // No need to save
     }
+
+    public void Save()
+    {
+        DataPersistenceManager.Instance.SaveGame();
+    }
 }

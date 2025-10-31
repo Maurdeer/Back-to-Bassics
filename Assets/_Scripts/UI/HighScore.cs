@@ -28,7 +28,7 @@ public class HighScore : MonoBehaviour
 
         for (int i = 0; i < namesMesh.Length; i++)
         {
-            if (i > profileGamedata.Length)
+            if (i >= profileGamedata.Length)
             {
                 return;
             }

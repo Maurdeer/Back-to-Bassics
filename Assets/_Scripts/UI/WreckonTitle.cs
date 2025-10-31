@@ -39,6 +39,7 @@ public class WreckonTitle : MonoBehaviour
             options.Add(new TMP_Dropdown.OptionData(data.profileName));
         }
         m_profileOptions.AddOptions(options);
+        UpdateOption(0);
     }
     private void Update()
     {
@@ -79,6 +80,7 @@ public class WreckonTitle : MonoBehaviour
     }
     public void UpdateOption(int option_idx)
     {
+        if (option_idx >= m_profileOptions.options.Count) return;
         m_saveProfileName = m_profileOptions.options[option_idx].text;
     }
     public void StartGame()
