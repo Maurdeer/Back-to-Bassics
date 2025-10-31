@@ -27,7 +27,7 @@ public class TruthArrayMaster : Singleton<TruthArrayMaster>, IDataPersistence
     }
     public void LoadData(GameData data)
     {
-        truthArray = new bool[data.truthArray.Length];
+        truthArray = new bool[truthBehaviors.Length];
         for (int i = 0; i < data.truthArray.Length; i++)
         {
             truthArray[i] = data.truthArray[i];
@@ -44,9 +44,17 @@ public class TruthArrayMaster : Singleton<TruthArrayMaster>, IDataPersistence
     }
     public void SaveData(GameData data)
     {
+        if (truthBehaviors.Length > data.truthArray.Length)
+        {
+            data.truthArray = new bool[truthBehaviors.Length];
+        }
         for (int i = 0; i < truthArray.Length; i++)
         {
             data.truthArray[i] = truthArray[i];
+            if (truthArray[i])
+            {
+                lastTruth = truthBehaviors[i];
+            }
         }
         if (lastTruth.spawnPosition == Vector3.zero) return;
         data.playerPosition[SceneManager.GetActiveScene().name] = lastTruth.spawnPosition;
