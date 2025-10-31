@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         // Input World Traversal Actions
         // This might just have to keep updating on fixed update tbh
         _playerinput.SwitchCurrentActionMap("PlayerTraversalPawn");
-        _playerinput.actions["Slash"].performed += OnTraversalSlash;
+        //_playerinput.actions["Slash"].performed += OnTraversalSlash;
         _playerinput.actions["Interact"].performed += OnInteractAction;
         _playerinput.actions["Pause"].performed += OnPauseAction;
 
