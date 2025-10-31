@@ -86,6 +86,15 @@ public class MinnowsSwarmAction : EnemyAction
 
         _idleTrickThread = null;
     }
+    protected override Coroutine OnStopAction()
+    {
+        return StartCoroutine(StopAllActions());
+    }
+    private IEnumerator StopAllActions()
+    {
+        yield return slashAction.StopAction();
+        yield return fireProjectileAction.StopAction();
+    }
 }
 
 public enum MinnowsSwarmActionChoice
