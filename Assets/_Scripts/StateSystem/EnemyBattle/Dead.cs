@@ -14,7 +14,7 @@ public partial class EnemyStateMachine
             {
                 if (Input.Enemy.EnemyData.Name == "Bassics")
                 {
-                    Input.EnemySprite?.Animator?.Play("nothing");
+                    // Input.EnemySprite?.Animator?.Play("nothing");
                 }
                 else
                 {

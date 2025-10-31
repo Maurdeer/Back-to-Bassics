@@ -1,8 +1,8 @@
 ﻿title: bassics_intro_1
 tags:
 ---
-<<setView "TutorialBassicsManual">>
-<<setCamera "TutorialBassicsCam">>
+<<setView "BassicsManual">>
+<<setCamera "BassicsCam">>
 <<move "PlayerPoncho" "Bassics1DialogueLocation">>
 Bassics: I see you’re finally awake. I found you washed up on shore, so I put that poncho on you. Does it fit?
 <<animate "PlayerPoncho" "NodHead">>
@@ -50,12 +50,13 @@ Bassics: Then come back to me.
 title: bassics_stop
 tags:
 ---
-<<setView "TutorialBassicsManual">>
-<<setCamera "TutorialBassicsCam">>
+<<setView "BassicsManual">>
+<<setCamera "BassicsCam">>
 Bassics: Hey! Don't go that far.
+Bassics: It's dangerous out there.
 <<move "PlayerPoncho" "SafeLocation">>
 <<setCamera "PonchoCam">>
-Bassics: It's dangerous out there.
+<<wait 0.5>>
 ===
 title: bassics_intro_3
 tags:

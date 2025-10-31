@@ -15,7 +15,7 @@ MonoBehaviour:
   template:
     useDefault: 1
     projectileRef: {fileID: 0}
-    fireDirection: 0
+    fireDirection: 3
     fireDistance: 12
 --- !u!114 &-4823769929253480780
 MonoBehaviour:
@@ -32,7 +32,7 @@ MonoBehaviour:
   template:
     useDefault: 1
     projectileRef: {fileID: 0}
-    fireDirection: 0
+    fireDirection: 4
     fireDistance: 12
 --- !u!114 &-1762794216952257806
 MonoBehaviour:
@@ -69,7 +69,7 @@ MonoBehaviour:
   template:
     useDefault: 1
     projectileRef: {fileID: 0}
-    fireDirection: 0
+    fireDirection: 1
     fireDistance: 12
 --- !u!114 &11400000
 MonoBehaviour:
@@ -108,7 +108,7 @@ MonoBehaviour:
   template:
     useDefault: 1
     projectileRef: {fileID: 0}
-    fireDirection: 0
+    fireDirection: 4
     fireDistance: 12
 --- !u!114 &4760412441228731946
 MonoBehaviour:
@@ -507,7 +507,7 @@ MonoBehaviour:
   template:
     useDefault: 1
     projectileRef: {fileID: 0}
-    fireDirection: 0
+    fireDirection: 4
     fireDistance: 12
 --- !u!114 &6703260136433157001
 MonoBehaviour:
@@ -523,7 +523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   template:
     node:
-      slashDirection: 4
+      slashDirection: 3
       isCharged: 0
       staggersParent: 1
       dmg: 2
@@ -544,5 +544,5 @@ MonoBehaviour:
   template:
     useDefault: 1
     projectileRef: {fileID: 0}
-    fireDirection: 0
+    fireDirection: 1
     fireDistance: 12
