@@ -5899,6 +5899,7 @@ GameObject:
   - component: {fileID: 8360079954157592131}
   - component: {fileID: 7150075360877257033}
   - component: {fileID: 2398431742840290778}
+  - component: {fileID: 1121186776783804578}
   m_Layer: 6
   m_Name: BassicsManual
   m_TagString: Untagged
@@ -6011,6 +6012,42 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1121186776783804578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4663742312239924275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 097b95c9f69f04f2d8c08a817e7786af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueView: {fileID: 0}
+  continueActionType: 1
+  continueActionKeyCode: 32
+  continueActionButtonName: Jump
+  continueActionOnButtonRelease: 0
+  continueActionReference: {fileID: -7307425103964529414, guid: cc881c8555f6e394a9f9542fbbd3329e, type: 3}
+  continueAction:
+    m_Name: Skip
+    m_Type: 1
+    m_ExpectedControlType: 
+    m_Id: c56cb010-f5f6-48b4-a223-7e12c32ca804
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: bb6e11cd-49c8-4c93-b1ee-eabd8c346f73
+      m_Path: Submit
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Skip
+      m_Flags: 0
+    m_Flags: 0
+  enableActionOnStart: 1
 --- !u!1 &4670583941505259747
 GameObject:
   m_ObjectHideFlags: 0
