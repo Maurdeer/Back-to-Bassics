@@ -31,6 +31,10 @@
 		<relationship name="timeline">
 			<destination>{5c290f98-3660-4d64-ac4d-ca649d83a506}</destination>
 		</relationship>
+		<relationship name="banks">
+			<destination>{6853a7c8-0086-4471-b030-c8ddd0b514fd}</destination>
+			<destination>{9063ec79-aa09-4986-ba79-797653ad8e7d}</destination>
+		</relationship>
 	</object>
 	<object class="EventMixer" id="{c2b9a51d-4729-4afe-931f-6991c8de8f58}">
 		<relationship name="masterBus">
@@ -114,9 +118,6 @@
 	<object class="TempoMarker" id="{e61778d1-5eba-4480-af01-797a6c802293}">
 		<property name="position">
 			<value>0</value>
-		</property>
-		<property name="tempo">
-			<value>175</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{5c290f98-3660-4d64-ac4d-ca649d83a506}</destination>

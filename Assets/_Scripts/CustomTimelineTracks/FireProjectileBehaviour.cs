@@ -23,8 +23,8 @@ public class FireProjectileBehaviour : PlayableBehaviour
             Debug.LogError($"{this} Node did not shoot a projectile");
             return;
         }
-        Vector3 firePosition = fireDirection == Direction.None ? 
-            randDirection[UnityEngine.Random.Range(0, 3)] * fireDistance : 
+        Vector3 firePosition = fireDirection == Direction.None ?
+            randDirection[UnityEngine.Random.Range(0, 3)] * fireDistance :
             DirectionHelper.GetVectorFromDirection(fireDirection) * fireDistance;
 
         FireProjectileNode node;

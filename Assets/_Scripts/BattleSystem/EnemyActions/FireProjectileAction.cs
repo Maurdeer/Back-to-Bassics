@@ -14,6 +14,7 @@ public class FireProjectileAction : EnemyAction
     [Header("Default Projectile Settings")]
     [SerializeField] private FirePatternChoice firePattern;
     [SerializeField] private GameObject[] projectileFabs;
+    [SerializeField] private Vector3 offset;
 
     protected Coroutine currentlyFiring;
     protected float timeElapsed;
@@ -127,26 +128,27 @@ public class FireProjectileAction : EnemyAction
         // This defines the adjustment scaling, so not actually all that useful. Maybe use the base player transform?
         // Nope. Just physically cast the transforms at this point
         // Double check to make sure that the total displacement remains the same;
-        Vector3 offset = new Vector3(0, 0, 0);
+        Vector3 currOffset = new Vector3(0, 0, 0);
 
         switch (node.direction)
         {
             case Direction.North:
-                offset.y = 1.6f;
+                currOffset.y = offset.y;
                 break;
             case Direction.South:
-                offset.y = -1.6f;
+                currOffset.y = -offset.y;
                 break;
             case Direction.East:
-                offset.x = 0.6f;
+                currOffset.x = offset.x;
                 break;
             case Direction.West:
-                offset.x = -0.6f;
+                currOffset.x = -offset.x;
                 break;
         }
 
-        proj.transform.position = BattleManager.Instance.Player.playerCollider.position + offset + node.relativeSpawnPosition;
-        proj.Fire(BattleManager.Instance.Player.playerCollider.position + offset - proj.transform.position, duration);
+        proj.transform.position = BattleManager.Instance.Player.playerCollider.position + currOffset + node.relativeSpawnPosition;
+        // BattleManager.Instance.Player.playerCollider.position + offset - proj.transform.position
+        proj.Fire(-node.relativeSpawnPosition, duration);
 
         // proj.transform.position = BattleManager.Instance.Player.playerCollider.position + node.relativeSpawnPosition;        
         // proj.Fire(BattleManager.Instance.Player.playerCollider.position - proj.transform.position, node.duration);

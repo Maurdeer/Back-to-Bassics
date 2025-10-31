@@ -1,5 +1,6 @@
 using FMODUnity;
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour, IAttackRequester
@@ -9,6 +10,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
     [SerializeField] private int _staggerDamage;
     [SerializeField] private bool _flipBasedOnMove;
     [SerializeField] private Vector3 _offset;
+    private Dissolve _dissolveEffect;
     private float _speed;
     private Rigidbody _rb;
     public bool isDestroyed { get; protected set; }
@@ -26,6 +28,7 @@ public class Projectile : MonoBehaviour, IAttackRequester
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _meshRenderer = GetComponent<MeshRenderer>();
         _burstEffect = GetComponent<ParticleSystem>();
+        // _dissolveEffect = GetComponent<Dissolve>();
         Reset();
     }
     #endregion
@@ -132,16 +135,35 @@ public class Projectile : MonoBehaviour, IAttackRequester
 
         return true;
     }
-    public virtual bool OnRequestDodge(IAttackReceiver receiver) 
+    public virtual bool OnRequestDodge(IAttackReceiver receiver)
     {
         Reset();
         return true;
     }
+
     public virtual void Reset()
+    {
+        // StartCoroutine(ResetProjectile());
+        ResetNormal();
+    }
+    public void ResetNormal()
     {
         isDestroyed = true;
         _burstEffect?.Play();
         activeScheduable?.SelfAbort();
+        // yield return _dissolveEffect?.StartCoroutine(_dissolveEffect.Play());
+        // yield return null;
+        gameObject.SetActive(false);
+        if (_spriteRenderer != null) _spriteRenderer.enabled = false;
+        if (_meshRenderer != null) _meshRenderer.enabled = false;
+    }
+    public virtual IEnumerator ResetProjectile()
+    {
+        isDestroyed = true;
+        _burstEffect?.Play();
+        activeScheduable?.SelfAbort();
+        // yield return _dissolveEffect?.StartCoroutine(_dissolveEffect.Play());
+        yield return null;
         gameObject.SetActive(false);
         if (_spriteRenderer != null) _spriteRenderer.enabled = false;
         if (_meshRenderer != null) _meshRenderer.enabled = false;

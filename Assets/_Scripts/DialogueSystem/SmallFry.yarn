@@ -67,7 +67,7 @@ Small Fry: Hmmmm... I'm not sure what's wrong. How can I make the perfect fried 
 title: small_fry_1
 tags:
 ---
-<<teleport "SmallFryPawn" "SmallFryTPLocation">>
+// <<teleport "SmallFryPawn" "SmallFryTPLocation">>
 <<setView "RockManual">>
 <<setCamera "RockCamera">>
 // <<setCamera "SmallFryCam">>
@@ -76,7 +76,7 @@ Small Fry: NOOOO!!! MY RICE!!!!
 Small Fry: I wasn't finished with that!
 
 <<move "SmallFryPawn" "SmallFryDialogue1Location">>
-<<wait 2>>
+<<wait 1>>
 <<setView "SmallFryManual">>
 <<setCamera "SmallFryCam">>
 // <<move "PlayerPoncho" "SmallFryDialogue1PlayerLocation">>
@@ -109,6 +109,18 @@ Small Fry: Wow... I feel dizzy...
 Small Fry: That fired rice really energized you...
 Small Fry: So really, I'm the winner here...heh.
 Small Fry: Haha! I'm the best!
+<<setCamera "PonchoCam">>
+===
+title: small_fry_good_rice
+tags:
+---
+<<setView "RockManual">>
+<<setCamera "RockCamera">>
+Rock: You'd progress to the cave...
+Rock: But that fried rice smells too delectable
+Rock: You must go try it!
+<<move "PlayerPoncho" "friedRiceLocation">>
+<<wait 0.5>>
 <<setCamera "PonchoCam">>
 ===
 title: small_fry_3

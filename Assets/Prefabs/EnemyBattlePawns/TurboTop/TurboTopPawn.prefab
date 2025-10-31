@@ -197,8 +197,9 @@ MonoBehaviour:
   minDurationInBeats: 0.5
   maxDurationInBeats: 1
   fakeOutChance: 0.4
-  spinSpeedIncreasePerHit: 0.125
+  spinSpeedIncreasePerHit: 0.25
   reduceSpeedOnHit: 1
+  _beatsBeforeIncrease: 8
   spinner: {fileID: 2551730394793636455}
   hitBox: {fileID: 1981365018343645859}
   spinCamera: {fileID: 6090893088226219683}
@@ -236,10 +237,10 @@ RectTransform:
   - {fileID: 767082411293138291}
   m_Father: {fileID: 564165377819389841}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 4.9768, y: -4.278799}
+  m_SizeDelta: {x: 9.9536, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5136180470923341999
 CanvasRenderer:
@@ -382,11 +383,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 120
-  minDurationInBeats: 2
-  maxDurationInBeats: 3
+  minDurationInBeats: 1
+  maxDurationInBeats: 2
   fakeOutChance: -1
   spinSpeedIncreasePerHit: 0.25
   reduceSpeedOnHit: 1
+  _beatsBeforeIncrease: 0
   spinner: {fileID: 2551730394793636455}
   hitBox: {fileID: 1981365018343645859}
   spinCamera: {fileID: 6090893088226219683}
@@ -422,9 +424,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6354521946123713583}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 4.9768, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1810680244239019238
@@ -5858,10 +5860,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timelineDurationInBeats: 120
   minDurationInBeats: 1
-  maxDurationInBeats: 2.5
+  maxDurationInBeats: 2
   fakeOutChance: 0.2
   spinSpeedIncreasePerHit: 0.5
   reduceSpeedOnHit: 1
+  _beatsBeforeIncrease: 0
   spinner: {fileID: 2551730394793636455}
   hitBox: {fileID: 1981365018343645859}
   spinCamera: {fileID: 6090893088226219683}
@@ -5928,9 +5931,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1555636354233290275}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 4.9768, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2519054141847764002
@@ -6062,6 +6065,7 @@ Transform:
   - {fileID: 487387400368186718}
   - {fileID: 7544233063128425385}
   - {fileID: 2108276045005637918}
+  - {fileID: 2852845620233672281}
   - {fileID: 8848752123223628263}
   - {fileID: 2549515214008738953}
   - {fileID: 8106583751678165668}
@@ -6166,7 +6170,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8514043373142664286
 Transform:
   m_ObjectHideFlags: 0
@@ -6211,7 +6215,19 @@ MonoBehaviour:
       m_Calls: []
   onPawnExitBattle:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: TruthArrayMaster, Assembly-CSharp
+        m_MethodName: UpdateTruth
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 7
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   <esm>k__BackingField: {fileID: 0}
   <psm>k__BackingField: {fileID: 0}
   <targetFightingLocation>k__BackingField: {fileID: 7955827430294983148}
@@ -6261,7 +6277,7 @@ PlayableDirector:
   m_GameObject: {fileID: 4095286020021042877}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 3e498d33dc185e24fba1e4ed70599ec7, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 70c8ab9c31b3f9847b28b2c8bddee64a, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -6292,11 +6308,13 @@ PlayableDirector:
   - key: {fileID: 472776907330408105, guid: 70c8ab9c31b3f9847b28b2c8bddee64a, type: 2}
     value: {fileID: 8108347471285882684}
   - key: {fileID: 6941544029944998643, guid: 70c8ab9c31b3f9847b28b2c8bddee64a, type: 2}
-    value: {fileID: 4803442671980162121}
+    value: {fileID: 8599568034432455382}
   - key: {fileID: 559974135727733058, guid: d9cc9fd98d9eace44b34b076cd6cd177, type: 2}
     value: {fileID: 1563351687039702102}
   - key: {fileID: 3759895306747732502, guid: d9cc9fd98d9eace44b34b076cd6cd177, type: 2}
     value: {fileID: 0}
+  - key: {fileID: -4440293426960146354, guid: f00b321922502f74189c9ef5132cd053, type: 2}
+    value: {fileID: 6831905234021151369}
   m_ExposedReferences:
     m_References:
     - 11d5700dc97baf0449d8251e39b85f73: {fileID: 6682162959560621637}
@@ -6332,6 +6350,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cbbfa7a445728ad45a87c39af8f1f026, type: 2}
   - {fileID: 11400000, guid: 409ab6bcee8d4664eaff2eb26ee6b032, type: 2}
   - {fileID: 11400000, guid: 8b6ae0aaa6346674395d9a43ff5b78bd, type: 2}
+  - {fileID: 11400000, guid: 93e280bb84f071f438bf73d318eba4cd, type: 2}
   useDistanceOverBlock: 0
 --- !u!1 &4729415839684254913
 GameObject:
@@ -6467,6 +6486,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4986405766503012234
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2852845620233672281}
+  - component: {fileID: 6831905234021151369}
+  m_Layer: 0
+  m_Name: FinalRotationAction
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2852845620233672281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4986405766503012234}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8183781759787433158}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6831905234021151369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4986405766503012234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f8294a8d3e8c3438cea906399e64ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timelineDurationInBeats: 999
+  minDurationInBeats: 0.5
+  maxDurationInBeats: 0.5
+  fakeOutChance: 0
+  spinSpeedIncreasePerHit: 0
+  reduceSpeedOnHit: 0
+  _beatsBeforeIncrease: 0
+  spinner: {fileID: 2551730394793636455}
+  hitBox: {fileID: 1981365018343645859}
+  spinCamera: {fileID: 6090893088226219683}
 --- !u!1 &5360720098541686956
 GameObject:
   m_ObjectHideFlags: 0
@@ -12000,6 +12073,7 @@ MonoBehaviour:
   fakeOutChance: 0.2
   spinSpeedIncreasePerHit: 0.2
   reduceSpeedOnHit: 1
+  _beatsBeforeIncrease: 0
   spinner: {fileID: 2551730394793636455}
   hitBox: {fileID: 1981365018343645859}
   spinCamera: {fileID: 6090893088226219683}
@@ -12173,10 +12247,10 @@ RectTransform:
   - {fileID: 22367130333345877}
   m_Father: {fileID: 4327594906508124422}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 4.9768, y: -4.278799}
+  m_SizeDelta: {x: 9.9536, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1556355417918920790
 CanvasRenderer:
@@ -12292,6 +12366,7 @@ MonoBehaviour:
   fakeOutChance: -1
   spinSpeedIncreasePerHit: 0.05
   reduceSpeedOnHit: 0
+  _beatsBeforeIncrease: 0
   spinner: {fileID: 2551730394793636455}
   hitBox: {fileID: 1981365018343645859}
   spinCamera: {fileID: 6090893088226219683}

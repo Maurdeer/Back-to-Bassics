@@ -191,7 +191,7 @@ public class BattleManager : Singleton<BattleManager>
         UIManager.Instance.PersistentDataTracker.UpdateEnemyScore(id, finalScore, scoreRank);
 
         // Save Here Since All Needed Data has been processed
-        DataPersistenceManager.Instance.SaveGame();
+        if (DataPersistenceManager.Instance != null) DataPersistenceManager.Instance.SaveGame();
 
         UIManager.Instance.BeatEnemyPanel.PlayBattleVictory(Enemy.EnemyData.Name, finalScore, Enemy.EnemyData.SRankMax, scoreRank);
     } 
