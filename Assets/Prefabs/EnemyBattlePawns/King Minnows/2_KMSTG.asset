@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebca2f589a529e545aaf5c099703c5e4, type: 3}
   m_Name: 2_KMSTG
   m_EditorClassIdentifier: 
-  _healthThreshold: 0.7
-  _enemyAttackPatterns: []
-  _beatsPerDecision: 0
-  _staggerHealth: 0
+  _healthThreshold: 0.9
+  _enemyAttackPatterns:
+  - {fileID: 11400000, guid: 5f1bab30b0f11d041a251176632b0ef3, type: 2}
+  - {fileID: 11400000, guid: 2c0c9051b6b861f40a0ba2dc8ba24324, type: 2}
+  - {fileID: 11400000, guid: ea5fafd4fe8a90540979beff8ed4cccf, type: 2}
+  - {fileID: 11400000, guid: f440396db7e09044c935d26538c222f3, type: 2}
+  _beatsPerDecision: 3
+  _staggerHealth: 10
   _dialogueNode: 
-  _phaseTransitionMove: {fileID: 0}
+  _phaseTransitionMove: {fileID: 11400000, guid: 6e20535de37cf2244869849cbdf33da8, type: 2}
   _resetStaggerHealth: 0
+  _skipPointInSong: 0
+  _pointToSkip: 0
