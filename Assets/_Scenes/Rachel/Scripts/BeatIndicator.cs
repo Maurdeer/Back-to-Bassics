@@ -65,6 +65,7 @@ public class BeatIndicator : Conductable
 
                 float scalePulse = Mathf.Lerp(1.25f, 1f, curvedT);
                 centerIndicator.transform.localScale = originalScale * scalePulse;
+                
             }
             else
             {
