@@ -37,7 +37,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
 
     private HashSet<IAttackRequester> ActiveAttacks = new();
     private int currDeflectsTillHeal;
-    
+    private bool intiatedDodge;
     protected override void Awake()
     {
         base.Awake();
@@ -54,7 +54,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     #region Player Actions
     public void Dodge(Vector2 direction)
     {
-        if (IsDead) return;
+        if (IsDead || dodging) return;
 
         if (TutorialManager.Instance != null && TutorialManager.Instance.PausedForTutorial)
         {
@@ -80,8 +80,9 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     private IEnumerator DodgeThread(string directionAnimation)
     {
         _pawnSprite.Animator.Play("dodge_" + directionAnimation);
-        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("dodge_" + directionAnimation));
         dodging = true;
+        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("dodge_" + directionAnimation));
+        
         yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle"));
         dodging = false;
     }

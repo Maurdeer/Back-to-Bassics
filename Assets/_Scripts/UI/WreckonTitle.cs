@@ -55,6 +55,11 @@ public class WreckonTitle : MonoBehaviour
     }
     public void CreateNewProfile()
     {
+        if (DataPersistenceManager.Instance.GetAllProfilesGameData().ContainsKey(m_saveProfileName))
+        {
+            m_errorText.text = "Profile already exists, make a new one!";
+            return;
+        }
         if (m_saveProfileName.Trim() == "")
         {
             m_errorText.text = "Please enter a name";
@@ -65,16 +70,9 @@ public class WreckonTitle : MonoBehaviour
             m_errorText.text = "Name cannot be above 30 characters";
             return;
         }
-        if (DataPersistenceManager.Instance.GetAllProfilesGameData().ContainsKey(m_saveProfileName))
-        {
-            m_profileOptions.value = m_profileOptions.options.FindIndex(0, (TMP_Dropdown.OptionData optionData) => optionData.text == m_saveProfileName);
-        }
-        else
-        {
-            m_profileOptions.options.Add(new TMP_Dropdown.OptionData(m_saveProfileName));
-            m_profileOptions.options = m_profileOptions.options;
-            m_profileOptions.value = m_profileOptions.options.Count() - 1;
-        }
+        m_profileOptions.options.Add(new TMP_Dropdown.OptionData(m_saveProfileName));
+        m_profileOptions.options = m_profileOptions.options;
+        m_profileOptions.value = m_profileOptions.options.Count() - 1;
 
         StartGame();
     }

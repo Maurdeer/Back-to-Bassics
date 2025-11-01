@@ -4974,12 +4974,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 615d985bad138be4eb9f15eac06a1261, type: 2}
-  _spriteAnimator: {fileID: 8855755751996664029}
   _currHP: 0
+  onPawnDefeat:
+    m_PersistentCalls:
+      m_Calls: []
+  onPawnExitBattle:
+    m_PersistentCalls:
+      m_Calls: []
+  deflectsTillHeal: 3
   _weaponData: {fileID: 11400000, guid: a9fbfbcb976477e4e84d47f073bf3134, type: 2}
+  playerCollider: {fileID: 2298856494011175701}
   _particleSystem: {fileID: 9153476961320069060}
   _slashEffect: {fileID: 6220415595807838581}
-  playerCollider: {fileID: 2298856494011175701}
+  _deflectEffect: {fileID: 0}
+  _stickWeapon: {fileID: 0}
 --- !u!114 &4770490815765974806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4993,7 +5001,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
+  _spriteAnimator: {fileID: 0}
+  <footStepsReference>k__BackingField:
+    Guid:
+      Data1: -1626654162
+      Data2: 1312980191
+      Data3: 1920902804
+      Data4: -1560073262
+    Path: event:/SFX/Player/BasicsPaperUpwav
   _slashEffect: {fileID: 6220415595807838581}
+  <slashSoundReference>k__BackingField:
+    Guid:
+      Data1: 593575934
+      Data2: 1297913944
+      Data3: -1079367544
+      Data4: 1437121827
+    Path: event:/SFX/Player/SlashAir
 --- !u!54 &7533875499212319449
 Rigidbody:
   m_ObjectHideFlags: 0
