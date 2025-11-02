@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebca2f589a529e545aaf5c099703c5e4, type: 3}
   m_Name: 4_TUTBSCSTG
   m_EditorClassIdentifier: 
-  _healthThreshold: 0.7
+  _healthThreshold: 0.5
   _enemyAttackPatterns:
-  - {fileID: 0}
-  _beatsPerDecision: 2
-  _staggerHealth: 15
-  _dialogueNode: bassics-battle_phase3
+  - {fileID: 11400000, guid: 88e38f582c132eb45a667efe19845ff6, type: 2}
+  - {fileID: 11400000, guid: 15d65535fe6ca44418ada748a6f6c97d, type: 2}
+  _beatsPerDecision: 1
+  _staggerHealth: 20
+  _dialogueNode: bassics-battle_phase4
   _phaseTransitionMove: {fileID: 0}
   _resetStaggerHealth: 0
+  _skipPointInSong: 0
+  _pointToSkip: 0

@@ -3,7 +3,7 @@ tags:
 ---
 <<setView "TutorialBassicsAuto">>
 Bassics: Let's start with the basics! Defending yourself!
-Bassics: Try deflecting the notes that I send your way using your arrow keys!
+Bassics: Use the arrow keys to deflect the notes!
 ===
 title: bassics-noteHitRight
 tags:
@@ -32,16 +32,17 @@ Bassics: Good!
 title: bassics-battle_first-stagger
 tags:
 ---
+<<setView "TutorialBassicsAuto">>
+Bassics: You've deflected enough of my attacks to stagger me!
 <<setView "TutorialBassicsManual">>
-Bassics: You've deflected enough of my attacks to stagger me! Now's your chance to strike back.
-Bassics: Try doing one of the combos on screen right now to the beat of the song!
+Bassics: Tap "Left, Right, Left, Right" to the beat of my song! 
 ===
 title: bassics-battle_phase2
 tags:
 ---
 <<setView "TutorialBassicsAuto">>
-Bassics: Good start! Now let's get you used to some other attacks.
-Bassics: Try deflecting my guitar swing using the arrow keys!
+// Bassics: Good start! Now let's get you used to some other attacks.
+Bassics: Good start! Now try deflecting my guitar swing!
 ===
 title: bassics-guitarSwingRight
 tags:
@@ -58,7 +59,7 @@ Bassics: Use the left arrow key to deflect my attack!
 title: bassics-battle_second-stagger
 tags:
 ---
-<<setView "TutorialBassicsManual">>
+<<setView "TutorialBassicsAuto">>
 Bassics: Good! Try doing some attacks again!
 ===
 title: bassics-battle_first-unstagger
@@ -71,8 +72,9 @@ title: bassics-battle_phase3
 tags:
 ---
 <<setView "TutorialBassicsAuto">>
-Bassics: For your final lesson, some attacks can't be deflected!
-Bassics: That's why you can dodge these attacks by using WASD!
+Bassics: Great job! You're learning fast.
+Basiscs: Some attacks can't be deflected, but can be dodged using S!
+// Bassics: That's why you can dodge these attacks by using WASD!
 ===
 title: bassics-battle_unblockable
 tags:
@@ -86,4 +88,17 @@ tags:
 <<setView "TutorialBassicsAuto">>
 Bassics: Excellent!
 Bassics: Now let's see if your Bassics are up to par!
+===
+title: bassics-battle_ultimate
+tags:
+---
+<<setView "TutorialBassicsAuto">>
+Bassics: You can builf up your meter by deflecting attacks. Once you reach 100, you can unleash your ultimate attack!
+Bassics: But I've filled up your meter for you. Attack with "UP, UP, UP, and UP" to the beat to do your ultimate attack!
+===
+title: bassics-battle_one-more
+tags:
+---
+<<setView "TutorialBassicsAuto">>
+Bassics: Good! One more time.
 ===

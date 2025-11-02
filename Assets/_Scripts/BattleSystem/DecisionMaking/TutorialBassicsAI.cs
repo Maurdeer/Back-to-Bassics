@@ -12,6 +12,7 @@ public class TutorialBassicsAI : BossAI
     // [SerializeField] protected UnityEvent firstTimeStagger;
     // [SerializeField] protected UnityEvent secondTimeStagger;
     private bool staggeredBefore = false;
+    [SerializeField] private ComboManager _comboManager;
     // (Joseph 1 / 11 / 2025) Was running into a stack overflow issue when calling firstStagger through checking enemy stages and making sure it was the first one.
     // I'm going to try to make it so it's only called every beat, and if 
     // (Joseph 10/19/2025) What was I talking about, I have no clue.
@@ -25,24 +26,30 @@ public class TutorialBassicsAI : BossAI
             // (10/14/2025 Joseph) No need to repeat dialogue, as the dialogue should persist during the tutorial until the player advances. 
             if (_currentStage == 0 && !staggeredBefore)
             {
-                staggeredBefore = true;
                 _enemyBattlePawn.StaggerFor(999);
                 DialogueManager.Instance.RunDialogueNode("bassics-battle_first-stagger");
             }
             if (_currentStage == 1 && !staggeredBefore)
             {
-                staggeredBefore = true;
                 DialogueManager.Instance.RunDialogueNode("bassics-battle_second-stagger");
             }
+            if (_currentStage == 3 && !staggeredBefore)
+            {
+                _enemyBattlePawn.StaggerFor(999);
+                DialogueManager.Instance.RunDialogueNode("bassics-battle_ultimate");
+                _comboManager.CurrComboMeterAmount = 100;
+                // Player Battle pawn Set Combo meter to 100
+            }
+            staggeredBefore = true;
         };
         _enemyBattlePawn.OnEnemyUnstaggerEvent += delegate
         {
             // Modify this by so much HOLY SHIT
             // For Tutorial Game Feel
-            if (_currentStage == 1 && staggeredBefore)
-            {
-                DialogueManager.Instance.RunDialogueNode("bassics-battle_first-unstagger");
-            }
+            // if (_currentStage == 1 && staggeredBefore)
+            // {
+            //     DialogueManager.Instance.RunDialogueNode("bassics-battle_first-unstagger");
+            // }
         };
         OnEnemyStageTransition += delegate
         {

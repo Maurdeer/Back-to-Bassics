@@ -9,7 +9,7 @@ Bassics: I see you’re finally awake. I found you washed up on shore, so I put 
 <<wait 0.5>>
 Bassics: Hmm, not very talkative, are you.
 Bassics: May I ask a question?
-Bassics: Do you know why you were out at sea?
+Bassics: Do you know why you were on the shore?
 // Set Poncho shake his head
 <<animate "PlayerPoncho" "ShakeHead">>
 <<wait 0.5>>
@@ -38,15 +38,6 @@ Bassics: Then you’re going to need to learn the basics. Are you ready?
 <<wait 0.5>>
 <<setCamera "PonchoCam">>
 ===
-title: bassics_intro_2
-tags:
----
-<<setView "BassicsManual">>
-<<setCamera "BassicsCam">>
-Bassics: Find yourself something to fight with.
-Bassics: Then come back to me.
-<<setCamera "PonchoCam">>
-===
 title: bassics_stop
 tags:
 ---
@@ -58,15 +49,6 @@ Bassics: It's dangerous out there.
 <<setCamera "PonchoCam">>
 <<wait 0.5>>
 ===
-title: bassics_intro_3
-tags:
----
-<<setView "BassicsManual">>
-<<setCamera "BassicsCam">>
-Bassics: ...I see you've found a weapon.
-Bassics: You've made your determination clear. 
-Bassics: Very well then! Prepare to learn the bassics!
-===
 title: bassics_proud
 tags:
 ---
@@ -77,12 +59,4 @@ Bassics: Ooof.
 Bassics: You've fought well dear poncho! You're ready for whatever awaits you.
 Bassics: Whatever it is you want, you can achieve. As long as you remember the bassics!
 <<setCamera "PonchoCam">>
-===
-title: bassics_intro_cutscene
-tags:
----
-<<setView "BassicsAuto">>
-Bassics: That should do for now.
-Bassics: But you can't go out there until I know you are ready.
-Bassics: Prove to me you can hold your own!
 ===

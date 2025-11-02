@@ -25,11 +25,13 @@ public partial class UIManager : Singleton<UIManager>
     public void ShowInteractableUI()
     {
         if (_hic != null) StopCoroutine(_hic);
+        interactableText.gameObject.SetActive(true);
         _sic = StartCoroutine(ShowInteractableCoroutine(0.2f));
     }
     public void HideInteractableUI()
     {
         if (_sic != null) StopCoroutine(_sic);
+        interactableText.gameObject.SetActive(false);
         _hic = StartCoroutine(HideInteractableCoroutine(0.2f));
     }
     public void BeginCredits()
