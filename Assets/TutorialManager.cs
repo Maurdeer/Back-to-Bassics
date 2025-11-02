@@ -45,8 +45,9 @@ public class TutorialManager : Singleton<TutorialManager>
 
     void Start()
     {
-        _enemyBattlePawn.OnEnemyStaggerEvent += ShowComboList;
-        _enemyBattlePawn.OnEnemyUnstaggerEvent += HideComboList;
+        // Don't show the combo list, this confuses teh player and is out of date
+        // _enemyBattlePawn.OnEnemyStaggerEvent += ShowComboList;
+        // _enemyBattlePawn.OnEnemyUnstaggerEvent += HideComboList;
         _bassicsAI.OnEnemyStageTransition += delegate
         {
             tutorialMisses = 0;
@@ -54,15 +55,15 @@ public class TutorialManager : Singleton<TutorialManager>
         };
     }
 
-    public void ShowComboList()
-    {
-        comboList.SetActive(true);
-    }
+    // public void ShowComboList()
+    // {
+    //     comboList.SetActive(true);
+    // }
 
-    public void HideComboList()
-    {
-        comboList.SetActive(false);
-    }
+    // public void HideComboList()
+    // {
+    //     comboList.SetActive(false);
+    // }
     
     public void Pause(Vector2 slashDirection)
     {
@@ -85,11 +86,18 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         tutorialMisses += x;
         if (tutorialMisses >= numFailuresForTutorial) _inTutorialState = true;
-        else if (tutorialMisses <= 0) {
+        else if (tutorialMisses <= 0)
+        {
             _inTutorialState = false;
             tutorialMisses = 0;
         }
     }
+
+    // public void StopAllDialogue()
+    // {
+    //     DialogueManager.Instance.customDialogueRunner.Stop();
+    // }
+
 
     void Update()
     {

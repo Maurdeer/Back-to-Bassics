@@ -32,6 +32,7 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
     private bool deflected;
     public bool deflectionWindow { get; private set; }
     public bool dodging { get; set; }
+    private Coroutine dodgeCorourtine = null; 
     private ComboManager _comboManager;
     public ComboManager ComboManager => _comboManager;
 
@@ -75,16 +76,17 @@ public class PlayerBattlePawn : BattlePawn, IAttackRequester, IAttackReceiver
         //updateCombo(false);
 
         // TODO: refactor coroutine
-        StartCoroutine(DodgeThread(DodgeDirection.ToString().ToLower()));
+        dodgeCorourtine = StartCoroutine(DodgeThread(DodgeDirection.ToString().ToLower()));
     }
     private IEnumerator DodgeThread(string directionAnimation)
     {
         _pawnSprite.Animator.Play("dodge_" + directionAnimation);
+        //yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("dodge_" + directionAnimation));
         dodging = true;
-        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("dodge_" + directionAnimation));
-        
-        yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle"));
+        yield return new WaitForSeconds(0.37f);
+        //yield return new WaitUntil(() => _pawnSprite.Animator.GetCurrentAnimatorStateInfo(0).IsName("idle") && !_pawnSprite.Animator.IsInTransition(0));
         dodging = false;
+        dodgeCorourtine = null;
     }
 
     public override void EnterBattle()

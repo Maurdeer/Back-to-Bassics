@@ -83,6 +83,12 @@ public class TutorialSlashAction : SlashAction
     public override bool OnRequestDodge(IAttackReceiver receiver)
     {
         TutorialManager.Instance.ModifyNumOfMisses(-5);
+
+        if (TutorialManager.Instance.CheckForDodge)
+        {
+            parentPawn.StaggerDamage(_staggerDamage);
+            if (TutorialManager.Instance.TutorialEnabled) DialogueManager.Instance.RunDialogueNode("bassics-battle_one-more");
+        }
         return base.OnRequestDodge(receiver);
     }
 
